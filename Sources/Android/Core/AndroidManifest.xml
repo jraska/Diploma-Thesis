@@ -3,4 +3,7 @@
     package="com.jraska.core"
     android:versionCode="1"
     android:versionName="1.0">
+
+    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="19"/>
+
 </manifest>
