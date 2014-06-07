@@ -1,15 +1,13 @@
 package com.jraska.gpsbatterytest;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import com.jraska.pwdm.core.gps.IGpsService;
-import com.jraska.pwdm.core.gps.LatLng;
+import android.view.View;
 
 public class GpsBatteryTestMainActivity extends Activity
 {
-	/**
-	 * Called when the activity is first created.
-	 */
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -17,8 +15,22 @@ public class GpsBatteryTestMainActivity extends Activity
 		setContentView(R.layout.main);
 
 
-		final IGpsService gpsService = IGpsService.Stub.asInterface();
+		findViewById(R.id.btnStart).setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				startService(new Intent(GpsBatteryTestMainActivity.this, GpsBatteryTestService.class));
+			}
+		});
 
-		final LatLng lastPosition = gpsService.getLastPosition();
+		findViewById(R.id.btnStop).setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				stopService(new Intent(GpsBatteryTestMainActivity.this, GpsBatteryTestService.class));
+			}
+		});
 	}
 }

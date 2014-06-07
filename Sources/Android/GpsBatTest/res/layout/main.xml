@@ -4,9 +4,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <TextView
+    <Button
+        android:id="@+id/btnStart"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name" />
+        android:text="@string/startTest" />
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/stopTest" />
 </LinearLayout>
 
