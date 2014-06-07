@@ -4,8 +4,6 @@ import android.app.Application;
 import com.jraska.core.gps.IGpsService;
 import com.jraska.core.services.IAppService;
 
-import java.util.Collection;
-
 /**
  * Base class for all applications
  */

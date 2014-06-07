@@ -1,4 +1,4 @@
-package com.jraska.core.gps;
+package com.jraska.pwdm.core.gps;
 
 import com.jraska.core.JRApplication;
 import com.jraska.core.services.IAppService;

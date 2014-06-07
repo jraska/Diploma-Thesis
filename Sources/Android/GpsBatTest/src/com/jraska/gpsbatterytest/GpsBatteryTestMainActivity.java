@@ -2,8 +2,8 @@ package com.jraska.gpsbatterytest;
 
 import android.app.Activity;
 import android.os.Bundle;
-import com.jraska.core.gps.IGpsService;
-import com.jraska.core.gps.LatLng;
+import com.jraska.pwdm.core.gps.IGpsService;
+import com.jraska.pwdm.core.gps.LatLng;
 
 public class GpsBatteryTestMainActivity extends Activity
 {

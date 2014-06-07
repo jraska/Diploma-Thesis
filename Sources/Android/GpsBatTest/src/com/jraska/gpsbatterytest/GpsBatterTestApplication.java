@@ -1,8 +1,8 @@
 package com.jraska.gpsbatterytest;
 
 import com.jraska.core.JRApplication;
-import com.jraska.core.gps.IGpsService;
-import com.jraska.core.gps.SimpleGpsService;
+import com.jraska.pwdm.core.gps.IGpsService;
+import com.jraska.pwdm.core.gps.SimpleGpsService;
 
 public class GpsBatterTestApplication extends JRApplication
 {

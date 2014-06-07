@@ -1,4 +1,4 @@
-package com.jraska.core.gps;
+package com.jraska.pwdm.core.gps;
 
 public class SimpleGpsService implements IGpsService
 {
