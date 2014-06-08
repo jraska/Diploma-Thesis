@@ -37,7 +37,7 @@ public class TextFileLogger implements ILogger
 
 	//endregion
 
-	//region Properties
+	//region ILogger impl
 
 	@Override
 	public void log(Object o)
