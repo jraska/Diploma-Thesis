@@ -203,6 +203,7 @@
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/Core/Com.JRaska.Core.iml" filepath="$PROJECT_DIR$/Sources/Android/Core/Com.JRaska.Core.iml" group="Core" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/GpsBatTest/GpsBatTest.iml" filepath="$PROJECT_DIR$/Sources/Android/GpsBatTest/GpsBatTest.iml" group="Apps" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/PWMDCore/PWMD.iml" filepath="$PROJECT_DIR$/Sources/Android/PWMDCore/PWMD.iml" group="Core" />
+      <module fileurl="file://$PROJECT_DIR$/TravelAssistance/TravelAssistance.iml" filepath="$PROJECT_DIR$/TravelAssistance/TravelAssistance.iml" group="Apps" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true">

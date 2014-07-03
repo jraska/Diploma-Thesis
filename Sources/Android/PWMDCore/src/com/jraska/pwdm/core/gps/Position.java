@@ -4,10 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.common.events.IEventArgs;
-import com.jraska.pwdm.core.date.DateHelper;
-
-import java.text.DateFormat;
-import java.util.Date;
+import com.jraska.pwdm.core.utils.DateHelper;
 
 public class Position extends LatLng implements IEventArgs
 {

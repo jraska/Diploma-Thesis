@@ -1,4 +1,4 @@
-package com.jraska.pwdm.core.date;
+package com.jraska.pwdm.core.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -8,7 +8,7 @@ public abstract class DateHelper
 {
 	//region Constants
 
-	private static final DateFormat APP_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	public static final DateFormat APP_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
 	//endregion
 
