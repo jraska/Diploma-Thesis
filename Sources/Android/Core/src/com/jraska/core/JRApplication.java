@@ -60,7 +60,7 @@ public abstract class JRApplication extends Application
 
 	//region Methods
 
-	protected void putService(Class serviceClass, IAppService instance)
+	protected final void putService(Class serviceClass, IAppService instance)
 	{
 		mServices.putService(serviceClass, instance);
 	}

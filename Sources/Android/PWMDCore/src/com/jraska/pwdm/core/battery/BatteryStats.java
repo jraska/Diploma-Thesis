@@ -1,6 +1,6 @@
 package com.jraska.pwdm.core.battery;
 
-import com.jraska.pwdm.core.utils.DateHelper;
+import com.jraska.core.utils.DateHelper;
 
 public class BatteryStats
 {

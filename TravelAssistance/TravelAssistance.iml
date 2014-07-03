@@ -15,6 +15,9 @@
     </content>
     <orderEntry type="jdk" jdkName="Android 4.4 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="PWMD" />
+    <orderEntry type="module" module-name="Com.JRaska.Core" />
+    <orderEntry type="module" module-name="Com.JRaska.Common" />
   </component>
 </module>
 

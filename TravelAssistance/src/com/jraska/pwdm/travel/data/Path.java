@@ -1,0 +1,72 @@
+package com.jraska.pwdm.travel.data;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+import com.jraska.common.ArgumentCheck;
+import com.jraska.core.JRApplication;
+import com.jraska.pwdm.core.gps.LatLng;
+import com.jraska.pwdm.core.gps.Position;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class Path implements Parcelable
+{
+	//region Fields
+
+	private final List<Position> mPoints;
+
+	//endregion
+
+	//region Constructors
+
+	public Path(List<Position> points)
+	{
+		ArgumentCheck.notNull(points, "points");
+
+		mPoints = Collections.unmodifiableList(points);
+	}
+
+	//endregion
+
+	//region Properties
+
+	public List<Position> getPoints()
+	{
+		return mPoints;
+	}
+
+	//endregion
+
+	//region Parcelable impl
+
+	@Override
+	public int describeContents()
+	{
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags)
+	{
+		dest.writeParcelableArray(mPoints.toArray(new LatLng[mPoints.size()]), 0);
+	}
+
+	public static final Parcelable.Creator<Path> CREATOR = new Parcelable.Creator<Path>()
+	{
+		public Path createFromParcel(Parcel p)
+		{
+			Position[] values = (Position[]) p.readParcelableArray(JRApplication.getCurrent().getClassLoader());
+			return new Path(Arrays.asList(values));
+		}
+
+		public Path[] newArray(int size)
+		{
+			return new Path[size];
+		}
+	};
+
+
+	//endregion
+}
