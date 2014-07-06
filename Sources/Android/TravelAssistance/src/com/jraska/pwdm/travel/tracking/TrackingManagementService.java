@@ -67,6 +67,11 @@ public class TrackingManagementService implements ITrackingManagementService
 
 		List<Position> positions = mServiceBinder.getService().getPositions();
 
+		if (positions.size() == 0)
+		{
+			return null;
+		}
+
 		return new PathInfo(mStart, new Date(), new Path(positions));
 	}
 

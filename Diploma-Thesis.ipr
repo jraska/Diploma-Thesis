@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactManager">
+    <artifact type="apk" name="TravelAssistance">
+      <output-path>$PROJECT_DIR$/out/artifacts/TravelAssistance</output-path>
+      <properties id="android-properties">
+        <options>
+          <option name="keyAlias" value="travelAssistanceKey" />
+          <option name="keyPassword" value="dHJhdmVsQXNzaXN0YW5jZUtleQ==" />
+          <option name="keyStorePassword" value="dHJhdmVsQXNzaXN0YW5jZUtleQ==" />
+          <option name="keyStoreUrl" value="file://$PROJECT_DIR$/keys/travelAssistanceKey.jks" />
+          <option name="proGuardCfgFiles">
+            <list>
+              <option value="file://%MODULE_SDK_HOME%/tools/proguard/proguard-android.txt" />
+            </list>
+          </option>
+          <option name="signingMode" value="RELEASE_SIGNED" />
+        </options>
+      </properties>
+      <root id="archive" name="TravelAssistance.apk">
+        <element id="android-final-package" facet="TravelAssistance/android/Android" />
+      </root>
+    </artifact>
+  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions />
@@ -204,9 +226,10 @@
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/GpsBatTest/GpsBatTest.iml" filepath="$PROJECT_DIR$/Sources/Android/GpsBatTest/GpsBatTest.iml" group="Apps" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/PWMDCore/PWMD.iml" filepath="$PROJECT_DIR$/Sources/Android/PWMDCore/PWMD.iml" group="Core" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/TravelAssistance/TravelAssistance.iml" filepath="$PROJECT_DIR$/Sources/Android/TravelAssistance/TravelAssistance.iml" group="Apps" />
+      <module fileurl="file://$PROJECT_DIR$/libs/google-play-services_lib/google-play-services_lib.iml" filepath="$PROJECT_DIR$/libs/google-play-services_lib/google-play-services_lib.iml" group="Libs" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="Android 4.4 Platform" project-jdk-type="Android SDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="VcsDirectoryMappings">
@@ -257,6 +280,13 @@
     <library name="butterknife-5.1.1">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/libs/butterknife-5.1.1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="google-play-services">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/libs/google-play-services.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
