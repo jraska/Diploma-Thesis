@@ -39,7 +39,7 @@ public class Position extends LatLng implements IEventArgs
 		super.writeToParcel(dest, flags);
 
 		dest.writeLong(time);
-		dest.writeDouble(accuracy);
+		dest.writeFloat(accuracy);
 		dest.writeString(provider);
 	}
 

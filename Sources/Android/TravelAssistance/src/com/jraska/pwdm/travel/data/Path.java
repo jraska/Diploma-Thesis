@@ -57,8 +57,16 @@ public class Path implements Parcelable
 	{
 		public Path createFromParcel(Parcel p)
 		{
-			Position[] values = (Position[]) p.readParcelableArray(JRApplication.getCurrent().getClassLoader());
-			return new Path(Arrays.asList(values));
+			Parcelable[] values = p.readParcelableArray(JRApplication.getCurrent().getClassLoader());
+			Position [] positions = new Position[values.length];
+
+			for (int i = 0; i < values.length; i++)
+			{
+				positions[i] = (Position) values[i];
+			}
+
+
+			return new Path(Arrays.asList(positions));
 		}
 
 		public Path[] newArray(int size)

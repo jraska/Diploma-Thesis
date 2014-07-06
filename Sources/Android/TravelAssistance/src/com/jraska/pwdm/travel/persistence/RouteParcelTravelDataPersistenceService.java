@@ -132,7 +132,7 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 
 		ContentValues contentValues = prepareRouteContentValues(routeData);
 
-		return database.insert(RoutesTable.TABLE_NAME, null, contentValues);
+		return database.insertWithOnConflict(RoutesTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
 	}
 
 	protected long deleteRouteFromDatabase(RouteData routeData)

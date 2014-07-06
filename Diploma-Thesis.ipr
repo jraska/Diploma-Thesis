@@ -16,7 +16,7 @@
       <entry name="?*.ftl" />
     </wildcardResourcePatterns>
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
+      <profile default="true" name="Default" enabled="true">
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
@@ -250,6 +250,13 @@
     <library name="android-support-v4">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/../../../android-sdk-macosx/extras/android/support/v4/android-support-v4.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="butterknife-5.1.1">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/libs/butterknife-5.1.1.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
