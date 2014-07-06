@@ -3,6 +3,8 @@ package com.jraska.pwdm.travel.persistence;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.jraska.common.events.IObservable;
+import com.jraska.common.events.Observable;
 import com.jraska.common.utils.ParcelableUtil;
 import com.jraska.core.persistence.DbPersistenceServiceBase;
 import com.jraska.pwdm.travel.data.Path;
@@ -17,7 +19,24 @@ import java.util.UUID;
 
 public class RouteParcelTravelDataPersistenceService extends DbPersistenceServiceBase implements ITravelDataPersistenceService
 {
+	//region Fields
+
+	private Observable<RouteDescription> mNewRouteEvent;
+
+	//endregion
+
 	//region ITravelDataPersistenceService impl
+
+	@Override
+	public IObservable<RouteDescription> getOnNewRoute()
+	{
+		if (mNewRouteEvent == null)
+		{
+			mNewRouteEvent = new Observable<RouteDescription>();
+		}
+
+		return mNewRouteEvent;
+	}
 
 	@Override
 	public List<RouteDescription> getRouteDescriptions()
@@ -48,12 +67,24 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 	@Override
 	public long insertRoute(RouteData routeData)
 	{
-		return insertRouteToDatabase(routeData);
+		long id = insertRouteToDatabase(routeData);
+
+		onNewRoute(routeData);
+
+		return id;
 	}
 
 	//endregion
 
 	//region Methods
+
+	protected void onNewRoute(RouteData routeData)
+	{
+		if (mNewRouteEvent != null)
+		{
+			mNewRouteEvent.notify(this, routeData.getDescription());
+		}
+	}
 
 	protected List<RouteDescription> getRouteDescriptionsFromDatabase()
 	{

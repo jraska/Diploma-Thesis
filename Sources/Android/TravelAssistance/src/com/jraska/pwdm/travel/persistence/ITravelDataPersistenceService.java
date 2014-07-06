@@ -1,5 +1,6 @@
 package com.jraska.pwdm.travel.persistence;
 
+import com.jraska.common.events.IObservable;
 import com.jraska.core.JRApplication;
 import com.jraska.core.services.IAppService;
 import com.jraska.pwdm.travel.data.RouteData;
@@ -10,6 +11,12 @@ import java.util.UUID;
 
 public interface ITravelDataPersistenceService extends IAppService
 {
+	//region Events
+
+	IObservable<RouteDescription> getOnNewRoute();
+
+	//endregion
+
 	//region Methods
 
 	List<RouteDescription> getRouteDescriptions();

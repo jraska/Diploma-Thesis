@@ -89,6 +89,11 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 	@Override
 	public void startTracking(LocationSettings settings)
 	{
+		if (mTracking)
+		{
+			return;
+		}
+
 		ArgumentCheck.notNull(settings);
 
 		getLocationManager().requestLocationUpdates(LocationManager.NETWORK_PROVIDER, settings.minTime, settings.minDistance, mLocationListener);
@@ -100,6 +105,11 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 	@Override
 	public void stopTracking()
 	{
+		if (!mTracking)
+		{
+			return;
+		}
+
 		getLocationManager().removeUpdates(mLocationListener);
 
 		mTracking = false;

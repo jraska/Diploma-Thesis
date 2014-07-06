@@ -1,9 +1,11 @@
 package com.jraska.pwdm.travel.data;
 
+import com.jraska.common.events.IEventArgs;
+
 import java.util.Date;
 import java.util.UUID;
 
-public class RouteDescription
+public class RouteDescription implements IEventArgs
 {
 	//region Fields
 

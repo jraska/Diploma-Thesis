@@ -2,4 +2,11 @@
 <resources>
     <string name="app_name">TravelAssistance</string>
     <string name="test">Test</string>
+    <string name="startTracking">Start tracking</string>
+    <string name="stopTracking">Stop tracking</string>
+    <string name="saveRoute">Save route</string>
+    <string name="noRouteToSave">No tracked route to save.</string>
+    <string name="saved">Saved</string>
+    <string name="noRoutes">No routes</string>
+    <string name="tap_to_return">Tap to return to application</string>
 </resources>

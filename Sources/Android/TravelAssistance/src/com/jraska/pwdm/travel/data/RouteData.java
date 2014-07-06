@@ -26,6 +26,11 @@ public class RouteData
 
 	//region Properties
 
+	public RouteDescription getDescription()
+	{
+		return mDescription;
+	}
+
 	public UUID getId()
 	{
 		return mDescription.getId();

@@ -1,17 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name" />
+    <!--<Button-->
+    <!--android:id="@+id/btnTest"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/test" />-->
+
     <Button
-        android:id="@+id/btnTest"
+        android:id="@+id/btnStartTracking"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/test" />
-</FrameLayout>
+        android:text="@string/startTracking" />
+
+    <Button
+        android:id="@+id/btnStopTracking"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/stopTracking" />
+
+    <Button
+        android:id="@+id/btnSaveRoute"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/saveRoute" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/noRoutes"
+        android:gravity="center"/>
+
+</LinearLayout>
 

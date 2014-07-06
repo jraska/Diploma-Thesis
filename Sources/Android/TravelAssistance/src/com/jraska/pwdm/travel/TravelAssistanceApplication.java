@@ -10,6 +10,8 @@ import com.jraska.pwdm.core.gps.SimpleSystemLocationService;
 import com.jraska.pwdm.travel.database.TravelAssistanceDatabaseService;
 import com.jraska.pwdm.travel.persistence.ITravelDataPersistenceService;
 import com.jraska.pwdm.travel.persistence.RouteParcelTravelDataPersistenceService;
+import com.jraska.pwdm.travel.tracking.ITrackingManagementService;
+import com.jraska.pwdm.travel.tracking.TrackingManagementService;
 
 public class TravelAssistanceApplication extends PWDMApplication
 {
@@ -34,6 +36,8 @@ public class TravelAssistanceApplication extends PWDMApplication
 		SimpleSystemLocationService simpleSystemLocationService = new SimpleSystemLocationService();
 		putService(ILocationService.class, simpleSystemLocationService);
 		putService(ILocationStatusService.class, simpleSystemLocationService);
+
+		putService(ITrackingManagementService.class, new TrackingManagementService());
 	}
 
 	//endregion
