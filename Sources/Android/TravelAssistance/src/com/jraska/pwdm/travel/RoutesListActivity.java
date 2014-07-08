@@ -3,6 +3,8 @@ package com.jraska.pwdm.travel;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -23,7 +25,7 @@ import com.jraska.pwdm.travel.tracking.TrackingService;
 
 import java.util.*;
 
-public class RoutesListActivity extends Activity
+public class RoutesListActivity extends BaseTravelActivity
 {
 	//region Fields
 
@@ -82,6 +84,22 @@ public class RoutesListActivity extends Activity
 		refreshRoutes();
 
 		registerOnRouteChangedObservers();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		menu.add(getString(R.string.i_am_lost)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
+		{
+			@Override
+			public boolean onMenuItemClick(MenuItem item)
+			{
+				startActivity(new Intent(RoutesListActivity.this, HelpRequestSendActivity.class));
+				return true;
+			}
+		});
+
+		return true;
 	}
 
 	@Override

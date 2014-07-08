@@ -71,6 +71,11 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 	@Override
 	public Position getLastPosition()
 	{
+		if (mLastPosition == null || !mTracking)
+		{
+			return getLastKnownPosition();
+		}
+
 		return mLastPosition;
 	}
 
@@ -137,6 +142,43 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 		{
 			mNewPosition.notify(this, position);
 		}
+	}
+
+	public Position getLastKnownPosition()
+	{
+		Location lastGps = getLocationManager().getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		Location lastNetwork = getLocationManager().getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+		Location better = chooseBetterLocation(lastGps, lastNetwork);
+
+		if (better == null)
+		{
+			return null;
+		}
+
+		return toPosition(better);
+	}
+
+	private Location chooseBetterLocation(Location lastGps, Location lastNetwork)
+	{
+		if (lastGps == null)
+		{
+			return lastNetwork;
+		}
+
+		if (lastNetwork == null)
+		{
+			return lastGps;
+		}
+
+		long timeDiff = lastGps.getTime() - lastNetwork.getTime();
+
+		if (timeDiff < -30 * 1000) // network is newer
+		{
+			return lastGps;
+		}
+
+		return lastNetwork;
 	}
 
 	//endregion

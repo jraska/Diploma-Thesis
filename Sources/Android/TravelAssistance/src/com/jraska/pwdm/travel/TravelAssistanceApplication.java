@@ -13,11 +13,15 @@ import com.jraska.pwdm.travel.persistence.RouteParcelTravelDataPersistenceServic
 import com.jraska.pwdm.travel.tracking.ITrackingManagementService;
 import com.jraska.pwdm.travel.tracking.TrackingManagementService;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 public class TravelAssistanceApplication extends PWDMApplication
 {
 	//region Constants
 
 	public static String DB_NAME = "TravelAssistanceData";
+	public static final DateFormat USER_DETAILED_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss, MM.dd.yyyy");
 
 	//endregion
 

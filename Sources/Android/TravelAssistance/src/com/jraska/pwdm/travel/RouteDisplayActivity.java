@@ -17,7 +17,7 @@ import com.jraska.pwdm.travel.persistence.ITravelDataPersistenceService;
 import java.util.List;
 import java.util.UUID;
 
-public class RouteDisplayActivity extends Activity
+public class RouteDisplayActivity extends BaseTravelActivity
 {
 	//region Constants
 
