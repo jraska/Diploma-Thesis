@@ -4,11 +4,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.location.LocationManager;
 import android.os.IBinder;
 import com.jraska.core.JRApplication;
 import com.jraska.pwdm.core.gps.Position;
 import com.jraska.pwdm.travel.data.Path;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class TrackingManagementService implements ITrackingManagementService
 
 	private final TrackingServiceConnection mConnection = new TrackingServiceConnection();
 
+	private ILocationFilter mFilter;
+
 	//endregion
 
 	//region Properties
@@ -29,6 +33,16 @@ public class TrackingManagementService implements ITrackingManagementService
 	protected Context getContext()
 	{
 		return JRApplication.getCurrent();
+	}
+
+	protected ILocationFilter getFilter()
+	{
+		if (mFilter == null)
+		{
+			return ILocationFilter.Empty.Instance;
+		}
+
+		return mFilter;
 	}
 
 	//endregion
@@ -72,6 +86,8 @@ public class TrackingManagementService implements ITrackingManagementService
 			return null;
 		}
 
+		positions = filterPositions(positions);
+
 		return new PathInfo(mStart, new Date(), new Path(positions));
 	}
 
@@ -94,6 +110,22 @@ public class TrackingManagementService implements ITrackingManagementService
 
 	//region Methods
 
+	protected List<Position> filterPositions(List<Position> positions)
+	{
+		List<Position> filtered = new ArrayList<Position>(positions.size());
+
+		ILocationFilter filter = getFilter();
+		for (Position position : positions)
+		{
+			if (filter.accept(position))
+			{
+				filtered.add(position);
+			}
+		}
+
+		return filtered;
+	}
+
 	protected Intent getServiceIntent()
 	{
 		return new Intent(getContext(), TrackingService.class);
@@ -114,6 +146,15 @@ public class TrackingManagementService implements ITrackingManagementService
 		@Override
 		public void onServiceDisconnected(ComponentName name)
 		{
+		}
+	}
+
+	protected class GpsProviderOnlyFilter implements ILocationFilter
+	{
+		@Override
+		public boolean accept(Position position)
+		{
+			return position.provider.equals(LocationManager.GPS_PROVIDER);
 		}
 	}
 

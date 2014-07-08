@@ -22,7 +22,8 @@ public class RouteDisplayActivity extends Activity
 	//region Constants
 
 	public static final String ROUTE_ID = "RouteId";
-	protected static final int ROUTE_WIDTH = 10;
+	protected static final int ROUTE_WIDTH = 5;
+	public static final int ZOOM = 18;
 
 	//endregion
 
@@ -95,7 +96,9 @@ public class RouteDisplayActivity extends Activity
 
 		Polyline line = map.addPolyline(polylineOptions);
 
-		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(toGoogleLatLng(points.get(0)), 15);
+		map.setMyLocationEnabled(true);
+
+		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(toGoogleLatLng(points.get(0)), ZOOM);
 		getMap().animateCamera(cameraUpdate);
 	}
 
