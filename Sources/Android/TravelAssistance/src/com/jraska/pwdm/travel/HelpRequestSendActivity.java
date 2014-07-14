@@ -100,7 +100,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity
 		mMessageView.setText(message);
 
 		SmsSender smsSender = new SmsSender();
-		if (smsSender.sendSms("721380088", message))
+		if (smsSender.sendSms("0420721380088", message))
 		{
 			showToast(getString(R.string.sent));
 		}

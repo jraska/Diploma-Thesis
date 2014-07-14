@@ -51,7 +51,7 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 	}
 
 	@Override
-	public long deleteRoute(RouteData routeData)
+	public long deleteRoute(RouteDescription routeData)
 	{
 		return deleteRouteFromDatabase(routeData);
 	}
@@ -60,7 +60,7 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 	public long updateRoute(RouteData routeData)
 	{
 		//now simple implementation
-		deleteRoute(routeData);
+		deleteRoute(routeData.getDescription());
 		return insertRoute(routeData);
 	}
 
@@ -166,7 +166,7 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 		return database.insertWithOnConflict(RoutesTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
 	}
 
-	protected long deleteRouteFromDatabase(RouteData routeData)
+	protected long deleteRouteFromDatabase(RouteDescription routeData)
 	{
 		String[] args = {idToDbValue(routeData.getId())};
 

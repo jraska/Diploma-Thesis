@@ -80,7 +80,7 @@ public class RouteDisplayActivity extends BaseTravelActivity
 	protected void displayOnMap(RouteData routeData)
 	{
 		GoogleMap map = getMap();
-		PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH).color(Color.BLUE);
+		PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH).color(Color.BLUE).visible(true);
 
 		List<Position> points = routeData.getPath().getPoints();
 

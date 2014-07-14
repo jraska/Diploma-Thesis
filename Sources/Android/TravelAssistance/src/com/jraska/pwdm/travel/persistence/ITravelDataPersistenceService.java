@@ -23,7 +23,7 @@ public interface ITravelDataPersistenceService extends IAppService
 
 	RouteData getRouteData(UUID id);
 
-	long deleteRoute(RouteData routeData);
+	long deleteRoute(RouteDescription routeData);
 
 	long updateRoute(RouteData routeData);
 

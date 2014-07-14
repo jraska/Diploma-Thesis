@@ -3,6 +3,7 @@ package com.jraska.pwdm.travel;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,11 +80,31 @@ public class RoutesListActivity extends BaseTravelActivity
 
 		ButterKnife.inject(this);
 
+		//started with nfc
+		if ((getIntent().getFlags() & 272629760) == 272629760)
+		{
+			showLastSavedRoute();
+		}
+
 		setupRoutes();
 
 		refreshRoutes();
 
 		registerOnRouteChangedObservers();
+	}
+
+	private boolean showLastSavedRoute()
+	{
+		List<RouteDescription> routeDescriptions = getRoutesPersistenceService().getRouteDescriptions();
+
+		if(routeDescriptions.size() == 0)
+		{
+			return false;
+		}
+
+		showRoute(routeDescriptions.get(routeDescriptions.size() - 1));
+
+		return true;
 	}
 
 	@Override
@@ -110,6 +131,35 @@ public class RoutesListActivity extends BaseTravelActivity
 		super.onDestroy();
 	}
 
+	@Override
+	protected void onNewIntent(Intent intent)
+	{
+		super.onNewIntent(intent);
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+	{
+		super.onCreateContextMenu(menu, v, menuInfo);
+
+		AdapterView.AdapterContextMenuInfo adapterContextMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+		final int position = adapterContextMenuInfo.position;
+
+		menu.add(getString(R.string.delete)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
+		{
+			@Override
+			public boolean onMenuItemClick(MenuItem item)
+			{
+				RouteDescription item1 = mRoutesAdapter.getItem(position);
+				getRoutesPersistenceService().deleteRoute(item1);
+				refreshRoutes();
+
+				return true;
+			}
+		});
+	}
+
 	//endregion
 
 	//region Methods
@@ -128,11 +178,19 @@ public class RoutesListActivity extends BaseTravelActivity
 				showRoute(position);
 			}
 		});
+
+
+		registerForContextMenu(mRoutesList);
 	}
 
 	protected void showRoute(int position)
 	{
 		RouteDescription item = mRoutesAdapter.getItem(position);
+		showRoute(item);
+	}
+
+	protected void showRoute(RouteDescription item)
+	{
 		Intent intent = new Intent(this, RouteDisplayActivity.class);
 		intent.putExtra(RouteDisplayActivity.ROUTE_ID, item.getId());
 
@@ -261,7 +319,7 @@ public class RoutesListActivity extends BaseTravelActivity
 			}
 		}
 
-		persistenceService.deleteRoute(routeData2);
+		persistenceService.deleteRoute(routeData2.getDescription());
 
 		for (RouteDescription description : routeDescriptions)
 		{
