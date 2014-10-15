@@ -28,8 +28,7 @@ public abstract class ParcelableUtil
 	{
 		Parcel parcel = Parcel.obtain();
 		parcel.unmarshall(bytes, 0, bytes.length);
-		parcel.setDataPosition(0); // this is
-		// extremely important!
+		parcel.setDataPosition(0); // this is extremely important!
 		return parcel;
 	}
 

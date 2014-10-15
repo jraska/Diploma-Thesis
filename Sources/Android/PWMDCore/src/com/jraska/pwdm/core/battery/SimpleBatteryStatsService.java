@@ -1,19 +1,38 @@
 package com.jraska.pwdm.core.battery;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import com.jraska.common.ArgumentCheck;
 import com.jraska.core.JRApplication;
 
 public class SimpleBatteryStatsService implements IBatteryStatsService
 {
+	//region Fields
+
+	private final Context mContext;
+
+	//endregion
+
+	//region Constructors
+
+	public SimpleBatteryStatsService(Context context)
+	{
+		ArgumentCheck.notNull(context);
+
+		mContext = context;
+	}
+
+	//endregion
+
 	//region IBatteryStatsService impl
 
 	@Override
 	public BatteryStats getCurrentBatteryStats()
 	{
 		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-		Intent batteryStatus = JRApplication.getCurrent().registerReceiver(null, ifilter);
+		Intent batteryStatus = mContext.registerReceiver(null, ifilter);
 
 		int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 		int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);

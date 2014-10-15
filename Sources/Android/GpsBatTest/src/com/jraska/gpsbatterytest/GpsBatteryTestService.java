@@ -8,6 +8,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import com.jraska.common.events.IObserver;
+import com.jraska.gpsbatterytest.logging.CompositeLogger;
+import com.jraska.gpsbatterytest.logging.ConsoleLogger;
 import com.jraska.gpsbatterytest.logging.ILogger;
 import com.jraska.gpsbatterytest.logging.TextFileLogger;
 import com.jraska.pwdm.core.battery.BatteryStats;
@@ -120,7 +122,10 @@ public class GpsBatteryTestService extends Service
 
 
 		File textFile = new File(externalFilesDir, fileName);
-		return new TextFileLogger(textFile);
+		TextFileLogger textFileLogger = new TextFileLogger(textFile);
+		ILogger[] loggers = {textFileLogger, new ConsoleLogger()};
+
+		return new CompositeLogger(loggers);
 	}
 
 	protected void log(Object o)

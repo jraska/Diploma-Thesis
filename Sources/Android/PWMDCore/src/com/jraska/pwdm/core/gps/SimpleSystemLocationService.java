@@ -13,7 +13,8 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 {
 	//region Fields
 
-	private LocationManager mLocationManager;
+	private final LocationManager mLocationManager;
+
 	private Position mLastPosition;
 
 	private Observable<Position> mNewPosition;
@@ -23,15 +24,21 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 
 	//endregion
 
+	//region Constructors
+
+	public SimpleSystemLocationService(LocationManager locationManager)
+	{
+		ArgumentCheck.notNull(locationManager);
+
+		mLocationManager = locationManager;
+	}
+
+	//endregion
+
 	//region Properties
 
 	public LocationManager getLocationManager()
 	{
-		if (mLocationManager == null)
-		{
-			mLocationManager = (LocationManager) JRApplication.getCurrent().getSystemService(Context.LOCATION_SERVICE);
-		}
-
 		return mLocationManager;
 	}
 
@@ -43,13 +50,13 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 	@Override
 	public boolean isGpsLocationOn()
 	{
-		return getLocationManager().isProviderEnabled(LocationManager.GPS_PROVIDER);
+		return mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 	}
 
 	@Override
 	public boolean isNetworkLocationOn()
 	{
-		return getLocationManager().isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		return mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 	}
 
 	//endregion
@@ -101,8 +108,8 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 
 		ArgumentCheck.notNull(settings);
 
-		getLocationManager().requestLocationUpdates(LocationManager.NETWORK_PROVIDER, settings.minTime, settings.minDistance, mLocationListener);
-		getLocationManager().requestLocationUpdates(LocationManager.GPS_PROVIDER, settings.minTime, settings.minDistance, mLocationListener);
+		mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, settings.minTime, settings.minDistance, mLocationListener);
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, settings.minTime, settings.minDistance, mLocationListener);
 
 		mTracking = true;
 	}
@@ -115,7 +122,7 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 			return;
 		}
 
-		getLocationManager().removeUpdates(mLocationListener);
+		mLocationManager.removeUpdates(mLocationListener);
 
 		mTracking = false;
 	}
@@ -146,8 +153,8 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 
 	public Position getLastKnownPosition()
 	{
-		Location lastGps = getLocationManager().getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		Location lastNetwork = getLocationManager().getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		Location lastGps = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		Location lastNetwork = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
 		Location better = chooseBetterLocation(lastGps, lastNetwork);
 
