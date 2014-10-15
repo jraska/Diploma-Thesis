@@ -19,6 +19,8 @@
     <orderEntry type="module" module-name="Com.JRaska.Core" />
     <orderEntry type="module" module-name="PWMD" />
     <orderEntry type="library" name="android-support-v4" level="project" />
+    <orderEntry type="library" name="dagger-1.2.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="dagger-compiler-1.2.2" level="project" />
   </component>
 </module>
 

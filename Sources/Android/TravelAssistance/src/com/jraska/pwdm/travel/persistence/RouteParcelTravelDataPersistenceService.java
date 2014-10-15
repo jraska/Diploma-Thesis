@@ -12,7 +12,10 @@ import com.jraska.pwdm.travel.data.Path;
 import com.jraska.pwdm.travel.data.RouteData;
 import com.jraska.pwdm.travel.data.RouteDescription;
 import com.jraska.pwdm.travel.database.DatabaseModel.RoutesTable;
+import dagger.Module;
+import dagger.Provides;
 
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -216,6 +219,21 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 	protected Path unParcelPath(byte[] data)
 	{
 		return ParcelableUtil.unMarshall(data, Path.CREATOR);
+	}
+
+	//endregion
+
+	//region Nested classes
+
+	@dagger.Module(injects = ITravelDataPersistenceService.class, complete = false)
+	public static class Module
+	{
+		@Provides
+		@Singleton
+		ITravelDataPersistenceService providePersistenceSvc(IDatabaseService databaseService)
+		{
+			return new RouteParcelTravelDataPersistenceService(databaseService);
+		}
 	}
 
 	//endregion

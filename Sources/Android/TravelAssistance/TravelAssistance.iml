@@ -22,6 +22,8 @@
     <orderEntry type="library" name="butterknife-5.1.1" level="project" />
     <orderEntry type="library" name="android-support-v4" level="project" />
     <orderEntry type="library" name="google-play-services" level="project" />
+    <orderEntry type="library" name="dagger-1.2.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="dagger-compiler-1.2.2" level="project" />
   </component>
 </module>
 

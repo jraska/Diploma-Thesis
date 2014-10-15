@@ -6,6 +6,10 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.core.JRApplication;
+import dagger.Module;
+import dagger.Provides;
+
+import javax.inject.Singleton;
 
 public class SimpleBatteryStatsService implements IBatteryStatsService
 {
@@ -44,6 +48,21 @@ public class SimpleBatteryStatsService implements IBatteryStatsService
 				status == BatteryManager.BATTERY_STATUS_FULL;
 
 		return new BatteryStats(batteryPct, isCharging);
+	}
+
+	//endregion
+
+	//region Nested classes
+
+	@dagger.Module(injects = IBatteryStatsService.class, complete = false)
+	public static class Module
+	{
+		@Provides
+		@Singleton
+		IBatteryStatsService provideSvc(Context context)
+		{
+			return new SimpleBatteryStatsService(context);
+		}
 	}
 
 	//endregion

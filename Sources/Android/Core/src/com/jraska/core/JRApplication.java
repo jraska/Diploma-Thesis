@@ -2,6 +2,7 @@ package com.jraska.core;
 
 import android.app.Application;
 import com.jraska.core.services.IAppService;
+import dagger.ObjectGraph;
 
 /**
  * Base class for all applications
@@ -19,14 +20,14 @@ public abstract class JRApplication extends Application
 
 	public static <T> T getService(Class<T> serviceType)
 	{
-		return getCurrent().mServices.safeGet(serviceType);
+		return getCurrent().mObjectGraph.get(serviceType);
 	}
 
 	//endregion
 
 	//region Fields
 
-	private final AppServiceCollection mServices = new AppServiceCollection();
+	private ObjectGraph mObjectGraph;
 
 	//endregion
 
@@ -39,30 +40,29 @@ public abstract class JRApplication extends Application
 
 	//endregion
 
-	//region Properties
-
-	public AppServiceCollection getServices()
-	{
-		return mServices;
-	}
-
-	//endregion
-
 	//region Application overrides
 
 	@Override
 	public void onCreate()
 	{
 		super.onCreate();
+
+		mObjectGraph = ObjectGraph.create(getModules());
 	}
 
 	//endregion
 
 	//region Methods
 
-	protected final void putService(Class serviceClass, IAppService instance)
+	public void inject(Object o)
 	{
-		mServices.putService(serviceClass, instance);
+		mObjectGraph.inject(o);
+	}
+
+	protected Object[] getModules()
+	{
+		Object[] modules = {new AppContextModule()};
+		return modules;
 	}
 
 	//endregion

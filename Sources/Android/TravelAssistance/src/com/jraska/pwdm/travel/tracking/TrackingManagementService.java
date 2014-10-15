@@ -11,7 +11,11 @@ import com.jraska.common.utils.IFilter;
 import com.jraska.core.JRApplication;
 import com.jraska.pwdm.core.gps.Position;
 import com.jraska.pwdm.travel.data.Path;
+import dagger.Module;
+import dagger.Provides;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +37,7 @@ public class TrackingManagementService implements ITrackingManagementService
 
 	//region Constructors
 
-
+	@Inject
 	public TrackingManagementService(Context context)
 	{
 		this(context, ILocationFilter.Empty.Instance);
@@ -54,7 +58,7 @@ public class TrackingManagementService implements ITrackingManagementService
 
 	protected Context getContext()
 	{
-		return JRApplication.getCurrent();
+		return mContext;
 	}
 
 	protected ILocationFilter getFilter()
@@ -145,7 +149,7 @@ public class TrackingManagementService implements ITrackingManagementService
 
 	protected Intent getServiceIntent()
 	{
-		return new Intent(getContext(), TrackingService.class);
+		return new Intent(mContext, TrackingService.class);
 	}
 
 	//endregion
@@ -172,6 +176,21 @@ public class TrackingManagementService implements ITrackingManagementService
 		public boolean accept(Position position)
 		{
 			return LocationManager.GPS_PROVIDER.equals(position.provider);
+		}
+	}
+
+	//endregion
+
+	//region Nested classes
+
+	@dagger.Module(injects = ITrackingManagementService.class, complete = false)
+	public static class Module
+	{
+		@Provides
+		@Singleton
+		public ITrackingManagementService provideSvc(Context context)
+		{
+			return new TrackingManagementService(context);
 		}
 	}
 

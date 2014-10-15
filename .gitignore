@@ -36,5 +36,6 @@ hs_err_pid*
 
 #IntelliJ settings
 *.iws
+*.iws_*
 
 *.jks

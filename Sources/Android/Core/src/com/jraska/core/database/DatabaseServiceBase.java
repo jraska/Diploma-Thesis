@@ -10,6 +10,7 @@ public abstract class DatabaseServiceBase implements IDatabaseService
 {
 	//region Fields
 
+	private final Object mLock = new Object();
 	private volatile SQLiteOpenHelper mHelper;
 
 	//endregion
@@ -20,7 +21,7 @@ public abstract class DatabaseServiceBase implements IDatabaseService
 	{
 		if (mHelper == null)
 		{
-			synchronized (this)
+			synchronized (mLock)
 			{
 				if (mHelper == null)
 				{

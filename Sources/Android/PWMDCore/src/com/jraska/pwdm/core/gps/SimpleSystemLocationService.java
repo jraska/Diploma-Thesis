@@ -1,11 +1,17 @@
 package com.jraska.pwdm.core.gps;
 
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.common.events.Observable;
+import dagger.Module;
+import dagger.Provides;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 public class SimpleSystemLocationService implements ILocationService, ILocationStatusService
 {
@@ -24,6 +30,7 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 
 	//region Constructors
 
+	@Inject
 	public SimpleSystemLocationService(LocationManager locationManager)
 	{
 		ArgumentCheck.notNull(locationManager);
@@ -211,6 +218,39 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 		@Override
 		public void onProviderDisabled(String provider)
 		{
+		}
+	}
+
+	//endregion
+
+	//region Nested classes
+
+	@dagger.Module(injects = {ILocationService.class, ILocationStatusService.class}, complete = false)
+	public static class Module
+	{
+		@Provides
+		public LocationManager provideLocationManager(Context context)
+		{
+			return (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		}
+
+		@Provides
+		@Singleton
+		public SimpleSystemLocationService provideSvc(LocationManager locationManager)
+		{
+			return new SimpleSystemLocationService(locationManager);
+		}
+
+		@Provides
+		public ILocationService provideLocationService(SimpleSystemLocationService svc)
+		{
+			return svc;
+		}
+
+		@Provides
+		public ILocationStatusService provideStatusSvc(SimpleSystemLocationService svc)
+		{
+			return svc;
 		}
 	}
 

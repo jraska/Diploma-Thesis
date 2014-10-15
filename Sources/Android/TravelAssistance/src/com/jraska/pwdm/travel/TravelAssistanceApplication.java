@@ -1,20 +1,20 @@
 package com.jraska.pwdm.travel;
 
-import android.content.Context;
-import android.location.LocationManager;
+import com.jraska.core.AppContextModule;
 import com.jraska.core.database.IDatabaseService;
 import com.jraska.core.services.DefaultExternalStorageAppEnvironmentService;
 import com.jraska.core.services.IAppEnvironmentService;
 import com.jraska.pwdm.core.PWDMApplication;
-import com.jraska.pwdm.core.gps.ILocationService;
-import com.jraska.pwdm.core.gps.ILocationStatusService;
 import com.jraska.pwdm.core.gps.SimpleSystemLocationService;
 import com.jraska.pwdm.travel.database.TravelAssistanceDatabaseService;
 import com.jraska.pwdm.travel.persistence.ITravelDataPersistenceService;
 import com.jraska.pwdm.travel.persistence.RouteParcelTravelDataPersistenceService;
-import com.jraska.pwdm.travel.tracking.ITrackingManagementService;
 import com.jraska.pwdm.travel.tracking.TrackingManagementService;
+import dagger.Module;
+import dagger.Provides;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -30,24 +30,45 @@ public class TravelAssistanceApplication extends PWDMApplication
 	//region TravelAssistanceApplication overrides
 
 	@Override
-	public void onCreate()
+	protected Object[] getModules()
 	{
-		super.onCreate();
+		return new AppModule[]{new AppModule()};
+	}
 
-		putService(IAppEnvironmentService.class, new DefaultExternalStorageAppEnvironmentService());
+	//endregion
 
-		TravelAssistanceDatabaseService databaseService = new TravelAssistanceDatabaseService(DB_NAME);
-		putService(IDatabaseService.class, databaseService);
-		putService(ITravelDataPersistenceService.class, new RouteParcelTravelDataPersistenceService(databaseService));
+	//region Nested classes
 
-		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		SimpleSystemLocationService simpleSystemLocationService = new SimpleSystemLocationService(locationManager);
+	@Module(includes =
+			{
+					AppContextModule.class,
+					SimpleSystemLocationService.Module.class,
+					TrackingManagementService.Module.class,
+					AppSettingsModule.class,
+					TravelAssistanceDatabaseService.Module.class,
+					RouteParcelTravelDataPersistenceService.Module.class
+			}
+	)
+	static class AppModule
+	{
+	}
 
-		//SimpleSystemLocationService has both implementations
-		putService(ILocationService.class, simpleSystemLocationService);
-		putService(ILocationStatusService.class, simpleSystemLocationService);
+	@Module(injects = {String.class, IAppEnvironmentService.class}, library = true)
+	public static class AppSettingsModule
+	{
+		@Provides
+		@Named("dbName")
+		String dbName()
+		{
+			return DB_NAME;
+		}
 
-		putService(ITrackingManagementService.class, new TrackingManagementService(this));
+		@Provides
+		@Singleton
+		IAppEnvironmentService provideSvc()
+		{
+			return new DefaultExternalStorageAppEnvironmentService();
+		}
 	}
 
 	//endregion

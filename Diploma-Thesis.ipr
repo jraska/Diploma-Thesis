@@ -39,6 +39,8 @@
     </wildcardResourcePatterns>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true">
+        <sourceOutputDir name="gen" />
+        <sourceTestOutputDir name="gen_tests" />
         <processorPath useClasspath="true" />
       </profile>
     </annotationProcessing>
@@ -283,6 +285,28 @@
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+    </library>
+    <library name="dagger-1.2.2">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/libs/Dagger/dagger-1.2.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libs/Dagger/javax.inject-1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libs/Dagger/dagger-1.2.2-sources.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libs/Dagger/javax.inject-1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="dagger-compiler-1.2.2">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/libs/Dagger/dagger-compiler-1.2.2.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libs/Dagger/guava-15.0.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libs/Dagger/javawriter-2.5.0.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libs/Dagger/javawriter-2.5.0-sources.jar!/" />
+      </SOURCES>
     </library>
     <library name="google-play-services">
       <CLASSES>
