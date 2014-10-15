@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.jraska.common.events.IObservable;
 import com.jraska.common.events.Observable;
 import com.jraska.common.utils.ParcelableUtil;
+import com.jraska.core.database.IDatabaseService;
 import com.jraska.core.persistence.DbPersistenceServiceBase;
 import com.jraska.pwdm.travel.data.Path;
 import com.jraska.pwdm.travel.data.RouteData;
@@ -22,6 +23,15 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 	//region Fields
 
 	private Observable<RouteDescription> mNewRouteEvent;
+
+	//endregion
+
+	//region Constructors
+
+	public RouteParcelTravelDataPersistenceService(IDatabaseService databaseService)
+	{
+		super(databaseService);
+	}
 
 	//endregion
 
@@ -59,9 +69,21 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 	@Override
 	public long updateRoute(RouteData routeData)
 	{
-		//now simple implementation
-		deleteRoute(routeData.getDescription());
-		return insertRoute(routeData);
+		SQLiteDatabase database = getWritableDatabase();
+
+		database.beginTransaction();
+		try
+		{
+			deleteRoute(routeData.getDescription());
+			long route = insertRoute(routeData);
+
+			database.setTransactionSuccessful();
+			return route;
+		}
+		finally
+		{
+			database.endTransaction();
+		}
 	}
 
 	@Override

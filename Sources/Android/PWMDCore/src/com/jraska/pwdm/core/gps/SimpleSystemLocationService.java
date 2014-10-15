@@ -1,13 +1,11 @@
 package com.jraska.pwdm.core.gps;
 
-import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.common.events.Observable;
-import com.jraska.core.JRApplication;
 
 public class SimpleSystemLocationService implements ILocationService, ILocationStatusService
 {

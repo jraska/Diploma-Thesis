@@ -1,6 +1,7 @@
 package com.jraska.core.persistence;
 
 import android.database.sqlite.SQLiteDatabase;
+import com.jraska.common.ArgumentCheck;
 import com.jraska.common.exceptions.JRRuntimeException;
 import com.jraska.core.database.IDatabaseService;
 import com.jraska.core.utils.DateHelper;
@@ -15,7 +16,20 @@ public class DbPersistenceServiceBase
 {
 	//region Fields
 
+	private final IDatabaseService mDatabaseService;
+
 	private DateFormat mDbDateFormat;
+
+	//endregion
+
+	//region Constructors
+
+	public DbPersistenceServiceBase(IDatabaseService databaseService)
+	{
+		ArgumentCheck.notNull(databaseService);
+
+		mDatabaseService = databaseService;
+	}
 
 	//endregion
 
@@ -31,19 +45,14 @@ public class DbPersistenceServiceBase
 		return mDbDateFormat;
 	}
 
-	protected IDatabaseService getDatabaseService()
-	{
-		return IDatabaseService.Stub.asInterface();
-	}
-
 	protected SQLiteDatabase getReadableDatabase()
 	{
-		return getDatabaseService().getReadableDatabase();
+		return mDatabaseService.getReadableDatabase();
 	}
 
 	protected SQLiteDatabase getWritableDatabase()
 	{
-		return getDatabaseService().getWritableDatabase();
+		return mDatabaseService.getWritableDatabase();
 	}
 
 	//endregion

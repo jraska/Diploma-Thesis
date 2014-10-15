@@ -1,5 +1,7 @@
 package com.jraska.pwdm.travel;
 
+import android.content.Context;
+import android.location.LocationManager;
 import com.jraska.core.database.IDatabaseService;
 import com.jraska.core.services.DefaultExternalStorageAppEnvironmentService;
 import com.jraska.core.services.IAppEnvironmentService;
@@ -33,15 +35,19 @@ public class TravelAssistanceApplication extends PWDMApplication
 		super.onCreate();
 
 		putService(IAppEnvironmentService.class, new DefaultExternalStorageAppEnvironmentService());
-		putService(IDatabaseService.class, new TravelAssistanceDatabaseService(DB_NAME));
-		putService(ITravelDataPersistenceService.class, new RouteParcelTravelDataPersistenceService());
+
+		TravelAssistanceDatabaseService databaseService = new TravelAssistanceDatabaseService(DB_NAME);
+		putService(IDatabaseService.class, databaseService);
+		putService(ITravelDataPersistenceService.class, new RouteParcelTravelDataPersistenceService(databaseService));
+
+		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		SimpleSystemLocationService simpleSystemLocationService = new SimpleSystemLocationService(locationManager);
 
 		//SimpleSystemLocationService has both implementations
-		SimpleSystemLocationService simpleSystemLocationService = new SimpleSystemLocationService();
 		putService(ILocationService.class, simpleSystemLocationService);
 		putService(ILocationStatusService.class, simpleSystemLocationService);
 
-		putService(ITrackingManagementService.class, new TrackingManagementService());
+		putService(ITrackingManagementService.class, new TrackingManagementService(this));
 	}
 
 	//endregion

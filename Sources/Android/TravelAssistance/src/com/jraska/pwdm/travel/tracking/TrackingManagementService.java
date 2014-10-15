@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.location.LocationManager;
 import android.os.IBinder;
+import com.jraska.common.ArgumentCheck;
+import com.jraska.common.utils.IFilter;
 import com.jraska.core.JRApplication;
 import com.jraska.pwdm.core.gps.Position;
 import com.jraska.pwdm.travel.data.Path;
@@ -18,13 +20,33 @@ public class TrackingManagementService implements ITrackingManagementService
 {
 	//region Fields
 
+	private final Context mContext;
+	private final ILocationFilter mFilter;
+
 	private boolean mRunning;
 	private TrackingService.TrackingServiceBinder mServiceBinder;
 	private Date mStart;
 
 	private final TrackingServiceConnection mConnection = new TrackingServiceConnection();
 
-	private ILocationFilter mFilter;
+	//endregion
+
+	//region Constructors
+
+
+	public TrackingManagementService(Context context)
+	{
+		this(context, ILocationFilter.Empty.Instance);
+	}
+
+	public TrackingManagementService(Context context, ILocationFilter filter)
+	{
+		ArgumentCheck.notNull(context);
+		ArgumentCheck.notNull(filter);
+
+		mContext = context;
+		mFilter = filter;
+	}
 
 	//endregion
 
@@ -37,11 +59,6 @@ public class TrackingManagementService implements ITrackingManagementService
 
 	protected ILocationFilter getFilter()
 	{
-		if (mFilter == null)
-		{
-			return ILocationFilter.Empty.Instance;
-		}
-
 		return mFilter;
 	}
 
@@ -65,8 +82,8 @@ public class TrackingManagementService implements ITrackingManagementService
 
 		mStart = new Date();
 		Intent intent = getServiceIntent();
-		getContext().startService(intent);
-		getContext().bindService(intent, mConnection, 0);
+		mContext.startService(intent);
+		mContext.bindService(intent, mConnection, 0);
 
 		mRunning = true;
 	}
@@ -99,8 +116,8 @@ public class TrackingManagementService implements ITrackingManagementService
 			return;
 		}
 
-		getContext().unbindService(mConnection);
-		getContext().stopService(getServiceIntent());
+		mContext.unbindService(mConnection);
+		mContext.stopService(getServiceIntent());
 
 		mServiceBinder = null;
 		mRunning = false;
@@ -154,7 +171,7 @@ public class TrackingManagementService implements ITrackingManagementService
 		@Override
 		public boolean accept(Position position)
 		{
-			return position.provider.equals(LocationManager.GPS_PROVIDER);
+			return LocationManager.GPS_PROVIDER.equals(position.provider);
 		}
 	}
 
