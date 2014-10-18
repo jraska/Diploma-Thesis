@@ -1,5 +1,6 @@
 package com.jraska.pwdm.travel.database;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.core.database.DatabaseServiceBase;
@@ -16,16 +17,19 @@ public class TravelAssistanceDatabaseService extends DatabaseServiceBase
 {
 	//region Fields
 
+	private final Context mContext;
 	private final String mDbName;
 
 	//endregion
 
 	//region Constructors
 
-	public TravelAssistanceDatabaseService(String dbName)
+	public TravelAssistanceDatabaseService(Context context, String dbName)
 	{
+		ArgumentCheck.notNull(context);
 		ArgumentCheck.notNull(dbName);
 
+		mContext = context;
 		mDbName = dbName;
 	}
 
@@ -38,6 +42,11 @@ public class TravelAssistanceDatabaseService extends DatabaseServiceBase
 		return mDbName;
 	}
 
+	public Context getContext()
+	{
+		return mContext;
+	}
+
 	//endregion
 
 	//region DatabaseServiceBase implementation
@@ -45,7 +54,7 @@ public class TravelAssistanceDatabaseService extends DatabaseServiceBase
 	@Override
 	protected SQLiteOpenHelper createOpenHelper()
 	{
-		return new TravelAssistanceDatabaseOpenHelper(mDbName);
+		return new TravelAssistanceDatabaseOpenHelper(mContext, mDbName);
 	}
 
 	//endregion
@@ -57,9 +66,9 @@ public class TravelAssistanceDatabaseService extends DatabaseServiceBase
 	{
 		@Provides
 		@Singleton
-		public IDatabaseService provideSvc(@Named("dbName") String dbName)
+		public IDatabaseService provideSvc(Context context, @Named("dbName") String dbName)
 		{
-			return new TravelAssistanceDatabaseService(dbName);
+			return new TravelAssistanceDatabaseService(context, dbName);
 		}
 	}
 

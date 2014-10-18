@@ -10,9 +10,9 @@ public class TravelAssistanceDatabaseOpenHelper extends SQLiteOpenHelper
 {
 	//region SQLiteOpenHelper impl
 
-	public TravelAssistanceDatabaseOpenHelper(String name)
+	public TravelAssistanceDatabaseOpenHelper(Context context, String name)
 	{
-		this(TravelAssistanceApplication.getCurrent(), name, null, 1, null);
+		this(context, name, null, 1, null);
 	}
 
 	public TravelAssistanceDatabaseOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler)

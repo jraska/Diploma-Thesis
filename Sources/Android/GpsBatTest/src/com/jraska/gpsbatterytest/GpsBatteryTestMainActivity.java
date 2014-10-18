@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import com.jraska.gpsbatterytest.test.Computer;
 
 public class GpsBatteryTestMainActivity extends Activity
 {

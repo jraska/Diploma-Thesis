@@ -57,4 +57,39 @@ public class RouteData
 	}
 
 	//endregion
+
+	//region Object impl
+
+	@Override
+	public String toString()
+	{
+		return "RouteData{" +
+				"mDescription=" + mDescription +
+				", mRoute=" + mRoute +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		RouteData routeData = (RouteData) o;
+
+		if (!mDescription.equals(routeData.mDescription)) return false;
+		if (!mRoute.equals(routeData.mRoute)) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int result = mDescription.hashCode();
+		result = 31 * result + mRoute.hashCode();
+		return result;
+	}
+
+	//endregion
 }

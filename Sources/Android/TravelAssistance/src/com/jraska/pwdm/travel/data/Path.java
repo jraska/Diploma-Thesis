@@ -57,7 +57,7 @@ public class Path implements Parcelable
 	{
 		public Path createFromParcel(Parcel p)
 		{
-			Parcelable[] values = p.readParcelableArray(JRApplication.getCurrent().getClassLoader());
+			Parcelable[] values = p.readParcelableArray(getClass().getClassLoader());
 			Position [] positions = new Position[values.length];
 
 			for (int i = 0; i < values.length; i++)
@@ -74,6 +74,30 @@ public class Path implements Parcelable
 			return new Path[size];
 		}
 	};
+
+
+	//endregion
+
+	//region Object impl
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Path path = (Path) o;
+
+		if (!mPoints.equals(path.mPoints)) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return mPoints.hashCode();
+	}
 
 
 	//endregion

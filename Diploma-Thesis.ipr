@@ -227,6 +227,7 @@
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/Core/Com.JRaska.Core.iml" filepath="$PROJECT_DIR$/Sources/Android/Core/Com.JRaska.Core.iml" group="Core" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/GpsBatTest/GpsBatTest.iml" filepath="$PROJECT_DIR$/Sources/Android/GpsBatTest/GpsBatTest.iml" group="Apps" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/PWMDCore/PWMD.iml" filepath="$PROJECT_DIR$/Sources/Android/PWMDCore/PWMD.iml" group="Core" />
+      <module fileurl="file://$PROJECT_DIR$/Sources/Android/Tests/Tests.iml" filepath="$PROJECT_DIR$/Sources/Android/Tests/Tests.iml" group="Tests" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/TravelAssistance/TravelAssistance.iml" filepath="$PROJECT_DIR$/Sources/Android/TravelAssistance/TravelAssistance.iml" group="Apps" />
       <module fileurl="file://$PROJECT_DIR$/libs/google-play-services_lib/google-play-services_lib.iml" filepath="$PROJECT_DIR$/libs/google-play-services_lib/google-play-services_lib.iml" group="Libs" />
     </modules>
@@ -311,6 +312,39 @@
     <library name="google-play-services">
       <CLASSES>
         <root url="jar://$PROJECT_DIR$/libs/google-play-services.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="hamcrest-1.3">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/libs/Testing/hamcrest-core-1.3.jar!/" />
+        <root url="jar://$PROJECT_DIR$/libs/Testing/hamcrest-library-1.3.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="junit-4.11">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/libs/Testing/junit-4.11.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libs/Testing/junit-4.11-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="mockito-1.9.5">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/libs/Testing/mockito-all-1.9.5.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/libs/Testing/mockito-all-1.9.5.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Robolectric-2.4">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/libs/robolectric-2.4-20140810.222447-69-jar-with-dependencies.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
