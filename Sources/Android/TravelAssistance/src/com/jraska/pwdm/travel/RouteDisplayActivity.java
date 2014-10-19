@@ -1,6 +1,5 @@
 package com.jraska.pwdm.travel;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import com.google.android.gms.maps.CameraUpdate;
@@ -71,7 +70,7 @@ public class RouteDisplayActivity extends BaseTravelActivity
 	{
 		UUID routeId = (UUID) getIntent().getSerializableExtra(ROUTE_ID);
 
-		RouteData routeData = getTravelDataPersistenceService().getRouteData(routeId);
+		RouteData routeData = getTravelDataPersistenceService().selectRouteData(routeId);
 
 		setTitle(routeData.getTitle());
 		displayOnMap(routeData);

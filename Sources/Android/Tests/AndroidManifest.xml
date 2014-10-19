@@ -3,7 +3,7 @@
     package="com.jraska.pwdm.test"
     android:versionCode="1"
     android:versionName="1.0">
-    <uses-sdk android:targetSdkVersion="19" android:minSdkVersion="10"/>
+    <uses-sdk android:targetSdkVersion="18" android:minSdkVersion="10"/>
 
-    <application/>
+    <application android:name=".TestApplication"/>
 </manifest>

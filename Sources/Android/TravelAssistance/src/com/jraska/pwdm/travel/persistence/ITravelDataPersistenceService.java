@@ -1,5 +1,6 @@
 package com.jraska.pwdm.travel.persistence;
 
+import com.jraska.common.IDisposable;
 import com.jraska.common.events.IObservable;
 import com.jraska.core.JRApplication;
 import com.jraska.core.services.IAppService;
@@ -9,7 +10,7 @@ import com.jraska.pwdm.travel.data.RouteDescription;
 import java.util.List;
 import java.util.UUID;
 
-public interface ITravelDataPersistenceService extends IAppService
+public interface ITravelDataPersistenceService extends IAppService, IDisposable
 {
 	//region Events
 
@@ -19,11 +20,11 @@ public interface ITravelDataPersistenceService extends IAppService
 
 	//region Methods
 
-	List<RouteDescription> getRouteDescriptions();
+	List<RouteDescription> selectAllRouteDescriptions();
 
-	RouteData getRouteData(UUID id);
+	RouteData selectRouteData(UUID id);
 
-	long deleteRoute(RouteDescription routeData);
+	long deleteRoute(UUID id);
 
 	long updateRoute(RouteData routeData);
 

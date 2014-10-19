@@ -4,18 +4,17 @@ import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.jraska.pwdm.travel.TravelAssistanceApplication;
 
-public class TravelAssistanceDatabaseOpenHelper extends SQLiteOpenHelper
+public class TravelAssistanceParcelableDbHelper extends SQLiteOpenHelper
 {
 	//region SQLiteOpenHelper impl
 
-	public TravelAssistanceDatabaseOpenHelper(Context context, String name)
+	public TravelAssistanceParcelableDbHelper(Context context, String name)
 	{
 		this(context, name, null, 1, null);
 	}
 
-	public TravelAssistanceDatabaseOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler)
+	public TravelAssistanceParcelableDbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler)
 	{
 		super(context, name, factory, version, errorHandler);
 	}
@@ -27,7 +26,7 @@ public class TravelAssistanceDatabaseOpenHelper extends SQLiteOpenHelper
 	@Override
 	public void onCreate(SQLiteDatabase db)
 	{
-		db.execSQL(DatabaseModel.RoutesTable.CREATE_STATEMENT);
+		db.execSQL(DbModel.RoutesTable.CREATE_STATEMENT);
 	}
 
 	@Override

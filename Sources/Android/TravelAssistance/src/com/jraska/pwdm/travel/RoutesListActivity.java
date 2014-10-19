@@ -1,6 +1,5 @@
 package com.jraska.pwdm.travel;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.jraska.common.events.IObservable;
 import com.jraska.common.events.IObserver;
 import com.jraska.pwdm.core.gps.Position;
 import com.jraska.pwdm.travel.data.Path;
@@ -22,7 +20,6 @@ import com.jraska.pwdm.travel.data.RouteData;
 import com.jraska.pwdm.travel.data.RouteDescription;
 import com.jraska.pwdm.travel.persistence.ITravelDataPersistenceService;
 import com.jraska.pwdm.travel.tracking.ITrackingManagementService;
-import com.jraska.pwdm.travel.tracking.TrackingService;
 
 import java.util.*;
 
@@ -95,7 +92,7 @@ public class RoutesListActivity extends BaseTravelActivity
 
 	private boolean showLastSavedRoute()
 	{
-		List<RouteDescription> routeDescriptions = getRoutesPersistenceService().getRouteDescriptions();
+		List<RouteDescription> routeDescriptions = getRoutesPersistenceService().selectAllRouteDescriptions();
 
 		if(routeDescriptions.size() == 0)
 		{
@@ -152,7 +149,7 @@ public class RoutesListActivity extends BaseTravelActivity
 			public boolean onMenuItemClick(MenuItem item)
 			{
 				RouteDescription item1 = mRoutesAdapter.getItem(position);
-				getRoutesPersistenceService().deleteRoute(item1);
+				getRoutesPersistenceService().deleteRoute(item1.getId());
 				refreshRoutes();
 
 				return true;
@@ -210,7 +207,7 @@ public class RoutesListActivity extends BaseTravelActivity
 	void refreshRoutes()
 	{
 		ITravelDataPersistenceService service = getRoutesPersistenceService();
-		List<RouteDescription> routeDescriptions = service.getRouteDescriptions();
+		List<RouteDescription> routeDescriptions = service.selectAllRouteDescriptions();
 
 		mRoutesAdapter.clear();
 
@@ -290,11 +287,11 @@ public class RoutesListActivity extends BaseTravelActivity
 		RouteData routeData2 = new RouteData(routeDescription, new Path(positions));
 
 		//try get all
-		List<RouteDescription> routeDescriptions = persistenceService.getRouteDescriptions();
+		List<RouteDescription> routeDescriptions = persistenceService.selectAllRouteDescriptions();
 
 		for (RouteDescription description : routeDescriptions)
 		{
-			RouteData routeData1 = persistenceService.getRouteData(description.getId());
+			RouteData routeData1 = persistenceService.selectRouteData(description.getId());
 			if (routeData1 != null)
 			{
 				//stub
@@ -310,7 +307,7 @@ public class RoutesListActivity extends BaseTravelActivity
 
 		for (RouteDescription description : routeDescriptions)
 		{
-			RouteData routeData1 = persistenceService.getRouteData(description.getId());
+			RouteData routeData1 = persistenceService.selectRouteData(description.getId());
 			if (routeData1 != null)
 			{
 				//stub
@@ -319,11 +316,11 @@ public class RoutesListActivity extends BaseTravelActivity
 			}
 		}
 
-		persistenceService.deleteRoute(routeData2.getDescription());
+		persistenceService.deleteRoute(routeData2.getId());
 
 		for (RouteDescription description : routeDescriptions)
 		{
-			RouteData routeData1 = persistenceService.getRouteData(description.getId());
+			RouteData routeData1 = persistenceService.selectRouteData(description.getId());
 			if (routeData1 != null)
 			{
 				//stub

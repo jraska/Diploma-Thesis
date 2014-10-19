@@ -1,34 +1,29 @@
 package com.jraska.pwdm.travel.persistence;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.jraska.common.events.IObservable;
-import com.jraska.common.events.Observable;
+import android.database.sqlite.SQLiteOpenHelper;
 import com.jraska.common.utils.ParcelableUtil;
 import com.jraska.core.database.IDatabaseService;
-import com.jraska.core.persistence.DbPersistenceServiceBase;
 import com.jraska.pwdm.travel.data.Path;
 import com.jraska.pwdm.travel.data.RouteData;
 import com.jraska.pwdm.travel.data.RouteDescription;
-import com.jraska.pwdm.travel.database.DatabaseModel.RoutesTable;
-import dagger.Module;
+import com.jraska.pwdm.travel.database.DbModel.RoutesTable;
+import com.jraska.pwdm.travel.database.TravelAssistanceDbHelper;
+import com.jraska.pwdm.travel.database.TravelAssistanceParcelableDbHelper;
 import dagger.Provides;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class RouteParcelTravelDataPersistenceService extends DbPersistenceServiceBase implements ITravelDataPersistenceService
+public class RouteParcelTravelDataPersistenceService extends RoutePersistenceServiceBase implements ITravelDataPersistenceService
 {
-	//region Fields
-
-	private Observable<RouteDescription> mNewRouteEvent;
-
-	//endregion
-
 	//region Constructors
 
 	public RouteParcelTravelDataPersistenceService(IDatabaseService databaseService)
@@ -41,32 +36,21 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 	//region ITravelDataPersistenceService impl
 
 	@Override
-	public IObservable<RouteDescription> getOnNewRoute()
-	{
-		if (mNewRouteEvent == null)
-		{
-			mNewRouteEvent = new Observable<RouteDescription>();
-		}
-
-		return mNewRouteEvent;
-	}
-
-	@Override
-	public List<RouteDescription> getRouteDescriptions()
+	public List<RouteDescription> selectAllRouteDescriptions()
 	{
 		return getRouteDescriptionsFromDatabase();
 	}
 
 	@Override
-	public RouteData getRouteData(UUID id)
+	public RouteData selectRouteData(UUID id)
 	{
 		return getRouteDataFromDatabase(id);
 	}
 
 	@Override
-	public long deleteRoute(RouteDescription routeData)
+	public long deleteRoute(UUID id)
 	{
-		return deleteRouteFromDatabase(routeData);
+		return deleteRouteFromDatabase(id);
 	}
 
 	@Override
@@ -77,7 +61,7 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 		database.beginTransaction();
 		try
 		{
-			deleteRoute(routeData.getDescription());
+			deleteRoute(routeData.getId());
 			long route = insertRoute(routeData);
 
 			database.setTransactionSuccessful();
@@ -102,14 +86,6 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 	//endregion
 
 	//region Methods
-
-	protected void onNewRoute(RouteData routeData)
-	{
-		if (mNewRouteEvent != null)
-		{
-			mNewRouteEvent.notify(this, routeData.getDescription());
-		}
-	}
 
 	protected List<RouteDescription> getRouteDescriptionsFromDatabase()
 	{
@@ -191,9 +167,9 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 		return database.insertWithOnConflict(RoutesTable.TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
 	}
 
-	protected long deleteRouteFromDatabase(RouteDescription routeData)
+	protected long deleteRouteFromDatabase(UUID id)
 	{
-		String[] args = {idToDbValue(routeData.getId())};
+		String[] args = {idToDbValue(id)};
 
 		return getWritableDatabase().delete(RoutesTable.TABLE_NAME, "Id = ?", args);
 	}
@@ -225,7 +201,7 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 
 	//region Nested classes
 
-	@dagger.Module(injects = ITravelDataPersistenceService.class, complete = false)
+	@dagger.Module(injects = {ITravelDataPersistenceService.class, IDatabaseService.class}, complete = false, library = true)
 	public static class Module
 	{
 		@Provides
@@ -233,6 +209,13 @@ public class RouteParcelTravelDataPersistenceService extends DbPersistenceServic
 		ITravelDataPersistenceService providePersistenceSvc(IDatabaseService databaseService)
 		{
 			return new RouteParcelTravelDataPersistenceService(databaseService);
+		}
+
+		@Provides
+		@Singleton
+		public SQLiteOpenHelper getDbHelper(Context context, @Named("dbName") String dbName)
+		{
+			return new TravelAssistanceParcelableDbHelper(context, dbName);
 		}
 	}
 

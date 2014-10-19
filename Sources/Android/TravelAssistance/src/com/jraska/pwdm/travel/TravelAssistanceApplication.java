@@ -1,13 +1,11 @@
 package com.jraska.pwdm.travel;
 
 import com.jraska.core.AppContextModule;
-import com.jraska.core.database.IDatabaseService;
+import com.jraska.core.database.OpenHelperDbService;
 import com.jraska.core.services.DefaultExternalStorageAppEnvironmentService;
 import com.jraska.core.services.IAppEnvironmentService;
 import com.jraska.pwdm.core.PWDMApplication;
 import com.jraska.pwdm.core.gps.SimpleSystemLocationService;
-import com.jraska.pwdm.travel.database.TravelAssistanceDatabaseService;
-import com.jraska.pwdm.travel.persistence.ITravelDataPersistenceService;
 import com.jraska.pwdm.travel.persistence.RouteParcelTravelDataPersistenceService;
 import com.jraska.pwdm.travel.tracking.TrackingManagementService;
 import dagger.Module;
@@ -44,9 +42,9 @@ public class TravelAssistanceApplication extends PWDMApplication
 					AppContextModule.class,
 					SimpleSystemLocationService.Module.class,
 					TrackingManagementService.Module.class,
-					AppSettingsModule.class,
-					TravelAssistanceDatabaseService.Module.class,
-					RouteParcelTravelDataPersistenceService.Module.class
+					AppSettingsModule.class, OpenHelperDbService.Module.class,
+					RouteParcelTravelDataPersistenceService.Module.class,
+
 			}
 	)
 	static class AppModule
