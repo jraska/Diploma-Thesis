@@ -4,7 +4,7 @@ import com.jraska.core.AppContextModule;
 import com.jraska.core.database.OpenHelperDbService;
 import com.jraska.core.services.DefaultExternalStorageAppEnvironmentService;
 import com.jraska.core.services.IAppEnvironmentService;
-import com.jraska.pwmd.core.PWDMApplication;
+import com.jraska.pwmd.core.PWMDApplication;
 import com.jraska.pwmd.core.gps.SimpleSystemLocationService;
 import com.jraska.pwmd.travel.persistence.RouteParcelTravelDataPersistenceService;
 import com.jraska.pwmd.travel.tracking.TrackingManagementService;
@@ -16,7 +16,7 @@ import javax.inject.Singleton;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class TravelAssistanceApplication extends PWDMApplication
+public class TravelAssistanceApplication extends PWMDApplication
 {
 	//region Constants
 
