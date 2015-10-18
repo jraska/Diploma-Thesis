@@ -1,69 +1,49 @@
 package com.jraska.core;
 
 import android.app.Application;
-import com.jraska.core.services.IAppService;
-import dagger.ObjectGraph;
 
 /**
  * Base class for all applications
  */
-public abstract class JRApplication extends Application
-{
-	//region Static
+public abstract class JRApplication extends Application {
+  //region Static
 
-	private static JRApplication sCurrent;
+  private static JRApplication sCurrent;
 
-	public static JRApplication getCurrent()
-	{
-		return sCurrent;
-	}
+  public static JRApplication getCurrent() {
+    return sCurrent;
+  }
 
-	public static <T> T getService(Class<T> serviceType)
-	{
-		return getCurrent().mObjectGraph.get(serviceType);
-	}
+  public static <T> T getService(Class<T> serviceType) {
+    // FIXME: remove method with exception
+    throw new UnsupportedOperationException("Delete this method");
+  }
 
-	//endregion
+  //endregion
 
-	//region Fields
+  //region Fields
 
-	private ObjectGraph mObjectGraph;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public JRApplication()
-	{
-		sCurrent = this;
-	}
+  public JRApplication() {
+    sCurrent = this;
+  }
 
-	//endregion
+  //endregion
 
-	//region Application overrides
+  //region Application overrides
 
-	@Override
-	public void onCreate()
-	{
-		super.onCreate();
+  @Override
+  public void onCreate() {
+    super.onCreate();
+  }
 
-		mObjectGraph = ObjectGraph.create(getModules());
-	}
+  //endregion
 
-	//endregion
+  //region Methods
 
-	//region Methods
-
-	public void inject(Object o)
-	{
-		mObjectGraph.inject(o);
-	}
-
-	protected Object[] getModules()
-	{
-		Object[] modules = {new AppContextModule()};
-		return modules;
-	}
-
-	//endregion
+  //endregion
 }

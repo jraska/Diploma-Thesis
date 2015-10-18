@@ -10,94 +10,83 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Path implements Parcelable
-{
-	//region Fields
+public class Path implements Parcelable {
+  //region Fields
 
-	private final List<Position> mPoints;
+  private final List<Position> mPoints;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public Path(List<Position> points)
-	{
-		ArgumentCheck.notNull(points, "points");
+  public Path(List<Position> points) {
+    ArgumentCheck.notNull(points, "points");
 
-		mPoints = Collections.unmodifiableList(points);
-	}
+    mPoints = Collections.unmodifiableList(points);
+  }
 
-	//endregion
+  //endregion
 
-	//region Properties
+  //region Properties
 
-	public List<Position> getPoints()
-	{
-		return mPoints;
-	}
+  public List<Position> getPoints() {
+    return mPoints;
+  }
 
-	//endregion
+  //endregion
 
-	//region Parcelable impl
+  //region Parcelable impl
 
-	@Override
-	public int describeContents()
-	{
-		return 0;
-	}
+  @Override
+  public int describeContents() {
+    return 0;
+  }
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags)
-	{
-		dest.writeParcelableArray(mPoints.toArray(new LatLng[mPoints.size()]), 0);
-	}
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeParcelableArray(mPoints.toArray(new LatLng[mPoints.size()]), 0);
+  }
 
-	public static final Parcelable.Creator<Path> CREATOR = new Parcelable.Creator<Path>()
-	{
-		public Path createFromParcel(Parcel p)
-		{
-			Parcelable[] values = p.readParcelableArray(getClass().getClassLoader());
-			Position [] positions = new Position[values.length];
+  public static final Parcelable.Creator<Path> CREATOR = new Parcelable.Creator<Path>() {
+    public Path createFromParcel(Parcel p) {
+      Parcelable[] values = p.readParcelableArray(getClass().getClassLoader());
+      Position[] positions = new Position[values.length];
 
-			for (int i = 0; i < values.length; i++)
-			{
-				positions[i] = (Position) values[i];
-			}
+      for (int i = 0; i < values.length; i++) {
+        positions[i] = (Position) values[i];
+      }
 
 
-			return new Path(Arrays.asList(positions));
-		}
+      return new Path(Arrays.asList(positions));
+    }
 
-		public Path[] newArray(int size)
-		{
-			return new Path[size];
-		}
-	};
-
-
-	//endregion
-
-	//region Object impl
-
-	@Override
-	public boolean equals(Object o)
-	{
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		Path path = (Path) o;
-
-		if (!mPoints.equals(path.mPoints)) return false;
-
-		return true;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return mPoints.hashCode();
-	}
+    public Path[] newArray(int size) {
+      return new Path[size];
+    }
+  };
 
 
-	//endregion
+  //endregion
+
+  //region Object impl
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Path path = (Path) o;
+
+    if (!mPoints.equals(path.mPoints)) return false;
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return mPoints.hashCode();
+  }
+
+
+  //endregion
 }

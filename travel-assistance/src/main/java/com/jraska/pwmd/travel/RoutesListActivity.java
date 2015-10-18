@@ -10,8 +10,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import com.jraska.common.events.IObserver;
 import com.jraska.pwmd.core.gps.Position;
@@ -23,318 +23,269 @@ import com.jraska.pwmd.travel.tracking.ITrackingManagementService;
 
 import java.util.*;
 
-public class RoutesListActivity extends BaseTravelActivity
-{
-	//region Fields
+public class RoutesListActivity extends BaseTravelActivity {
+  //region Fields
 
-//	@InjectView(R.id.btnTest)
+//	@Bind(R.id.btnTest)
 //	Button mTestBtn;
 
-	@InjectView(R.id.btnStartTracking)
-	Button mStartTrackingButton;
+  @Bind(R.id.btnStartTracking) Button mStartTrackingButton;
+  @Bind(R.id.btnStopTracking) Button mStopTrackingButton;
+  @Bind(R.id.btnSaveRoute) Button mSaveRouteButton;
+  @Bind(android.R.id.list) ListView mRoutesList;
+  @Bind(android.R.id.empty) View mEmptyView;
 
-	@InjectView(R.id.btnStopTracking)
-	Button mStopTrackingButton;
+  private RoutesAdapter mRoutesAdapter;
 
-	@InjectView(R.id.btnSaveRoute)
-	Button mSaveRouteButton;
+  private IObserver<RouteDescription> mDescriptionsObserver = new IObserver<RouteDescription>() {
+    @Override
+    public void update(Object sender, RouteDescription args) {
+      mRoutesAdapter.add(args);
+    }
+  };
 
-	@InjectView(android.R.id.list)
-	ListView mRoutesList;
+  //endregion
 
-	@InjectView(android.R.id.empty)
-	View mEmptyView;
+  //region Properties
 
-	private RoutesAdapter mRoutesAdapter;
+  protected ITrackingManagementService getTrackingManagementService() {
+    return ITrackingManagementService.Stub.asInterface();
+  }
 
-	private IObserver<RouteDescription> mDescriptionsObserver = new IObserver<RouteDescription>()
-	{
-		@Override
-		public void update(Object sender, RouteDescription args)
-		{
-			mRoutesAdapter.add(args);
-		}
-	};
+  //endregion
 
-	//endregion
+  //region Activity overrides
 
-	//region Properties
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.main);
 
-	protected ITrackingManagementService getTrackingManagementService()
-	{
-		return ITrackingManagementService.Stub.asInterface();
-	}
+    ButterKnife.bind(this);
 
-	//endregion
+    //started with nfc
+    if ((getIntent().getFlags() & 272629760) == 272629760) {
+      showLastSavedRoute();
+    }
 
-	//region Activity overrides
+    setupRoutes();
 
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+    refreshRoutes();
 
-		ButterKnife.inject(this);
+    registerOnRouteChangedObservers();
+  }
 
-		//started with nfc
-		if ((getIntent().getFlags() & 272629760) == 272629760)
-		{
-			showLastSavedRoute();
-		}
+  private boolean showLastSavedRoute() {
+    List<RouteDescription> routeDescriptions = getRoutesPersistenceService().selectAllRouteDescriptions();
 
-		setupRoutes();
+    if (routeDescriptions.size() == 0) {
+      return false;
+    }
 
-		refreshRoutes();
+    showRoute(routeDescriptions.get(routeDescriptions.size() - 1));
 
-		registerOnRouteChangedObservers();
-	}
+    return true;
+  }
 
-	private boolean showLastSavedRoute()
-	{
-		List<RouteDescription> routeDescriptions = getRoutesPersistenceService().selectAllRouteDescriptions();
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    menu.add(getString(R.string.i_am_lost)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+      @Override
+      public boolean onMenuItemClick(MenuItem item) {
+        startActivity(new Intent(RoutesListActivity.this, HelpRequestSendActivity.class));
+        return true;
+      }
+    });
 
-		if(routeDescriptions.size() == 0)
-		{
-			return false;
-		}
+    return true;
+  }
 
-		showRoute(routeDescriptions.get(routeDescriptions.size() - 1));
+  @Override
+  protected void onDestroy() {
+    unregisterOnRouteChangeObservers();
 
-		return true;
-	}
+    super.onDestroy();
+  }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		menu.add(getString(R.string.i_am_lost)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
-		{
-			@Override
-			public boolean onMenuItemClick(MenuItem item)
-			{
-				startActivity(new Intent(RoutesListActivity.this, HelpRequestSendActivity.class));
-				return true;
-			}
-		});
+  @Override
+  protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+  }
 
-		return true;
-	}
+  @Override
+  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    super.onCreateContextMenu(menu, v, menuInfo);
 
-	@Override
-	protected void onDestroy()
-	{
-		unregisterOnRouteChangeObservers();
+    AdapterView.AdapterContextMenuInfo adapterContextMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-		super.onDestroy();
-	}
+    final int position = adapterContextMenuInfo.position;
 
-	@Override
-	protected void onNewIntent(Intent intent)
-	{
-		super.onNewIntent(intent);
-	}
+    menu.add(getString(R.string.delete)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+      @Override
+      public boolean onMenuItemClick(MenuItem item) {
+        RouteDescription item1 = mRoutesAdapter.getItem(position);
+        getRoutesPersistenceService().deleteRoute(item1.getId());
+        refreshRoutes();
 
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
-	{
-		super.onCreateContextMenu(menu, v, menuInfo);
+        return true;
+      }
+    });
+  }
 
-		AdapterView.AdapterContextMenuInfo adapterContextMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+  //endregion
 
-		final int position = adapterContextMenuInfo.position;
+  //region Methods
 
-		menu.add(getString(R.string.delete)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener()
-		{
-			@Override
-			public boolean onMenuItemClick(MenuItem item)
-			{
-				RouteDescription item1 = mRoutesAdapter.getItem(position);
-				getRoutesPersistenceService().deleteRoute(item1.getId());
-				refreshRoutes();
+  protected void setupRoutes() {
+    mRoutesAdapter = new RoutesAdapter(this);
 
-				return true;
-			}
-		});
-	}
-
-	//endregion
-
-	//region Methods
-
-	protected void setupRoutes()
-	{
-		mRoutesAdapter = new RoutesAdapter(this);
-
-		mRoutesList.setAdapter(mRoutesAdapter);
-		mRoutesList.setEmptyView(mEmptyView);
-		mRoutesList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-			{
-				showRoute(position);
-			}
-		});
+    mRoutesList.setAdapter(mRoutesAdapter);
+    mRoutesList.setEmptyView(mEmptyView);
+    mRoutesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        showRoute(position);
+      }
+    });
 
 
-		registerForContextMenu(mRoutesList);
-	}
+    registerForContextMenu(mRoutesList);
+  }
 
-	protected void showRoute(int position)
-	{
-		RouteDescription item = mRoutesAdapter.getItem(position);
-		showRoute(item);
-	}
+  protected void showRoute(int position) {
+    RouteDescription item = mRoutesAdapter.getItem(position);
+    showRoute(item);
+  }
 
-	protected void showRoute(RouteDescription item)
-	{
-		Intent intent = new Intent(this, RouteDisplayActivity.class);
-		intent.putExtra(RouteDisplayActivity.ROUTE_ID, item.getId());
+  protected void showRoute(RouteDescription item) {
+    Intent intent = new Intent(this, RouteDisplayActivity.class);
+    intent.putExtra(RouteDisplayActivity.ROUTE_ID, item.getId());
 
-		startActivity(intent);
-	}
+    startActivity(intent);
+  }
 
-	void registerOnRouteChangedObservers()
-	{
-		getRoutesPersistenceService().getOnNewRoute().registerObserver(mDescriptionsObserver);
-	}
+  void registerOnRouteChangedObservers() {
+    getRoutesPersistenceService().getOnNewRoute().registerObserver(mDescriptionsObserver);
+  }
 
-	void unregisterOnRouteChangeObservers()
-	{
-		getRoutesPersistenceService().getOnNewRoute().registerObserver(mDescriptionsObserver);
-	}
+  void unregisterOnRouteChangeObservers() {
+    getRoutesPersistenceService().getOnNewRoute().registerObserver(mDescriptionsObserver);
+  }
 
-	void refreshRoutes()
-	{
-		ITravelDataPersistenceService service = getRoutesPersistenceService();
-		List<RouteDescription> routeDescriptions = service.selectAllRouteDescriptions();
+  void refreshRoutes() {
+    ITravelDataPersistenceService service = getRoutesPersistenceService();
+    List<RouteDescription> routeDescriptions = service.selectAllRouteDescriptions();
 
-		mRoutesAdapter.clear();
+    mRoutesAdapter.clear();
 
-		mRoutesAdapter.setNotifyOnChange(false);
+    mRoutesAdapter.setNotifyOnChange(false);
 
-		for (RouteDescription routeDescription : routeDescriptions)
-		{
-			mRoutesAdapter.add(routeDescription);
-		}
+    for (RouteDescription routeDescription : routeDescriptions) {
+      mRoutesAdapter.add(routeDescription);
+    }
 
-		mRoutesAdapter.notifyDataSetChanged();
-	}
+    mRoutesAdapter.notifyDataSetChanged();
+  }
 
-	@OnClick(R.id.btnStartTracking)
-	void startTracking()
-	{
-		getTrackingManagementService().startTracking();
-	}
+  @OnClick(R.id.btnStartTracking)
+  void startTracking() {
+    getTrackingManagementService().startTracking();
+  }
 
-	@OnClick(R.id.btnStopTracking)
-	void stopTracking()
-	{
-		getTrackingManagementService().stopTracking();
-	}
+  @OnClick(R.id.btnStopTracking)
+  void stopTracking() {
+    getTrackingManagementService().stopTracking();
+  }
 
-	@OnClick(R.id.btnSaveRoute)
-	void saveRoute()
-	{
-		ITrackingManagementService.PathInfo lastPath = getTrackingManagementService().getLastPath();
-		if (lastPath == null)
-		{
-			Toast.makeText(this, getString(R.string.noRouteToSave), Toast.LENGTH_SHORT).show();
-			return;
-		}
+  @OnClick(R.id.btnSaveRoute)
+  void saveRoute() {
+    ITrackingManagementService.PathInfo lastPath = getTrackingManagementService().getLastPath();
+    if (lastPath == null) {
+      Toast.makeText(this, getString(R.string.noRouteToSave), Toast.LENGTH_SHORT).show();
+      return;
+    }
 
-		RouteData routeData = new RouteData(new RouteDescription(UUID.randomUUID(), lastPath.getStart(), lastPath.getEnd(), "Test"), lastPath.getPath());
+    RouteData routeData = new RouteData(new RouteDescription(UUID.randomUUID(), lastPath.getStart(), lastPath.getEnd(), "Test"), lastPath.getPath());
 
-		getRoutesPersistenceService().insertRoute(routeData);
+    getRoutesPersistenceService().insertRoute(routeData);
 
-		Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
-	}
+    Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
+  }
 
-	private ITravelDataPersistenceService getRoutesPersistenceService()
-	{
-		return ITravelDataPersistenceService.Stub.asInterface();
-	}
+  private ITravelDataPersistenceService getRoutesPersistenceService() {
+    return ITravelDataPersistenceService.Stub.asInterface();
+  }
 
-	//	@OnClick(R.id.btnTest)
-	void test()
-	{
+  //	@OnClick(R.id.btnTest)
+  void test() {
 //		testPersistencePositions();
-	}
+  }
 
-	protected void testPersistencePositions()
-	{
-		UUID testId = UUID.fromString("07684a55-f8d4-498a-a313-609965a2b3df");
+  protected void testPersistencePositions() {
+    UUID testId = UUID.fromString("07684a55-f8d4-498a-a313-609965a2b3df");
 
-		//build test path
-		int pointsCount = 3;
-		List<Position> positions = new ArrayList<Position>(pointsCount);
-		for (int i = 0; i < pointsCount; i++)
-		{
-			positions.add(generatePosition());
-		}
+    //build test path
+    int pointsCount = 3;
+    List<Position> positions = new ArrayList<Position>(pointsCount);
+    for (int i = 0; i < pointsCount; i++) {
+      positions.add(generatePosition());
+    }
 
-		//build test route
-		RouteDescription routeDescription = new RouteDescription(testId, new Date(), new Date(), "Test");
-		RouteData routeData = new RouteData(routeDescription, new Path(positions));
+    //build test route
+    RouteDescription routeDescription = new RouteDescription(testId, new Date(), new Date(), "Test");
+    RouteData routeData = new RouteData(routeDescription, new Path(positions));
 
-		ITravelDataPersistenceService persistenceService = getRoutesPersistenceService();
+    ITravelDataPersistenceService persistenceService = getRoutesPersistenceService();
 
-		//try insert
-		long value = persistenceService.insertRoute(routeData);
+    //try insert
+    long value = persistenceService.insertRoute(routeData);
 
-		// try update
-		positions.add(generatePosition());
-		RouteData routeData2 = new RouteData(routeDescription, new Path(positions));
+    // try update
+    positions.add(generatePosition());
+    RouteData routeData2 = new RouteData(routeDescription, new Path(positions));
 
-		//try get all
-		List<RouteDescription> routeDescriptions = persistenceService.selectAllRouteDescriptions();
+    //try get all
+    List<RouteDescription> routeDescriptions = persistenceService.selectAllRouteDescriptions();
 
-		for (RouteDescription description : routeDescriptions)
-		{
-			RouteData routeData1 = persistenceService.selectRouteData(description.getId());
-			if (routeData1 != null)
-			{
-				//stub
-				int i = 0;
-				i++;
-			}
-		}
+    for (RouteDescription description : routeDescriptions) {
+      RouteData routeData1 = persistenceService.selectRouteData(description.getId());
+      if (routeData1 != null) {
+        //stub
+        int i = 0;
+        i++;
+      }
+    }
 
 
-		//try get current
+    //try get current
 
-		persistenceService.updateRoute(routeData2);
+    persistenceService.updateRoute(routeData2);
 
-		for (RouteDescription description : routeDescriptions)
-		{
-			RouteData routeData1 = persistenceService.selectRouteData(description.getId());
-			if (routeData1 != null)
-			{
-				//stub
-				int i = 0;
-				i++;
-			}
-		}
+    for (RouteDescription description : routeDescriptions) {
+      RouteData routeData1 = persistenceService.selectRouteData(description.getId());
+      if (routeData1 != null) {
+        //stub
+        int i = 0;
+        i++;
+      }
+    }
 
-		persistenceService.deleteRoute(routeData2.getId());
+    persistenceService.deleteRoute(routeData2.getId());
 
-		for (RouteDescription description : routeDescriptions)
-		{
-			RouteData routeData1 = persistenceService.selectRouteData(description.getId());
-			if (routeData1 != null)
-			{
-				//stub
-				int i = 0;
-				i++;
-			}
-		}
-	}
+    for (RouteDescription description : routeDescriptions) {
+      RouteData routeData1 = persistenceService.selectRouteData(description.getId());
+      if (routeData1 != null) {
+        //stub
+        int i = 0;
+        i++;
+      }
+    }
+  }
 
-	private Position generatePosition()
-	{
-		Random random = new Random();
-		return new Position(random.nextDouble() * 50, random.nextDouble() * 50, System.currentTimeMillis(), 30.0f, "GPS");
-	}
+  private Position generatePosition() {
+    Random random = new Random();
+    return new Position(random.nextDouble() * 50, random.nextDouble() * 50, System.currentTimeMillis(), 30.0f, "GPS");
+  }
 
-	//endregion
+  //endregion
 }

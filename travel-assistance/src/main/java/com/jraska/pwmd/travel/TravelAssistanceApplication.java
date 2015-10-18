@@ -1,73 +1,25 @@
 package com.jraska.pwmd.travel;
 
-import com.jraska.core.AppContextModule;
-import com.jraska.core.database.OpenHelperDbService;
-import com.jraska.core.services.DefaultExternalStorageAppEnvironmentService;
-import com.jraska.core.services.IAppEnvironmentService;
 import com.jraska.pwmd.core.PWMDApplication;
-import com.jraska.pwmd.core.gps.SimpleSystemLocationService;
-import com.jraska.pwmd.travel.persistence.RouteParcelTravelDataPersistenceService;
-import com.jraska.pwmd.travel.tracking.TrackingManagementService;
-import dagger.Module;
-import dagger.Provides;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class TravelAssistanceApplication extends PWMDApplication
-{
-	//region Constants
+public class TravelAssistanceApplication extends PWMDApplication {
+  //region Constants
 
-	public static String DB_NAME = "TravelAssistanceData";
-	public static final DateFormat USER_DETAILED_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss, MM.dd.yyyy");
+  public static String DB_NAME = "TravelAssistanceData";
+  public static final DateFormat USER_DETAILED_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss, MM.dd.yyyy");
 
-	//endregion
+  //endregion
 
-	//region TravelAssistanceApplication overrides
+  //region TravelAssistanceApplication overrides
 
-	@Override
-	protected Object[] getModules()
-	{
-		return new AppModule[]{new AppModule()};
-	}
 
-	//endregion
+  //endregion
 
-	//region Nested classes
+  //region Nested classes
 
-	@Module(includes =
-			{
-					AppContextModule.class,
-					SimpleSystemLocationService.Module.class,
-					TrackingManagementService.Module.class,
-					AppSettingsModule.class, OpenHelperDbService.Module.class,
-					RouteParcelTravelDataPersistenceService.Module.class,
 
-			}
-	)
-	static class AppModule
-	{
-	}
-
-	@Module(injects = {String.class, IAppEnvironmentService.class}, library = true)
-	public static class AppSettingsModule
-	{
-		@Provides
-		@Named("dbName")
-		String dbName()
-		{
-			return DB_NAME;
-		}
-
-		@Provides
-		@Singleton
-		IAppEnvironmentService provideSvc()
-		{
-			return new DefaultExternalStorageAppEnvironmentService();
-		}
-	}
-
-	//endregion
+  //endregion
 }

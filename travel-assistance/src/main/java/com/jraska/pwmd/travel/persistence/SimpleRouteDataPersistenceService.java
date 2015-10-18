@@ -12,10 +12,7 @@ import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
 import com.jraska.pwmd.travel.database.DbModel;
 import com.jraska.pwmd.travel.database.TravelAssistanceDbHelper;
-import dagger.Provides;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -196,23 +193,6 @@ public class SimpleRouteDataPersistenceService extends RoutePersistenceServiceBa
 
 	//region Nested classes
 
-	@dagger.Module(injects = {ITravelDataPersistenceService.class, IDatabaseService.class}, complete = false, library = true)
-	public static class Module
-	{
-		@Provides
-		@Singleton
-		ITravelDataPersistenceService providePersistenceSvc(IDatabaseService databaseService)
-		{
-			return new SimpleRouteDataPersistenceService(databaseService);
-		}
-
-		@Provides
-		@Singleton
-		public SQLiteOpenHelper getDbHelper(Context context, @Named("dbName") String dbName)
-		{
-			return new TravelAssistanceDbHelper(context, dbName);
-		}
-	}
 
 	//endregion
 }
