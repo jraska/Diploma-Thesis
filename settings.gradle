@@ -1,1 +1,1 @@
-include ':core'
+include ':core', ':gps-battery-test', ':travel-assistance'
