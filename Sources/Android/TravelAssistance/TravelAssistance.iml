@@ -16,7 +16,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Com.JRaska.Core" />
-    <orderEntry type="module" module-name="google-play-services_lib" />
     <orderEntry type="library" name="butterknife-5.1.1" level="project" />
     <orderEntry type="library" name="android-support-v4" level="project" />
     <orderEntry type="library" name="google-play-services" level="project" />

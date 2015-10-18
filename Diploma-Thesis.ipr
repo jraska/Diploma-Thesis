@@ -277,7 +277,6 @@
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/GpsBatTest/GpsBatTest.iml" filepath="$PROJECT_DIR$/Sources/Android/GpsBatTest/GpsBatTest.iml" group="Apps" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/Tests/Tests.iml" filepath="$PROJECT_DIR$/Sources/Android/Tests/Tests.iml" group="Tests" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/TravelAssistance/TravelAssistance.iml" filepath="$PROJECT_DIR$/Sources/Android/TravelAssistance/TravelAssistance.iml" group="Apps" />
-      <module fileurl="file://$PROJECT_DIR$/libs/google-play-services_lib/google-play-services_lib.iml" filepath="$PROJECT_DIR$/libs/google-play-services_lib/google-play-services_lib.iml" group="Libs" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="Android 4.4 Platform" project-jdk-type="Android SDK">
