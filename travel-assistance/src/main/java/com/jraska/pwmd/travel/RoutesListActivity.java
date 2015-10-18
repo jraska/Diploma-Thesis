@@ -59,11 +59,6 @@ public class RoutesListActivity extends BaseTravelActivity {
 
     ButterKnife.bind(this);
 
-    //started with nfc
-    if ((getIntent().getFlags() & 272629760) == 272629760) {
-      showLastSavedRoute();
-    }
-
     setupRoutes();
 
     refreshRoutes();

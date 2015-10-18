@@ -8,10 +8,10 @@ import android.app.Application;
 public abstract class BaseApplication extends Application {
   //region Static
 
-  private static BaseApplication sCurrent;
+  private static BaseApplication _current;
 
   public static BaseApplication getCurrent() {
-    return sCurrent;
+    return _current;
   }
 
   public static <T> T getService(Class<T> serviceType) {
@@ -29,7 +29,7 @@ public abstract class BaseApplication extends Application {
   //region Constructors
 
   public BaseApplication() {
-    sCurrent = this;
+    _current = this;
   }
 
   //endregion
