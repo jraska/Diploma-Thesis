@@ -2,8 +2,8 @@ package com.jraska.gpsbatterytest;
 
 import com.jraska.core.AppContextModule;
 import com.jraska.core.JRApplication;
-import com.jraska.pwdm.core.battery.SimpleBatteryStatsService;
-import com.jraska.pwdm.core.gps.SimpleSystemLocationService;
+import com.jraska.pwmd.core.battery.SimpleBatteryStatsService;
+import com.jraska.pwmd.core.gps.SimpleSystemLocationService;
 import dagger.Module;
 
 public class GpsBatteryTestApplication extends JRApplication

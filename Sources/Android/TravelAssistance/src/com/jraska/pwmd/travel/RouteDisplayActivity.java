@@ -1,0 +1,110 @@
+package com.jraska.pwmd.travel;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.jraska.pwmd.core.gps.Position;
+import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.persistence.ITravelDataPersistenceService;
+
+import java.util.List;
+import java.util.UUID;
+
+public class RouteDisplayActivity extends BaseTravelActivity
+{
+	//region Constants
+
+	public static final String ROUTE_ID = "RouteId";
+	protected static final int ROUTE_WIDTH = 5;
+	public static final int ZOOM = 18;
+
+	//endregion
+
+	//region Fields
+
+	private GoogleMap mMapView;
+
+	//endregion
+
+	//region Properties
+
+	protected GoogleMap getMap()
+	{
+		if (mMapView == null)
+		{
+			mMapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+		}
+
+		return mMapView;
+	}
+
+	protected ITravelDataPersistenceService getTravelDataPersistenceService()
+	{
+		return ITravelDataPersistenceService.Stub.asInterface();
+	}
+
+	//endregion
+
+	//region Activity overrides
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.route_display);
+
+		loadAndShowRoute();
+	}
+
+	//endregion
+
+	//region Methods
+
+	protected void loadAndShowRoute()
+	{
+		UUID routeId = (UUID) getIntent().getSerializableExtra(ROUTE_ID);
+
+		RouteData routeData = getTravelDataPersistenceService().selectRouteData(routeId);
+
+		setTitle(routeData.getTitle());
+		displayOnMap(routeData);
+	}
+
+	protected void displayOnMap(RouteData routeData)
+	{
+		GoogleMap map = getMap();
+		PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH).color(Color.BLUE).visible(true);
+
+		List<Position> points = routeData.getPath().getPoints();
+
+		if (points.size() == 0)
+		{
+			throw new IllegalStateException("No points to display");
+		}
+
+		for (Position position : points)
+		{
+			polylineOptions.add(toGoogleLatLng(position));
+		}
+
+		Polyline line = map.addPolyline(polylineOptions);
+
+		map.setMyLocationEnabled(true);
+
+		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(toGoogleLatLng(points.get(0)), ZOOM);
+		getMap().animateCamera(cameraUpdate);
+	}
+
+	protected LatLng toGoogleLatLng(com.jraska.pwmd.core.gps.LatLng latLng)
+	{
+		return new LatLng(latLng.latitude, latLng.longitude);
+	}
+
+	//endregion
+}

@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.SEND_SMS"/>
 
     <application
-        android:name=".TravelAssistanceApplication"
+        android:name="com.jraska.pwmd.travel.TravelAssistanceApplication"
         android:label="@string/app_name"
         android:icon="@drawable/ic_launcher"
         android:debuggable="true"
@@ -30,7 +30,7 @@
             android:value="AIzaSyAMOMbAhj7u5KQR_6HpmaX7uJ_t3GuMb6A" />
 
         <activity
-            android:name=".RoutesListActivity"
+            android:name="com.jraska.pwmd.travel.RoutesListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,11 +39,11 @@
         </activity>
 
         <activity
-            android:name=".RouteDisplayActivity"
+            android:name="com.jraska.pwmd.travel.RouteDisplayActivity"
             android:label="@string/app_name">
         </activity>
 
-        <activity android:name=".HelpRequestSendActivity"/>
-        <service android:name=".tracking.TrackingService" />
+        <activity android:name="com.jraska.pwmd.travel.HelpRequestSendActivity"/>
+        <service android:name="com.jraska.pwmd.travel.tracking.TrackingService" />
     </application>
 </manifest>

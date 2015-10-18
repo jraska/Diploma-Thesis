@@ -12,11 +12,11 @@ import com.jraska.gpsbatterytest.logging.CompositeLogger;
 import com.jraska.gpsbatterytest.logging.ConsoleLogger;
 import com.jraska.gpsbatterytest.logging.ILogger;
 import com.jraska.gpsbatterytest.logging.TextFileLogger;
-import com.jraska.pwdm.core.battery.BatteryStats;
-import com.jraska.pwdm.core.battery.IBatteryStatsService;
-import com.jraska.pwdm.core.gps.ILocationService;
-import com.jraska.pwdm.core.gps.LocationSettings;
-import com.jraska.pwdm.core.gps.Position;
+import com.jraska.pwmd.core.battery.BatteryStats;
+import com.jraska.pwmd.core.battery.IBatteryStatsService;
+import com.jraska.pwmd.core.gps.ILocationService;
+import com.jraska.pwmd.core.gps.LocationSettings;
+import com.jraska.pwmd.core.gps.Position;
 
 import java.io.File;
 import java.text.DateFormat;
