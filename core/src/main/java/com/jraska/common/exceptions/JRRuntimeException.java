@@ -3,34 +3,29 @@ package com.jraska.common.exceptions;
 /**
  * Base class for all exceptions
  */
-public class JRRuntimeException extends RuntimeException
-{
-	//region Constants
+public class JRRuntimeException extends RuntimeException {
+  //region Constants
 
-	private static final long serialVersionUID = -3822107985486075772L;
+  private static final long serialVersionUID = -3822107985486075772L;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public JRRuntimeException()
-	{
-	}
+  public JRRuntimeException() {
+  }
 
-	public JRRuntimeException(String detailMessage)
-	{
-		super(detailMessage);
-	}
+  public JRRuntimeException(String detailMessage) {
+    super(detailMessage);
+  }
 
-	public JRRuntimeException(String detailMessage, Throwable throwable)
-	{
-		super(detailMessage, throwable);
-	}
+  public JRRuntimeException(String detailMessage, Throwable throwable) {
+    super(detailMessage, throwable);
+  }
 
-	public JRRuntimeException(Throwable throwable)
-	{
-		super(throwable);
-	}
+  public JRRuntimeException(Throwable throwable) {
+    super(throwable);
+  }
 
-	//endregion
+  //endregion
 }

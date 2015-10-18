@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import butterknife.Bind;
@@ -27,20 +26,17 @@ public class RoutesListActivity extends BaseTravelActivity {
   //region Fields
 
 //	@Bind(R.id.btnTest)
-//	Button mTestBtn;
+//	Button _testBtn;
 
-  @Bind(R.id.btnStartTracking) Button mStartTrackingButton;
-  @Bind(R.id.btnStopTracking) Button mStopTrackingButton;
-  @Bind(R.id.btnSaveRoute) Button mSaveRouteButton;
-  @Bind(android.R.id.list) ListView mRoutesList;
-  @Bind(android.R.id.empty) View mEmptyView;
+  @Bind(android.R.id.list) ListView _routesList;
+  @Bind(android.R.id.empty) View _emptyView;
 
-  private RoutesAdapter mRoutesAdapter;
+  private RoutesAdapter _routesAdapter;
 
-  private IObserver<RouteDescription> mDescriptionsObserver = new IObserver<RouteDescription>() {
+  private IObserver<RouteDescription> _descriptionsObserver = new IObserver<RouteDescription>() {
     @Override
     public void update(Object sender, RouteDescription args) {
-      mRoutesAdapter.add(args);
+      _routesAdapter.add(args);
     }
   };
 
@@ -123,7 +119,7 @@ public class RoutesListActivity extends BaseTravelActivity {
     menu.add(getString(R.string.delete)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
       @Override
       public boolean onMenuItemClick(MenuItem item) {
-        RouteDescription item1 = mRoutesAdapter.getItem(position);
+        RouteDescription item1 = _routesAdapter.getItem(position);
         getRoutesPersistenceService().deleteRoute(item1.getId());
         refreshRoutes();
 
@@ -137,11 +133,11 @@ public class RoutesListActivity extends BaseTravelActivity {
   //region Methods
 
   protected void setupRoutes() {
-    mRoutesAdapter = new RoutesAdapter(this);
+    _routesAdapter = new RoutesAdapter(this);
 
-    mRoutesList.setAdapter(mRoutesAdapter);
-    mRoutesList.setEmptyView(mEmptyView);
-    mRoutesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    _routesList.setAdapter(_routesAdapter);
+    _routesList.setEmptyView(_emptyView);
+    _routesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         showRoute(position);
@@ -149,11 +145,11 @@ public class RoutesListActivity extends BaseTravelActivity {
     });
 
 
-    registerForContextMenu(mRoutesList);
+    registerForContextMenu(_routesList);
   }
 
   protected void showRoute(int position) {
-    RouteDescription item = mRoutesAdapter.getItem(position);
+    RouteDescription item = _routesAdapter.getItem(position);
     showRoute(item);
   }
 
@@ -165,26 +161,26 @@ public class RoutesListActivity extends BaseTravelActivity {
   }
 
   void registerOnRouteChangedObservers() {
-    getRoutesPersistenceService().getOnNewRoute().registerObserver(mDescriptionsObserver);
+    getRoutesPersistenceService().getOnNewRoute().registerObserver(_descriptionsObserver);
   }
 
   void unregisterOnRouteChangeObservers() {
-    getRoutesPersistenceService().getOnNewRoute().registerObserver(mDescriptionsObserver);
+    getRoutesPersistenceService().getOnNewRoute().registerObserver(_descriptionsObserver);
   }
 
   void refreshRoutes() {
     ITravelDataPersistenceService service = getRoutesPersistenceService();
     List<RouteDescription> routeDescriptions = service.selectAllRouteDescriptions();
 
-    mRoutesAdapter.clear();
+    _routesAdapter.clear();
 
-    mRoutesAdapter.setNotifyOnChange(false);
+    _routesAdapter.setNotifyOnChange(false);
 
     for (RouteDescription routeDescription : routeDescriptions) {
-      mRoutesAdapter.add(routeDescription);
+      _routesAdapter.add(routeDescription);
     }
 
-    mRoutesAdapter.notifyDataSetChanged();
+    _routesAdapter.notifyDataSetChanged();
   }
 
   @OnClick(R.id.btnStartTracking)
@@ -216,17 +212,12 @@ public class RoutesListActivity extends BaseTravelActivity {
     return ITravelDataPersistenceService.Stub.asInterface();
   }
 
-  //	@OnClick(R.id.btnTest)
-  void test() {
-//		testPersistencePositions();
-  }
-
   protected void testPersistencePositions() {
     UUID testId = UUID.fromString("07684a55-f8d4-498a-a313-609965a2b3df");
 
     //build test path
     int pointsCount = 3;
-    List<Position> positions = new ArrayList<Position>(pointsCount);
+    List<Position> positions = new ArrayList<>(pointsCount);
     for (int i = 0; i < pointsCount; i++) {
       positions.add(generatePosition());
     }

@@ -2,44 +2,38 @@ package com.jraska.gpsbatterytest.logging;
 
 import com.jraska.common.ArgumentCheck;
 
-public class CompositeLogger implements ILogger
-{
-	//region Fields
+public class CompositeLogger implements ILogger {
+  //region Fields
 
-	private final ILogger [] mLoggers;
+  private final ILogger[] _loggers;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public CompositeLogger(ILogger[] loggers)
-	{
-		ArgumentCheck.notNull(loggers);
+  public CompositeLogger(ILogger[] loggers) {
+    ArgumentCheck.notNull(loggers);
 
-		mLoggers = loggers;
-	}
+    _loggers = loggers;
+  }
 
-	//endregion
+  //endregion
 
-	//region ILogger impl
+  //region ILogger impl
 
-	@Override
-	public void log(Object o)
-	{
-		for (ILogger logger : mLoggers)
-		{
-			logger.log(o);
-		}
-	}
+  @Override
+  public void log(Object o) {
+    for (ILogger logger : _loggers) {
+      logger.log(o);
+    }
+  }
 
-	@Override
-	public void dispose()
-	{
-		for (ILogger logger : mLoggers)
-		{
-			logger.dispose();
-		}
-	}
+  @Override
+  public void dispose() {
+    for (ILogger logger : _loggers) {
+      logger.dispose();
+    }
+  }
 
-	//endregion
+  //endregion
 }

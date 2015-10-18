@@ -26,26 +26,26 @@ public interface ITrackingManagementService extends IAppService {
   //region Nested classes
 
   class PathInfo {
-    private final Date mStart;
-    private final Date mEnd;
-    private final Path mPath;
+    private final Date _start;
+    private final Date _end;
+    private final Path _path;
 
     public PathInfo(Date start, Date end, Path path) {
-      mStart = start;
-      mEnd = end;
-      mPath = path;
+      _start = start;
+      _end = end;
+      _path = path;
     }
 
     public Date getStart() {
-      return mStart;
+      return _start;
     }
 
     public Date getEnd() {
-      return mEnd;
+      return _end;
     }
 
     public Path getPath() {
-      return mPath;
+      return _path;
     }
   }
 

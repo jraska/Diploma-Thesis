@@ -13,7 +13,7 @@ import java.util.List;
 public class Path implements Parcelable {
   //region Fields
 
-  private final List<Position> mPoints;
+  private final List<Position> _points;
 
   //endregion
 
@@ -22,7 +22,7 @@ public class Path implements Parcelable {
   public Path(List<Position> points) {
     ArgumentCheck.notNull(points, "points");
 
-    mPoints = Collections.unmodifiableList(points);
+    _points = Collections.unmodifiableList(points);
   }
 
   //endregion
@@ -30,7 +30,7 @@ public class Path implements Parcelable {
   //region Properties
 
   public List<Position> getPoints() {
-    return mPoints;
+    return _points;
   }
 
   //endregion
@@ -44,7 +44,7 @@ public class Path implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeParcelableArray(mPoints.toArray(new LatLng[mPoints.size()]), 0);
+    dest.writeParcelableArray(_points.toArray(new LatLng[_points.size()]), 0);
   }
 
   public static final Parcelable.Creator<Path> CREATOR = new Parcelable.Creator<Path>() {
@@ -77,14 +77,14 @@ public class Path implements Parcelable {
 
     Path path = (Path) o;
 
-    if (!mPoints.equals(path.mPoints)) return false;
+    if (!_points.equals(path._points)) return false;
 
     return true;
   }
 
   @Override
   public int hashCode() {
-    return mPoints.hashCode();
+    return _points.hashCode();
   }
 
 

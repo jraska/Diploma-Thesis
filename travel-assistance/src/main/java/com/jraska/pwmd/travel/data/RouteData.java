@@ -3,93 +3,82 @@ package com.jraska.pwmd.travel.data;
 import java.util.Date;
 import java.util.UUID;
 
-public class RouteData
-{
-	//region Fields
+public class RouteData {
+  //region Fields
 
-	private final RouteDescription mDescription;
-	private final Path mRoute;
+  private final RouteDescription _description;
+  private final Path _route;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public RouteData(RouteDescription description, Path route)
-	{
-		//TODO: checks
+  public RouteData(RouteDescription description, Path route) {
+    //TODO: checks
 
-		mDescription = description;
-		mRoute = route;
-	}
+    _description = description;
+    _route = route;
+  }
 
-	//endregion
+  //endregion
 
-	//region Properties
+  //region Properties
 
-	public RouteDescription getDescription()
-	{
-		return mDescription;
-	}
+  public RouteDescription getDescription() {
+    return _description;
+  }
 
-	public UUID getId()
-	{
-		return mDescription.getId();
-	}
+  public UUID getId() {
+    return _description.getId();
+  }
 
-	public Path getPath()
-	{
-		return mRoute;
-	}
+  public Path getPath() {
+    return _route;
+  }
 
-	public Date getStart()
-	{
-		return mDescription.getStart();
-	}
+  public Date getStart() {
+    return _description.getStart();
+  }
 
-	public Date getEnd()
-	{
-		return mDescription.getEnd();
-	}
+  public Date getEnd() {
+    return _description.getEnd();
+  }
 
-	public String getTitle()
-	{
-		return mDescription.getTitle();
-	}
+  public String getTitle() {
+    return _description.getTitle();
+  }
 
-	//endregion
+  //endregion
 
-	//region Object impl
+  //region Object impl
 
-	@Override
-	public String toString()
-	{
-		return "RouteData{" +
-				"mDescription=" + mDescription +
-				", mRoute=" + mRoute +
-				'}';
-	}
+  @Override
+  public String toString() {
+    return "RouteData{" +
+        "_description=" + _description +
+        ", _route=" + _route +
+        '}';
+  }
 
-	@Override
-	public boolean equals(Object o)
-	{
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-		RouteData routeData = (RouteData) o;
+    RouteData routeData = (RouteData) o;
 
-		if (!mDescription.equals(routeData.mDescription)) return false;
-		if (!mRoute.equals(routeData.mRoute)) return false;
+    if (!_description.equals(routeData._description)) return false;
+    if (!_route.equals(routeData._route)) return false;
 
-		return true;
-	}
+    return true;
+  }
 
-	@Override
-	public int hashCode()
-	{
-		int result = mDescription.hashCode();
-		result = 31 * result + mRoute.hashCode();
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    int result = _description.hashCode();
+    result = 31 * result + _route.hashCode();
+    return result;
+  }
 
-	//endregion
+  //endregion
 }

@@ -17,14 +17,14 @@ import java.util.List;
 public class TrackingManagementService implements ITrackingManagementService {
   //region Fields
 
-  private final Context mContext;
-  private final ILocationFilter mFilter;
+  private final Context _context;
+  private final ILocationFilter _filter;
 
-  private boolean mRunning;
-  private TrackingService.TrackingServiceBinder mServiceBinder;
-  private Date mStart;
+  private boolean _running;
+  private TrackingService.TrackingServiceBinder _serviceBinder;
+  private Date _start;
 
-  private final TrackingServiceConnection mConnection = new TrackingServiceConnection();
+  private final TrackingServiceConnection _connection = new TrackingServiceConnection();
 
   //endregion
 
@@ -38,8 +38,8 @@ public class TrackingManagementService implements ITrackingManagementService {
     ArgumentCheck.notNull(context);
     ArgumentCheck.notNull(filter);
 
-    mContext = context;
-    mFilter = filter;
+    _context = context;
+    _filter = filter;
   }
 
   //endregion
@@ -47,11 +47,11 @@ public class TrackingManagementService implements ITrackingManagementService {
   //region Properties
 
   protected Context getContext() {
-    return mContext;
+    return _context;
   }
 
   protected ILocationFilter getFilter() {
-    return mFilter;
+    return _filter;
   }
 
   //endregion
@@ -60,30 +60,30 @@ public class TrackingManagementService implements ITrackingManagementService {
 
   @Override
   public boolean isTracking() {
-    return mRunning;
+    return _running;
   }
 
   @Override
   public void startTracking() {
-    if (mRunning) {
+    if (_running) {
       return;
     }
 
-    mStart = new Date();
+    _start = new Date();
     Intent intent = getServiceIntent();
-    mContext.startService(intent);
-    mContext.bindService(intent, mConnection, 0);
+    _context.startService(intent);
+    _context.bindService(intent, _connection, 0);
 
-    mRunning = true;
+    _running = true;
   }
 
   @Override
   public PathInfo getLastPath() {
-    if (mServiceBinder == null) {
+    if (_serviceBinder == null) {
       return null;
     }
 
-    List<Position> positions = mServiceBinder.getService().getPositions();
+    List<Position> positions = _serviceBinder.getService().getPositions();
 
     if (positions.size() == 0) {
       return null;
@@ -91,20 +91,20 @@ public class TrackingManagementService implements ITrackingManagementService {
 
     positions = filterPositions(positions);
 
-    return new PathInfo(mStart, new Date(), new Path(positions));
+    return new PathInfo(_start, new Date(), new Path(positions));
   }
 
   @Override
   public void stopTracking() {
-    if (!mRunning) {
+    if (!_running) {
       return;
     }
 
-    mContext.unbindService(mConnection);
-    mContext.stopService(getServiceIntent());
+    _context.unbindService(_connection);
+    _context.stopService(getServiceIntent());
 
-    mServiceBinder = null;
-    mRunning = false;
+    _serviceBinder = null;
+    _running = false;
   }
 
   //endregion
@@ -112,7 +112,7 @@ public class TrackingManagementService implements ITrackingManagementService {
   //region Methods
 
   protected List<Position> filterPositions(List<Position> positions) {
-    List<Position> filtered = new ArrayList<Position>(positions.size());
+    List<Position> filtered = new ArrayList<>(positions.size());
 
     ILocationFilter filter = getFilter();
     for (Position position : positions) {
@@ -125,7 +125,7 @@ public class TrackingManagementService implements ITrackingManagementService {
   }
 
   protected Intent getServiceIntent() {
-    return new Intent(mContext, TrackingService.class);
+    return new Intent(_context, TrackingService.class);
   }
 
   //endregion
@@ -135,7 +135,7 @@ public class TrackingManagementService implements ITrackingManagementService {
   protected class TrackingServiceConnection implements ServiceConnection {
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
-      mServiceBinder = (TrackingService.TrackingServiceBinder) service;
+      _serviceBinder = (TrackingService.TrackingServiceBinder) service;
     }
 
     @Override

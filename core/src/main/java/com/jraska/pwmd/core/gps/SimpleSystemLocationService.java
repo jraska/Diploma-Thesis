@@ -10,14 +10,14 @@ import com.jraska.common.events.Observable;
 public class SimpleSystemLocationService implements ILocationService, ILocationStatusService {
   //region Fields
 
-  private final LocationManager mLocationManager;
+  private final LocationManager _locationManager;
 
-  private Position mLastPosition;
+  private Position _lastPosition;
 
-  private Observable<Position> mNewPosition;
-  private boolean mTracking;
+  private Observable<Position> _newPosition;
+  private boolean _tracking;
 
-  private final LocationListener mLocationListener = new InnerLocationListener();
+  private final LocationListener _locationListener = new InnerLocationListener();
 
   //endregion
 
@@ -26,7 +26,7 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
   public SimpleSystemLocationService(LocationManager locationManager) {
     ArgumentCheck.notNull(locationManager);
 
-    mLocationManager = locationManager;
+    _locationManager = locationManager;
   }
 
   //endregion
@@ -34,7 +34,7 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
   //region Properties
 
   public LocationManager getLocationManager() {
-    return mLocationManager;
+    return _locationManager;
   }
 
 
@@ -44,12 +44,12 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 
   @Override
   public boolean isGpsLocationOn() {
-    return mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    return _locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
   }
 
   @Override
   public boolean isNetworkLocationOn() {
-    return mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    return _locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
   }
 
   //endregion
@@ -59,25 +59,25 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 
   @Override
   public Observable<Position> getNewPosition() {
-    if (mNewPosition == null) {
-      mNewPosition = new Observable<Position>();
+    if (_newPosition == null) {
+      _newPosition = new Observable<>();
     }
 
-    return mNewPosition;
+    return _newPosition;
   }
 
   @Override
   public Position getLastPosition() {
-    if (mLastPosition == null || !mTracking) {
+    if (_lastPosition == null || !_tracking) {
       return getLastKnownPosition();
     }
 
-    return mLastPosition;
+    return _lastPosition;
   }
 
   @Override
   public boolean isTracking() {
-    return mTracking;
+    return _tracking;
   }
 
   @Override
@@ -87,27 +87,27 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
 
   @Override
   public void startTracking(LocationSettings settings) {
-    if (mTracking) {
+    if (_tracking) {
       return;
     }
 
     ArgumentCheck.notNull(settings);
 
-    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, settings.minTime, settings.minDistance, mLocationListener);
-    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, settings.minTime, settings.minDistance, mLocationListener);
+    _locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, settings.minTime, settings.minDistance, _locationListener);
+    _locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, settings.minTime, settings.minDistance, _locationListener);
 
-    mTracking = true;
+    _tracking = true;
   }
 
   @Override
   public void stopTracking() {
-    if (!mTracking) {
+    if (!_tracking) {
       return;
     }
 
-    mLocationManager.removeUpdates(mLocationListener);
+    _locationManager.removeUpdates(_locationListener);
 
-    mTracking = false;
+    _tracking = false;
   }
 
   //endregion
@@ -123,16 +123,16 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
   }
 
   protected final void onNewPosition(Position position) {
-    mLastPosition = position;
+    _lastPosition = position;
 
-    if (mNewPosition != null) {
-      mNewPosition.notify(this, position);
+    if (_newPosition != null) {
+      _newPosition.notify(this, position);
     }
   }
 
   public Position getLastKnownPosition() {
-    Location lastGps = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-    Location lastNetwork = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+    Location lastGps = _locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+    Location lastNetwork = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
     Location better = chooseBetterLocation(lastGps, lastNetwork);
 

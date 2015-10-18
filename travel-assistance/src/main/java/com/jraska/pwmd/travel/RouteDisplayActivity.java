@@ -16,95 +16,85 @@ import com.jraska.pwmd.travel.persistence.ITravelDataPersistenceService;
 import java.util.List;
 import java.util.UUID;
 
-public class RouteDisplayActivity extends BaseTravelActivity
-{
-	//region Constants
+public class RouteDisplayActivity extends BaseTravelActivity {
+  //region Constants
 
-	public static final String ROUTE_ID = "RouteId";
-	protected static final int ROUTE_WIDTH = 5;
-	public static final int ZOOM = 18;
+  public static final String ROUTE_ID = "RouteId";
+  protected static final int ROUTE_WIDTH = 5;
+  public static final int ZOOM = 18;
 
-	//endregion
+  //endregion
 
-	//region Fields
+  //region Fields
 
-	private GoogleMap mMapView;
+  private GoogleMap _mapView;
 
-	//endregion
+  //endregion
 
-	//region Properties
+  //region Properties
 
-	protected GoogleMap getMap()
-	{
-		if (mMapView == null)
-		{
-			mMapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-		}
+  protected GoogleMap getMap() {
+    if (_mapView == null) {
+      _mapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+    }
 
-		return mMapView;
-	}
+    return _mapView;
+  }
 
-	protected ITravelDataPersistenceService getTravelDataPersistenceService()
-	{
-		return ITravelDataPersistenceService.Stub.asInterface();
-	}
+  protected ITravelDataPersistenceService getTravelDataPersistenceService() {
+    return ITravelDataPersistenceService.Stub.asInterface();
+  }
 
-	//endregion
+  //endregion
 
-	//region Activity overrides
+  //region Activity overrides
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.route_display);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.route_display);
 
-		loadAndShowRoute();
-	}
+    loadAndShowRoute();
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	protected void loadAndShowRoute()
-	{
-		UUID routeId = (UUID) getIntent().getSerializableExtra(ROUTE_ID);
+  protected void loadAndShowRoute() {
+    UUID routeId = (UUID) getIntent().getSerializableExtra(ROUTE_ID);
 
-		RouteData routeData = getTravelDataPersistenceService().selectRouteData(routeId);
+    RouteData routeData = getTravelDataPersistenceService().selectRouteData(routeId);
 
-		setTitle(routeData.getTitle());
-		displayOnMap(routeData);
-	}
+    setTitle(routeData.getTitle());
+    displayOnMap(routeData);
+  }
 
-	protected void displayOnMap(RouteData routeData)
-	{
-		GoogleMap map = getMap();
-		PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH).color(Color.BLUE).visible(true);
+  protected void displayOnMap(RouteData routeData) {
+    GoogleMap map = getMap();
+    PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH).color(Color.BLUE).visible(true);
 
-		List<Position> points = routeData.getPath().getPoints();
+    List<Position> points = routeData.getPath().getPoints();
 
-		if (points.size() == 0)
-		{
-			throw new IllegalStateException("No points to display");
-		}
+    if (points.size() == 0) {
+      throw new IllegalStateException("No points to display");
+    }
 
-		for (Position position : points)
-		{
-			polylineOptions.add(toGoogleLatLng(position));
-		}
+    for (Position position : points) {
+      polylineOptions.add(toGoogleLatLng(position));
+    }
 
-		Polyline line = map.addPolyline(polylineOptions);
+    Polyline line = map.addPolyline(polylineOptions);
 
-		map.setMyLocationEnabled(true);
+    map.setMyLocationEnabled(true);
 
-		CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(toGoogleLatLng(points.get(0)), ZOOM);
-		getMap().animateCamera(cameraUpdate);
-	}
+    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(toGoogleLatLng(points.get(0)), ZOOM);
+    getMap().animateCamera(cameraUpdate);
+  }
 
-	protected LatLng toGoogleLatLng(com.jraska.pwmd.core.gps.LatLng latLng)
-	{
-		return new LatLng(latLng.latitude, latLng.longitude);
-	}
+  protected LatLng toGoogleLatLng(com.jraska.pwmd.core.gps.LatLng latLng) {
+    return new LatLng(latLng.latitude, latLng.longitude);
+  }
 
-	//endregion
+  //endregion
 }

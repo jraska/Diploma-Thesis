@@ -1,6 +1,5 @@
 package com.jraska.common;
 
-public interface IDisposable
-{
-	void dispose();
+public interface IDisposable {
+  void dispose();
 }

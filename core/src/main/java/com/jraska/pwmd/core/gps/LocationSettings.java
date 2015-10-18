@@ -1,21 +1,19 @@
 package com.jraska.pwmd.core.gps;
 
-public class LocationSettings
-{
-	//region Fields
+public class LocationSettings {
+  //region Fields
 
-	public final long minTime;
-	public final float minDistance;
+  public final long minTime;
+  public final float minDistance;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public LocationSettings(long minTime, float minDistance)
-	{
-		this.minTime = minTime;
-		this.minDistance = minDistance;
-	}
+  public LocationSettings(long minTime, float minDistance) {
+    this.minTime = minTime;
+    this.minDistance = minDistance;
+  }
 
-	//endregion
+  //endregion
 }

@@ -11,166 +11,143 @@ import android.widget.TextView;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-public class Console extends ScrollView
-{
-	//region Static Fields
+public class Console extends ScrollView {
+  //region Static Fields
 
-	private static ArrayList<WeakReference<Console>> sConsoles = new ArrayList<WeakReference<Console>>();
-	private static Handler sHandler = new ConsoleHandler(Looper.getMainLooper()); //main looper ensures UI thread
+  private static ArrayList<WeakReference<Console>> sConsoles = new ArrayList<>();
+  private static Handler sHandler = new ConsoleHandler(Looper.getMainLooper()); //main looper ensures UI thread
 
-	private static String sConsoleText = "";
+  private static String sConsoleText = "";
 
-	//endregion
+  //endregion
 
-	//region Constants
+  //region Constants
 
-	private static final int MAX_TEXT_LENGTH = 5000;
+  private static final int MAX_TEXT_LENGTH = 5000;
 
-	private static final int WRITE_MESSAGE_ID = 1;
-	private static final int CLEAR_CONSOLE_ID = 2;
+  private static final int WRITE_MESSAGE_ID = 1;
+  private static final int CLEAR_CONSOLE_ID = 2;
 
-	//endregion
+  //endregion
 
-	//region Fields
+  //region Fields
 
-	private final TextView mTextView;
+  private final TextView _textView;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public Console(Context context)
-	{
-		this(context, null);
-	}
+  public Console(Context context) {
+    this(context, null);
+  }
 
-	public Console(Context context, AttributeSet attrs)
-	{
-		this(context, attrs, 0);
-	}
+  public Console(Context context, AttributeSet attrs) {
+    this(context, attrs, 0);
+  }
 
-	public Console(Context context, AttributeSet attrs, int defStyle)
-	{
-		super(context, attrs, defStyle);
+  public Console(Context context, AttributeSet attrs, int defStyle) {
+    super(context, attrs, defStyle);
 
-		mTextView = new TextView(context);
-		addView(mTextView);
+    _textView = new TextView(context);
+    addView(_textView);
 
-		sConsoles.add(new WeakReference<Console>(this));
-		updateText(sConsoleText);
-	}
+    sConsoles.add(new WeakReference<>(this));
+    updateText(sConsoleText);
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	private void updateText(String fullText)
-	{
-		mTextView.setText(fullText);
-		fullScroll(ScrollView.FOCUS_DOWN);
-	}
+  private void updateText(String fullText) {
+    _textView.setText(fullText);
+    fullScroll(ScrollView.FOCUS_DOWN);
+  }
 
-	//endregion
+  //endregion
 
-	//region Static Methods
+  //region Static Methods
 
-	public static void writeLn(Object o)
-	{
-		if (o == null)
-		{
-			writeLn("null");
-		}
-		else
-		{
-			writeLn(o.toString());
-		}
-	}
+  public static void writeLn(Object o) {
+    if (o == null) {
+      writeLn("null");
+    } else {
+      writeLn(o.toString());
+    }
+  }
 
-	public static void writeLn(String text)
-	{
-		write(text + "\n");
-	}
+  public static void writeLn(String text) {
+    write(text + "\n");
+  }
 
-	public static void write(String text)
-	{
-		sendMessage(WRITE_MESSAGE_ID, text);
-	}
+  public static void write(String text) {
+    sendMessage(WRITE_MESSAGE_ID, text);
+  }
 
-	public static void clear()
-	{
-		sendMessage(CLEAR_CONSOLE_ID, null);
-	}
+  public static void clear() {
+    sendMessage(CLEAR_CONSOLE_ID, null);
+  }
 
-	private static void sendMessage(int id, Object obj)
-	{
-		Message.obtain(sHandler, id, obj).sendToTarget();
-	}
+  private static void sendMessage(int id, Object obj) {
+    Message.obtain(sHandler, id, obj).sendToTarget();
+  }
 
-	private static void writeInternal(String text)
-	{
-		String textBefore = sConsoleText;
-		if (textBefore.length() > MAX_TEXT_LENGTH)
-		{
-			textBefore = textBefore.substring(textBefore.length() - MAX_TEXT_LENGTH + 1);
-		}
+  private static void writeInternal(String text) {
+    String textBefore = sConsoleText;
+    if (textBefore.length() > MAX_TEXT_LENGTH) {
+      textBefore = textBefore.substring(textBefore.length() - MAX_TEXT_LENGTH + 1);
+    }
 
-		sConsoleText = textBefore + text;
+    sConsoleText = textBefore + text;
 
-		setConsolesText(sConsoleText);
-	}
+    setConsolesText(sConsoleText);
+  }
 
-	private static void setConsolesText(String text)
-	{
-		//going backwards to allow remove dropped consoles
-		for (int i = sConsoles.size() - 1; i >= 0; i--)
-		{
-			WeakReference<Console> consoleRef = sConsoles.get(i);
-			Console console = consoleRef.get();
-			if (console == null)
-			{
-				sConsoles.remove(i);
-				continue;
-			}
+  private static void setConsolesText(String text) {
+    //going backwards to allow remove dropped consoles
+    for (int i = sConsoles.size() - 1; i >= 0; i--) {
+      WeakReference<Console> consoleRef = sConsoles.get(i);
+      Console console = consoleRef.get();
+      if (console == null) {
+        sConsoles.remove(i);
+        continue;
+      }
 
-			console.updateText(text);
-		}
-	}
+      console.updateText(text);
+    }
+  }
 
-	private static void clearInternal()
-	{
-		sConsoleText = "";
-		setConsolesText(sConsoleText);
-	}
+  private static void clearInternal() {
+    sConsoleText = "";
+    setConsolesText(sConsoleText);
+  }
 
-	//endregion
+  //endregion
 
-	//region Nested classes
+  //region Nested classes
 
-	static class ConsoleHandler extends Handler
-	{
-		ConsoleHandler(Looper looper)
-		{
-			super(looper);
-		}
+  static class ConsoleHandler extends Handler {
+    ConsoleHandler(Looper looper) {
+      super(looper);
+    }
 
-		@Override
-		public void handleMessage(Message msg)
-		{
-			switch (msg.what)
-			{
-				case WRITE_MESSAGE_ID:
-					writeInternal((String) msg.obj);
-					break;
+    @Override
+    public void handleMessage(Message msg) {
+      switch (msg.what) {
+        case WRITE_MESSAGE_ID:
+          writeInternal((String) msg.obj);
+          break;
 
-				case CLEAR_CONSOLE_ID:
-					clearInternal();
-					break;
+        case CLEAR_CONSOLE_ID:
+          clearInternal();
+          break;
 
-				default:
-					super.handleMessage(msg);
-			}
-		}
-	}
+        default:
+          super.handleMessage(msg);
+      }
+    }
+  }
 
-	//endregion
+  //endregion
 }

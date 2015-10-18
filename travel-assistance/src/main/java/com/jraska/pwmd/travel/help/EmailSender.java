@@ -4,45 +4,41 @@ import android.content.Context;
 import android.content.Intent;
 import com.jraska.common.ArgumentCheck;
 
-public class EmailSender
-{
-	//region Fields
+public class EmailSender {
+  //region Fields
 
-	private final Context mContext;
+  private final Context _context;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public EmailSender(Context context)
-	{
-		ArgumentCheck.notNull(context, "context");
+  public EmailSender(Context context) {
+    ArgumentCheck.notNull(context, "context");
 
-		mContext = context;
-	}
+    _context = context;
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	public void sendEmail(String[] emails, String subject, String message)
-	{
-		Intent emailIntent = new Intent(Intent.ACTION_SEND);
+  public void sendEmail(String[] emails, String subject, String message) {
+    Intent emailIntent = new Intent(Intent.ACTION_SEND);
 
-		//array of strings is required for emails
-		emailIntent.putExtra(Intent.EXTRA_EMAIL, emails);
+    //array of strings is required for emails
+    emailIntent.putExtra(Intent.EXTRA_EMAIL, emails);
 
-		emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-		emailIntent.putExtra(Intent.EXTRA_TEXT, message);
-		emailIntent.setType("plain/text");
-		mContext.startActivity(emailIntent);
-	}
+    emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+    emailIntent.putExtra(Intent.EXTRA_TEXT, message);
+    emailIntent.setType("plain/text");
+    _context.startActivity(emailIntent);
+  }
 
-	public void sendEmail(String email, String subject, String message)
-	{
-		String[] emails = {email};
-		sendEmail(emails, subject, message);
-	}
+  public void sendEmail(String email, String subject, String message) {
+    String[] emails = {email};
+    sendEmail(emails, subject, message);
+  }
 
-	//endregion
+  //endregion
 }

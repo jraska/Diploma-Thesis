@@ -11,8 +11,8 @@ import com.jraska.common.events.IObserver;
 import com.jraska.pwmd.core.gps.ILocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
-import com.jraska.pwmd.travel.RoutesListActivity;
 import com.jraska.pwmd.travel.R;
+import com.jraska.pwmd.travel.RoutesListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,163 +20,144 @@ import java.util.List;
 /**
  * Service for system tracking
  */
-public class TrackingService extends Service
-{
-	//region Constants
+public class TrackingService extends Service {
+  //region Constants
 
-	protected final int ID = 26802; //random number
+  protected final int ID = 26802; //random number
 
-	//endregion
+  //endregion
 
-	//region Fields
+  //region Fields
 
-	private final List<Position> mPositions = new ArrayList<Position>();
-	private boolean mRunning;
+  private final List<Position> _positions = new ArrayList<>();
+  private boolean _running;
 
-	private final Object mLock = new Object();
+  private final Object _lock = new Object();
 
-	private final IObserver<Position> mPositionObserver = new IObserver<Position>()
-	{
-		@Override
-		public void update(Object sender, Position args)
-		{
-			synchronized (mLock)
-			{
-				mPositions.add(args);
-			}
-		}
-	};
+  private final IObserver<Position> _positionObserver = new IObserver<Position>() {
+    @Override
+    public void update(Object sender, Position args) {
+      synchronized (_lock) {
+        _positions.add(args);
+      }
+    }
+  };
 
-	//endregion
+  //endregion
 
-	//region Properties
+  //region Properties
 
 
-	public boolean isRunning()
-	{
-		return mRunning;
-	}
+  public boolean isRunning() {
+    return _running;
+  }
 
-	public List<Position> getPositions()
-	{
-		return new ArrayList<Position>(mPositions);
-	}
+  public List<Position> getPositions() {
+    return new ArrayList<>(_positions);
+  }
 
-	protected ILocationService getLocationService()
-	{
-		return ILocationService.Stub.asInterface();
-	}
+  protected ILocationService getLocationService() {
+    return ILocationService.Stub.asInterface();
+  }
 
-	//endregion
+  //endregion
 
-	//region Service impl
+  //region Service impl
 
 
-	@Override
-	public void onCreate()
-	{
-		super.onCreate();
+  @Override
+  public void onCreate() {
+    super.onCreate();
 
-		mRunning = true;
+    _running = true;
 
-		Notification notification = prepareForegroundNotification();
-		startForeground(ID, notification);
+    Notification notification = prepareForegroundNotification();
+    startForeground(ID, notification);
 
-		stopTracking();
-		startTrackingNewPosition();
-	}
+    stopTracking();
+    startTrackingNewPosition();
+  }
 
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId)
-	{
-		return START_STICKY;
-	}
+  @Override
+  public int onStartCommand(Intent intent, int flags, int startId) {
+    return START_STICKY;
+  }
 
-	@Override
-	public IBinder onBind(Intent intent)
-	{
-		return new TrackingServiceBinder(this);
-	}
+  @Override
+  public IBinder onBind(Intent intent) {
+    return new TrackingServiceBinder(this);
+  }
 
-	@Override
-	public boolean onUnbind(Intent intent)
-	{
-		return super.onUnbind(intent);
-	}
+  @Override
+  public boolean onUnbind(Intent intent) {
+    return super.onUnbind(intent);
+  }
 
-	@Override
-	public void onDestroy()
-	{
-		super.onDestroy();
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
 
-		stopTracking();
+    stopTracking();
 
-		mRunning = false;
-	}
+    _running = false;
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	protected Notification prepareForegroundNotification()
-	{
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-		final String appName = getString(R.string.app_name);
-		builder.setContentTitle(appName);
-		builder.setContentText(getString(R.string.tap_to_return));
-		builder.setTicker(appName);
-		builder.setSmallIcon(R.drawable.ic_launcher);
+  protected Notification prepareForegroundNotification() {
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+    final String appName = getString(R.string.app_name);
+    builder.setContentTitle(appName);
+    builder.setContentText(getString(R.string.tap_to_return));
+    builder.setTicker(appName);
+    builder.setSmallIcon(R.drawable.ic_launcher);
 //		builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-		builder.setWhen(System.currentTimeMillis());
-		builder.setAutoCancel(false);
+    builder.setWhen(System.currentTimeMillis());
+    builder.setAutoCancel(false);
 
-		Intent runApplicationIntent = new Intent(this, RoutesListActivity.class);
-		runApplicationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, runApplicationIntent, 0);
+    Intent runApplicationIntent = new Intent(this, RoutesListActivity.class);
+    runApplicationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, runApplicationIntent, 0);
 
-		builder.setContentIntent(pendingIntent);
+    builder.setContentIntent(pendingIntent);
 
-		return builder.build();
-	}
+    return builder.build();
+  }
 
-	protected void stopTracking()
-	{
-		ILocationService locationService = getLocationService();
-		locationService.stopTracking();
-		locationService.getNewPosition().unregisterObserver(mPositionObserver);
-	}
+  protected void stopTracking() {
+    ILocationService locationService = getLocationService();
+    locationService.stopTracking();
+    locationService.getNewPosition().unregisterObserver(_positionObserver);
+  }
 
-	protected void startTrackingNewPosition()
-	{
-		synchronized (mLock)
-		{
-			mPositions.clear();
-		}
+  protected void startTrackingNewPosition() {
+    synchronized (_lock) {
+      _positions.clear();
+    }
 
-		ILocationService locationService = getLocationService();
+    ILocationService locationService = getLocationService();
 
-		locationService.startTracking(new LocationSettings(5, 5));
-		locationService.getNewPosition().registerObserver(mPositionObserver);
-	}
+    locationService.startTracking(new LocationSettings(5, 5));
+    locationService.getNewPosition().registerObserver(_positionObserver);
+  }
 
-	//endregion
+  //endregion
 
-	//region Nested classes
+  //region Nested classes
 
-	public class TrackingServiceBinder extends Binder
-	{
-		private final TrackingService mService;
+  public class TrackingServiceBinder extends Binder {
+    private final TrackingService _service;
 
-		public TrackingServiceBinder(TrackingService service)
-		{
-			mService = service;
-		}
+    public TrackingServiceBinder(TrackingService service) {
+      _service = service;
+    }
 
-		public TrackingService getService()
-		{
-			return mService;
-		}
-	}
+    public TrackingService getService() {
+      return _service;
+    }
+  }
 
-	//endregion
+  //endregion
 }

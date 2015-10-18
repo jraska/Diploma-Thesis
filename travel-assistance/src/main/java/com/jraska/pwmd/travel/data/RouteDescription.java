@@ -6,96 +6,87 @@ import com.jraska.common.events.IEventArgs;
 import java.util.Date;
 import java.util.UUID;
 
-public class RouteDescription implements IEventArgs
-{
-	//region Fields
+public class RouteDescription implements IEventArgs {
+  //region Fields
 
-	private final UUID mId;
-	private final Date mStart;
-	private final Date mEnd;
-	private final String mTitle;
+  private final UUID _id;
+  private final Date _mStart;
+  private final Date _end;
+  private final String _title;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public RouteDescription(UUID id, Date start, Date end, String title)
-	{
-		ArgumentCheck.notNull(id);
-		ArgumentCheck.notNull(start);
-		ArgumentCheck.notNull(end);
-		ArgumentCheck.notNull(title);
+  public RouteDescription(UUID id, Date start, Date end, String title) {
+    ArgumentCheck.notNull(id);
+    ArgumentCheck.notNull(start);
+    ArgumentCheck.notNull(end);
+    ArgumentCheck.notNull(title);
 
-		mId = id;
-		mStart = start;
-		mEnd = end;
-		mTitle = title;
-	}
+    _id = id;
+    _mStart = start;
+    _end = end;
+    _title = title;
+  }
 
-	//endregion
+  //endregion
 
-	//region Properties
+  //region Properties
 
-	public UUID getId()
-	{
-		return mId;
-	}
+  public UUID getId() {
+    return _id;
+  }
 
-	public Date getStart()
-	{
-		return mStart;
-	}
+  public Date getStart() {
+    return _mStart;
+  }
 
-	public Date getEnd()
-	{
-		return mEnd;
-	}
+  public Date getEnd() {
+    return _end;
+  }
 
-	public String getTitle()
-	{
-		return mTitle;
-	}
+  public String getTitle() {
+    return _title;
+  }
 
-	//endregion
+  //endregion
 
-	//region Object impl
+  //region Object impl
 
-	@Override
-	public String toString()
-	{
-		return "RouteDescription{" +
-				"mId=" + mId +
-				", mStart=" + mStart +
-				", mEnd=" + mEnd +
-				", mTitle='" + mTitle + '\'' +
-				'}';
-	}
+  @Override
+  public String toString() {
+    return "RouteDescription{" +
+        "_id=" + _id +
+        ", _mStart=" + _mStart +
+        ", _end=" + _end +
+        ", _title='" + _title + '\'' +
+        '}';
+  }
 
-	@Override
-	public boolean equals(Object o)
-	{
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-		RouteDescription that = (RouteDescription) o;
+    RouteDescription that = (RouteDescription) o;
 
-		if (!mEnd.equals(that.mEnd)) return false;
-		if (!mId.equals(that.mId)) return false;
-		if (!mStart.equals(that.mStart)) return false;
-		if (!mTitle.equals(that.mTitle)) return false;
+    if (!_end.equals(that._end)) return false;
+    if (!_id.equals(that._id)) return false;
+    if (!_mStart.equals(that._mStart)) return false;
+    if (!_title.equals(that._title)) return false;
 
-		return true;
-	}
+    return true;
+  }
 
-	@Override
-	public int hashCode()
-	{
-		int result = mId.hashCode();
-		result = 31 * result + mStart.hashCode();
-		result = 31 * result + mEnd.hashCode();
-		result = 31 * result + mTitle.hashCode();
-		return result;
-	}
+  @Override
+  public int hashCode() {
+    int result = _id.hashCode();
+    result = 31 * result + _mStart.hashCode();
+    result = 31 * result + _end.hashCode();
+    result = 31 * result + _title.hashCode();
+    return result;
+  }
 
-	//endregion
+  //endregion
 }

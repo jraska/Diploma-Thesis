@@ -5,50 +5,44 @@ import com.jraska.common.exceptions.JRRuntimeException;
 
 import java.io.File;
 
-public class SimpleAppEnvironmentService implements IAppEnvironmentService
-{
-	//region Fields
+public class SimpleAppEnvironmentService implements IAppEnvironmentService {
+  //region Fields
 
-	private final File mRootAppDir;
+  private final File _rootAppDir;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public SimpleAppEnvironmentService(File rootAppDir)
-	{
-		ArgumentCheck.notNull(rootAppDir, "rootAppDir");
+  public SimpleAppEnvironmentService(File rootAppDir) {
+    ArgumentCheck.notNull(rootAppDir, "rootAppDir");
 
-		mRootAppDir = rootAppDir;
+    _rootAppDir = rootAppDir;
 
-		ensureDirExists(mRootAppDir);
-	}
+    ensureDirExists(_rootAppDir);
+  }
 
-	//endregion
+  //endregion
 
-	//region IAppEnvironmentService impl
+  //region IAppEnvironmentService impl
 
-	@Override
-	public File getAppDataRootDirectory()
-	{
-		return mRootAppDir;
-	}
+  @Override
+  public File getAppDataRootDirectory() {
+    return _rootAppDir;
+  }
 
-	//endregion
+  //endregion
 
-	//region methods
+  //region methods
 
-	protected void ensureDirExists(File rootAppDir)
-	{
-		if (!rootAppDir.exists())
-		{
-			boolean created = rootAppDir.mkdirs();
-			if (!created)
-			{
-				throw new JRRuntimeException(String.format("Error creating RootAppDir: %s", rootAppDir.getAbsolutePath()));
-			}
-		}
-	}
+  protected void ensureDirExists(File rootAppDir) {
+    if (!rootAppDir.exists()) {
+      boolean created = rootAppDir.mkdirs();
+      if (!created) {
+        throw new JRRuntimeException(String.format("Error creating RootAppDir: %s", rootAppDir.getAbsolutePath()));
+      }
+    }
+  }
 
-	//endregion
+  //endregion
 }

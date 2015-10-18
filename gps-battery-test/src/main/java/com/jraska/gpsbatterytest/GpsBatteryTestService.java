@@ -26,174 +26,154 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class GpsBatteryTestService extends Service
-{
-	//region Constants
+public class GpsBatteryTestService extends Service {
+  //region Constants
 
-	protected final int ID = 82791; //random number
+  protected final int ID = 82791; //random number
 
-	//endregion
+  //endregion
 
-	//region Fields
+  //region Fields
 
-	private ILogger mLogger;
-	private ScheduledExecutorService mExecutor = Executors.newSingleThreadScheduledExecutor();
-	private final LocationObserver mLocationObserver = new LocationObserver();
+  private ILogger _logger;
+  private ScheduledExecutorService _executor = Executors.newSingleThreadScheduledExecutor();
+  private final LocationObserver _locationObserver = new LocationObserver();
 
-	//endregion
+  //endregion
 
-	//region Service impl
+  //region Service impl
 
-	@Override
-	public void onCreate()
-	{
-		super.onCreate();
+  @Override
+  public void onCreate() {
+    super.onCreate();
 
-		Notification notification = prepareForegroundNotification();
-		startForeground(ID, notification);
+    Notification notification = prepareForegroundNotification();
+    startForeground(ID, notification);
 
-		mLogger = createLogger();
+    _logger = createLogger();
 
-		startLocationLogging();
-		startBatteryLogging();
-	}
+    startLocationLogging();
+    startBatteryLogging();
+  }
 
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId)
-	{
-		return START_STICKY;
-	}
+  @Override
+  public int onStartCommand(Intent intent, int flags, int startId) {
+    return START_STICKY;
+  }
 
-	@Override
-	public void onDestroy()
-	{
-		mLogger.dispose();
+  @Override
+  public void onDestroy() {
+    _logger.dispose();
 
-		stopLocationLogging();
-		stopBatteryLogging();
+    stopLocationLogging();
+    stopBatteryLogging();
 
-		super.onDestroy();
-	}
+    super.onDestroy();
+  }
 
 
-	@Override
-	public IBinder onBind(Intent intent)
-	{
-		return new ServiceBinder(this);
-	}
+  @Override
+  public IBinder onBind(Intent intent) {
+    return new ServiceBinder(this);
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	private void startBatteryLogging()
-	{
-		mExecutor.scheduleAtFixedRate(new CheckBatteryRunnable(), 1, 5 * 60, TimeUnit.SECONDS);
-	}
+  private void startBatteryLogging() {
+    _executor.scheduleAtFixedRate(new CheckBatteryRunnable(), 1, 5 * 60, TimeUnit.SECONDS);
+  }
 
-	private void stopBatteryLogging()
-	{
-		mExecutor.shutdownNow();
-	}
+  private void stopBatteryLogging() {
+    _executor.shutdownNow();
+  }
 
-	private void startLocationLogging()
-	{
-		final ILocationService locationService = ILocationService.Stub.asInterface();
+  private void startLocationLogging() {
+    final ILocationService locationService = ILocationService.Stub.asInterface();
 
-		locationService.getNewPosition().registerObserver(mLocationObserver);
-		locationService.startTracking(new LocationSettings(5, 5));
-	}
+    locationService.getNewPosition().registerObserver(_locationObserver);
+    locationService.startTracking(new LocationSettings(5, 5));
+  }
 
-	private void stopLocationLogging()
-	{
-		final ILocationService locationService = ILocationService.Stub.asInterface();
+  private void stopLocationLogging() {
+    final ILocationService locationService = ILocationService.Stub.asInterface();
 
-		locationService.getNewPosition().unregisterObserver(mLocationObserver);
-		locationService.stopTracking();
-	}
+    locationService.getNewPosition().unregisterObserver(_locationObserver);
+    locationService.stopTracking();
+  }
 
-	protected ILogger createLogger()
-	{
-		final DateFormat dateTimeInstance = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss.SSS");
-		final String nowText = dateTimeInstance.format(new Date());
-		String fileName = "TestLog" + nowText + ".txt";
+  protected ILogger createLogger() {
+    final DateFormat dateTimeInstance = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss.SSS");
+    final String nowText = dateTimeInstance.format(new Date());
+    String fileName = "TestLog" + nowText + ".txt";
 
-		final File externalFilesDir = getExternalFilesDir(null);
+    final File externalFilesDir = getExternalFilesDir(null);
 
 
-		File textFile = new File(externalFilesDir, fileName);
-		TextFileLogger textFileLogger = new TextFileLogger(textFile);
-		ILogger[] loggers = {textFileLogger, new ConsoleLogger()};
+    File textFile = new File(externalFilesDir, fileName);
+    TextFileLogger textFileLogger = new TextFileLogger(textFile);
+    ILogger[] loggers = {textFileLogger, new ConsoleLogger()};
 
-		return new CompositeLogger(loggers);
-	}
+    return new CompositeLogger(loggers);
+  }
 
-	protected void log(Object o)
-	{
-		if (mLogger != null)
-		{
-			mLogger.log(o);
-		}
-	}
+  protected void log(Object o) {
+    if (_logger != null) {
+      _logger.log(o);
+    }
+  }
 
-	protected Notification prepareForegroundNotification()
-	{
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-		final String appName = getString(R.string.app_name);
-		builder.setContentTitle(appName);
-		builder.setContentText(getString(R.string.tap_to_return));
-		builder.setTicker(appName);
-		builder.setSmallIcon(android.R.drawable.ic_menu_info_details);
+  protected Notification prepareForegroundNotification() {
+    NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+    final String appName = getString(R.string.app_name);
+    builder.setContentTitle(appName);
+    builder.setContentText(getString(R.string.tap_to_return));
+    builder.setTicker(appName);
+    builder.setSmallIcon(android.R.drawable.ic_menu_info_details);
 //		builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-		builder.setWhen(System.currentTimeMillis());
-		builder.setAutoCancel(false);
+    builder.setWhen(System.currentTimeMillis());
+    builder.setAutoCancel(false);
 
-		Intent runApplicationIntent = new Intent(this, GpsBatteryTestMainActivity.class);
-		runApplicationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, runApplicationIntent, 0);
+    Intent runApplicationIntent = new Intent(this, GpsBatteryTestMainActivity.class);
+    runApplicationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, runApplicationIntent, 0);
 
-		builder.setContentIntent(pendingIntent);
+    builder.setContentIntent(pendingIntent);
 
-		return builder.build();
-	}
+    return builder.build();
+  }
 
-	//endregion
+  //endregion
 
-	//region Nested classes
+  //region Nested classes
 
-	class LocationObserver implements IObserver<Position>
-	{
-		@Override
-		public void update(Object sender, Position args)
-		{
-			log(args);
-		}
-	}
+  class LocationObserver implements IObserver<Position> {
+    @Override
+    public void update(Object sender, Position args) {
+      log(args);
+    }
+  }
 
-	class CheckBatteryRunnable implements Runnable
-	{
-		@Override
-		public void run()
-		{
-			final BatteryStats currentBatteryStats = IBatteryStatsService.Stub.asInterface().getCurrentBatteryStats();
-			log(currentBatteryStats);
-		}
-	}
+  class CheckBatteryRunnable implements Runnable {
+    @Override
+    public void run() {
+      final BatteryStats currentBatteryStats = IBatteryStatsService.Stub.asInterface().getCurrentBatteryStats();
+      log(currentBatteryStats);
+    }
+  }
 
-	static class ServiceBinder extends Binder
-	{
-		private final GpsBatteryTestService mGpsBatteryTestService;
+  static class ServiceBinder extends Binder {
+    private final GpsBatteryTestService _gpsBatteryTestService;
 
-		ServiceBinder(GpsBatteryTestService gpsBatteryTestService)
-		{
-			mGpsBatteryTestService = gpsBatteryTestService;
-		}
+    ServiceBinder(GpsBatteryTestService gpsBatteryTestService) {
+      _gpsBatteryTestService = gpsBatteryTestService;
+    }
 
-		public GpsBatteryTestService getGpsBatteryTestService()
-		{
-			return mGpsBatteryTestService;
-		}
-	}
+    public GpsBatteryTestService getGpsBatteryTestService() {
+      return _gpsBatteryTestService;
+    }
+  }
 
-	//endregion
+  //endregion
 }

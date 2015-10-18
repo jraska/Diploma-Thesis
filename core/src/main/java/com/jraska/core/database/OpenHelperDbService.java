@@ -9,62 +9,56 @@ import com.jraska.common.IDisposable;
 /**
  * Base class for sqlite database based on open helper
  */
-public class OpenHelperDbService implements IDatabaseService, IDisposable
-{
-	//region Fields
+public class OpenHelperDbService implements IDatabaseService, IDisposable {
+  //region Fields
 
-	private final SQLiteOpenHelper mHelper;
+  private final SQLiteOpenHelper _helper;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public OpenHelperDbService(SQLiteOpenHelper helper)
-	{
-		ArgumentCheck.notNull(helper);
+  public OpenHelperDbService(SQLiteOpenHelper helper) {
+    ArgumentCheck.notNull(helper);
 
-		mHelper = helper;
-	}
+    _helper = helper;
+  }
 
-	//endregion
+  //endregion
 
-	//region Properties
+  //region Properties
 
-	public SQLiteOpenHelper getOpenHelper()
-	{
-		return mHelper;
-	}
+  public SQLiteOpenHelper getOpenHelper() {
+    return _helper;
+  }
 
-	//endregion
+  //endregion
 
-	//region IDatabaseService implementation
+  //region IDatabaseService implementation
 
-	@Override
-	public SQLiteDatabase getReadableDatabase()
-	{
-		return mHelper.getWritableDatabase();
-	}
+  @Override
+  public SQLiteDatabase getReadableDatabase() {
+    return _helper.getWritableDatabase();
+  }
 
-	@Override
-	public SQLiteDatabase getWritableDatabase()
-	{
-		return mHelper.getReadableDatabase();
-	}
+  @Override
+  public SQLiteDatabase getWritableDatabase() {
+    return _helper.getReadableDatabase();
+  }
 
-	//endregion
+  //endregion
 
-	//region IDisposable impl
+  //region IDisposable impl
 
-	@Override
-	public void dispose()
-	{
-		mHelper.close();
-	}
+  @Override
+  public void dispose() {
+    _helper.close();
+  }
 
-	//endregion
+  //endregion
 
-	//region Nested classes
+  //region Nested classes
 
 
-	//endregion
+  //endregion
 }

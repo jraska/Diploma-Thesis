@@ -15,112 +15,97 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class RoutePersistenceServiceBase extends DbPersistenceServiceBase implements ITravelDataPersistenceService
-{
-	//region Fields
+public abstract class RoutePersistenceServiceBase extends DbPersistenceServiceBase implements ITravelDataPersistenceService {
+  //region Fields
 
-	private Observable<RouteDescription> mNewRouteEvent;
+  private Observable<RouteDescription> _newRouteEvent;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	protected RoutePersistenceServiceBase(IDatabaseService databaseService)
-	{
-		super(databaseService);
-	}
+  protected RoutePersistenceServiceBase(IDatabaseService databaseService) {
+    super(databaseService);
+  }
 
-	//endregion
+  //endregion
 
-	//region ITravelDataPersistenceService impl
+  //region ITravelDataPersistenceService impl
 
-	@Override
-	public IObservable<RouteDescription> getOnNewRoute()
-	{
-		if (mNewRouteEvent == null)
-		{
-			mNewRouteEvent = new Observable<RouteDescription>();
-		}
+  @Override
+  public IObservable<RouteDescription> getOnNewRoute() {
+    if (_newRouteEvent == null) {
+      _newRouteEvent = new Observable<>();
+    }
 
-		return mNewRouteEvent;
-	}
+    return _newRouteEvent;
+  }
 
-	@Override
-	public List<RouteDescription> selectAllRouteDescriptions()
-	{
-		return getRouteDescriptionsFromDatabase();
-	}
+  @Override
+  public List<RouteDescription> selectAllRouteDescriptions() {
+    return getRouteDescriptionsFromDatabase();
+  }
 
-	@Override
-	public long updateRoute(RouteData routeData)
-	{
-		SQLiteDatabase database = getWritableDatabase();
+  @Override
+  public long updateRoute(RouteData routeData) {
+    SQLiteDatabase database = getWritableDatabase();
 
-		database.beginTransaction();
-		try
-		{
-			deleteRoute(routeData.getId());
-			long route = insertRoute(routeData);
+    database.beginTransaction();
+    try {
+      deleteRoute(routeData.getId());
+      long route = insertRoute(routeData);
 
-			database.setTransactionSuccessful();
-			return route;
-		}
-		finally
-		{
-			database.endTransaction();
-		}
-	}
+      database.setTransactionSuccessful();
+      return route;
+    }
+    finally {
+      database.endTransaction();
+    }
+  }
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	protected List<RouteDescription> getRouteDescriptionsFromDatabase()
-	{
-		Cursor cursor = getReadableDatabase().query(DbModel.RoutesTable.TABLE_NAME, DbModel.RoutesTable.DESCRIPTION_COLUMNS, null, null, null, null, null);
+  protected List<RouteDescription> getRouteDescriptionsFromDatabase() {
+    Cursor cursor = getReadableDatabase().query(DbModel.RoutesTable.TABLE_NAME, DbModel.RoutesTable.DESCRIPTION_COLUMNS, null, null, null, null, null);
 
-		List<RouteDescription> descriptions = new ArrayList<RouteDescription>();
+    List<RouteDescription> descriptions = new ArrayList<>();
 
-		try
-		{
-			while (cursor.moveToNext())
-			{
-				RouteDescription routeDescription = readRouteDescription(cursor);
-				descriptions.add(routeDescription);
-			}
-		}
-		finally
-		{
-			cursor.close();
-		}
+    try {
+      while (cursor.moveToNext()) {
+        RouteDescription routeDescription = readRouteDescription(cursor);
+        descriptions.add(routeDescription);
+      }
+    }
+    finally {
+      cursor.close();
+    }
 
-		return descriptions;
-	}
+    return descriptions;
+  }
 
-	protected RouteDescription readRouteDescription(Cursor c)
-	{
-		String idValue = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_ID));
-		UUID id = idFromDbValue(idValue);
+  protected RouteDescription readRouteDescription(Cursor c) {
+    String idValue = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_ID));
+    UUID id = idFromDbValue(idValue);
 
-		String title = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_TITLE));
+    String title = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_TITLE));
 
-		String startValue = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_START));
-		Date start = parseDbDate(startValue);
+    String startValue = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_START));
+    Date start = parseDbDate(startValue);
 
-		String endValue = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_END));
-		Date end = parseDbDate(endValue);
+    String endValue = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_END));
+    Date end = parseDbDate(endValue);
 
-		RouteDescription routeDescription = new RouteDescription(id, start, end, title);
-		return routeDescription;
-	}
+    RouteDescription routeDescription = new RouteDescription(id, start, end, title);
+    return routeDescription;
+  }
 
-	protected void onNewRoute(RouteData routeData)
-	{
-		if (mNewRouteEvent != null)
-		{
-			mNewRouteEvent.notify(this, routeData.getDescription());
-		}
-	}
+  protected void onNewRoute(RouteData routeData) {
+    if (_newRouteEvent != null) {
+      _newRouteEvent.notify(this, routeData.getDescription());
+    }
+  }
 
-	//endregion
+  //endregion
 }

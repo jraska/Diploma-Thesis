@@ -17,11 +17,11 @@ import com.jraska.pwmd.travel.help.SmsSender;
 public class HelpRequestSendActivity extends BaseTravelActivity {
   //region Fields
 
-  @Bind(R.id.btnSendEmail) Button mSendEmail;
-  @Bind(R.id.btnSendSms) Button mBtnSendSms;
-  @Bind(R.id.helpMessageText) TextView mMessageView;
+  @Bind(R.id.btnSendEmail) Button _sendEmail;
+  @Bind(R.id.btnSendSms) Button _btnSendSms;
+  @Bind(R.id.helpMessageText) TextView _messageView;
 
-  private boolean mGpsStarted;
+  private boolean _gpsStarted;
 
   //endregion
 
@@ -55,7 +55,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
     boolean tracking = getLocationService().isTracking();
     if (!tracking) {
       getLocationService().startTracking(new LocationSettings(5, 5));
-      mGpsStarted = true;
+      _gpsStarted = true;
     }
   }
 
@@ -63,9 +63,9 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
   protected void onPause() {
     super.onPause();
 
-    if (mGpsStarted) {
+    if (_gpsStarted) {
       getLocationService().stopTracking();
-      mGpsStarted = false;
+      _gpsStarted = false;
     }
   }
 
@@ -82,7 +82,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
 
     String message = getMessage(position);
 
-    mMessageView.setText(message);
+    _messageView.setText(message);
 
     SmsSender smsSender = new SmsSender();
     if (smsSender.sendSms("0420721380088", message)) {
@@ -107,7 +107,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
 
     String message = getMessage(position);
 
-    mMessageView.setText(message);
+    _messageView.setText(message);
 
     EmailSender emailSender = new EmailSender(this);
     emailSender.sendEmail("josef.raska@gmail.com", getString(R.string.i_am_lost), message);

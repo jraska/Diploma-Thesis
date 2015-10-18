@@ -6,49 +6,50 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import com.jraska.common.ArgumentCheck;
 
-public class SimpleBatteryStatsService implements IBatteryStatsService
-{
-	//region Fields
+public class SimpleBatteryStatsService implements IBatteryStatsService {
+  //region Fields
 
-	private final Context mContext;
+  private final Context _context;
 
-	//endregion
+  //endregion
 
-	//region Constructors
+  //region Constructors
 
-	public SimpleBatteryStatsService(Context context)
-	{
-		ArgumentCheck.notNull(context);
+  public SimpleBatteryStatsService(Context context) {
+    ArgumentCheck.notNull(context);
 
-		mContext = context;
-	}
+    _context = context;
+  }
 
-	//endregion
+  //endregion
 
-	//region IBatteryStatsService impl
+  //region IBatteryStatsService impl
 
-	@Override
-	public BatteryStats getCurrentBatteryStats()
-	{
-		IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-		Intent batteryStatus = mContext.registerReceiver(null, filter);
+  @Override
+  public BatteryStats getCurrentBatteryStats() {
+    IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+    Intent batteryStatus = _context.registerReceiver(null, filter);
 
-		int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-		int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+    if (batteryStatus == null) {
+      throw new UnsupportedOperationException("battery status are null after sticky intent");
+    }
 
-		float batteryPct = level / (float) scale;
+    int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+    int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
-		int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-		boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
-				status == BatteryManager.BATTERY_STATUS_FULL;
+    float batteryPct = level / (float) scale;
 
-		return new BatteryStats(batteryPct, isCharging);
-	}
+    int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+    boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+        status == BatteryManager.BATTERY_STATUS_FULL;
 
-	//endregion
+    return new BatteryStats(batteryPct, isCharging);
+  }
 
-	//region Nested classes
+  //endregion
+
+  //region Nested classes
 
 
-	//endregion
+  //endregion
 }
