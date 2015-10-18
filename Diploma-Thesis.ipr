@@ -54,39 +54,61 @@
     <entry_points version="2.0" />
   </component>
   <component name="InspectionProjectProfileManager">
-    <profiles>
-      <profile version="1.0" is_locked="false">
-        <option name="myName" value="Project Default" />
-        <option name="myLocal" value="false" />
-        <inspection_tool class="FieldCanBeLocal" enabled="false" level="WARNING" enabled_by_default="false" />
-        <inspection_tool class="LoggerInitializedWithForeignClass" enabled="false" level="WARNING" enabled_by_default="false">
-          <option name="loggerClassName" value="org.apache.log4j.Logger,org.slf4j.LoggerFactory,org.apache.commons.logging.LogFactory,java.util.logging.Logger" />
-          <option name="loggerFactoryMethodName" value="getLogger,getLogger,getLog,getLogger" />
-        </inspection_tool>
-        <inspection_tool class="RedundantCast" enabled="false" level="WARNING" enabled_by_default="false" />
-        <inspection_tool class="SameParameterValue" enabled="false" level="WARNING" enabled_by_default="false" />
-        <inspection_tool class="SerializableHasSerialVersionUIDField" enabled="true" level="WARNING" enabled_by_default="true">
-          <option name="ignoreAnonymousInnerClasses" value="false" />
-          <option name="superClassString" value="" />
-        </inspection_tool>
-        <inspection_tool class="StringBufferReplaceableByString" enabled="true" level="INFO" enabled_by_default="true" />
-        <inspection_tool class="UnnecessaryLocalVariable" enabled="false" level="WARNING" enabled_by_default="false">
-          <option name="m_ignoreImmediatelyReturnedVariables" value="false" />
-          <option name="m_ignoreAnnotatedVariables" value="false" />
-        </inspection_tool>
-        <inspection_tool class="UnusedDeclaration" enabled="false" level="WARNING" enabled_by_default="false">
-          <option name="ADD_MAINS_TO_ENTRIES" value="true" />
-          <option name="ADD_APPLET_TO_ENTRIES" value="true" />
-          <option name="ADD_SERVLET_TO_ENTRIES" value="true" />
-          <option name="ADD_NONJAVA_TO_ENTRIES" value="true" />
-        </inspection_tool>
-        <inspection_tool class="UnusedParameters" enabled="false" level="WARNING" enabled_by_default="false" />
-        <inspection_tool class="UnusedReturnValue" enabled="false" level="WARNING" enabled_by_default="false" />
-      </profile>
-    </profiles>
+    <profile version="1.0">
+      <option name="myName" value="Project Default" />
+      <option name="myLocal" value="true" />
+      <inspection_tool class="FieldCanBeLocal" enabled="false" level="WARNING" enabled_by_default="false" />
+      <inspection_tool class="IgnoreUnusedEntry" enabled="false" level="UNUSED ENTRY" enabled_by_default="false" />
+      <inspection_tool class="LoggerInitializedWithForeignClass" enabled="false" level="WARNING" enabled_by_default="false">
+        <option name="loggerClassName" value="org.apache.log4j.Logger,org.slf4j.LoggerFactory,org.apache.commons.logging.LogFactory,java.util.logging.Logger" />
+        <option name="loggerFactoryMethodName" value="getLogger,getLogger,getLog,getLogger" />
+      </inspection_tool>
+      <inspection_tool class="SameParameterValue" enabled="false" level="WARNING" enabled_by_default="false" />
+      <inspection_tool class="UnnecessaryLocalVariable" enabled="false" level="WARNING" enabled_by_default="false">
+        <option name="m_ignoreImmediatelyReturnedVariables" value="false" />
+        <option name="m_ignoreAnnotatedVariables" value="false" />
+      </inspection_tool>
+      <inspection_tool class="UnusedDeclaration" enabled="false" level="WARNING" enabled_by_default="false">
+        <option name="ADD_MAINS_TO_ENTRIES" value="true" />
+        <option name="ADD_APPLET_TO_ENTRIES" value="true" />
+        <option name="ADD_SERVLET_TO_ENTRIES" value="true" />
+        <option name="ADD_NONJAVA_TO_ENTRIES" value="true" />
+      </inspection_tool>
+      <inspection_tool class="UnusedParameters" enabled="false" level="WARNING" enabled_by_default="false" />
+      <inspection_tool class="UnusedReturnValue" enabled="false" level="WARNING" enabled_by_default="false" />
+      <inspection_tool class="WeakerAccess" enabled="true" level="INFO" enabled_by_default="true">
+        <option name="SUGGEST_PACKAGE_LOCAL_FOR_MEMBERS" value="true" />
+        <option name="SUGGEST_PACKAGE_LOCAL_FOR_TOP_CLASSES" value="true" />
+        <option name="SUGGEST_PRIVATE_FOR_INNERS" value="false" />
+      </inspection_tool>
+    </profile>
     <option name="PROJECT_PROFILE" value="Project Default" />
     <option name="USE_PROJECT_PROFILE" value="true" />
     <version value="1.0" />
+  </component>
+  <component name="NullableNotNullManager">
+    <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
+    <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />
+    <option name="myNullables">
+      <value>
+        <list size="4">
+          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.Nullable" />
+          <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nullable" />
+          <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.Nullable" />
+          <item index="3" class="java.lang.String" itemvalue="android.support.annotation.Nullable" />
+        </list>
+      </value>
+    </option>
+    <option name="myNotNulls">
+      <value>
+        <list size="4">
+          <item index="0" class="java.lang.String" itemvalue="org.jetbrains.annotations.NotNull" />
+          <item index="1" class="java.lang.String" itemvalue="javax.annotation.Nonnull" />
+          <item index="2" class="java.lang.String" itemvalue="edu.umd.cs.findbugs.annotations.NonNull" />
+          <item index="3" class="java.lang.String" itemvalue="android.support.annotation.NonNull" />
+        </list>
+      </value>
+    </option>
   </component>
   <component name="Palette2">
     <group name="Swing">
@@ -212,6 +234,34 @@
   <component name="ProjectCodeStyleSettingsManager">
     <option name="PER_PROJECT_SETTINGS">
       <value>
+        <Objective-C-extensions>
+          <option name="GENERATE_INSTANCE_VARIABLES_FOR_PROPERTIES" value="ASK" />
+          <option name="RELEASE_STYLE" value="IVAR" />
+          <option name="TYPE_QUALIFIERS_PLACEMENT" value="BEFORE" />
+          <file>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Import" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Macro" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Typedef" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Enum" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Constant" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Global" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Struct" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="FunctionPredecl" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Function" />
+          </file>
+          <class>
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Property" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="Synthesize" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="InitMethod" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="StaticMethod" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="InstanceMethod" />
+            <option name="com.jetbrains.cidr.lang.util.OCDeclarationKind" value="DeallocMethod" />
+          </class>
+          <extensions>
+            <pair source="cpp" header="h" />
+            <pair source="c" header="h" />
+          </extensions>
+        </Objective-C-extensions>
         <XML>
           <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
         </XML>
@@ -351,4 +401,3 @@
     </library>
   </component>
 </project>
-
