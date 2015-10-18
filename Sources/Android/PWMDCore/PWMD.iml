@@ -16,10 +16,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Com.JRaska.Common" />
     <orderEntry type="module" module-name="Com.JRaska.Core" />
     <orderEntry type="library" name="dagger-1.2.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="dagger-compiler-1.2.2" level="project" />
   </component>
 </module>
-
