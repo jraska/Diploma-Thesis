@@ -26,6 +26,21 @@ android {
     }
   }
 
+  signingConfigs {
+    debug {
+      storeFile file("debug.keystore")
+      storePassword "debugtravel"
+      keyAlias "debugtravel"
+      keyPassword "debugtravel"
+    }
+    release {
+      storeFile file("debug.keystore")
+      storePassword "debugtravel"
+      keyAlias "debugtravel"
+      keyPassword "debugtravel"
+    }
+  }
+
   lintOptions {
     abortOnError false // TODO: Abort on Lint errors
   }

@@ -11,6 +11,8 @@ android {
     versionCode 1
     versionName "1.0"
   }
+
+
   buildTypes {
     debug {
       debuggable true
@@ -26,6 +28,20 @@ android {
     }
   }
 
+  signingConfigs {
+    debug {
+      storeFile file("debug.keystore")
+      storePassword "debugbattery"
+      keyAlias "debugbattery"
+      keyPassword "debugbattery"
+    }
+    release {
+      storeFile file("debug.keystore")
+      storePassword "debugbattery"
+      keyAlias "debugbattery"
+      keyPassword "debugbattery"
+    }
+  }
 
 }
 
