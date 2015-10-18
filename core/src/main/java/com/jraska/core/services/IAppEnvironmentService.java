@@ -1,26 +1,23 @@
 package com.jraska.core.services;
 
-import com.jraska.core.JRApplication;
+import com.jraska.core.BaseApplication;
 
 import java.io.File;
 
-public interface IAppEnvironmentService extends IAppService
-{
-	//region Methods
+public interface IAppEnvironmentService extends IAppService {
+  //region Methods
 
-	File getAppDataRootDirectory();
+  File getAppDataRootDirectory();
 
-	//endregion
+  //endregion
 
-	//region Nested class
+  //region Nested class
 
-	static class Stub
-	{
-		public static IAppEnvironmentService asInterface()
-		{
-			return JRApplication.getService(IAppEnvironmentService.class);
-		}
-	}
+  class Stub {
+    public static IAppEnvironmentService asInterface() {
+      return BaseApplication.getService(IAppEnvironmentService.class);
+    }
+  }
 
-	//endregion
+  //endregion
 }

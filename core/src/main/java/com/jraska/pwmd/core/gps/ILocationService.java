@@ -1,41 +1,41 @@
 package com.jraska.pwmd.core.gps;
 
 import com.jraska.common.events.IObservable;
-import com.jraska.core.JRApplication;
+import com.jraska.core.BaseApplication;
 import com.jraska.core.services.IAppService;
 
-public interface ILocationService extends IAppService
-{
-	//region Events
+public interface ILocationService extends IAppService {
+  //region Events
 
-	IObservable<Position> getNewPosition();
+  IObservable<Position> getNewPosition();
 
-	//endregion
+  //endregion
 
-	//region Properties
+  //region Properties
 
-	Position getLastPosition();
-	boolean isTracking();
-	boolean isTrackingAvailable();
+  Position getLastPosition();
 
-	//endregion
+  boolean isTracking();
 
-	//region Methods
+  boolean isTrackingAvailable();
 
-	void startTracking(LocationSettings settings);
-	void stopTracking();
+  //endregion
 
-	//endregion
+  //region Methods
 
-	//region Nested classes
+  void startTracking(LocationSettings settings);
 
-	static class Stub
-	{
-		public static ILocationService asInterface()
-		{
-			return JRApplication.getService(ILocationService.class);
-		}
-	}
+  void stopTracking();
 
-	//endregion
+  //endregion
+
+  //region Nested classes
+
+  class Stub {
+    public static ILocationService asInterface() {
+      return BaseApplication.getService(ILocationService.class);
+    }
+  }
+
+  //endregion
 }

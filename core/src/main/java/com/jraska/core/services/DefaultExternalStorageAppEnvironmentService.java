@@ -1,8 +1,6 @@
 package com.jraska.core.services;
 
-import com.jraska.core.JRApplication;
-
-import java.io.File;
+import com.jraska.core.BaseApplication;
 
 public class DefaultExternalStorageAppEnvironmentService extends SimpleAppEnvironmentService
 {
@@ -10,7 +8,7 @@ public class DefaultExternalStorageAppEnvironmentService extends SimpleAppEnviro
 
 	public DefaultExternalStorageAppEnvironmentService()
 	{
-		super(JRApplication.getCurrent().getExternalFilesDir(null)); //null is for default dir
+	  super(BaseApplication.getCurrent().getExternalFilesDir(null)); //null is for default dir
 	}
 
 	//endregion

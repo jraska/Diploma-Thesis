@@ -1,7 +1,7 @@
 package com.jraska.pwmd.travel.help;
 
 import com.jraska.common.ArgumentCheck;
-import com.jraska.core.JRApplication;
+import com.jraska.core.BaseApplication;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApplication;
@@ -118,7 +118,7 @@ public class LostMessageTextBuilder
 
 	protected String getString(int resId)
 	{
-		return JRApplication.getCurrent().getString(resId);
+	  return BaseApplication.getCurrent().getString(resId);
 	}
 
 	public LostMessageTextBuilder setFromPosition(Position p)

@@ -1,67 +1,59 @@
 package com.jraska.pwmd.travel.tracking;
 
-import com.jraska.core.JRApplication;
+import com.jraska.core.BaseApplication;
 import com.jraska.core.services.IAppService;
 import com.jraska.pwmd.travel.data.Path;
 
 import java.util.Date;
 
-public interface ITrackingManagementService extends IAppService
-{
-	//region Properties
+public interface ITrackingManagementService extends IAppService {
+  //region Properties
 
-	boolean isTracking();
+  boolean isTracking();
 
-	//endregion
+  //endregion
 
-	//region Methods
+  //region Methods
 
-	void startTracking();
+  void startTracking();
 
-	PathInfo getLastPath();
+  PathInfo getLastPath();
 
-	void stopTracking();
+  void stopTracking();
 
-	//endregion
+  //endregion
 
-	//region Nested classes
+  //region Nested classes
 
-	static class PathInfo
-	{
-		private final Date mStart;
-		private final Date mEnd;
-		private final Path mPath;
+  class PathInfo {
+    private final Date mStart;
+    private final Date mEnd;
+    private final Path mPath;
 
-		public PathInfo(Date start, Date end, Path path)
-		{
-			mStart = start;
-			mEnd = end;
-			mPath = path;
-		}
+    public PathInfo(Date start, Date end, Path path) {
+      mStart = start;
+      mEnd = end;
+      mPath = path;
+    }
 
-		public Date getStart()
-		{
-			return mStart;
-		}
+    public Date getStart() {
+      return mStart;
+    }
 
-		public Date getEnd()
-		{
-			return mEnd;
-		}
+    public Date getEnd() {
+      return mEnd;
+    }
 
-		public Path getPath()
-		{
-			return mPath;
-		}
-	}
+    public Path getPath() {
+      return mPath;
+    }
+  }
 
-	static class Stub
-	{
-		public static ITrackingManagementService asInterface()
-		{
-			return JRApplication.getService(ITrackingManagementService.class);
-		}
-	}
+  class Stub {
+    public static ITrackingManagementService asInterface() {
+      return BaseApplication.getService(ITrackingManagementService.class);
+    }
+  }
 
-	//endregion
+  //endregion
 }

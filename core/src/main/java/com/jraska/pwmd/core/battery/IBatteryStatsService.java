@@ -1,25 +1,22 @@
 package com.jraska.pwmd.core.battery;
 
-import com.jraska.core.JRApplication;
+import com.jraska.core.BaseApplication;
 import com.jraska.core.services.IAppService;
 
-public interface IBatteryStatsService extends IAppService
-{
-	//region Methods
+public interface IBatteryStatsService extends IAppService {
+  //region Methods
 
-	BatteryStats getCurrentBatteryStats();
+  BatteryStats getCurrentBatteryStats();
 
-	//endregion
+  //endregion
 
-	//region Nested classes
+  //region Nested classes
 
-	static class Stub
-	{
-		public static IBatteryStatsService asInterface()
-		{
-			return JRApplication.getService(IBatteryStatsService.class);
-		}
-	}
+  class Stub {
+    public static IBatteryStatsService asInterface() {
+      return BaseApplication.getService(IBatteryStatsService.class);
+    }
+  }
 
-	//endregion
+  //endregion
 }

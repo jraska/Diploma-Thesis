@@ -2,28 +2,25 @@ package com.jraska.core.database;
 
 import android.database.sqlite.SQLiteDatabase;
 import com.jraska.common.IDisposable;
-import com.jraska.core.JRApplication;
+import com.jraska.core.BaseApplication;
 import com.jraska.core.services.IAppService;
 
-public interface IDatabaseService extends IAppService, IDisposable
-{
-	//region Methods
+public interface IDatabaseService extends IAppService, IDisposable {
+  //region Methods
 
-	SQLiteDatabase getReadableDatabase();
+  SQLiteDatabase getReadableDatabase();
 
-	SQLiteDatabase getWritableDatabase();
+  SQLiteDatabase getWritableDatabase();
 
-	//endregion
+  //endregion
 
-	//region Nested classes
+  //region Nested classes
 
-	static class Stub
-	{
-		public static IDatabaseService asInterface()
-		{
-			return JRApplication.getService(IDatabaseService.class);
-		}
-	}
+  class Stub {
+    public static IDatabaseService asInterface() {
+      return BaseApplication.getService(IDatabaseService.class);
+    }
+  }
 
-	//endregion
+  //endregion
 }

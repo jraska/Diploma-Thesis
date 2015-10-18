@@ -5,12 +5,12 @@ import android.app.Application;
 /**
  * Base class for all applications
  */
-public abstract class JRApplication extends Application {
+public abstract class BaseApplication extends Application {
   //region Static
 
-  private static JRApplication sCurrent;
+  private static BaseApplication sCurrent;
 
-  public static JRApplication getCurrent() {
+  public static BaseApplication getCurrent() {
     return sCurrent;
   }
 
@@ -28,7 +28,7 @@ public abstract class JRApplication extends Application {
 
   //region Constructors
 
-  public JRApplication() {
+  public BaseApplication() {
     sCurrent = this;
   }
 
