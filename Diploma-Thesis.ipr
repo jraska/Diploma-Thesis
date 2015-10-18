@@ -275,7 +275,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/Core/Com.JRaska.Core.iml" filepath="$PROJECT_DIR$/Sources/Android/Core/Com.JRaska.Core.iml" group="Core" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/GpsBatTest/GpsBatTest.iml" filepath="$PROJECT_DIR$/Sources/Android/GpsBatTest/GpsBatTest.iml" group="Apps" />
-      <module fileurl="file://$PROJECT_DIR$/Sources/Android/PWMDCore/PWMD.iml" filepath="$PROJECT_DIR$/Sources/Android/PWMDCore/PWMD.iml" group="Core" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/Tests/Tests.iml" filepath="$PROJECT_DIR$/Sources/Android/Tests/Tests.iml" group="Tests" />
       <module fileurl="file://$PROJECT_DIR$/Sources/Android/TravelAssistance/TravelAssistance.iml" filepath="$PROJECT_DIR$/Sources/Android/TravelAssistance/TravelAssistance.iml" group="Apps" />
       <module fileurl="file://$PROJECT_DIR$/libs/google-play-services_lib/google-play-services_lib.iml" filepath="$PROJECT_DIR$/libs/google-play-services_lib/google-play-services_lib.iml" group="Libs" />
