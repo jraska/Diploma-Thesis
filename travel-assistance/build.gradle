@@ -13,6 +13,13 @@ android {
   }
 
   buildTypes {
+    debug {
+      debuggable true
+//      signingConfig signingConfigs.debug
+//      testCoverageEnabled true
+      applicationIdSuffix '.dev'
+      versionNameSuffix '-dev'
+    }
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -30,6 +37,6 @@ dependencies {
   compile 'com.android.support:appcompat-v7:23.1.0'
   compile 'com.google.android.gms:play-services:8.1.0'
   compile 'com.jakewharton:butterknife:7.0.1'
-  
+
   testCompile 'junit:junit:4.12'
 }
