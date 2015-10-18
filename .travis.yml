@@ -16,6 +16,7 @@ android:
 
     # Additional components
     - extra-android-m2repository
+    - extra-google-google_play_services
 
     # Emulator - Use older android emulator to make Spoon use internal storage
 #    - sys-img-armeabi-v7a-android-19
