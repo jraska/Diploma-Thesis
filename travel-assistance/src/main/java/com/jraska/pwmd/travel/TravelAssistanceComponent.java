@@ -16,4 +16,6 @@ import dagger.Component;
 
 public interface TravelAssistanceComponent {
   void inject(HelpRequestSendActivity helpRequestSendActivity);
+
+  void inject(RouteDisplayActivity routeDisplayActivity);
 }

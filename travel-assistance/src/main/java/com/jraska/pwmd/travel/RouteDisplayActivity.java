@@ -13,6 +13,7 @@ import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.persistence.TravelDataPersistenceService;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +30,9 @@ public class RouteDisplayActivity extends BaseTravelActivity {
 
   private GoogleMap _mapView;
 
+  @Inject
+  TravelDataPersistenceService _travelDataPersistenceService;
+
   //endregion
 
   //region Properties
@@ -41,10 +45,6 @@ public class RouteDisplayActivity extends BaseTravelActivity {
     return _mapView;
   }
 
-  protected TravelDataPersistenceService getTravelDataPersistenceService() {
-    return TravelDataPersistenceService.Stub.asInterface();
-  }
-
   //endregion
 
   //region Activity overrides
@@ -53,6 +53,7 @@ public class RouteDisplayActivity extends BaseTravelActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.route_display);
+    TravelAssistanceApp.getComponent(this).inject(this);
 
     loadAndShowRoute();
   }
@@ -64,7 +65,7 @@ public class RouteDisplayActivity extends BaseTravelActivity {
   protected void loadAndShowRoute() {
     UUID routeId = (UUID) getIntent().getSerializableExtra(ROUTE_ID);
 
-    RouteData routeData = getTravelDataPersistenceService().selectRouteData(routeId);
+    RouteData routeData = _travelDataPersistenceService.selectRouteData(routeId);
 
     setTitle(routeData.getTitle());
     displayOnMap(routeData);
