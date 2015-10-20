@@ -89,7 +89,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
   }
 
   protected String getMessage(Position position) {
-    LostMessageTextBuilder builder = new LostMessageTextBuilder();
+    LostMessageTextBuilder builder = new LostMessageTextBuilder(this);
     builder.setFromPosition(position);
     return builder.buildSmsText();
   }

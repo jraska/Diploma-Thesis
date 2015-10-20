@@ -1,8 +1,6 @@
 package com.jraska.pwmd.core.gps;
 
-import com.jraska.core.services.AppService;
-
-public interface LocationStatusService extends AppService {
+public interface LocationStatusService {
   boolean isGpsLocationOn();
 
   boolean isNetworkLocationOn();

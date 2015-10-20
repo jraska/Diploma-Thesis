@@ -1,12 +1,10 @@
 package com.jraska.pwmd.travel.tracking;
 
-import com.jraska.core.BaseApp;
-import com.jraska.core.services.AppService;
 import com.jraska.pwmd.travel.data.Path;
 
 import java.util.Date;
 
-public interface TrackingManager extends AppService {
+public interface TrackingManager {
   //region Properties
 
   boolean isTracking();

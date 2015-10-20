@@ -1,7 +1,8 @@
 package com.jraska.pwmd.travel.help;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
-import com.jraska.core.BaseApp;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
@@ -17,12 +18,22 @@ public class LostMessageTextBuilder {
 
   //region Fields
 
+  private final Context _context;
+
   private double _latitude;
   private double _longitude;
   private float _accuracy;
   private Date _time;
   private int _zoom = DEFAULT_ZOOM;
   private String _smsTextTemplate;
+
+  //endregion
+
+  //region Constructors
+
+  public LostMessageTextBuilder(@NonNull Context context) {
+    _context = context;
+  }
 
   //endregion
 
@@ -101,7 +112,7 @@ public class LostMessageTextBuilder {
   }
 
   protected String getString(int resId) {
-    return BaseApp.getCurrent().getString(resId);
+    return _context.getString(resId);
   }
 
   public LostMessageTextBuilder setFromPosition(Position p) {

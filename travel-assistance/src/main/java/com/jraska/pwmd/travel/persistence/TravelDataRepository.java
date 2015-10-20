@@ -3,14 +3,13 @@ package com.jraska.pwmd.travel.persistence;
 import com.jraska.common.Disposable;
 import com.jraska.common.events.Observable;
 import com.jraska.core.BaseApp;
-import com.jraska.core.services.AppService;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface TravelDataRepository extends AppService, Disposable {
+public interface TravelDataRepository extends Disposable {
   //region Events
 
   Observable<RouteDescription> getOnNewRoute();
