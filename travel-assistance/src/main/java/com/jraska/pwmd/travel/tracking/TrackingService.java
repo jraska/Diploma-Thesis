@@ -13,12 +13,14 @@ import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.RoutesListActivity;
+import com.jraska.pwmd.travel.TravelAssistanceApp;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Service for system tracking
+ * Service for system location tracking
  */
 public class TrackingService extends Service {
   //region Constants
@@ -33,6 +35,8 @@ public class TrackingService extends Service {
   private boolean _running;
 
   private final Object _lock = new Object();
+
+  @Inject LocationService _locationService;
 
   private final Observer<Position> _positionObserver = new Observer<Position>() {
     @Override
@@ -56,10 +60,6 @@ public class TrackingService extends Service {
     return new ArrayList<>(_positions);
   }
 
-  protected LocationService getLocationService() {
-    return LocationService.Stub.asInterface();
-  }
-
   //endregion
 
   //region Service impl
@@ -70,6 +70,8 @@ public class TrackingService extends Service {
     super.onCreate();
 
     _running = true;
+
+    TravelAssistanceApp.getComponent(this).inject(this);
 
     Notification notification = prepareForegroundNotification();
     startForeground(ID, notification);
@@ -127,7 +129,7 @@ public class TrackingService extends Service {
   }
 
   protected void stopTracking() {
-    LocationService locationService = getLocationService();
+    LocationService locationService = _locationService;
     locationService.stopTracking();
     locationService.getNewPosition().unregisterObserver(_positionObserver);
   }
@@ -137,7 +139,7 @@ public class TrackingService extends Service {
       _positions.clear();
     }
 
-    LocationService locationService = getLocationService();
+    LocationService locationService = _locationService;
 
     locationService.startTracking(new LocationSettings(5, 5));
     locationService.getNewPosition().registerObserver(_positionObserver);

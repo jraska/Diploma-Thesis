@@ -6,18 +6,11 @@ import com.jraska.pwmd.core.gps.Position;
 public interface LocationFilter extends Filter<Position> {
   //region Nested classes
 
-  class Empty implements LocationFilter {
-    public static final Empty Instance = new Empty();
-
-    private Empty() {
+  LocationFilter Empty = new LocationFilter() {
+    @Override public boolean accept(Position o) {
+      return false;
     }
-
-    @Override
-    public boolean accept(Position position) {
-      return true;
-    }
-  }
+  };
 
   //endregion
-
 }

@@ -13,8 +13,7 @@ public class ParcelRoutePersistenceModule {
     return new TravelAssistanceParcelableDbHelper(context, TravelAssistanceApp.DB_NAME);
   }
 
-  @Provides @PerApp
-  TravelDataPersistenceService providePersistenceSvc(SQLiteOpenHelper openHelper) {
+  @Provides @PerApp TravelDataRepository providePersistenceSvc(SQLiteOpenHelper openHelper) {
     return new RouteParcelTravelDataRepository(openHelper);
   }
 }

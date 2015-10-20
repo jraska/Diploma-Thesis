@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import com.jraska.dagger.PerApp;
+import com.jraska.pwmd.travel.tracking.LocationFilter;
+import com.jraska.pwmd.travel.tracking.SimpleTrackingManager;
 import dagger.Module;
 import dagger.Provides;
 
@@ -25,5 +27,9 @@ public class TravelAssistanceModule {
 
   @Provides @PerApp Context provideContext(Application app) {
     return app;
+  }
+
+  @Provides @PerApp LocationFilter provideFilter() {
+    return new SimpleTrackingManager.GpsProviderOnlyFilter();
   }
 }

@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import butterknife.Bind;
@@ -17,21 +18,22 @@ import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.Path;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
-import com.jraska.pwmd.travel.persistence.TravelDataPersistenceService;
-import com.jraska.pwmd.travel.tracking.TrackingManagementService;
+import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import com.jraska.pwmd.travel.tracking.TrackingManager;
 
+import javax.inject.Inject;
 import java.util.*;
 
 public class RoutesListActivity extends BaseTravelActivity {
   //region Fields
 
-//	@Bind(R.id.btnTest)
-//	Button _testBtn;
-
   @Bind(android.R.id.list) ListView _routesList;
   @Bind(android.R.id.empty) View _emptyView;
 
-  private RoutesAdapter _routesAdapter;
+  @Inject TrackingManager _trackingManager;
+  @Inject TravelDataRepository _travelDataRepository;
+
+  private ArrayAdapter<RouteDescription> _routesAdapter;
 
   private Observer<RouteDescription> _descriptionsObserver = new Observer<RouteDescription>() {
     @Override
@@ -39,14 +41,6 @@ public class RoutesListActivity extends BaseTravelActivity {
       _routesAdapter.add(args);
     }
   };
-
-  //endregion
-
-  //region Properties
-
-  protected TrackingManagementService getTrackingManagementService() {
-    return TrackingManagementService.Stub.asInterface();
-  }
 
   //endregion
 
@@ -58,6 +52,7 @@ public class RoutesListActivity extends BaseTravelActivity {
     setContentView(R.layout.main);
 
     ButterKnife.bind(this);
+    TravelAssistanceApp.getComponent(this).inject(this);
 
     setupRoutes();
 
@@ -67,7 +62,7 @@ public class RoutesListActivity extends BaseTravelActivity {
   }
 
   private boolean showLastSavedRoute() {
-    List<RouteDescription> routeDescriptions = getRoutesPersistenceService().selectAllRouteDescriptions();
+    List<RouteDescription> routeDescriptions = _travelDataRepository.selectAllRouteDescriptions();
 
     if (routeDescriptions.size() == 0) {
       return false;
@@ -115,7 +110,7 @@ public class RoutesListActivity extends BaseTravelActivity {
       @Override
       public boolean onMenuItemClick(MenuItem item) {
         RouteDescription item1 = _routesAdapter.getItem(position);
-        getRoutesPersistenceService().deleteRoute(item1.getId());
+        _travelDataRepository.deleteRoute(item1.getId());
         refreshRoutes();
 
         return true;
@@ -156,15 +151,15 @@ public class RoutesListActivity extends BaseTravelActivity {
   }
 
   void registerOnRouteChangedObservers() {
-    getRoutesPersistenceService().getOnNewRoute().registerObserver(_descriptionsObserver);
+    _travelDataRepository.getOnNewRoute().registerObserver(_descriptionsObserver);
   }
 
   void unregisterOnRouteChangeObservers() {
-    getRoutesPersistenceService().getOnNewRoute().registerObserver(_descriptionsObserver);
+    _travelDataRepository.getOnNewRoute().registerObserver(_descriptionsObserver);
   }
 
   void refreshRoutes() {
-    TravelDataPersistenceService service = getRoutesPersistenceService();
+    TravelDataRepository service = _travelDataRepository;
     List<RouteDescription> routeDescriptions = service.selectAllRouteDescriptions();
 
     _routesAdapter.clear();
@@ -178,19 +173,16 @@ public class RoutesListActivity extends BaseTravelActivity {
     _routesAdapter.notifyDataSetChanged();
   }
 
-  @OnClick(R.id.btnStartTracking)
-  void startTracking() {
-    getTrackingManagementService().startTracking();
+  @OnClick(R.id.btnStartTracking) void startTracking() {
+    _trackingManager.startTracking();
   }
 
-  @OnClick(R.id.btnStopTracking)
-  void stopTracking() {
-    getTrackingManagementService().stopTracking();
+  @OnClick(R.id.btnStopTracking) void stopTracking() {
+    _trackingManager.stopTracking();
   }
 
-  @OnClick(R.id.btnSaveRoute)
-  void saveRoute() {
-    TrackingManagementService.PathInfo lastPath = getTrackingManagementService().getLastPath();
+  @OnClick(R.id.btnSaveRoute) void saveRoute() {
+    TrackingManager.PathInfo lastPath = _trackingManager.getLastPath();
     if (lastPath == null) {
       Toast.makeText(this, getString(R.string.noRouteToSave), Toast.LENGTH_SHORT).show();
       return;
@@ -198,13 +190,9 @@ public class RoutesListActivity extends BaseTravelActivity {
 
     RouteData routeData = new RouteData(new RouteDescription(UUID.randomUUID(), lastPath.getStart(), lastPath.getEnd(), "Test"), lastPath.getPath());
 
-    getRoutesPersistenceService().insertRoute(routeData);
+    _travelDataRepository.insertRoute(routeData);
 
     Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
-  }
-
-  private TravelDataPersistenceService getRoutesPersistenceService() {
-    return TravelDataPersistenceService.Stub.asInterface();
   }
 
   protected void testPersistencePositions() {
@@ -221,7 +209,7 @@ public class RoutesListActivity extends BaseTravelActivity {
     RouteDescription routeDescription = new RouteDescription(testId, new Date(), new Date(), "Test");
     RouteData routeData = new RouteData(routeDescription, new Path(positions));
 
-    TravelDataPersistenceService persistenceService = getRoutesPersistenceService();
+    TravelDataRepository persistenceService = _travelDataRepository;
 
     //try insert
     long value = persistenceService.insertRoute(routeData);

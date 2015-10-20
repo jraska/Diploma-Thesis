@@ -10,7 +10,7 @@ import com.jraska.pwmd.travel.data.RouteDescription;
 import java.util.List;
 import java.util.UUID;
 
-public interface TravelDataPersistenceService extends AppService, Disposable {
+public interface TravelDataRepository extends AppService, Disposable {
   //region Events
 
   Observable<RouteDescription> getOnNewRoute();
@@ -28,16 +28,6 @@ public interface TravelDataPersistenceService extends AppService, Disposable {
   long updateRoute(RouteData routeData);
 
   long insertRoute(RouteData routeData);
-
-  //endregion
-
-  //region Nested class
-
-  class Stub {
-    public static TravelDataPersistenceService asInterface() {
-      return BaseApp.getService(TravelDataPersistenceService.class);
-    }
-  }
 
   //endregion
 }

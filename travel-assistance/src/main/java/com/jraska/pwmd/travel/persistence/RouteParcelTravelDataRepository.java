@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class RouteParcelTravelDataRepository extends RouteRepositoryBase implements TravelDataPersistenceService {
+public class RouteParcelTravelDataRepository extends RouteRepositoryBase implements TravelDataRepository {
   //region Constructors
 
   public RouteParcelTravelDataRepository(SQLiteOpenHelper openHelper) {

@@ -27,12 +27,8 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
 
   //region Properties
 
-  protected LocationService getLocationService() {
-    return LocationService.Stub.asInterface();
-  }
-
   protected Position getPosition() {
-    return getLocationService().getLastPosition();
+    return _locationService.getLastPosition();
   }
 
   //endregion
@@ -42,20 +38,19 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    TravelAssistanceApp.getComponent(this).inject(this);
 
     setContentView(R.layout.help_request_send);
-
     ButterKnife.bind(this);
-    TravelAssistanceApp.getComponent(this).inject(this);
   }
 
   @Override
   protected void onResume() {
     super.onResume();
 
-    boolean tracking = getLocationService().isTracking();
+    boolean tracking = _locationService.isTracking();
     if (!tracking) {
-      getLocationService().startTracking(new LocationSettings(5, 5));
+      _locationService.startTracking(new LocationSettings(5, 5));
       _gpsStarted = true;
     }
   }
@@ -65,7 +60,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
     super.onPause();
 
     if (_gpsStarted) {
-      getLocationService().stopTracking();
+      _locationService.stopTracking();
       _gpsStarted = false;
     }
   }

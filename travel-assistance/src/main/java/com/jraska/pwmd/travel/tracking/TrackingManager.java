@@ -6,7 +6,7 @@ import com.jraska.pwmd.travel.data.Path;
 
 import java.util.Date;
 
-public interface TrackingManagementService extends AppService {
+public interface TrackingManager extends AppService {
   //region Properties
 
   boolean isTracking();
@@ -46,12 +46,6 @@ public interface TrackingManagementService extends AppService {
 
     public Path getPath() {
       return _path;
-    }
-  }
-
-  class Stub {
-    public static TrackingManagementService asInterface() {
-      return BaseApp.getService(TrackingManagementService.class);
     }
   }
 

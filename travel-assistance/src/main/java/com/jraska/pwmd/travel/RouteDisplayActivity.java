@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.persistence.TravelDataPersistenceService;
+import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -31,7 +31,7 @@ public class RouteDisplayActivity extends BaseTravelActivity {
   private GoogleMap _mapView;
 
   @Inject
-  TravelDataPersistenceService _travelDataPersistenceService;
+  TravelDataRepository _travelDataRepository;
 
   //endregion
 
@@ -65,7 +65,7 @@ public class RouteDisplayActivity extends BaseTravelActivity {
   protected void loadAndShowRoute() {
     UUID routeId = (UUID) getIntent().getSerializableExtra(ROUTE_ID);
 
-    RouteData routeData = _travelDataPersistenceService.selectRouteData(routeId);
+    RouteData routeData = _travelDataRepository.selectRouteData(routeId);
 
     setTitle(routeData.getTitle());
     displayOnMap(routeData);

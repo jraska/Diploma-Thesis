@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class RouteRepositoryBase extends DbRepositoryBase implements TravelDataPersistenceService {
+public abstract class RouteRepositoryBase extends DbRepositoryBase implements TravelDataRepository {
   //region Fields
 
   private ObservableImpl<RouteDescription> _newRouteEvent;

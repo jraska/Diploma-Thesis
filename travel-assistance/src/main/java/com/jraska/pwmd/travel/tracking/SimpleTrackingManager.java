@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SimpleTrackingManagementService implements TrackingManagementService {
+public class SimpleTrackingManager implements TrackingManager {
   //region Fields
 
   private final Context _context;
@@ -30,11 +30,11 @@ public class SimpleTrackingManagementService implements TrackingManagementServic
 
   //region Constructors
 
-  public SimpleTrackingManagementService(Context context) {
-    this(context, LocationFilter.Empty.Instance);
+  public SimpleTrackingManager(Context context) {
+    this(context, LocationFilter.Empty);
   }
 
-  public SimpleTrackingManagementService(Context context, LocationFilter filter) {
+  public SimpleTrackingManager(Context context, LocationFilter filter) {
     ArgumentCheck.notNull(context);
     ArgumentCheck.notNull(filter);
 
@@ -143,7 +143,7 @@ public class SimpleTrackingManagementService implements TrackingManagementServic
     }
   }
 
-  protected class GpsProviderOnlyFilter implements LocationFilter {
+  public static class GpsProviderOnlyFilter implements LocationFilter {
     @Override
     public boolean accept(Position position) {
       return LocationManager.GPS_PROVIDER.equals(position.provider);

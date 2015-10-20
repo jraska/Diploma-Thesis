@@ -13,8 +13,7 @@ public class TableRouteDataRepositoryModule {
     return new TravelAssistanceDbHelper(context, TravelAssistanceApp.DB_NAME);
   }
 
-  @Provides @PerApp
-  TravelDataPersistenceService providePersistenceSvc(SQLiteOpenHelper openHelper) {
+  @Provides @PerApp TravelDataRepository providePersistenceSvc(SQLiteOpenHelper openHelper) {
     return new TableRouteDataRepository(openHelper);
   }
 }
