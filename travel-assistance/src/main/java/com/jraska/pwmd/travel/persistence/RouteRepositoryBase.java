@@ -2,20 +2,19 @@ package com.jraska.pwmd.travel.persistence;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import com.jraska.common.events.Observable;
 import com.jraska.common.events.ObservableImpl;
-import com.jraska.core.database.DatabaseService;
-import com.jraska.core.persistence.DbPersistenceServiceBase;
+import com.jraska.core.persistence.DbRepositoryBase;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
-import com.jraska.pwmd.travel.database.DbModel;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class RoutePersistenceServiceBase extends DbPersistenceServiceBase implements TravelDataPersistenceService {
+public abstract class RouteRepositoryBase extends DbRepositoryBase implements TravelDataPersistenceService {
   //region Fields
 
   private ObservableImpl<RouteDescription> _newRouteEvent;
@@ -24,8 +23,8 @@ public abstract class RoutePersistenceServiceBase extends DbPersistenceServiceBa
 
   //region Constructors
 
-  protected RoutePersistenceServiceBase(DatabaseService databaseService) {
-    super(databaseService);
+  protected RouteRepositoryBase(SQLiteOpenHelper sqliteOpenHelper) {
+    super(sqliteOpenHelper);
   }
 
   //endregion

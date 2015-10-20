@@ -3,23 +3,23 @@ package com.jraska.pwmd.travel.persistence;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import com.jraska.common.utils.ParcelableUtil;
-import com.jraska.core.database.DatabaseService;
 import com.jraska.pwmd.travel.data.Path;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
-import com.jraska.pwmd.travel.database.DbModel.RoutesTable;
+import com.jraska.pwmd.travel.persistence.DbModel.RoutesTable;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class RouteParcelTravelDataPersistenceService extends RoutePersistenceServiceBase implements TravelDataPersistenceService {
+public class RouteParcelTravelDataRepository extends RouteRepositoryBase implements TravelDataPersistenceService {
   //region Constructors
 
-  public RouteParcelTravelDataPersistenceService(DatabaseService databaseService) {
-    super(databaseService);
+  public RouteParcelTravelDataRepository(SQLiteOpenHelper openHelper) {
+    super(openHelper);
   }
 
   //endregion

@@ -1,9 +1,10 @@
-package com.jraska.pwmd.travel.database;
+package com.jraska.pwmd.travel.persistence;
 
 public abstract class DbModel {
   //region Constructors
 
   private DbModel() {
+    // no instances
   }
 
   //endregion

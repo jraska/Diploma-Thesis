@@ -1,21 +1,22 @@
 package com.jraska.core.persistence;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.common.Disposable;
-import com.jraska.core.database.DatabaseService;
 import com.jraska.core.utils.DateHelper;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
-public abstract class DbPersistenceServiceBase implements Disposable {
+public abstract class DbRepositoryBase implements Disposable {
   //region Fields
 
-  private final DatabaseService _databaseService;
+  private final SQLiteOpenHelper _sqLiteOpenHelper;
 
   private DateFormat _dbDateFormat;
 
@@ -23,10 +24,10 @@ public abstract class DbPersistenceServiceBase implements Disposable {
 
   //region Constructors
 
-  public DbPersistenceServiceBase(DatabaseService databaseService) {
-    ArgumentCheck.notNull(databaseService);
+  public DbRepositoryBase(SQLiteOpenHelper sqLiteOpenHelper) {
+    ArgumentCheck.notNull(sqLiteOpenHelper);
 
-    _databaseService = databaseService;
+    _sqLiteOpenHelper = sqLiteOpenHelper;
   }
 
   //endregion
@@ -35,18 +36,18 @@ public abstract class DbPersistenceServiceBase implements Disposable {
 
   protected DateFormat getDbDateFormat() {
     if (_dbDateFormat == null) {
-      _dbDateFormat = new SimpleDateFormat(DateHelper.APP_DATE_PATTERN);
+      _dbDateFormat = new SimpleDateFormat(DateHelper.APP_DATE_PATTERN, Locale.US);
     }
 
     return _dbDateFormat;
   }
 
   protected SQLiteDatabase getReadableDatabase() {
-    return _databaseService.getReadableDatabase();
+    return _sqLiteOpenHelper.getReadableDatabase();
   }
 
   protected SQLiteDatabase getWritableDatabase() {
-    return _databaseService.getWritableDatabase();
+    return _sqLiteOpenHelper.getWritableDatabase();
   }
 
   //endregion
@@ -55,7 +56,7 @@ public abstract class DbPersistenceServiceBase implements Disposable {
 
   @Override
   public void dispose() {
-    _databaseService.dispose();
+    _sqLiteOpenHelper.close();
   }
 
   //endregion
