@@ -195,6 +195,7 @@ public class RoutesListActivity extends BaseTravelActivity {
     Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
   }
 
+  // TODO: move to unit tests
   protected void testPersistencePositions() {
     UUID testId = UUID.fromString("07684a55-f8d4-498a-a313-609965a2b3df");
 
