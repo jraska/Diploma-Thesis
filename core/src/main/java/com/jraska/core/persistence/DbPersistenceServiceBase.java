@@ -3,7 +3,6 @@ package com.jraska.core.persistence;
 import android.database.sqlite.SQLiteDatabase;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.common.Disposable;
-import com.jraska.common.exceptions.JRRuntimeException;
 import com.jraska.core.database.DatabaseService;
 import com.jraska.core.utils.DateHelper;
 
@@ -80,7 +79,7 @@ public abstract class DbPersistenceServiceBase implements Disposable {
       return getDbDateFormat().parse(string);
     }
     catch (ParseException e) {
-      throw new JRRuntimeException(e);
+      throw new RuntimeException(e);
     }
   }
 

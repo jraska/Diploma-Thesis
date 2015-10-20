@@ -1,7 +1,6 @@
 package com.jraska.core.services;
 
 import com.jraska.common.ArgumentCheck;
-import com.jraska.common.exceptions.JRRuntimeException;
 
 import java.io.File;
 
@@ -39,7 +38,7 @@ public class SimpleAppEnvironmentService implements AppEnvironmentService {
     if (!rootAppDir.exists()) {
       boolean created = rootAppDir.mkdirs();
       if (!created) {
-        throw new JRRuntimeException(String.format("Error creating RootAppDir: %s", rootAppDir.getAbsolutePath()));
+        throw new RuntimeException(String.format("Error creating RootAppDir: %s", rootAppDir.getAbsolutePath()));
       }
     }
   }
