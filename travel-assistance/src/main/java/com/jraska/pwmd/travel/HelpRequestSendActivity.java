@@ -20,6 +20,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
 
   @Bind(R.id.helpMessageText) TextView _messageView;
   @Inject LocationService _locationService;
+  @Inject SmsSender _smsSender;
 
   private boolean _gpsStarted;
 
@@ -79,7 +80,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
 
     _messageView.setText(message);
 
-    SmsSender smsSender = new SmsSender();
+    SmsSender smsSender = _smsSender;
     // TODO: assistant number
     if (smsSender.sendSms("0420721380088", message)) {
       showToast(getString(R.string.sent));

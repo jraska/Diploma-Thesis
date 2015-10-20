@@ -3,7 +3,17 @@ package com.jraska.pwmd.travel.help;
 import android.telephony.SmsManager;
 import com.jraska.common.ArgumentCheck;
 
+import javax.inject.Inject;
+
 public class SmsSender {
+  //region Constructors
+
+  @Inject
+  public SmsSender() {
+  }
+
+  //endregion
+
   //region Methods
 
   public boolean sendSms(String number, String message) {
