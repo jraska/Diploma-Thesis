@@ -13,15 +13,17 @@ import com.jraska.gpsbatterytest.logging.ConsoleLogger;
 import com.jraska.gpsbatterytest.logging.ILogger;
 import com.jraska.gpsbatterytest.logging.TextFileLogger;
 import com.jraska.pwmd.core.battery.BatteryStats;
-import com.jraska.pwmd.core.battery.IBatteryStatsService;
+import com.jraska.pwmd.core.battery.BatteryStatsReader;
 import com.jraska.pwmd.core.gps.ILocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -29,15 +31,18 @@ import java.util.concurrent.TimeUnit;
 public class GpsBatteryTestService extends Service {
   //region Constants
 
-  protected final int ID = 82791; //random number
+  protected static final int ID = 82791; //random number
 
   //endregion
 
   //region Fields
 
   private ILogger _logger;
-  private ScheduledExecutorService _executor = Executors.newSingleThreadScheduledExecutor();
+  private final ScheduledExecutorService _executor = Executors.newSingleThreadScheduledExecutor();
   private final LocationObserver _locationObserver = new LocationObserver();
+
+  @Inject ILocationService _locationService;
+  @Inject BatteryStatsReader _batteryStatsReader;
 
   //endregion
 
@@ -46,6 +51,8 @@ public class GpsBatteryTestService extends Service {
   @Override
   public void onCreate() {
     super.onCreate();
+
+    GpsBatteryTestApp.getComponent(this).inject(this);
 
     Notification notification = prepareForegroundNotification();
     startForeground(ID, notification);
@@ -71,7 +78,6 @@ public class GpsBatteryTestService extends Service {
     super.onDestroy();
   }
 
-
   @Override
   public IBinder onBind(Intent intent) {
     return new ServiceBinder(this);
@@ -90,21 +96,21 @@ public class GpsBatteryTestService extends Service {
   }
 
   private void startLocationLogging() {
-    final ILocationService locationService = ILocationService.Stub.asInterface();
+    final ILocationService locationService = _locationService;
 
     locationService.getNewPosition().registerObserver(_locationObserver);
     locationService.startTracking(new LocationSettings(5, 5));
   }
 
   private void stopLocationLogging() {
-    final ILocationService locationService = ILocationService.Stub.asInterface();
+    final ILocationService locationService = _locationService;
 
     locationService.getNewPosition().unregisterObserver(_locationObserver);
     locationService.stopTracking();
   }
 
   protected ILogger createLogger() {
-    final DateFormat dateTimeInstance = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss.SSS");
+    final DateFormat dateTimeInstance = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss.SSS", Locale.US);
     final String nowText = dateTimeInstance.format(new Date());
     String fileName = "TestLog" + nowText + ".txt";
 
@@ -158,7 +164,7 @@ public class GpsBatteryTestService extends Service {
   class CheckBatteryRunnable implements Runnable {
     @Override
     public void run() {
-      final BatteryStats currentBatteryStats = IBatteryStatsService.Stub.asInterface().getCurrentBatteryStats();
+      final BatteryStats currentBatteryStats = _batteryStatsReader.getCurrentBatteryStats();
       log(currentBatteryStats);
     }
   }

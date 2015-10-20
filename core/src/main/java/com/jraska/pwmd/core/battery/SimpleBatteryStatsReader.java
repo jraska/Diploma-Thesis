@@ -6,7 +6,7 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import com.jraska.common.ArgumentCheck;
 
-public class SimpleBatteryStatsService implements IBatteryStatsService {
+public class SimpleBatteryStatsReader implements BatteryStatsReader {
   //region Fields
 
   private final Context _context;
@@ -15,7 +15,7 @@ public class SimpleBatteryStatsService implements IBatteryStatsService {
 
   //region Constructors
 
-  public SimpleBatteryStatsService(Context context) {
+  public SimpleBatteryStatsReader(Context context) {
     ArgumentCheck.notNull(context);
 
     _context = context;

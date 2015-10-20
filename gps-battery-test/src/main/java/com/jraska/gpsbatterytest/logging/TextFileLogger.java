@@ -1,5 +1,6 @@
 package com.jraska.gpsbatterytest.logging;
 
+import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
 
 import java.io.*;
@@ -17,7 +18,7 @@ public class TextFileLogger implements ILogger {
 
   //region Constructors
 
-  public TextFileLogger(File textFile) {
+  public TextFileLogger(@NonNull File textFile) {
     ArgumentCheck.notNull(textFile);
 
     if (!textFile.getParentFile().exists()) {
@@ -36,7 +37,7 @@ public class TextFileLogger implements ILogger {
   //region ILogger impl
 
   @Override
-  public void log(Object o) {
+  public void log(@NonNull Object o) {
     ArgumentCheck.notNull(o);
 
     ensureNotDisposed();

@@ -1,5 +1,6 @@
 package com.jraska.gpsbatterytest.logging;
 
+import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
 
 public class CompositeLogger implements ILogger {
@@ -22,7 +23,7 @@ public class CompositeLogger implements ILogger {
   //region ILogger impl
 
   @Override
-  public void log(Object o) {
+  public void log(@NonNull Object o) {
     for (ILogger logger : _loggers) {
       logger.log(o);
     }

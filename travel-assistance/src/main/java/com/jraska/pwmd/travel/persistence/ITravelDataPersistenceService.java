@@ -2,7 +2,7 @@ package com.jraska.pwmd.travel.persistence;
 
 import com.jraska.common.IDisposable;
 import com.jraska.common.events.IObservable;
-import com.jraska.core.BaseApplication;
+import com.jraska.core.BaseApp;
 import com.jraska.core.services.IAppService;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
@@ -35,7 +35,7 @@ public interface ITravelDataPersistenceService extends IAppService, IDisposable 
 
   class Stub {
     public static ITravelDataPersistenceService asInterface() {
-      return BaseApplication.getService(ITravelDataPersistenceService.class);
+      return BaseApp.getService(ITravelDataPersistenceService.class);
     }
   }
 

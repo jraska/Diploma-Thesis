@@ -1,7 +1,7 @@
 package com.jraska.pwmd.core.gps;
 
 import com.jraska.common.events.IObservable;
-import com.jraska.core.BaseApplication;
+import com.jraska.core.BaseApp;
 import com.jraska.core.services.IAppService;
 
 public interface ILocationService extends IAppService {
@@ -33,7 +33,7 @@ public interface ILocationService extends IAppService {
 
   class Stub {
     public static ILocationService asInterface() {
-      return BaseApplication.getService(ILocationService.class);
+      return BaseApp.getService(ILocationService.class);
     }
   }
 

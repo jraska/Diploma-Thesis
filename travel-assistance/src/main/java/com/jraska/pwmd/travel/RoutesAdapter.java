@@ -32,7 +32,7 @@ public class RoutesAdapter extends ArrayAdapter<RouteDescription> {
     title.setText(routeDescription.getTitle());
 
     TextView date = (TextView) convertView.findViewById(R.id.route_date);
-    date.setText(TravelAssistanceApplication.USER_DETAILED_TIME_FORMAT.format(routeDescription.getEnd()));
+    date.setText(TravelAssistanceApp.USER_DETAILED_TIME_FORMAT.format(routeDescription.getEnd()));
 
     TextView duration = (TextView) convertView.findViewById(R.id.route_duration);
     String elapsedTime = DateUtils.formatElapsedTime((routeDescription.getEnd().getTime() - routeDescription.getStart().getTime()) / 1000);

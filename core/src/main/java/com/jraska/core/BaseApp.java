@@ -5,12 +5,12 @@ import android.app.Application;
 /**
  * Base class for all applications
  */
-public abstract class BaseApplication extends Application {
+public abstract class BaseApp extends Application {
   //region Static
 
-  private static BaseApplication _current;
+  private static BaseApp _current;
 
-  public static BaseApplication getCurrent() {
+  public static BaseApp getCurrent() {
     return _current;
   }
 
@@ -28,7 +28,7 @@ public abstract class BaseApplication extends Application {
 
   //region Constructors
 
-  public BaseApplication() {
+  public BaseApp() {
     _current = this;
   }
 

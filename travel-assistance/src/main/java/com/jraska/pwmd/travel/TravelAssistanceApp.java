@@ -1,11 +1,11 @@
 package com.jraska.pwmd.travel;
 
-import com.jraska.core.BaseApplication;
+import com.jraska.core.BaseApp;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class TravelAssistanceApplication extends BaseApplication {
+public class TravelAssistanceApp extends BaseApp {
   //region Constants
 
   public static String DB_NAME = "TravelAssistanceData";

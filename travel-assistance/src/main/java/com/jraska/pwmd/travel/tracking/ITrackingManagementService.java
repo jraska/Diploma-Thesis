@@ -1,6 +1,6 @@
 package com.jraska.pwmd.travel.tracking;
 
-import com.jraska.core.BaseApplication;
+import com.jraska.core.BaseApp;
 import com.jraska.core.services.IAppService;
 import com.jraska.pwmd.travel.data.Path;
 
@@ -51,7 +51,7 @@ public interface ITrackingManagementService extends IAppService {
 
   class Stub {
     public static ITrackingManagementService asInterface() {
-      return BaseApplication.getService(ITrackingManagementService.class);
+      return BaseApp.getService(ITrackingManagementService.class);
     }
   }
 

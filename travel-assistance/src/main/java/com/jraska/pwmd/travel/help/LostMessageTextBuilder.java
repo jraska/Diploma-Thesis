@@ -1,10 +1,10 @@
 package com.jraska.pwmd.travel.help;
 
 import com.jraska.common.ArgumentCheck;
-import com.jraska.core.BaseApplication;
+import com.jraska.core.BaseApp;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
-import com.jraska.pwmd.travel.TravelAssistanceApplication;
+import com.jraska.pwmd.travel.TravelAssistanceApp;
 
 import java.util.Date;
 
@@ -97,11 +97,11 @@ public class LostMessageTextBuilder {
   //region Methods
 
   protected String formatAppDate(Date date) {
-    return TravelAssistanceApplication.USER_DETAILED_TIME_FORMAT.format(date);
+    return TravelAssistanceApp.USER_DETAILED_TIME_FORMAT.format(date);
   }
 
   protected String getString(int resId) {
-    return BaseApplication.getCurrent().getString(resId);
+    return BaseApp.getCurrent().getString(resId);
   }
 
   public LostMessageTextBuilder setFromPosition(Position p) {

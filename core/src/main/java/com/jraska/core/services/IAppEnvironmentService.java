@@ -1,6 +1,6 @@
 package com.jraska.core.services;
 
-import com.jraska.core.BaseApplication;
+import com.jraska.core.BaseApp;
 
 import java.io.File;
 
@@ -15,7 +15,7 @@ public interface IAppEnvironmentService extends IAppService {
 
   class Stub {
     public static IAppEnvironmentService asInterface() {
-      return BaseApplication.getService(IAppEnvironmentService.class);
+      return BaseApp.getService(IAppEnvironmentService.class);
     }
   }
 
