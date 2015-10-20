@@ -1,4 +1,4 @@
-package com.jraska.pwmd.travel.database;
+package com.jraska.pwmd.travel.persistence;
 
 import android.content.Context;
 import android.database.DatabaseErrorHandler;

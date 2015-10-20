@@ -1,7 +1,6 @@
 package com.jraska.pwmd.travel;
 
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
@@ -14,12 +13,13 @@ import com.jraska.pwmd.travel.help.EmailSender;
 import com.jraska.pwmd.travel.help.LostMessageTextBuilder;
 import com.jraska.pwmd.travel.help.SmsSender;
 
+import javax.inject.Inject;
+
 public class HelpRequestSendActivity extends BaseTravelActivity {
   //region Fields
 
-  @Bind(R.id.btnSendEmail) Button _sendEmail;
-  @Bind(R.id.btnSendSms) Button _btnSendSms;
   @Bind(R.id.helpMessageText) TextView _messageView;
+  @Inject LocationService _locationService;
 
   private boolean _gpsStarted;
 
@@ -46,6 +46,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
     setContentView(R.layout.help_request_send);
 
     ButterKnife.bind(this);
+    TravelAssistanceApp.getComponent(this).inject(this);
   }
 
   @Override
@@ -73,8 +74,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
 
   //region Methods
 
-  @OnClick(R.id.btnSendSms)
-  void sendSms() {
+  @OnClick(R.id.btnSendSms) void sendSms() {
     Position position = getPosition();
     if (!checkPosition(position)) {
       return;
@@ -85,6 +85,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
     _messageView.setText(message);
 
     SmsSender smsSender = new SmsSender();
+    // TODO: assistant number
     if (smsSender.sendSms("0420721380088", message)) {
       showToast(getString(R.string.sent));
     } else {
@@ -98,8 +99,7 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
     return builder.buildSmsText();
   }
 
-  @OnClick(R.id.btnSendEmail)
-  void sendEmail() {
+  @OnClick(R.id.btnSendEmail) void sendEmail() {
     Position position = getPosition();
     if (!checkPosition(position)) {
       return;
@@ -110,6 +110,8 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
     _messageView.setText(message);
 
     EmailSender emailSender = new EmailSender(this);
+
+    // TODO: assistant email
     emailSender.sendEmail("josef.raska@gmail.com", getString(R.string.i_am_lost), message);
   }
 
