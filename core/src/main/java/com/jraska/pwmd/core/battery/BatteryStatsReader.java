@@ -1,9 +1,9 @@
 package com.jraska.pwmd.core.battery;
 
 import com.jraska.core.BaseApp;
-import com.jraska.core.services.IAppService;
+import com.jraska.core.services.AppService;
 
-public interface BatteryStatsReader extends IAppService {
+public interface BatteryStatsReader extends AppService {
   //region Methods
 
   BatteryStats getCurrentBatteryStats();

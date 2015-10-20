@@ -12,13 +12,13 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.jraska.common.events.IObserver;
+import com.jraska.common.events.Observer;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.Path;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
-import com.jraska.pwmd.travel.persistence.ITravelDataPersistenceService;
-import com.jraska.pwmd.travel.tracking.ITrackingManagementService;
+import com.jraska.pwmd.travel.persistence.TravelDataPersistenceService;
+import com.jraska.pwmd.travel.tracking.TrackingManagementService;
 
 import java.util.*;
 
@@ -33,7 +33,7 @@ public class RoutesListActivity extends BaseTravelActivity {
 
   private RoutesAdapter _routesAdapter;
 
-  private IObserver<RouteDescription> _descriptionsObserver = new IObserver<RouteDescription>() {
+  private Observer<RouteDescription> _descriptionsObserver = new Observer<RouteDescription>() {
     @Override
     public void update(Object sender, RouteDescription args) {
       _routesAdapter.add(args);
@@ -44,8 +44,8 @@ public class RoutesListActivity extends BaseTravelActivity {
 
   //region Properties
 
-  protected ITrackingManagementService getTrackingManagementService() {
-    return ITrackingManagementService.Stub.asInterface();
+  protected TrackingManagementService getTrackingManagementService() {
+    return TrackingManagementService.Stub.asInterface();
   }
 
   //endregion
@@ -164,7 +164,7 @@ public class RoutesListActivity extends BaseTravelActivity {
   }
 
   void refreshRoutes() {
-    ITravelDataPersistenceService service = getRoutesPersistenceService();
+    TravelDataPersistenceService service = getRoutesPersistenceService();
     List<RouteDescription> routeDescriptions = service.selectAllRouteDescriptions();
 
     _routesAdapter.clear();
@@ -190,7 +190,7 @@ public class RoutesListActivity extends BaseTravelActivity {
 
   @OnClick(R.id.btnSaveRoute)
   void saveRoute() {
-    ITrackingManagementService.PathInfo lastPath = getTrackingManagementService().getLastPath();
+    TrackingManagementService.PathInfo lastPath = getTrackingManagementService().getLastPath();
     if (lastPath == null) {
       Toast.makeText(this, getString(R.string.noRouteToSave), Toast.LENGTH_SHORT).show();
       return;
@@ -203,8 +203,8 @@ public class RoutesListActivity extends BaseTravelActivity {
     Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
   }
 
-  private ITravelDataPersistenceService getRoutesPersistenceService() {
-    return ITravelDataPersistenceService.Stub.asInterface();
+  private TravelDataPersistenceService getRoutesPersistenceService() {
+    return TravelDataPersistenceService.Stub.asInterface();
   }
 
   protected void testPersistencePositions() {
@@ -221,7 +221,7 @@ public class RoutesListActivity extends BaseTravelActivity {
     RouteDescription routeDescription = new RouteDescription(testId, new Date(), new Date(), "Test");
     RouteData routeData = new RouteData(routeDescription, new Path(positions));
 
-    ITravelDataPersistenceService persistenceService = getRoutesPersistenceService();
+    TravelDataPersistenceService persistenceService = getRoutesPersistenceService();
 
     //try insert
     long value = persistenceService.insertRoute(routeData);

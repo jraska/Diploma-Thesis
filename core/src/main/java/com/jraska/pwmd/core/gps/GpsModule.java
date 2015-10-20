@@ -17,12 +17,12 @@ public class GpsModule {
     return new SimpleSystemLocationService(locationManager);
   }
 
-  @Provides @PerApp ILocationService provideLocationService(SimpleSystemLocationService svc) {
+  @Provides @PerApp LocationService provideLocationService(SimpleSystemLocationService svc) {
     return svc;
   }
 
   @Provides @PerApp
-  ILocationStatusService provideLocationStatusService(SimpleSystemLocationService svc) {
+  LocationStatusService provideLocationStatusService(SimpleSystemLocationService svc) {
     return svc;
   }
 }

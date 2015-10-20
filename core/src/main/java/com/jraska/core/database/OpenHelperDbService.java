@@ -3,13 +3,13 @@ package com.jraska.core.database;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.jraska.common.ArgumentCheck;
-import com.jraska.common.IDisposable;
+import com.jraska.common.Disposable;
 
 
 /**
  * Base class for sqlite database based on open helper
  */
-public class OpenHelperDbService implements IDatabaseService, IDisposable {
+public class OpenHelperDbService implements DatabaseService, Disposable {
   //region Fields
 
   private final SQLiteOpenHelper _helper;

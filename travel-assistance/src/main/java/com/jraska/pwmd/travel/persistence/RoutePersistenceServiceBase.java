@@ -2,9 +2,9 @@ package com.jraska.pwmd.travel.persistence;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.jraska.common.events.IObservable;
 import com.jraska.common.events.Observable;
-import com.jraska.core.database.IDatabaseService;
+import com.jraska.common.events.ObservableImpl;
+import com.jraska.core.database.DatabaseService;
 import com.jraska.core.persistence.DbPersistenceServiceBase;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
@@ -15,16 +15,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class RoutePersistenceServiceBase extends DbPersistenceServiceBase implements ITravelDataPersistenceService {
+public abstract class RoutePersistenceServiceBase extends DbPersistenceServiceBase implements TravelDataPersistenceService {
   //region Fields
 
-  private Observable<RouteDescription> _newRouteEvent;
+  private ObservableImpl<RouteDescription> _newRouteEvent;
 
   //endregion
 
   //region Constructors
 
-  protected RoutePersistenceServiceBase(IDatabaseService databaseService) {
+  protected RoutePersistenceServiceBase(DatabaseService databaseService) {
     super(databaseService);
   }
 
@@ -33,9 +33,9 @@ public abstract class RoutePersistenceServiceBase extends DbPersistenceServiceBa
   //region ITravelDataPersistenceService impl
 
   @Override
-  public IObservable<RouteDescription> getOnNewRoute() {
+  public Observable<RouteDescription> getOnNewRoute() {
     if (_newRouteEvent == null) {
-      _newRouteEvent = new Observable<>();
+      _newRouteEvent = new ObservableImpl<>();
     }
 
     return _newRouteEvent;

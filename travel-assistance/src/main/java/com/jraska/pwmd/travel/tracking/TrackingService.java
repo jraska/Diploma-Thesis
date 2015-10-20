@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import com.jraska.common.events.IObserver;
-import com.jraska.pwmd.core.gps.ILocationService;
+import com.jraska.common.events.Observer;
+import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
@@ -34,7 +34,7 @@ public class TrackingService extends Service {
 
   private final Object _lock = new Object();
 
-  private final IObserver<Position> _positionObserver = new IObserver<Position>() {
+  private final Observer<Position> _positionObserver = new Observer<Position>() {
     @Override
     public void update(Object sender, Position args) {
       synchronized (_lock) {
@@ -56,8 +56,8 @@ public class TrackingService extends Service {
     return new ArrayList<>(_positions);
   }
 
-  protected ILocationService getLocationService() {
-    return ILocationService.Stub.asInterface();
+  protected LocationService getLocationService() {
+    return LocationService.Stub.asInterface();
   }
 
   //endregion
@@ -127,7 +127,7 @@ public class TrackingService extends Service {
   }
 
   protected void stopTracking() {
-    ILocationService locationService = getLocationService();
+    LocationService locationService = getLocationService();
     locationService.stopTracking();
     locationService.getNewPosition().unregisterObserver(_positionObserver);
   }
@@ -137,7 +137,7 @@ public class TrackingService extends Service {
       _positions.clear();
     }
 
-    ILocationService locationService = getLocationService();
+    LocationService locationService = getLocationService();
 
     locationService.startTracking(new LocationSettings(5, 5));
     locationService.getNewPosition().registerObserver(_positionObserver);

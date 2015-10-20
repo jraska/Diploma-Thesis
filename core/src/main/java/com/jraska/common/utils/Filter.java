@@ -1,5 +1,5 @@
 package com.jraska.common.utils;
 
-public interface IFilter<TObject> {
+public interface Filter<TObject> {
   boolean accept(TObject object);
 }

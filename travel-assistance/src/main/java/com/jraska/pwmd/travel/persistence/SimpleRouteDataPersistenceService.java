@@ -3,7 +3,7 @@ package com.jraska.pwmd.travel.persistence;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.jraska.core.database.IDatabaseService;
+import com.jraska.core.database.DatabaseService;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.Path;
 import com.jraska.pwmd.travel.data.RouteData;
@@ -17,7 +17,7 @@ import java.util.UUID;
 public class SimpleRouteDataPersistenceService extends RoutePersistenceServiceBase {
   //region Constructors
 
-  public SimpleRouteDataPersistenceService(IDatabaseService databaseService) {
+  public SimpleRouteDataPersistenceService(DatabaseService databaseService) {
 	super(databaseService);
   }
 

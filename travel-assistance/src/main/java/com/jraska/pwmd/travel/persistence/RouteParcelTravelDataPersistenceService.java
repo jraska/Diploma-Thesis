@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.jraska.common.utils.ParcelableUtil;
-import com.jraska.core.database.IDatabaseService;
+import com.jraska.core.database.DatabaseService;
 import com.jraska.pwmd.travel.data.Path;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
@@ -15,10 +15,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class RouteParcelTravelDataPersistenceService extends RoutePersistenceServiceBase implements ITravelDataPersistenceService {
+public class RouteParcelTravelDataPersistenceService extends RoutePersistenceServiceBase implements TravelDataPersistenceService {
   //region Constructors
 
-  public RouteParcelTravelDataPersistenceService(IDatabaseService databaseService) {
+  public RouteParcelTravelDataPersistenceService(DatabaseService databaseService) {
     super(databaseService);
   }
 
@@ -74,7 +74,7 @@ public class RouteParcelTravelDataPersistenceService extends RoutePersistenceSer
   protected List<RouteDescription> getRouteDescriptionsFromDatabase() {
     Cursor cursor = getReadableDatabase().query(RoutesTable.TABLE_NAME, RoutesTable.DESCRIPTION_COLUMNS, null, null, null, null, null);
 
-    List<RouteDescription> descriptions = new ArrayList<RouteDescription>();
+    List<RouteDescription> descriptions = new ArrayList<>();
 
     try {
       while (cursor.moveToNext()) {

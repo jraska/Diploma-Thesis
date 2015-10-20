@@ -1,4 +1,4 @@
 package com.jraska.common.events;
 
-public interface IEventArgs {
+public interface EventArgs {
 }

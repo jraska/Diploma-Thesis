@@ -7,7 +7,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.jraska.pwmd.core.gps.ILocationService;
+import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.help.EmailSender;
@@ -27,8 +27,8 @@ public class HelpRequestSendActivity extends BaseTravelActivity {
 
   //region Properties
 
-  protected ILocationService getLocationService() {
-    return ILocationService.Stub.asInterface();
+  protected LocationService getLocationService() {
+    return LocationService.Stub.asInterface();
   }
 
   protected Position getPosition() {

@@ -2,9 +2,9 @@ package com.jraska.core.persistence;
 
 import android.database.sqlite.SQLiteDatabase;
 import com.jraska.common.ArgumentCheck;
-import com.jraska.common.IDisposable;
+import com.jraska.common.Disposable;
 import com.jraska.common.exceptions.JRRuntimeException;
-import com.jraska.core.database.IDatabaseService;
+import com.jraska.core.database.DatabaseService;
 import com.jraska.core.utils.DateHelper;
 
 import java.text.DateFormat;
@@ -13,10 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-public abstract class DbPersistenceServiceBase implements IDisposable {
+public abstract class DbPersistenceServiceBase implements Disposable {
   //region Fields
 
-  private final IDatabaseService _databaseService;
+  private final DatabaseService _databaseService;
 
   private DateFormat _dbDateFormat;
 
@@ -24,7 +24,7 @@ public abstract class DbPersistenceServiceBase implements IDisposable {
 
   //region Constructors
 
-  public DbPersistenceServiceBase(IDatabaseService databaseService) {
+  public DbPersistenceServiceBase(DatabaseService databaseService) {
     ArgumentCheck.notNull(databaseService);
 
     _databaseService = databaseService;

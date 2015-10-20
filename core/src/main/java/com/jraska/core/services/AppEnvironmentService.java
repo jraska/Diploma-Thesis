@@ -4,7 +4,7 @@ import com.jraska.core.BaseApp;
 
 import java.io.File;
 
-public interface IAppEnvironmentService extends IAppService {
+public interface AppEnvironmentService extends AppService {
   //region Methods
 
   File getAppDataRootDirectory();
@@ -14,8 +14,8 @@ public interface IAppEnvironmentService extends IAppService {
   //region Nested class
 
   class Stub {
-    public static IAppEnvironmentService asInterface() {
-      return BaseApp.getService(IAppEnvironmentService.class);
+    public static AppEnvironmentService asInterface() {
+      return BaseApp.getService(AppEnvironmentService.class);
     }
   }
 

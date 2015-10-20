@@ -3,7 +3,7 @@ package com.jraska.gpsbatterytest.logging;
 import android.support.annotation.NonNull;
 import com.jraska.common.view.console.Console;
 
-public class ConsoleLogger implements ILogger {
+public class ConsoleLogger implements Logger {
   //region ILogger impl
 
   @Override

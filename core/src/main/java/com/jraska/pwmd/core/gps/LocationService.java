@@ -1,13 +1,13 @@
 package com.jraska.pwmd.core.gps;
 
-import com.jraska.common.events.IObservable;
+import com.jraska.common.events.Observable;
 import com.jraska.core.BaseApp;
-import com.jraska.core.services.IAppService;
+import com.jraska.core.services.AppService;
 
-public interface ILocationService extends IAppService {
+public interface LocationService extends AppService {
   //region Events
 
-  IObservable<Position> getNewPosition();
+  Observable<Position> getNewPosition();
 
   //endregion
 
@@ -32,8 +32,8 @@ public interface ILocationService extends IAppService {
   //region Nested classes
 
   class Stub {
-    public static ILocationService asInterface() {
-      return BaseApp.getService(ILocationService.class);
+    public static LocationService asInterface() {
+      return BaseApp.getService(LocationService.class);
     }
   }
 

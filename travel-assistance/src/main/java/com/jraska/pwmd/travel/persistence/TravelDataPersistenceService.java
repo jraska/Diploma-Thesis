@@ -1,19 +1,19 @@
 package com.jraska.pwmd.travel.persistence;
 
-import com.jraska.common.IDisposable;
-import com.jraska.common.events.IObservable;
+import com.jraska.common.Disposable;
+import com.jraska.common.events.Observable;
 import com.jraska.core.BaseApp;
-import com.jraska.core.services.IAppService;
+import com.jraska.core.services.AppService;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface ITravelDataPersistenceService extends IAppService, IDisposable {
+public interface TravelDataPersistenceService extends AppService, Disposable {
   //region Events
 
-  IObservable<RouteDescription> getOnNewRoute();
+  Observable<RouteDescription> getOnNewRoute();
 
   //endregion
 
@@ -34,8 +34,8 @@ public interface ITravelDataPersistenceService extends IAppService, IDisposable 
   //region Nested class
 
   class Stub {
-    public static ITravelDataPersistenceService asInterface() {
-      return BaseApp.getService(ITravelDataPersistenceService.class);
+    public static TravelDataPersistenceService asInterface() {
+      return BaseApp.getService(TravelDataPersistenceService.class);
     }
   }
 

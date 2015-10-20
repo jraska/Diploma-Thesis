@@ -1,12 +1,12 @@
 package com.jraska.pwmd.travel.tracking;
 
-import com.jraska.common.utils.IFilter;
+import com.jraska.common.utils.Filter;
 import com.jraska.pwmd.core.gps.Position;
 
-public interface ILocationFilter extends IFilter<Position> {
+public interface LocationFilter extends Filter<Position> {
   //region Nested classes
 
-  class Empty implements ILocationFilter {
+  class Empty implements LocationFilter {
     public static final Empty Instance = new Empty();
 
     private Empty() {

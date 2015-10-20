@@ -5,16 +5,16 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import com.jraska.common.ArgumentCheck;
-import com.jraska.common.events.Observable;
+import com.jraska.common.events.ObservableImpl;
 
-public class SimpleSystemLocationService implements ILocationService, ILocationStatusService {
+public class SimpleSystemLocationService implements LocationService, LocationStatusService {
   //region Fields
 
   private final LocationManager _locationManager;
 
   private Position _lastPosition;
 
-  private Observable<Position> _newPosition;
+  private ObservableImpl<Position> _newPosition;
   private boolean _tracking;
 
   private final LocationListener _locationListener = new InnerLocationListener();
@@ -58,9 +58,9 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
   //region ILocationService impl
 
   @Override
-  public Observable<Position> getNewPosition() {
+  public ObservableImpl<Position> getNewPosition() {
     if (_newPosition == null) {
-      _newPosition = new Observable<>();
+      _newPosition = new ObservableImpl<>();
     }
 
     return _newPosition;
@@ -86,7 +86,7 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
   }
 
   @Override
-  public void startTracking(LocationSettings settings) {
+  public void startTracking(LocationSettings settings) throws SecurityException {
     if (_tracking) {
       return;
     }
@@ -100,7 +100,7 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
   }
 
   @Override
-  public void stopTracking() {
+  public void stopTracking() throws SecurityException {
     if (!_tracking) {
       return;
     }
@@ -130,7 +130,7 @@ public class SimpleSystemLocationService implements ILocationService, ILocationS
     }
   }
 
-  public Position getLastKnownPosition() {
+  public Position getLastKnownPosition() throws SecurityException {
     Location lastGps = _locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     Location lastNetwork = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 

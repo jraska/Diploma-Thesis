@@ -5,7 +5,7 @@ import com.jraska.common.exceptions.JRRuntimeException;
 
 import java.io.File;
 
-public class SimpleAppEnvironmentService implements IAppEnvironmentService {
+public class SimpleAppEnvironmentService implements AppEnvironmentService {
   //region Fields
 
   private final File _rootAppDir;

@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.persistence.ITravelDataPersistenceService;
+import com.jraska.pwmd.travel.persistence.TravelDataPersistenceService;
 
 import java.util.List;
 import java.util.UUID;
@@ -41,8 +41,8 @@ public class RouteDisplayActivity extends BaseTravelActivity {
     return _mapView;
   }
 
-  protected ITravelDataPersistenceService getTravelDataPersistenceService() {
-    return ITravelDataPersistenceService.Stub.asInterface();
+  protected TravelDataPersistenceService getTravelDataPersistenceService() {
+    return TravelDataPersistenceService.Stub.asInterface();
   }
 
   //endregion

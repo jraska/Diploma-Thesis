@@ -1,12 +1,12 @@
 package com.jraska.pwmd.travel.data;
 
 import com.jraska.common.ArgumentCheck;
-import com.jraska.common.events.IEventArgs;
+import com.jraska.common.events.EventArgs;
 
 import java.util.Date;
 import java.util.UUID;
 
-public class RouteDescription implements IEventArgs {
+public class RouteDescription implements EventArgs {
   //region Fields
 
   private final UUID _id;

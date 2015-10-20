@@ -5,7 +5,7 @@ import com.jraska.common.ArgumentCheck;
 
 import java.io.*;
 
-public class TextFileLogger implements ILogger {
+public class TextFileLogger implements Logger {
   //region Fields
 
   private final File _file;

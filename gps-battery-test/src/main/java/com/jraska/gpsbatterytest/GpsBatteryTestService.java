@@ -7,14 +7,14 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import com.jraska.common.events.IObserver;
+import com.jraska.common.events.Observer;
 import com.jraska.gpsbatterytest.logging.CompositeLogger;
 import com.jraska.gpsbatterytest.logging.ConsoleLogger;
-import com.jraska.gpsbatterytest.logging.ILogger;
+import com.jraska.gpsbatterytest.logging.Logger;
 import com.jraska.gpsbatterytest.logging.TextFileLogger;
 import com.jraska.pwmd.core.battery.BatteryStats;
 import com.jraska.pwmd.core.battery.BatteryStatsReader;
-import com.jraska.pwmd.core.gps.ILocationService;
+import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
 
@@ -37,11 +37,11 @@ public class GpsBatteryTestService extends Service {
 
   //region Fields
 
-  private ILogger _logger;
+  private Logger _logger;
   private final ScheduledExecutorService _executor = Executors.newSingleThreadScheduledExecutor();
   private final LocationObserver _locationObserver = new LocationObserver();
 
-  @Inject ILocationService _locationService;
+  @Inject LocationService _locationService;
   @Inject BatteryStatsReader _batteryStatsReader;
 
   //endregion
@@ -96,20 +96,20 @@ public class GpsBatteryTestService extends Service {
   }
 
   private void startLocationLogging() {
-    final ILocationService locationService = _locationService;
+    final LocationService locationService = _locationService;
 
     locationService.getNewPosition().registerObserver(_locationObserver);
     locationService.startTracking(new LocationSettings(5, 5));
   }
 
   private void stopLocationLogging() {
-    final ILocationService locationService = _locationService;
+    final LocationService locationService = _locationService;
 
     locationService.getNewPosition().unregisterObserver(_locationObserver);
     locationService.stopTracking();
   }
 
-  protected ILogger createLogger() {
+  protected Logger createLogger() {
     final DateFormat dateTimeInstance = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss.SSS", Locale.US);
     final String nowText = dateTimeInstance.format(new Date());
     String fileName = "TestLog" + nowText + ".txt";
@@ -119,7 +119,7 @@ public class GpsBatteryTestService extends Service {
 
     File textFile = new File(externalFilesDir, fileName);
     TextFileLogger textFileLogger = new TextFileLogger(textFile);
-    ILogger[] loggers = {textFileLogger, new ConsoleLogger()};
+    Logger[] loggers = {textFileLogger, new ConsoleLogger()};
 
     return new CompositeLogger(loggers);
   }
@@ -154,7 +154,7 @@ public class GpsBatteryTestService extends Service {
 
   //region Nested classes
 
-  class LocationObserver implements IObserver<Position> {
+  class LocationObserver implements Observer<Position> {
     @Override
     public void update(Object sender, Position args) {
       log(args);

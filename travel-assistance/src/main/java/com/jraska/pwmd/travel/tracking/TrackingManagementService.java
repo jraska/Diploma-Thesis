@@ -1,152 +1,57 @@
 package com.jraska.pwmd.travel.tracking;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.location.LocationManager;
-import android.os.IBinder;
-import com.jraska.common.ArgumentCheck;
-import com.jraska.pwmd.core.gps.Position;
+import com.jraska.core.BaseApp;
+import com.jraska.core.services.AppService;
 import com.jraska.pwmd.travel.data.Path;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class TrackingManagementService implements ITrackingManagementService {
-  //region Fields
-
-  private final Context _context;
-  private final ILocationFilter _filter;
-
-  private boolean _running;
-  private TrackingService.TrackingServiceBinder _serviceBinder;
-  private Date _start;
-
-  private final TrackingServiceConnection _connection = new TrackingServiceConnection();
-
-  //endregion
-
-  //region Constructors
-
-  public TrackingManagementService(Context context) {
-    this(context, ILocationFilter.Empty.Instance);
-  }
-
-  public TrackingManagementService(Context context, ILocationFilter filter) {
-    ArgumentCheck.notNull(context);
-    ArgumentCheck.notNull(filter);
-
-    _context = context;
-    _filter = filter;
-  }
-
-  //endregion
-
+public interface TrackingManagementService extends AppService {
   //region Properties
 
-  protected Context getContext() {
-    return _context;
-  }
-
-  protected ILocationFilter getFilter() {
-    return _filter;
-  }
-
-  //endregion
-
-  //region ITrackingManagementService impl
-
-  @Override
-  public boolean isTracking() {
-    return _running;
-  }
-
-  @Override
-  public void startTracking() {
-    if (_running) {
-      return;
-    }
-
-    _start = new Date();
-    Intent intent = getServiceIntent();
-    _context.startService(intent);
-    _context.bindService(intent, _connection, 0);
-
-    _running = true;
-  }
-
-  @Override
-  public PathInfo getLastPath() {
-    if (_serviceBinder == null) {
-      return null;
-    }
-
-    List<Position> positions = _serviceBinder.getService().getPositions();
-
-    if (positions.size() == 0) {
-      return null;
-    }
-
-    positions = filterPositions(positions);
-
-    return new PathInfo(_start, new Date(), new Path(positions));
-  }
-
-  @Override
-  public void stopTracking() {
-    if (!_running) {
-      return;
-    }
-
-    _context.unbindService(_connection);
-    _context.stopService(getServiceIntent());
-
-    _serviceBinder = null;
-    _running = false;
-  }
+  boolean isTracking();
 
   //endregion
 
   //region Methods
 
-  protected List<Position> filterPositions(List<Position> positions) {
-    List<Position> filtered = new ArrayList<>(positions.size());
+  void startTracking();
 
-    ILocationFilter filter = getFilter();
-    for (Position position : positions) {
-      if (filter.accept(position)) {
-        filtered.add(position);
-      }
-    }
+  PathInfo getLastPath();
 
-    return filtered;
-  }
-
-  protected Intent getServiceIntent() {
-    return new Intent(_context, TrackingService.class);
-  }
+  void stopTracking();
 
   //endregion
 
   //region Nested classes
 
-  protected class TrackingServiceConnection implements ServiceConnection {
-    @Override
-    public void onServiceConnected(ComponentName name, IBinder service) {
-      _serviceBinder = (TrackingService.TrackingServiceBinder) service;
+  class PathInfo {
+    private final Date _start;
+    private final Date _end;
+    private final Path _path;
+
+    public PathInfo(Date start, Date end, Path path) {
+      _start = start;
+      _end = end;
+      _path = path;
     }
 
-    @Override
-    public void onServiceDisconnected(ComponentName name) {
+    public Date getStart() {
+      return _start;
+    }
+
+    public Date getEnd() {
+      return _end;
+    }
+
+    public Path getPath() {
+      return _path;
     }
   }
 
-  protected class GpsProviderOnlyFilter implements ILocationFilter {
-    @Override
-    public boolean accept(Position position) {
-      return LocationManager.GPS_PROVIDER.equals(position.provider);
+  class Stub {
+    public static TrackingManagementService asInterface() {
+      return BaseApp.getService(TrackingManagementService.class);
     }
   }
 

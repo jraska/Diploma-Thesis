@@ -3,10 +3,10 @@ package com.jraska.pwmd.core.gps;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.jraska.common.ArgumentCheck;
-import com.jraska.common.events.IEventArgs;
+import com.jraska.common.events.EventArgs;
 import com.jraska.core.utils.DateHelper;
 
-public class Position extends LatLng implements IEventArgs {
+public class Position extends LatLng implements EventArgs {
   //region Fields
 
   public final long time;
