@@ -140,6 +140,7 @@ public class SimpleTrackingManager implements TrackingManager {
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
+      // No handling here
     }
   }
 

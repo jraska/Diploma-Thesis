@@ -174,14 +174,17 @@ public class SimpleSystemLocationService implements LocationService, LocationSta
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
+      // Nothing here
     }
 
     @Override
     public void onProviderEnabled(String provider) {
+      // Nothing here
     }
 
     @Override
     public void onProviderDisabled(String provider) {
+      // Nothing here
     }
   }
 
