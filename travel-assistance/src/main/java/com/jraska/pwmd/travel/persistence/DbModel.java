@@ -1,14 +1,6 @@
 package com.jraska.pwmd.travel.persistence;
 
 public abstract class DbModel {
-  //region Constructors
-
-  private DbModel() {
-    // no instances
-  }
-
-  //endregion
-
   //region Nested class
 
   public static abstract class RoutesTable {
@@ -30,8 +22,8 @@ public abstract class DbModel {
         COLUMN_END + " text not null, " +
         COLUMN_PATH + " blob null)";
 
-    public static String[] DESCRIPTION_COLUMNS = {COLUMN_ID, COLUMN_TITLE, COLUMN_START, COLUMN_END};
-    public static String[] ALL_COLUMNS = {COLUMN_ID, COLUMN_TITLE, COLUMN_START, COLUMN_END, COLUMN_PATH};
+    public static final String[] DESCRIPTION_COLUMNS = {COLUMN_ID, COLUMN_TITLE, COLUMN_START, COLUMN_END};
+    public static final String[] ALL_COLUMNS = {COLUMN_ID, COLUMN_TITLE, COLUMN_START, COLUMN_END, COLUMN_PATH};
   }
 
   public static abstract class PointsTable {
@@ -56,6 +48,14 @@ public abstract class DbModel {
         COLUMN_TIME + " integer not null, " +
         COLUMN_ACCURACY + " real not null, " +
         COLUMN_PROVIDER + " text not null)";
+  }
+
+  //endregion
+
+  //region Constructors
+
+  private DbModel() {
+    // no instances
   }
 
   //endregion
