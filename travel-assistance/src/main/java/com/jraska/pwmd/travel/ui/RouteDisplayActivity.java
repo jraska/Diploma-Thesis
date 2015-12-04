@@ -2,10 +2,7 @@ package com.jraska.pwmd.travel.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -41,7 +38,7 @@ public class RouteDisplayActivity extends BaseActivity {
 
   protected GoogleMap getMap() {
     if (_mapView == null) {
-      _mapView = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+      _mapView = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
     }
 
     return _mapView;
@@ -87,7 +84,7 @@ public class RouteDisplayActivity extends BaseActivity {
       polylineOptions.add(toGoogleLatLng(position));
     }
 
-    Polyline line = map.addPolyline(polylineOptions);
+    map.addPolyline(polylineOptions);
 
     map.setMyLocationEnabled(true);
 
