@@ -1,4 +1,4 @@
-package com.jraska.pwmd.travel;
+package com.jraska.pwmd.travel.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.jraska.common.events.Observer;
 import com.jraska.pwmd.core.gps.Position;
+import com.jraska.pwmd.travel.R;
+import com.jraska.pwmd.travel.RoutesAdapter;
+import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.Path;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;

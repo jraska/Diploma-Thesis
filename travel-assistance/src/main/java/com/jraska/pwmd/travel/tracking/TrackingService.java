@@ -12,7 +12,7 @@ import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
-import com.jraska.pwmd.travel.RoutesListActivity;
+import com.jraska.pwmd.travel.ui.RoutesListActivity;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 
 import javax.inject.Inject;

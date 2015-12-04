@@ -1,7 +1,8 @@
-package com.jraska.pwmd.travel;
+package com.jraska.pwmd.travel.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import com.jraska.pwmd.travel.R;
 
 public abstract class BaseActivity extends AppCompatActivity {
   //region Activity overrides

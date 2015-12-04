@@ -29,7 +29,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".RoutesListActivity"
+            android:name=".ui.RoutesListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,19 +38,19 @@
         </activity>
 
         <activity
-            android:name=".RouteDisplayActivity"
+            android:name=".ui.RouteDisplayActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jraska.pwmd.travel.RoutesListActivity" />
+                android:value="com.jraska.pwmd.travel.ui.RoutesListActivity" />
         </activity>
 
         <activity
-            android:name=".HelpRequestSendActivity"
+            android:name=".ui.HelpRequestSendActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jraska.pwmd.travel.RoutesListActivity" />
+                android:value="com.jraska.pwmd.travel.ui.RoutesListActivity" />
         </activity>
 
         <service android:name=".tracking.TrackingService" />

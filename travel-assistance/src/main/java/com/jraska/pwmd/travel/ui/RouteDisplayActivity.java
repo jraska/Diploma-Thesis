@@ -1,4 +1,4 @@
-package com.jraska.pwmd.travel;
+package com.jraska.pwmd.travel.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.jraska.pwmd.core.gps.Position;
+import com.jraska.pwmd.travel.R;
+import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 

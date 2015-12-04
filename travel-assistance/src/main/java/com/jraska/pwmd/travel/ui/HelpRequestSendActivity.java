@@ -1,4 +1,4 @@
-package com.jraska.pwmd.travel;
+package com.jraska.pwmd.travel.ui;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -9,9 +9,12 @@ import butterknife.OnClick;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
+import com.jraska.pwmd.travel.R;
+import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.help.EmailSender;
 import com.jraska.pwmd.travel.help.LostMessageTextBuilder;
 import com.jraska.pwmd.travel.help.SmsSender;
+import com.jraska.pwmd.travel.ui.BaseActivity;
 
 import javax.inject.Inject;
 

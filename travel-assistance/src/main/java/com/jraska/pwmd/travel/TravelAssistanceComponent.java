@@ -5,6 +5,9 @@ import com.jraska.pwmd.core.gps.GpsModule;
 import com.jraska.pwmd.travel.persistence.TableRouteDataRepositoryModule;
 import com.jraska.pwmd.travel.tracking.TrackingModule;
 import com.jraska.pwmd.travel.tracking.TrackingService;
+import com.jraska.pwmd.travel.ui.HelpRequestSendActivity;
+import com.jraska.pwmd.travel.ui.RouteDisplayActivity;
+import com.jraska.pwmd.travel.ui.RoutesListActivity;
 import dagger.Component;
 
 @PerApp
