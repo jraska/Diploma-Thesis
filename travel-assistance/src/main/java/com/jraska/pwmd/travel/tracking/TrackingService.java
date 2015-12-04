@@ -12,8 +12,8 @@ import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
-import com.jraska.pwmd.travel.ui.RoutesListActivity;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
+import com.jraska.pwmd.travel.ui.RoutesListActivity;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -114,7 +114,7 @@ public class TrackingService extends Service {
     builder.setContentTitle(appName);
     builder.setContentText(getString(R.string.tap_to_return));
     builder.setTicker(appName);
-    builder.setSmallIcon(R.drawable.ic_launcher);
+    builder.setSmallIcon(android.R.drawable.ic_dialog_info); // TODO: 04/12/15 Icon
 //		builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
     builder.setWhen(System.currentTimeMillis());
     builder.setAutoCancel(false);

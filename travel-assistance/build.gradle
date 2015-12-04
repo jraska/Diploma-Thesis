@@ -51,7 +51,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 dependencies {
   compile project(':core')
 
-  apt 'com.google.dagger:dagger-compiler:2.0'
+  apt 'com.google.dagger:dagger-compiler:2.0.2'
 
   testCompile 'junit:junit:4.12'
   compile 'com.android.support:appcompat-v7:23.1.1'

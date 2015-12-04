@@ -29,13 +29,13 @@
         android:text="@string/saveRoute" />
 
 
-    <ListView
-        android:id="@android:id/list"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/routes_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <TextView
-        android:id="@android:id/empty"
+        android:id="@+id/routes_empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/noRoutes"

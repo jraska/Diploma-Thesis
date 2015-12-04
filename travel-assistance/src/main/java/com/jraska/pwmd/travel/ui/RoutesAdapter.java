@@ -1,21 +1,51 @@
 package com.jraska.pwmd.travel.ui;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteDescription;
 
-public class RoutesAdapter extends ArrayAdapter<RouteDescription> {
+import javax.inject.Inject;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewHolder> {
+  //region Fields
+
+  private final List<RouteDescription> _routes = new ArrayList<>();
+  private final DateFormat _endFormat = TravelAssistanceApp.USER_DETAILED_TIME_FORMAT;
+
+  private OnItemClickListener _itemClickListener;
+
+  private final LayoutInflater _layoutInflater;
+
+  //endregion
+
   //region Constructors
 
-  public RoutesAdapter(Context context) {
-    super(context, 0);
+  @Inject
+  public RoutesAdapter(LayoutInflater inflater) {
+    ArgumentCheck.notNull(inflater, "inflater");
+
+    _layoutInflater = inflater;
+  }
+
+  //endregion
+
+  //region Properties
+
+  public void setItemClickListener(OnItemClickListener itemClickListener) {
+    _itemClickListener = itemClickListener;
   }
 
   //endregion
@@ -23,26 +53,78 @@ public class RoutesAdapter extends ArrayAdapter<RouteDescription> {
   //region Adapter implementation
 
   @Override
-  public View getView(int position, View convertView, ViewGroup parent) {
-    if (convertView == null) {
-      convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_route_row, null);
-    }
+  public RouteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    View inflated = _layoutInflater.inflate(R.layout.item_route_row, parent, false);
+    final RouteViewHolder routeViewHolder = new RouteViewHolder(inflated);
 
-    RouteDescription routeDescription = getItem(position);
+    inflated.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        if (_itemClickListener != null) {
+          _itemClickListener.onItemClick(routeViewHolder._position, v);
+        }
+      }
+    });
 
-    TextView title = (TextView) convertView.findViewById(android.R.id.title);
-    title.setText(routeDescription.getTitle());
-
-    TextView date = (TextView) convertView.findViewById(R.id.route_date);
-    date.setText(TravelAssistanceApp.USER_DETAILED_TIME_FORMAT.format(routeDescription.getEnd()));
-
-    TextView duration = (TextView) convertView.findViewById(R.id.route_duration);
-    String elapsedTime = DateUtils.formatElapsedTime((routeDescription.getEnd().getTime() - routeDescription.getStart().getTime()) / 1000);
-    duration.setText(elapsedTime);
-
-    return convertView;
+    return routeViewHolder;
   }
 
+  @Override
+  public void onBindViewHolder(RouteViewHolder holder, int position) {
+    RouteDescription rout = _routes.get(position);
+
+    holder._routeTitle.setText(rout.getTitle());
+    holder._routeDate.setText(_endFormat.format(rout.getEnd()));
+
+    long durationSeconds = (rout.getEnd().getTime() - rout.getStart().getTime()) / 1000;
+    String timeText = DateUtils.formatElapsedTime(durationSeconds);
+    holder._routeDuration.setText(timeText);
+  }
+
+  @Override public int getItemCount() {
+    return _routes.size();
+  }
+
+  //endregion
+
+  //region Methods
+
+  public RouteDescription getItem(int position) {
+    return _routes.get(position);
+  }
+
+  public void add(RouteDescription route) {
+    _routes.add(route);
+  }
+
+  public void addAll(Collection<? extends RouteDescription> collection) {
+    _routes.addAll(collection);
+  }
+
+  public void clear() {
+    _routes.clear();
+  }
+
+  //endregion
+
+  //region Nested classes
+
+  static class RouteViewHolder extends RecyclerView.ViewHolder {
+    @Bind(R.id.route_title) TextView _routeTitle;
+    @Bind(R.id.route_date) TextView _routeDate;
+    @Bind(R.id.route_duration) TextView _routeDuration;
+
+    int _position;
+
+    public RouteViewHolder(View itemView) {
+      super(itemView);
+
+      ButterKnife.bind(this, itemView);
+    }
+  }
+
+  public interface OnItemClickListener {
+    void onItemClick(int position, View itemView);
+  }
 
   //endregion
 }

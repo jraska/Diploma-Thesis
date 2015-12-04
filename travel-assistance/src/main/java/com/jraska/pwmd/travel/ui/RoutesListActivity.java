@@ -2,16 +2,15 @@ package com.jraska.pwmd.travel.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.jraska.common.events.Observer;
 import com.jraska.pwmd.core.gps.Position;
@@ -29,13 +28,12 @@ import java.util.*;
 public class RoutesListActivity extends BaseActivity {
   //region Fields
 
-  @Bind(android.R.id.list) ListView _routesList;
-  @Bind(android.R.id.empty) View _emptyView;
+  @Bind(R.id.routes_recycler_view) RecyclerView _routesRecycler;
+  @Bind(R.id.routes_empty_view) View _emptyView;
 
   @Inject TrackingManager _trackingManager;
   @Inject TravelDataRepository _travelDataRepository;
-
-  private ArrayAdapter<RouteDescription> _routesAdapter;
+  @Inject RoutesAdapter _routesAdapter;
 
   private Observer<RouteDescription> _descriptionsObserver = new Observer<RouteDescription>() {
     @Override
@@ -56,22 +54,8 @@ public class RoutesListActivity extends BaseActivity {
     TravelAssistanceApp.getComponent(this).inject(this);
 
     setupRoutes();
-
     refreshRoutes();
-
     registerOnRouteChangedObservers();
-  }
-
-  private boolean showLastSavedRoute() {
-    List<RouteDescription> routeDescriptions = _travelDataRepository.selectAllRouteDescriptions();
-
-    if (routeDescriptions.size() == 0) {
-      return false;
-    }
-
-    showRoute(routeDescriptions.get(routeDescriptions.size() - 1));
-
-    return true;
   }
 
   @Override
@@ -107,6 +91,7 @@ public class RoutesListActivity extends BaseActivity {
 
     final int position = adapterContextMenuInfo.position;
 
+    // TODO add delete functionality to dropdown menu
     menu.add(getString(R.string.delete)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
       @Override
       public boolean onMenuItemClick(MenuItem item) {
@@ -124,19 +109,14 @@ public class RoutesListActivity extends BaseActivity {
   //region Methods
 
   protected void setupRoutes() {
-    _routesAdapter = new RoutesAdapter(this);
+    _routesRecycler.setAdapter(_routesAdapter);
+    _routesRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-    _routesList.setAdapter(_routesAdapter);
-    _routesList.setEmptyView(_emptyView);
-    _routesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    _routesAdapter.setItemClickListener(new RoutesAdapter.OnItemClickListener() {
+      @Override public void onItemClick(int position, View itemView) {
         showRoute(position);
       }
     });
-
-
-    registerForContextMenu(_routesList);
   }
 
   protected void showRoute(int position) {
@@ -144,9 +124,9 @@ public class RoutesListActivity extends BaseActivity {
     showRoute(item);
   }
 
-  protected void showRoute(RouteDescription item) {
+  protected void showRoute(RouteDescription route) {
     Intent intent = new Intent(this, RouteDisplayActivity.class);
-    intent.putExtra(RouteDisplayActivity.ROUTE_ID, item.getId());
+    intent.putExtra(RouteDisplayActivity.ROUTE_ID, route.getId());
 
     startActivity(intent);
   }
@@ -165,13 +145,20 @@ public class RoutesListActivity extends BaseActivity {
 
     _routesAdapter.clear();
 
-    _routesAdapter.setNotifyOnChange(false);
-
-    for (RouteDescription routeDescription : routeDescriptions) {
-      _routesAdapter.add(routeDescription);
-    }
-
+    _routesAdapter.addAll(routeDescriptions);
     _routesAdapter.notifyDataSetChanged();
+
+    updateEmptyView();
+  }
+
+  private void updateEmptyView() {
+    if (_routesAdapter.getItemCount() == 0) {
+      _routesRecycler.setVisibility(View.GONE);
+      _emptyView.setVisibility(View.VISIBLE);
+    } else {
+      _routesRecycler.setVisibility(View.VISIBLE);
+      _emptyView.setVisibility(View.GONE);
+    }
   }
 
   @OnClick(R.id.btnStartTracking) void startTracking() {

@@ -21,6 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_routes_list" />
+    <include layout="@layout/content_routes" />
 
 </android.support.design.widget.CoordinatorLayout>

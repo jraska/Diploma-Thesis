@@ -3,6 +3,7 @@ package com.jraska.pwmd.travel;
 import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.tracking.LocationFilter;
 import com.jraska.pwmd.travel.tracking.SimpleTrackingManager;
@@ -31,5 +32,9 @@ public class TravelAssistanceModule {
 
   @Provides @PerApp LocationFilter provideFilter() {
     return new SimpleTrackingManager.GpsProviderOnlyFilter();
+  }
+
+  @Provides @PerApp LayoutInflater provideInflater(Context context) {
+    return LayoutInflater.from(context);
   }
 }
