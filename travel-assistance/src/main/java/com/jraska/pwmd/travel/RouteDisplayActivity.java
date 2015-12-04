@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.UUID;
 
-public class RouteDisplayActivity extends BaseTravelActivity {
+public class RouteDisplayActivity extends BaseActivity {
   //region Constants
 
   public static final String ROUTE_ID = "RouteId";
@@ -94,7 +94,7 @@ public class RouteDisplayActivity extends BaseTravelActivity {
   }
 
   protected LatLng toGoogleLatLng(com.jraska.pwmd.core.gps.LatLng latLng) {
-    return new LatLng(latLng.latitude, latLng.longitude);
+    return new LatLng(latLng._latitude, latLng._longitude);
   }
 
   //endregion

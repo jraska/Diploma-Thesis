@@ -6,16 +6,16 @@ import android.os.Parcelable;
 public class LatLng implements Parcelable {
   //region Fields
 
-  public final double latitude;
-  public final double longitude;
+  public final double _latitude;
+  public final double _longitude;
 
   //endregion
 
   //region Constructors
 
   public LatLng(double latitude, double longitude) {
-    this.latitude = latitude;
-    this.longitude = longitude;
+    _latitude = latitude;
+    _longitude = longitude;
   }
 
 
@@ -30,8 +30,8 @@ public class LatLng implements Parcelable {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeDouble(latitude);
-    dest.writeDouble(longitude);
+    dest.writeDouble(_latitude);
+    dest.writeDouble(_longitude);
   }
 
   public static final Parcelable.Creator<LatLng> CREATOR = new Parcelable.Creator<LatLng>() {
@@ -51,8 +51,8 @@ public class LatLng implements Parcelable {
   @Override
   public String toString() {
     return getClass().getSimpleName() +
-        " latitude=" + latitude +
-        ", longitude=" + longitude +
+        " _latitude=" + _latitude +
+        ", _longitude=" + _longitude +
         '}';
   }
 
@@ -63,8 +63,8 @@ public class LatLng implements Parcelable {
 
     LatLng latLng = (LatLng) o;
 
-    if (Double.compare(latLng.latitude, latitude) != 0) return false;
-    if (Double.compare(latLng.longitude, longitude) != 0) return false;
+    if (Double.compare(latLng._latitude, _latitude) != 0) return false;
+    if (Double.compare(latLng._longitude, _longitude) != 0) return false;
 
     return true;
   }
@@ -73,9 +73,9 @@ public class LatLng implements Parcelable {
   public int hashCode() {
     int result;
     long temp;
-    temp = Double.doubleToLongBits(latitude);
+    temp = Double.doubleToLongBits(_latitude);
     result = (int) (temp ^ (temp >>> 32));
-    temp = Double.doubleToLongBits(longitude);
+    temp = Double.doubleToLongBits(_longitude);
     result = 31 * result + (int) (temp ^ (temp >>> 32));
     return result;
   }

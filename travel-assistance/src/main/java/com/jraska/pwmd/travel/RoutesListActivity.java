@@ -24,7 +24,7 @@ import com.jraska.pwmd.travel.tracking.TrackingManager;
 import javax.inject.Inject;
 import java.util.*;
 
-public class RoutesListActivity extends BaseTravelActivity {
+public class RoutesListActivity extends BaseActivity {
   //region Fields
 
   @Bind(android.R.id.list) ListView _routesList;

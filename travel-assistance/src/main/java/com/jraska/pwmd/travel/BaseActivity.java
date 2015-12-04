@@ -3,7 +3,7 @@ package com.jraska.pwmd.travel;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-public abstract class BaseTravelActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
   //region Activity overrides
 
   @Override public void setContentView(int layoutResID) {

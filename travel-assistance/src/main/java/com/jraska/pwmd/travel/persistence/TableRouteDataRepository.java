@@ -125,8 +125,8 @@ public class TableRouteDataRepository extends RouteRepositoryBase {
     ContentValues contentValues = new ContentValues();
     contentValues.put(DbModel.PointsTable.COLUMN_ID, idToDbValue(UUID.randomUUID()));
     contentValues.put(DbModel.PointsTable.COLUMN_ROUTE_ID, idToDbValue(routeId));
-    contentValues.put(DbModel.PointsTable.COLUMN_LATITUDE, p.latitude);
-    contentValues.put(DbModel.PointsTable.COLUMN_LONGITUDE, p.longitude);
+    contentValues.put(DbModel.PointsTable.COLUMN_LATITUDE, p._latitude);
+    contentValues.put(DbModel.PointsTable.COLUMN_LONGITUDE, p._longitude);
     contentValues.put(DbModel.PointsTable.COLUMN_ACCURACY, p.accuracy);
     contentValues.put(DbModel.PointsTable.COLUMN_TIME, p.time);
     contentValues.put(DbModel.PointsTable.COLUMN_PROVIDER, p.provider);

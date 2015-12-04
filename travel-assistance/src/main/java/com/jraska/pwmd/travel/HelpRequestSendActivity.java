@@ -15,7 +15,7 @@ import com.jraska.pwmd.travel.help.SmsSender;
 
 import javax.inject.Inject;
 
-public class HelpRequestSendActivity extends BaseTravelActivity {
+public class HelpRequestSendActivity extends BaseActivity {
   //region Fields
 
   @Bind(R.id.helpMessageText) TextView _messageView;
