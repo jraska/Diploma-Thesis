@@ -53,7 +53,6 @@ public class RoutesListActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_routes);
 
-    ButterKnife.bind(this);
     TravelAssistanceApp.getComponent(this).inject(this);
 
     setupRoutes();

@@ -44,7 +44,6 @@ public class HelpRequestSendActivity extends BaseActivity {
     TravelAssistanceApp.getComponent(this).inject(this);
 
     setContentView(R.layout.activity_send_help_request);
-    ButterKnife.bind(this);
   }
 
   @Override
