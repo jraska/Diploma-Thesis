@@ -14,7 +14,6 @@ import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.help.EmailSender;
 import com.jraska.pwmd.travel.help.LostMessageTextBuilder;
 import com.jraska.pwmd.travel.help.SmsSender;
-import com.jraska.pwmd.travel.ui.BaseActivity;
 
 import javax.inject.Inject;
 
@@ -44,7 +43,7 @@ public class HelpRequestSendActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     TravelAssistanceApp.getComponent(this).inject(this);
 
-    setContentView(R.layout.help_request_send);
+    setContentView(R.layout.activity_send_help_request);
     ButterKnife.bind(this);
   }
 

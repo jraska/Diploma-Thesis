@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
@@ -51,7 +50,7 @@ public class RouteDisplayActivity extends BaseActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.route_display);
+    setContentView(R.layout.activity_route_display);
     TravelAssistanceApp.getComponent(this).inject(this);
 
     loadAndShowRoute();

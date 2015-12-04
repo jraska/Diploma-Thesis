@@ -1,4 +1,4 @@
-package com.jraska.pwmd.travel;
+package com.jraska.pwmd.travel.ui;
 
 import android.content.Context;
 import android.text.format.DateUtils;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import com.jraska.pwmd.travel.R;
+import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteDescription;
 
 public class RoutesAdapter extends ArrayAdapter<RouteDescription> {
@@ -23,7 +25,7 @@ public class RoutesAdapter extends ArrayAdapter<RouteDescription> {
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     if (convertView == null) {
-      convertView = LayoutInflater.from(getContext()).inflate(R.layout.route_list_row, null);
+      convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_route_row, null);
     }
 
     RouteDescription routeDescription = getItem(position);

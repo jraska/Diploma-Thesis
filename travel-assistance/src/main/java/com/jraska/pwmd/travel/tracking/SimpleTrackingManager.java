@@ -85,11 +85,11 @@ public class SimpleTrackingManager implements TrackingManager {
 
     List<Position> positions = _serviceBinder.getService().getPositions();
 
+    positions = filterPositions(positions);
+
     if (positions.size() == 0) {
       return null;
     }
-
-    positions = filterPositions(positions);
 
     return new PathInfo(_start, new Date(), new Path(positions));
   }

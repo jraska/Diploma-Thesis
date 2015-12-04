@@ -16,7 +16,6 @@ import butterknife.OnClick;
 import com.jraska.common.events.Observer;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
-import com.jraska.pwmd.travel.RoutesAdapter;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.Path;
 import com.jraska.pwmd.travel.data.RouteData;
@@ -52,7 +51,7 @@ public class RoutesListActivity extends BaseActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_routes_list);
+    setContentView(R.layout.activity_routes);
 
     ButterKnife.bind(this);
     TravelAssistanceApp.getComponent(this).inject(this);
