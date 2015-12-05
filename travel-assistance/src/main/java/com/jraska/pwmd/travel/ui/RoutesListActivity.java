@@ -83,27 +83,6 @@ public class RoutesListActivity extends BaseActivity {
     super.onNewIntent(intent);
   }
 
-  @Override
-  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-    super.onCreateContextMenu(menu, v, menuInfo);
-
-    AdapterView.AdapterContextMenuInfo adapterContextMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-
-    final int position = adapterContextMenuInfo.position;
-
-    // TODO add delete functionality to dropdown menu
-    menu.add(getString(R.string.delete)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-      @Override
-      public boolean onMenuItemClick(MenuItem item) {
-        RouteDescription item1 = _routesAdapter.getItem(position);
-        _travelDataRepository.deleteRoute(item1.getId());
-        refreshRoutes();
-
-        return true;
-      }
-    });
-  }
-
   //endregion
 
   //region Methods
@@ -115,6 +94,11 @@ public class RoutesListActivity extends BaseActivity {
     _routesAdapter.setItemClickListener(new RoutesAdapter.OnItemClickListener() {
       @Override public void onItemClick(int position, View itemView) {
         showRoute(position);
+      }
+    });
+    _routesAdapter.setItemDeleteClickListener(new RoutesAdapter.OnItemDeleteListener() {
+      @Override public void onItemDelete(int position, View itemView) {
+        deleteRoute(_routesAdapter.getItem(position));
       }
     });
   }
@@ -161,6 +145,12 @@ public class RoutesListActivity extends BaseActivity {
     }
   }
 
+  protected void deleteRoute(RouteDescription route) {
+    _travelDataRepository.deleteRoute(route.getId());
+    refreshRoutes();
+  }
+
+
   @OnClick(R.id.btnStartTracking) void startTracking() {
     _trackingManager.startTracking();
   }
@@ -181,6 +171,8 @@ public class RoutesListActivity extends BaseActivity {
     _travelDataRepository.insertRoute(routeData);
 
     Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
+
+    refreshRoutes();
   }
 
   // TODO: move to unit tests

@@ -58,4 +58,5 @@ dependencies {
   compile 'com.google.android.gms:play-services-maps:8.3.0'
   compile 'com.jakewharton:butterknife:7.0.1'
   compile 'com.android.support:design:23.1.1'
+  compile 'de.hdodenhof:circleimageview:2.0.0'
 }

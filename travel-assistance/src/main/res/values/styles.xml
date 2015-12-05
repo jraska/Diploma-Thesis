@@ -17,4 +17,15 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TextMain">
+        <item name="android:textColor">@color/textMain</item>
+        <item name="android:textSize">@dimen/textMain</item>
+    </style>
+
+    <style name="TextSecondary">
+        <item name="android:textColor">@color/textSecondary</item>
+        <item name="android:textSize">@dimen/textSecondary</item>
+    </style>
+
+
 </resources>

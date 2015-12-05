@@ -3,32 +3,59 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:drawable/list_selector_background">
+    android:layout_height="@dimen/list_item_height"
+    android:paddingTop="@dimen/side_padding"
+    android:paddingBottom="@dimen/side_padding"
+    android:background="@android:drawable/list_selector_background"
+    android:id="@+id/route_item_container">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/route_icon"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:padding="@dimen/padding_small"
+        android:layout_marginLeft="@dimen/side_padding"
+        android:layout_marginRight="@dimen/side_padding"
+        android:src="@drawable/route_placeholder" />
+
 
     <TextView
         android:id="@+id/route_title"
         android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/route_icon"
         android:layout_height="wrap_content"
-        android:textAppearance="@android:style/TextAppearance.Medium"
+        style="@style/TextMain"
         tools:text="@string/app_name" />
 
     <TextView
         android:id="@+id/route_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/route_icon"
         android:layout_below="@id/route_title"
+        style="@style/TextSecondary"
         tools:text="Date" />
 
     <TextView
         android:id="@+id/route_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
+        style="@style/TextSecondary"
+        android:layout_marginLeft="@dimen/side_padding"
         android:layout_toRightOf="@id/route_date"
         android:layout_toEndOf="@id/route_date"
         android:layout_below="@id/route_title"
         tools:text="@string/app_name" />
+
+    <ImageView
+        android:id="@+id/route_delete"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:padding="@dimen/padding_medium"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/side_padding"
+        android:src="@drawable/ic_delete_24dp"
+        android:clickable="true"
+        android:background="@android:drawable/list_selector_background"/>
 
 </RelativeLayout>

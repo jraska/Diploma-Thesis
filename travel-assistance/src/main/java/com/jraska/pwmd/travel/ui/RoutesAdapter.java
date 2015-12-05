@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
@@ -26,6 +27,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
   private final DateFormat _endFormat = TravelAssistanceApp.USER_DETAILED_TIME_FORMAT;
 
   private OnItemClickListener _itemClickListener;
+  private OnItemDeleteListener _itemDeleteListener;
 
   private final LayoutInflater _layoutInflater;
 
@@ -48,6 +50,10 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     _itemClickListener = itemClickListener;
   }
 
+  public void setItemDeleteClickListener(OnItemDeleteListener itemDeleteListener) {
+    _itemDeleteListener = itemDeleteListener;
+  }
+
   //endregion
 
   //region Adapter implementation
@@ -55,15 +61,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
   @Override
   public RouteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View inflated = _layoutInflater.inflate(R.layout.item_route_row, parent, false);
-    final RouteViewHolder routeViewHolder = new RouteViewHolder(inflated);
-
-    inflated.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        if (_itemClickListener != null) {
-          _itemClickListener.onItemClick(routeViewHolder._position, v);
-        }
-      }
-    });
+    final RouteViewHolder routeViewHolder = new RouteViewHolder(this, inflated);
 
     return routeViewHolder;
   }
@@ -78,6 +76,8 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     long durationSeconds = (rout.getEnd().getTime() - rout.getStart().getTime()) / 1000;
     String timeText = DateUtils.formatElapsedTime(durationSeconds);
     holder._routeDuration.setText(timeText);
+
+    holder._position = position;
   }
 
   @Override public int getItemCount() {
@@ -87,6 +87,18 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
   //endregion
 
   //region Methods
+
+  protected void onItemClicked(int position, View view) {
+    if (_itemClickListener != null) {
+      _itemClickListener.onItemClick(position, view);
+    }
+  }
+
+  protected void onRouteDelete(int position, View v) {
+    if (_itemDeleteListener != null) {
+      _itemDeleteListener.onItemDelete(position, v);
+    }
+  }
 
   public RouteDescription getItem(int position) {
     return _routes.get(position);
@@ -113,17 +125,32 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     @Bind(R.id.route_date) TextView _routeDate;
     @Bind(R.id.route_duration) TextView _routeDuration;
 
+    private final RoutesAdapter _routesAdapter;
+
     int _position;
 
-    public RouteViewHolder(View itemView) {
+    public RouteViewHolder(RoutesAdapter routesAdapter, View itemView) {
       super(itemView);
+      _routesAdapter = routesAdapter;
 
       ButterKnife.bind(this, itemView);
+    }
+
+    @OnClick(R.id.route_item_container) void onItemClick(View v) {
+      _routesAdapter.onItemClicked(_position, v);
+    }
+
+    @OnClick(R.id.route_delete) void deleteRoute(View v) {
+      _routesAdapter.onRouteDelete(_position, v);
     }
   }
 
   public interface OnItemClickListener {
     void onItemClick(int position, View itemView);
+  }
+
+  public interface OnItemDeleteListener {
+    void onItemDelete(int position, View itemView);
   }
 
   //endregion
