@@ -43,6 +43,10 @@ android {
     }
   }
 
+  lintOptions {
+    abortOnError false
+  }
+
 }
 
 apply plugin: 'com.neenbedankt.android-apt'
