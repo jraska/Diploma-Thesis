@@ -114,10 +114,8 @@ public class HelpRequestSendActivity extends BaseActivity {
     }
 
     String assistantEmail = _settingsManager.getAssistantEmail();
-    if (assistantEmail == null) {
-      // TODO: Check this on startup to disable buttons
-      showToast(R.string.no_assistant_email);
-      return;
+    if(assistantEmail == null){
+      assistantEmail = ""; // will launch email client without recipient
     }
 
     String message = getMessage(position);

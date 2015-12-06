@@ -16,6 +16,8 @@ android {
     debug {
       debuggable true
       signingConfig signingConfigs.debug
+
+      // There is problem with Robolectric with dev id suffix
 //      applicationIdSuffix '.dev'
 //      versionNameSuffix '-dev'
     }
