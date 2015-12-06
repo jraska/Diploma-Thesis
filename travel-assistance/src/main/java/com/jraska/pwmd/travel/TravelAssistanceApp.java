@@ -30,7 +30,6 @@ public class TravelAssistanceApp extends BaseApp {
         .travelAssistanceModule(new TravelAssistanceModule(this)).build();
   }
 
-
   //endregion
 
   //region Methods

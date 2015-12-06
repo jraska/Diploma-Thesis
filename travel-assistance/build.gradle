@@ -15,10 +15,9 @@ android {
   buildTypes {
     debug {
       debuggable true
-//      signingConfig signingConfigs.debug
-//      testCoverageEnabled true
-      applicationIdSuffix '.dev'
-      versionNameSuffix '-dev'
+      signingConfig signingConfigs.debug
+//      applicationIdSuffix '.dev'
+//      versionNameSuffix '-dev'
     }
     release {
       minifyEnabled false
@@ -60,4 +59,6 @@ dependencies {
   apt 'com.google.dagger:dagger-compiler:2.0.2'
 
   testCompile 'junit:junit:4.12'
+  testCompile 'org.robolectric:robolectric:3.0'
+  testCompile 'org.hamcrest:hamcrest-library:1.3'
 }

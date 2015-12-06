@@ -183,72 +183,7 @@ public class RoutesListActivity extends BaseActivity {
     refreshRoutes();
   }
 
-  // TODO: move to unit tests
-  protected void testPersistencePositions() {
-    UUID testId = UUID.fromString("07684a55-f8d4-498a-a313-609965a2b3df");
 
-    //build test path
-    int pointsCount = 3;
-    List<Position> positions = new ArrayList<>(pointsCount);
-    for (int i = 0; i < pointsCount; i++) {
-      positions.add(generatePosition());
-    }
-
-    //build test route
-    RouteDescription routeDescription = new RouteDescription(testId, new Date(), new Date(), "Test");
-    RouteData routeData = new RouteData(routeDescription, new Path(positions));
-
-    TravelDataRepository persistenceService = _travelDataRepository;
-
-    //try insert
-    long value = persistenceService.insertRoute(routeData);
-
-    // try update
-    positions.add(generatePosition());
-    RouteData routeData2 = new RouteData(routeDescription, new Path(positions));
-
-    //try get all
-    List<RouteDescription> routeDescriptions = persistenceService.selectAllRouteDescriptions();
-
-    for (RouteDescription description : routeDescriptions) {
-      RouteData routeData1 = persistenceService.selectRouteData(description.getId());
-      if (routeData1 != null) {
-        //stub
-        int i = 0;
-        i++;
-      }
-    }
-
-
-    //try get current
-
-    persistenceService.updateRoute(routeData2);
-
-    for (RouteDescription description : routeDescriptions) {
-      RouteData routeData1 = persistenceService.selectRouteData(description.getId());
-      if (routeData1 != null) {
-        //stub
-        int i = 0;
-        i++;
-      }
-    }
-
-    persistenceService.deleteRoute(routeData2.getId());
-
-    for (RouteDescription description : routeDescriptions) {
-      RouteData routeData1 = persistenceService.selectRouteData(description.getId());
-      if (routeData1 != null) {
-        //stub
-        int i = 0;
-        i++;
-      }
-    }
-  }
-
-  private Position generatePosition() {
-    Random random = new Random();
-    return new Position(random.nextDouble() * 50, random.nextDouble() * 50, System.currentTimeMillis(), 30.0f, "GPS");
-  }
 
   //endregion
 }
