@@ -22,4 +22,6 @@
     <string name="no_assistant_email">No assistant email</string>
     <string name="settings">Settings</string>
     <string name="assistant_email">Assistant email</string>
+    <string name="assistant_phone">Assistant phone</string>
+    <string name="no_assistant_number">No assistant number</string>
 </resources>

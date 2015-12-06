@@ -14,6 +14,7 @@ public class SettingsActivity extends BaseActivity {
   //region Fields
 
   @Bind(R.id.settings_assistant_email) EditText _assistantEmailText;
+  @Bind(R.id.settings_assistant_phone) EditText _assistantPhoneText;
 
   @Inject SettingsManager _settingsManager;
 
@@ -29,11 +30,13 @@ public class SettingsActivity extends BaseActivity {
     TravelAssistanceApp.getComponent(this).inject(this);
 
     _assistantEmailText.setText(_settingsManager.getAssistantEmail());
+    _assistantPhoneText.setText(_settingsManager.getAssistantPhone());
   }
 
   @Override
   protected void onDestroy() {
     _settingsManager.setAssistantEmail(_assistantEmailText.getText().toString());
+    _settingsManager.setAssistantPhone(_assistantPhoneText.getText().toString());
 
     super.onDestroy();
   }

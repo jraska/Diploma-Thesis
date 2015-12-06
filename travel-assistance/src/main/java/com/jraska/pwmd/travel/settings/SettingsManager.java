@@ -11,6 +11,7 @@ public class SettingsManager {
   //region Constants
 
   private static final String ASSIST_EMAIL = "237a802asd";
+  private static final String ASSIST_PHONE = "wn32k11l1k2j";
 
   //endregion
 
@@ -39,7 +40,27 @@ public class SettingsManager {
   }
 
   public void setAssistantEmail(@Nullable String email) {
-    _preferences.edit().putString(ASSIST_EMAIL, email).apply();
+    setPreferenceValue(ASSIST_EMAIL, email);
+  }
+
+  /**
+   * @return Assistant phoen if available, null otherwise
+   */
+  @Nullable
+  public String getAssistantPhone() {
+    return _preferences.getString(ASSIST_PHONE, null);
+  }
+
+  public void setAssistantPhone(@Nullable String assistantPhone) {
+    setPreferenceValue(ASSIST_PHONE, assistantPhone);
+  }
+
+  //endregion
+
+  //region Methods
+
+  private void setPreferenceValue(String key, String value) {
+    _preferences.edit().putString(key, value).apply();
   }
 
   //endregion

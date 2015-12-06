@@ -22,4 +22,16 @@
         android:inputType="textEmailAddress"
         android:hint="@string/assistant_email"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/assistant_phone"/>
+
+    <EditText
+        android:id="@+id/settings_assistant_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:hint="@string/assistant_phone"/>
+
 </LinearLayout>

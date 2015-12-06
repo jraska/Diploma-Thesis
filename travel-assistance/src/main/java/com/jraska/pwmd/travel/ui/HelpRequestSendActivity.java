@@ -1,6 +1,7 @@
 package com.jraska.pwmd.travel.ui;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
@@ -21,6 +22,7 @@ public class HelpRequestSendActivity extends BaseActivity {
   //region Fields
 
   @Bind(R.id.helpMessageText) TextView _messageView;
+
   @Inject LocationService _locationService;
   @Inject SmsSender _smsSender;
   @Inject SettingsManager _settingsManager;
@@ -78,16 +80,24 @@ public class HelpRequestSendActivity extends BaseActivity {
       return;
     }
 
-    String message = getMessage(position);
+    String assistantPhone = _settingsManager.getAssistantPhone();
+    if (TextUtils.isEmpty(assistantPhone)) {
+      // TODO: Check this on startup to disable buttons
+      showToast(R.string.no_assistant_number);
+      return;
+    }
 
+    // TODO: 06/12/15 Validation if the device can send sms
+
+    String message = getMessage(position);
     _messageView.setText(message);
 
     SmsSender smsSender = _smsSender;
-    // TODO: assistant number
-    if (smsSender.sendSms("0420721380088", message)) {
-      showToast(getString(R.string.sent));
+
+    if (smsSender.sendSms(assistantPhone, message)) {
+      showToast(R.string.sent);
     } else {
-      showToast(getString(R.string.not_sent));
+      showToast(R.string.not_sent);
     }
   }
 
@@ -103,34 +113,33 @@ public class HelpRequestSendActivity extends BaseActivity {
       return;
     }
 
+    String assistantEmail = _settingsManager.getAssistantEmail();
+    if (assistantEmail == null) {
+      // TODO: Check this on startup to disable buttons
+      showToast(R.string.no_assistant_email);
+      return;
+    }
+
     String message = getMessage(position);
 
     _messageView.setText(message);
 
-    EmailSender emailSender = new EmailSender(this);
-
-    String assistantEmail = _settingsManager.getAssistantEmail();
-    if (assistantEmail == null) {
-      // TODO: Check this on startup to disable buttons
-      Toast.makeText(this, R.string.no_assistant_email, Toast.LENGTH_SHORT).show();
-    }
-
+    EmailSender emailSender = new EmailSender(this); // No DI because we need Activity context here
     emailSender.sendEmail(assistantEmail, getString(R.string.i_am_lost), message);
   }
 
-  protected void showToast(String message) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+  protected void showToast(int messageRes) {
+    Toast.makeText(this, messageRes, Toast.LENGTH_SHORT).show();
   }
 
   protected boolean checkPosition(Position position) {
     if (position == null) {
-      showToast(getString(R.string.no_position));
+      showToast(R.string.no_position);
       return false;
     }
 
     return true;
   }
-
 
   //endregion
 }
