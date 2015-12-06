@@ -16,7 +16,7 @@ android {
   buildTypes {
     debug {
       debuggable true
-//      signingConfig signingConfigs.debug
+      signingConfig signingConfigs.debug
 //      testCoverageEnabled true
       applicationIdSuffix '.dev'
       versionNameSuffix '-dev'
