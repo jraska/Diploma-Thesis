@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
@@ -14,6 +13,7 @@ import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.help.EmailSender;
 import com.jraska.pwmd.travel.help.LostMessageTextBuilder;
 import com.jraska.pwmd.travel.help.SmsSender;
+import com.jraska.pwmd.travel.settings.SettingsManager;
 
 import javax.inject.Inject;
 
@@ -23,6 +23,7 @@ public class HelpRequestSendActivity extends BaseActivity {
   @Bind(R.id.helpMessageText) TextView _messageView;
   @Inject LocationService _locationService;
   @Inject SmsSender _smsSender;
+  @Inject SettingsManager _settingsManager;
 
   private boolean _gpsStarted;
 
@@ -108,8 +109,13 @@ public class HelpRequestSendActivity extends BaseActivity {
 
     EmailSender emailSender = new EmailSender(this);
 
-    // TODO: assistant email
-    emailSender.sendEmail("josef.raska@gmail.com", getString(R.string.i_am_lost), message);
+    String assistantEmail = _settingsManager.getAssistantEmail();
+    if (assistantEmail == null) {
+      // TODO: Check this on startup to disable buttons
+      Toast.makeText(this, R.string.no_assistant_email, Toast.LENGTH_SHORT).show();
+    }
+
+    emailSender.sendEmail(assistantEmail, getString(R.string.i_am_lost), message);
   }
 
   protected void showToast(String message) {

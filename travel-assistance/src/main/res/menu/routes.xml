@@ -9,4 +9,11 @@
         android:icon="@drawable/ic_person_pin_white_24dp"
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_routes_settings"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
 </menu>

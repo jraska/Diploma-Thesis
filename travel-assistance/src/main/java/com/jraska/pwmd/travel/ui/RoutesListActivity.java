@@ -11,17 +11,16 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.OnClick;
 import com.jraska.common.events.Observer;
-import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
-import com.jraska.pwmd.travel.data.Path;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 public class RoutesListActivity extends BaseActivity {
   //region Fields
@@ -68,6 +67,10 @@ public class RoutesListActivity extends BaseActivity {
     switch (item.getItemId()) {
       case R.id.action_routes_help:
         openHelpRequests();
+        return true;
+
+      case R.id.action_routes_settings:
+        openSettings();
         return true;
 
       default:
@@ -158,6 +161,9 @@ public class RoutesListActivity extends BaseActivity {
     startActivity(new Intent(RoutesListActivity.this, HelpRequestSendActivity.class));
   }
 
+  protected void openSettings() {
+    startActivity(new Intent(this, SettingsActivity.class));
+  }
 
   @OnClick(R.id.btnStartTracking) void startTracking() {
     _trackingManager.startTracking();
@@ -182,7 +188,6 @@ public class RoutesListActivity extends BaseActivity {
 
     refreshRoutes();
   }
-
 
 
   //endregion
