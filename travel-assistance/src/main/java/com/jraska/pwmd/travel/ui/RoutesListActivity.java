@@ -4,11 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -60,15 +58,21 @@ public class RoutesListActivity extends BaseActivity {
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    menu.add(getString(R.string.i_am_lost)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-      @Override
-      public boolean onMenuItemClick(MenuItem item) {
-        startActivity(new Intent(RoutesListActivity.this, HelpRequestSendActivity.class));
-        return true;
-      }
-    });
+    getMenuInflater().inflate(R.menu.routes, menu);
 
     return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_routes_help:
+        openHelpRequests();
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
   }
 
   @Override
@@ -148,6 +152,10 @@ public class RoutesListActivity extends BaseActivity {
   protected void deleteRoute(RouteDescription route) {
     _travelDataRepository.deleteRoute(route.getId());
     refreshRoutes();
+  }
+
+  protected void openHelpRequests() {
+    startActivity(new Intent(RoutesListActivity.this, HelpRequestSendActivity.class));
   }
 
 
