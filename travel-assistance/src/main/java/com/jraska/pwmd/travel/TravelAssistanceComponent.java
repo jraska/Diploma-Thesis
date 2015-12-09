@@ -7,7 +7,7 @@ import com.jraska.pwmd.travel.settings.SettingsModule;
 import com.jraska.pwmd.travel.tracking.TrackingModule;
 import com.jraska.pwmd.travel.tracking.TrackingService;
 import com.jraska.pwmd.travel.ui.HelpRequestSendActivity;
-import com.jraska.pwmd.travel.ui.RouteDisplayActivity;
+import com.jraska.pwmd.travel.ui.RouteDetailActivity;
 import com.jraska.pwmd.travel.ui.RoutesListActivity;
 import com.jraska.pwmd.travel.ui.SettingsActivity;
 import dagger.Component;
@@ -26,7 +26,7 @@ import dagger.Component;
 public interface TravelAssistanceComponent {
   void inject(HelpRequestSendActivity helpRequestSendActivity);
 
-  void inject(RouteDisplayActivity routeDisplayActivity);
+  void inject(RouteDetailActivity routeDetailActivity);
 
   void inject(RoutesListActivity routesListActivity);
 

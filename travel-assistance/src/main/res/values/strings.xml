@@ -24,4 +24,9 @@
     <string name="assistant_email">Assistant email</string>
     <string name="assistant_phone">Assistant phone</string>
     <string name="no_assistant_number">No assistant number</string>
+    <string name="navigate">Navigate</string>
+    <string name="not_implemented">Not implemenetd now</string>
+    <string name="transport_change_title">Change title</string>
+    <string name="transport_change_description">Description</string>
+    <string name="transport_change_select">Select transport type</string>
 </resources>

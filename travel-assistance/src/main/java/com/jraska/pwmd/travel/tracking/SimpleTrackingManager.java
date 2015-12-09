@@ -6,11 +6,16 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.location.LocationManager;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
+import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.Path;
+import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import timber.log.Timber;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -25,21 +30,21 @@ public class SimpleTrackingManager implements TrackingManager {
   private Date _start;
 
   private final TrackingServiceConnection _connection = new TrackingServiceConnection();
+  private final List<TransportChangeSpec> _changes = new ArrayList<>();
+  private final LocationService _locationService;
 
   //endregion
 
   //region Constructors
 
-  public SimpleTrackingManager(Context context) {
-    this(context, LocationFilter.Empty);
-  }
-
-  public SimpleTrackingManager(Context context, LocationFilter filter) {
+  public SimpleTrackingManager(Context context, LocationService locationService, LocationFilter filter) {
     ArgumentCheck.notNull(context);
+    ArgumentCheck.notNull(locationService);
     ArgumentCheck.notNull(filter);
 
     _context = context;
     _filter = filter;
+    _locationService = locationService;
   }
 
   //endregion
@@ -52,6 +57,10 @@ public class SimpleTrackingManager implements TrackingManager {
 
   protected LocationFilter getFilter() {
     return _filter;
+  }
+
+  protected List<TransportChangeSpec> getChanges() {
+    return Collections.unmodifiableList(_changes);
   }
 
   //endregion
@@ -68,6 +77,8 @@ public class SimpleTrackingManager implements TrackingManager {
     if (_running) {
       return;
     }
+
+    _changes.clear();
 
     _start = new Date();
     Intent intent = getServiceIntent();
@@ -91,7 +102,7 @@ public class SimpleTrackingManager implements TrackingManager {
       return null;
     }
 
-    return new PathInfo(_start, new Date(), new Path(positions));
+    return new PathInfo(_start, new Date(), new Path(positions), new ArrayList<>(_changes));
   }
 
   @Override
@@ -100,11 +111,29 @@ public class SimpleTrackingManager implements TrackingManager {
       return;
     }
 
+    _changes.clear();
+
     _context.unbindService(_connection);
     _context.stopService(getServiceIntent());
 
     _serviceBinder = null;
     _running = false;
+  }
+
+  @Override
+  public boolean addChange(int type, @NonNull String title, String description) {
+    ArgumentCheck.notNull(title);
+
+    Position lastPosition = _locationService.getLastPosition();
+    if (lastPosition == null) {
+      Timber.w("Cannot add transportation change title=%s", title);
+
+      return false;
+    }
+
+    _changes.add(new TransportChangeSpec(lastPosition.latLng, type, title, description));
+
+    return true;
   }
 
   //endregion

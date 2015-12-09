@@ -19,6 +19,7 @@ public class TravelAssistanceDbHelper extends SQLiteOpenHelper {
   public void onCreate(SQLiteDatabase db) {
     db.execSQL(DbModel.RoutesTable.CREATE_STATEMENT);
     db.execSQL(DbModel.PointsTable.CREATE_STATEMENT);
+    db.execSQL(DbModel.TransportChangesTable.CREATE_STATEMENT);
   }
 
   @Override

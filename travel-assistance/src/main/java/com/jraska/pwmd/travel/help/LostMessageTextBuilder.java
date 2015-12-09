@@ -118,7 +118,7 @@ public class LostMessageTextBuilder {
   public LostMessageTextBuilder setFromPosition(Position p) {
     ArgumentCheck.notNull(p, "p");
 
-    return setAccuracy(p.accuracy).setLatitude(p._latitude).setLongitude(p._longitude).setTime(new Date(p.time));
+    return setAccuracy(p.accuracy).setLatitude(p.latLng._latitude).setLongitude(p.latLng._longitude).setTime(new Date(p.time));
   }
 
   public String buildGoogleMapsUrl() {

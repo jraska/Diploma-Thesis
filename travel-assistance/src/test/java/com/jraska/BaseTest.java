@@ -7,6 +7,10 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+/**
+ * All unit tests should inherit from this class to enable Robolectric runners
+ * automatically for all of them.
+ */
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public abstract class BaseTest {

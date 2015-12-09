@@ -50,6 +50,27 @@ public abstract class DbModel {
         COLUMN_PROVIDER + " text not null)";
   }
 
+  public static abstract class TransportChangesTable {
+    public static final String TABLE_NAME = "Changes";
+
+    public static final String COLUMN_ID = "Id";
+    public static final String COLUMN_ROUTE_ID = "RouteId";
+    public static final String COLUMN_LATITUDE = "Lat";
+    public static final String COLUMN_LONGITUDE = "Long";
+    public static final String COLUMN_TRANSPORTATION_TYPE = "Type";
+    public static final String COLUMN_TITLE = "Title";
+    public static final String COLUMN_DESCRIPTION = "Description";
+
+    public static final String CREATE_STATEMENT = "create table " + TABLE_NAME + "(" +
+        COLUMN_ID + " text primary key, " +
+        COLUMN_ROUTE_ID + " text not null, " +
+        COLUMN_LATITUDE + " real not null, " +
+        COLUMN_LONGITUDE + " real not null, " +
+        COLUMN_TRANSPORTATION_TYPE + " integer not null, " +
+        COLUMN_TITLE + " real not null, " +
+        COLUMN_DESCRIPTION + " text null)";
+  }
+
   //endregion
 
   //region Constructors

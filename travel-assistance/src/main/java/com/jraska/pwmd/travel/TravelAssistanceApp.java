@@ -2,6 +2,7 @@ package com.jraska.pwmd.travel;
 
 import android.content.Context;
 import com.jraska.core.BaseApp;
+import timber.log.Timber;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,6 +26,8 @@ public class TravelAssistanceApp extends BaseApp {
 
   @Override public void onCreate() {
     super.onCreate();
+
+    Timber.plant(new Timber.DebugTree());
 
     _component = DaggerTravelAssistanceComponent.builder()
         .travelAssistanceModule(new TravelAssistanceModule(this)).build();

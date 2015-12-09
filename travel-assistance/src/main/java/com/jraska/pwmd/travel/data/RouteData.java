@@ -1,6 +1,8 @@
 package com.jraska.pwmd.travel.data;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class RouteData {
@@ -8,16 +10,24 @@ public class RouteData {
 
   private final RouteDescription _description;
   private final Path _route;
+  private final List<TransportChangeSpec> _transportChangeSpecs;
+
 
   //endregion
 
   //region Constructors
 
+
   public RouteData(RouteDescription description, Path route) {
+    this(description, route, Collections.<TransportChangeSpec>emptyList());
+  }
+
+  public RouteData(RouteDescription description, Path route, List<TransportChangeSpec> specs) {
     //TODO: checks
 
     _description = description;
     _route = route;
+    _transportChangeSpecs = Collections.unmodifiableList(specs);
   }
 
   //endregion
@@ -48,6 +58,10 @@ public class RouteData {
     return _description.getTitle();
   }
 
+  public List<TransportChangeSpec> getTransportChangeSpecs() {
+    return _transportChangeSpecs;
+  }
+
   //endregion
 
   //region Object impl
@@ -57,6 +71,7 @@ public class RouteData {
     return "RouteData{" +
         "_description=" + _description +
         ", _route=" + _route +
+        ", _transportChangeSpecs=" + _transportChangeSpecs +
         '}';
   }
 
@@ -69,16 +84,18 @@ public class RouteData {
 
     if (!_description.equals(routeData._description)) return false;
     if (!_route.equals(routeData._route)) return false;
+    return _transportChangeSpecs.equals(routeData._transportChangeSpecs);
 
-    return true;
   }
 
   @Override
   public int hashCode() {
     int result = _description.hashCode();
     result = 31 * result + _route.hashCode();
+    result = 31 * result + _transportChangeSpecs.hashCode();
     return result;
   }
+
 
   //endregion
 }

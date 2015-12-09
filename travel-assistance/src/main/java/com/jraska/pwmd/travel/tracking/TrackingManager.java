@@ -1,8 +1,11 @@
 package com.jraska.pwmd.travel.tracking;
 
+import android.support.annotation.NonNull;
 import com.jraska.pwmd.travel.data.Path;
+import com.jraska.pwmd.travel.data.TransportChangeSpec;
 
 import java.util.Date;
+import java.util.List;
 
 public interface TrackingManager {
   //region Properties
@@ -19,6 +22,8 @@ public interface TrackingManager {
 
   void stopTracking();
 
+  boolean addChange(int type, @NonNull String title, String description);
+
   //endregion
 
   //region Nested classes
@@ -27,11 +32,13 @@ public interface TrackingManager {
     private final Date _start;
     private final Date _end;
     private final Path _path;
+    private final List<TransportChangeSpec> _transportChangeSpecs;
 
-    public PathInfo(Date start, Date end, Path path) {
+    public PathInfo(Date start, Date end, Path path, List<TransportChangeSpec> specs) {
       _start = start;
       _end = end;
       _path = path;
+      _transportChangeSpecs = specs;
     }
 
     public Date getStart() {
@@ -44,6 +51,10 @@ public interface TrackingManager {
 
     public Path getPath() {
       return _path;
+    }
+
+    public List<TransportChangeSpec> getTransportChangeSpecs() {
+      return _transportChangeSpecs;
     }
   }
 
