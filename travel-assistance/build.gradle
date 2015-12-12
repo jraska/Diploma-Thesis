@@ -43,7 +43,7 @@ android {
   }
 
   lintOptions {
-    abortOnError false // TODO: Abort on Lint errors
+    abortOnError true
   }
 }
 
