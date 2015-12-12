@@ -13,8 +13,20 @@
     <string name="unknown_position">Neznámá</string>
     <string name="help_send_sms">Odeslat sms s pozicí</string>
     <string name="help_send_email">Odeslat email</string>
-    <string name="no_position">Pozice nen9 k dispozici</string>
+    <string name="no_position">Pozice není k dispozici</string>
     <string name="sent">Odesláno</string>
     <string name="not_sent">Nepodařilo se odeslat zprávu</string>
     <string name="i_am_lost">Ztratil jsem se</string>
+    <string name="assistant_email">Email asistenta</string>
+    <string name="assistant_phone">Telefon asistenta</string>
+    <string name="delete">Smazat</string>
+    <string name="navigate">Navigovat</string>
+    <string name="no_assistant_email">Není nastaven email uživatele</string>
+    <string name="no_assistant_number">Není nastaven telefon asistenta</string>
+    <string name="not_implemented">Není implementováno</string>
+    <string name="settings">Nastavení</string>
+    <string name="title_activity_maps">Mapa</string>
+    <string name="transport_change_description">Popis</string>
+    <string name="transport_change_select">Vyberte typ cestování</string>
+    <string name="transport_change_title">Název změny</string>
 </resources>
