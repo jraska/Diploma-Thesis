@@ -114,7 +114,7 @@ public class HelpRequestSendActivity extends BaseActivity {
     }
 
     String assistantEmail = _settingsManager.getAssistantEmail();
-    if(assistantEmail == null){
+    if (assistantEmail == null) {
       assistantEmail = ""; // will launch email client without recipient
     }
 

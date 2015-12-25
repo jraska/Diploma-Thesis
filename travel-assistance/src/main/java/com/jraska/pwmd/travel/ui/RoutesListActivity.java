@@ -38,6 +38,7 @@ public class RoutesListActivity extends BaseActivity {
   @Bind(R.id.routes_empty_view) View _emptyView;
   @Bind(R.id.btnStartTracking) View _startTrackingButton;
   @Bind(R.id.btnStopTracking) View _stopTrackingButton;
+  @Bind(R.id.btnSaveRoute) View _saveRouteButton;
   @Bind(R.id.btnChangeTransportType) ImageView _changeTransportButton;
 
   @Inject TrackingManager _trackingManager;
@@ -193,12 +194,16 @@ public class RoutesListActivity extends BaseActivity {
   }
 
   private void updateStartStopButtons() {
-    if (!_trackingManager.isTracking()) {
-      _startTrackingButton.setVisibility(View.VISIBLE);
-      _stopTrackingButton.setVisibility(View.GONE);
-    } else {
+    if (_trackingManager.isTracking()) {
       _startTrackingButton.setVisibility(View.GONE);
       _stopTrackingButton.setVisibility(View.VISIBLE);
+      _saveRouteButton.setEnabled(true);
+      _changeTransportButton.setEnabled(true);
+    } else {
+      _startTrackingButton.setVisibility(View.VISIBLE);
+      _stopTrackingButton.setVisibility(View.GONE);
+      _saveRouteButton.setEnabled(false);
+      _changeTransportButton.setEnabled(false);
     }
   }
 

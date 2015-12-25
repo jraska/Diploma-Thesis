@@ -9,7 +9,7 @@
     <string name="saved">Uloženo</string>
     <string name="noRoutes">Nejsou uloženy žádné cesty</string>
     <string name="tap_to_return">Klikněte pro návrat do aplikace</string>
-    <string name="lost_sms_message_template">Ztratil jsem se. Jsem zde %1$s +- %2$.2f metrů. Data o pozici jsou z %3$s.</string>
+    <string name="lost_sms_message_template">Ztratil jsem se. Jsem zde %1$s +- %2$.0f m. Data z %3$s.</string>
     <string name="unknown_position">Neznámá</string>
     <string name="help_send_sms">Odeslat sms s pozicí</string>
     <string name="help_send_email">Odeslat email</string>

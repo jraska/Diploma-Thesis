@@ -9,7 +9,7 @@
     <string name="saved">Saved</string>
     <string name="noRoutes">No routes</string>
     <string name="tap_to_return">Tap to return to application</string>
-    <string name="lost_sms_message_template">I am lost. You can find me at this position %1$s with %2$.2f m accuracy, Position data are from %3$s.</string>
+    <string name="lost_sms_message_template">I am lost. I am at %1$s +- %2$.0f m, data from %3$s.</string>
     <string name="unknown_position">Unknown</string>
     <string name="help_send_sms">Send help sms</string>
     <string name="help_send_email">Send email</string>

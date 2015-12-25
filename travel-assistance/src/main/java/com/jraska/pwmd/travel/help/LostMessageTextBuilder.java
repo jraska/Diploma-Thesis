@@ -118,11 +118,15 @@ public class LostMessageTextBuilder {
   public LostMessageTextBuilder setFromPosition(Position p) {
     ArgumentCheck.notNull(p, "p");
 
-    return setAccuracy(p.accuracy).setLatitude(p.latLng._latitude).setLongitude(p.latLng._longitude).setTime(new Date(p.time));
+    return setAccuracy(p.accuracy).setLatitude(p.latLng._latitude)
+        .setLongitude(p.latLng._longitude).setTime(new Date(p.time));
   }
 
   public String buildGoogleMapsUrl() {
-    return "http://maps.google.com/maps?" + "&z=" + _zoom + "&q=" + _latitude + "+" + _longitude;
+    String url = String.format("http://maps.google.com/maps?&z=%d&q=%.6f+%.6f",
+        _zoom, _latitude, _longitude);
+
+    return url;
   }
 
   public String buildSmsText() {

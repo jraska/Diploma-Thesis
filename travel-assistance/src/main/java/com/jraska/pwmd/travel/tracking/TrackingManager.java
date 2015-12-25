@@ -1,6 +1,7 @@
 package com.jraska.pwmd.travel.tracking;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.jraska.pwmd.travel.data.Path;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 
@@ -22,7 +23,7 @@ public interface TrackingManager {
 
   void stopTracking();
 
-  boolean addChange(int type, @NonNull String title, String description);
+  boolean addChange(int type, @NonNull String title, @Nullable  String description);
 
   //endregion
 

@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.location.LocationManager;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.Position;
@@ -121,7 +122,7 @@ public class SimpleTrackingManager implements TrackingManager {
   }
 
   @Override
-  public boolean addChange(int type, @NonNull String title, String description) {
+  public boolean addChange(int type, @NonNull String title, @Nullable String description) {
     ArgumentCheck.notNull(title);
 
     Position lastPosition = _locationService.getLastPosition();
