@@ -32,4 +32,6 @@ public interface TravelAssistanceComponent {
   void inject(TrackingService trackingService);
 
   void inject(RouteRecordActivity routeRecordActivity);
+
+  void inject(NavigationActivity navigationActivity);
 }

@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.jraska.pwmd.core.gps.Position;
@@ -34,6 +33,8 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
   @Inject
   TravelDataRepository _travelDataRepository;
 
+  private UUID _routeId;
+
   //endregion
 
   //region Activity overrides
@@ -48,6 +49,8 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
         (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
     mapFragment.getMapAsync(this);
+
+    _routeId = (UUID) getIntent().getSerializableExtra(ROUTE_ID);
   }
 
   @Override
@@ -120,7 +123,7 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
   }
 
   protected void startNavigation() {
-    Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
+    NavigationActivity.startNavigationActivity(this, _routeId);
   }
 
   protected void displayRouteChanges(RouteData routeData) {
