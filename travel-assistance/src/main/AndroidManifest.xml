@@ -48,7 +48,16 @@
 
         <service android:name=".tracking.TrackingService" />
 
-        <activity android:name=".ui.SettingsActivity"/>
+        <activity android:name=".ui.SettingsActivity" />
+        <activity
+            android:name=".ui.RouteRecordActivity"
+            android:label="@string/title_activity_route_record"
+            android:parentActivityName=".ui.RoutesListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jraska.pwmd.travel.ui.RoutesListActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -9,66 +9,6 @@
     tools:context="com.jraska.pwmd.travel.ui.RoutesListActivity"
     tools:showIn="@layout/activity_routes">
 
-    <LinearLayout
-        android:id="@+id/tracking_controls_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <ImageButton
-                android:id="@+id/btnStartTracking"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_send_black_24dp"
-                android:padding="@dimen/padding_large"
-                android:layout_gravity="center" />
-
-            <ImageButton
-                android:id="@+id/btnStopTracking"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_stop_black_24dp"
-                android:padding="@dimen/padding_large"
-                android:layout_gravity="center" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <ImageButton
-                android:id="@+id/btnSaveRoute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_save_black_24dp"
-                android:padding="@dimen/padding_large"
-                android:layout_gravity="center" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <ImageButton
-                android:id="@+id/btnChangeTransportType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_directions_walk_black_24dp"
-                android:padding="@dimen/padding_large"
-                android:layout_gravity="center" />
-        </FrameLayout>
-
-    </LinearLayout>
-
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/routes_recycler_view"
         android:layout_width="match_parent"
