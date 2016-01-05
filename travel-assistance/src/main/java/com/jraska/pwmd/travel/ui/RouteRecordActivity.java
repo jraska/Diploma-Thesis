@@ -153,7 +153,7 @@ public class RouteRecordActivity extends BaseActivity {
   protected void dispatchTakePictureIntent() {
     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, _picturesManager.createImageUri());
+    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, _picturesManager.createPictureUri());
 
     if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
       startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -163,13 +163,13 @@ public class RouteRecordActivity extends BaseActivity {
     }
   }
 
-  private void handleActivityResult(int requestCode, int resultCode, Intent data) {
+  protected void handleActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
       handlePhotoTakenIntent(data);
     }
   }
 
-  private void handlePhotoTakenIntent(Intent data) {
+  protected void handlePhotoTakenIntent(Intent data) {
     Bundle extras = data.getExtras();
     Bitmap imageBitmap = (Bitmap) extras.get("data");
 

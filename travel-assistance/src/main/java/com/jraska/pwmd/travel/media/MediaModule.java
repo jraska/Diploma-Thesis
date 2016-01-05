@@ -13,7 +13,7 @@ import java.io.File;
 public class MediaModule {
   //region Provide Methods
 
-  @PerApp @Provides @Named(PicturesManager.PHOTOS_DIR)
+  @PerApp @Provides @Named(PicturesManager.PICTURES_DIR)
   public File providePicturesDir(Context context) {
     return context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
   }
