@@ -7,18 +7,15 @@ import android.content.ServiceConnection;
 import android.location.LocationManager;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.Path;
+import com.jraska.pwmd.travel.data.PictureSpec;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import timber.log.Timber;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class SimpleTrackingManager implements TrackingManager {
   //region Fields
@@ -32,6 +29,7 @@ public class SimpleTrackingManager implements TrackingManager {
 
   private final TrackingServiceConnection _connection = new TrackingServiceConnection();
   private final List<TransportChangeSpec> _changes = new ArrayList<>();
+  private final List<PictureSpec> _pictures = new ArrayList<>();
   private final LocationService _locationService;
 
   //endregion
@@ -64,6 +62,10 @@ public class SimpleTrackingManager implements TrackingManager {
     return Collections.unmodifiableList(_changes);
   }
 
+  protected List<PictureSpec> getPictures() {
+    return Collections.unmodifiableList(_pictures);
+  }
+
   //endregion
 
   //region ITrackingManagementService impl
@@ -80,6 +82,7 @@ public class SimpleTrackingManager implements TrackingManager {
     }
 
     _changes.clear();
+    _pictures.clear();
 
     _start = new Date();
     Intent intent = getServiceIntent();
@@ -103,7 +106,8 @@ public class SimpleTrackingManager implements TrackingManager {
       return null;
     }
 
-    return new PathInfo(_start, new Date(), new Path(positions), new ArrayList<>(_changes));
+    return new PathInfo(_start, new Date(), new Path(positions),
+        new ArrayList<>(_changes), new ArrayList<>(_pictures));
   }
 
   @Override
@@ -133,6 +137,23 @@ public class SimpleTrackingManager implements TrackingManager {
     }
 
     _changes.add(new TransportChangeSpec(lastPosition.latLng, type, title));
+
+    return true;
+  }
+
+  @Override
+  public boolean addPicture(UUID imageId, String caption) {
+    ArgumentCheck.notNull(imageId);
+    ArgumentCheck.notNull(caption);
+
+    Position lastPosition = _locationService.getLastPosition();
+    if (lastPosition == null) {
+      Timber.w("Cannot add picture caption=%s", caption);
+
+      return false;
+    }
+
+    _pictures.add(new PictureSpec(lastPosition.latLng, imageId, caption));
 
     return true;
   }

@@ -1,31 +1,33 @@
 package com.jraska.pwmd.core.gps;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.common.events.EventArgs;
-import com.jraska.core.utils.DateHelper;
 
 public class Position implements EventArgs {
   //region Fields
 
+  public final LatLng latLng;
   public final long time;
   public final float accuracy;
   public final String provider;
-  public final LatLng latLng;
+
 
   //endregion
 
   //region Constructors
 
+  @Deprecated
   public Position(double latitude, double longitude, long time, float accuracy, String provider) {
-    latLng = new LatLng(latitude, longitude);
+    this(new LatLng(latitude, longitude), time, accuracy, provider);
+  }
 
+  public Position(LatLng latLng, long time, float accuracy, String provider) {
     ArgumentCheck.notNull(provider);
 
     this.time = time;
     this.accuracy = accuracy;
     this.provider = provider;
+    this.latLng = latLng;
   }
 
   //endregion

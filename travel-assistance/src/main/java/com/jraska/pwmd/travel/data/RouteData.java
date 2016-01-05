@@ -11,6 +11,7 @@ public class RouteData {
   private final RouteDescription _description;
   private final Path _route;
   private final List<TransportChangeSpec> _transportChangeSpecs;
+  private final List<PictureSpec> _pictureSpecs;
 
 
   //endregion
@@ -19,15 +20,18 @@ public class RouteData {
 
 
   public RouteData(RouteDescription description, Path route) {
-    this(description, route, Collections.<TransportChangeSpec>emptyList());
+    this(description, route, Collections.<TransportChangeSpec>emptyList(),
+        Collections.<PictureSpec>emptyList());
   }
 
-  public RouteData(RouteDescription description, Path route, List<TransportChangeSpec> specs) {
+  public RouteData(RouteDescription description, Path route,
+                   List<TransportChangeSpec> changeSpecs, List<PictureSpec> pictureSpecs) {
     //TODO: checks
 
     _description = description;
     _route = route;
-    _transportChangeSpecs = Collections.unmodifiableList(specs);
+    _transportChangeSpecs = Collections.unmodifiableList(changeSpecs);
+    _pictureSpecs = pictureSpecs;
   }
 
   //endregion
@@ -62,6 +66,10 @@ public class RouteData {
     return _transportChangeSpecs;
   }
 
+  public List<PictureSpec> getPictureSpecs() {
+    return _pictureSpecs;
+  }
+
   //endregion
 
   //region Object impl
@@ -72,6 +80,7 @@ public class RouteData {
         "_description=" + _description +
         ", _route=" + _route +
         ", _transportChangeSpecs=" + _transportChangeSpecs +
+        ", _pictureSpecs=" + _pictureSpecs +
         '}';
   }
 
@@ -82,20 +91,25 @@ public class RouteData {
 
     RouteData routeData = (RouteData) o;
 
-    if (!_description.equals(routeData._description)) return false;
-    if (!_route.equals(routeData._route)) return false;
-    return _transportChangeSpecs.equals(routeData._transportChangeSpecs);
+    if (_description != null ? !_description.equals(routeData._description) : routeData._description != null) {
+      return false;
+    }
+    if (_route != null ? !_route.equals(routeData._route) : routeData._route != null) return false;
+    if (_transportChangeSpecs != null ? !_transportChangeSpecs.equals(routeData._transportChangeSpecs) : routeData._transportChangeSpecs != null) {
+      return false;
+    }
+    return _pictureSpecs != null ? _pictureSpecs.equals(routeData._pictureSpecs) : routeData._pictureSpecs == null;
 
   }
 
   @Override
   public int hashCode() {
-    int result = _description.hashCode();
-    result = 31 * result + _route.hashCode();
-    result = 31 * result + _transportChangeSpecs.hashCode();
+    int result = _description != null ? _description.hashCode() : 0;
+    result = 31 * result + (_route != null ? _route.hashCode() : 0);
+    result = 31 * result + (_transportChangeSpecs != null ? _transportChangeSpecs.hashCode() : 0);
+    result = 31 * result + (_pictureSpecs != null ? _pictureSpecs.hashCode() : 0);
     return result;
   }
-
 
   //endregion
 }

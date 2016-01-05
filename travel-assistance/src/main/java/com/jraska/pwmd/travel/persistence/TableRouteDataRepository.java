@@ -4,12 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.core.gps.Position;
-import com.jraska.pwmd.travel.data.Path;
-import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.data.RouteDescription;
-import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import com.jraska.pwmd.travel.data.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -78,14 +76,47 @@ public class TableRouteDataRepository extends RouteRepositoryBase {
     }
 
     cursor = getReadableDatabase().query(DbModel.TransportChangesTable.TABLE_NAME, null, "RouteId = ?", args, null, null, null);
-    try {
-      List<TransportChangeSpec> specs = readChanges(cursor);
 
-      return new RouteData(routeDescription, path, specs);
+    List<TransportChangeSpec> changeSpecs;
+    try {
+      changeSpecs = readChanges(cursor);
     }
     finally {
       cursor.close();
     }
+
+    cursor = getReadableDatabase().query(DbModel.PicturesTable.TABLE_NAME, null, "RouteId = ?", args, null, null, null);
+    try {
+      List<PictureSpec> pictureSpecs = readPictures(cursor);
+
+      return new RouteData(routeDescription, path, changeSpecs, pictureSpecs);
+    }
+    finally {
+      cursor.close();
+    }
+  }
+
+  protected List<PictureSpec> readPictures(Cursor cursor) {
+    if (cursor.getCount() == 0) {
+      return Collections.emptyList();
+    }
+
+    List<PictureSpec> specs = new ArrayList<>();
+
+    while (cursor.moveToNext()) {
+      // Data are rad as Strings to remove conversion errors
+      LatLng latLng = readLatLng(cursor);
+
+      String caption = cursor.getString(cursor.getColumnIndex(DbModel.PicturesTable.COLUMN_CAPTION));
+      String idValue = cursor.getString(cursor.getColumnIndex(DbModel.PicturesTable.COLUMN_PICTURE_ID));
+
+      UUID pictureId = idFromDbValue(idValue);
+
+      PictureSpec spec = new PictureSpec(latLng, pictureId, caption);
+      specs.add(spec);
+    }
+
+    return specs;
   }
 
   protected List<TransportChangeSpec> readChanges(Cursor cursor) {
@@ -97,11 +128,7 @@ public class TableRouteDataRepository extends RouteRepositoryBase {
 
     while (cursor.moveToNext()) {
       // Data are rad as Strings to remove conversion errors
-      String latitude = cursor.getString(cursor.getColumnIndex(DbModel.TransportChangesTable.COLUMN_LATITUDE));
-      String longitude = cursor.getString(cursor.getColumnIndex(DbModel.TransportChangesTable.COLUMN_LONGITUDE));
-      double lat = Double.parseDouble(latitude);
-      double lon = Double.parseDouble(longitude);
-      LatLng latLng = new LatLng(lat, lon);
+      LatLng latLng = readLatLng(cursor);
 
       int type = cursor.getInt(cursor.getColumnIndex(DbModel.TransportChangesTable.COLUMN_TRANSPORTATION_TYPE));
       String title = cursor.getString(cursor.getColumnIndex(DbModel.TransportChangesTable.COLUMN_TITLE));
@@ -113,21 +140,28 @@ public class TableRouteDataRepository extends RouteRepositoryBase {
     return specs;
   }
 
+  @NonNull
+  protected LatLng readLatLng(Cursor cursor) {
+    String latitude = cursor.getString(cursor.getColumnIndex(DbModel.PositionTable.COLUMN_LATITUDE));
+    String longitude = cursor.getString(cursor.getColumnIndex(DbModel.PositionTable.COLUMN_LONGITUDE));
+    double lat = Double.parseDouble(latitude);
+    double lon = Double.parseDouble(longitude);
+    return new LatLng(lat, lon);
+  }
+
   protected Path readPath(Cursor cursor) {
     List<Position> positions = new ArrayList<>(cursor.getCount());
 
     while (cursor.moveToNext()) {
-      String latitude = cursor.getString(cursor.getColumnIndex(DbModel.PointsTable.COLUMN_LATITUDE));
-      String longitude = cursor.getString(cursor.getColumnIndex(DbModel.PointsTable.COLUMN_LONGITUDE));
+
+      LatLng latLng = readLatLng(cursor);
+
       String accuracy = cursor.getString(cursor.getColumnIndex(DbModel.PointsTable.COLUMN_ACCURACY));
       long time = cursor.getLong(cursor.getColumnIndex(DbModel.PointsTable.COLUMN_TIME));
       String provider = cursor.getString(cursor.getColumnIndex(DbModel.PointsTable.COLUMN_PROVIDER));
-
-      double lat = Double.parseDouble(latitude);
-      double lon = Double.parseDouble(longitude);
       float acc = Float.parseFloat(accuracy);
 
-      Position position = new Position(lat, lon, time, acc, provider);
+      Position position = new Position(latLng, time, acc, provider);
       positions.add(position);
     }
 
@@ -145,10 +179,33 @@ public class TableRouteDataRepository extends RouteRepositoryBase {
 
     writePath(routeData.getId(), routeData.getPath());
     writeTransportChanges(routeData.getId(), routeData.getTransportChangeSpecs());
+    writePictures(routeData.getId(), routeData.getPictureSpecs());
 
     database.setTransactionSuccessful();
     database.endTransaction();
     return insert;
+  }
+
+  protected void writePictures(UUID id, List<PictureSpec> pictureSpecs) {
+    SQLiteDatabase database = getWritableDatabase();
+
+    for (PictureSpec spec : pictureSpecs) {
+      ContentValues pictureValues = preparePictureValues(spec, id);
+
+      database.insert(DbModel.PicturesTable.TABLE_NAME, null, pictureValues);
+    }
+  }
+
+  protected ContentValues preparePictureValues(PictureSpec spec, UUID id) {
+    ContentValues contentValues = new ContentValues();
+    contentValues.put(DbModel.PicturesTable.COLUMN_ID, idToDbValue(UUID.randomUUID()));
+    contentValues.put(DbModel.PicturesTable.COLUMN_ROUTE_ID, idToDbValue(id));
+    contentValues.put(DbModel.PicturesTable.COLUMN_LATITUDE, spec.latLng._latitude);
+    contentValues.put(DbModel.PicturesTable.COLUMN_LONGITUDE, spec.latLng._longitude);
+    contentValues.put(DbModel.PicturesTable.COLUMN_PICTURE_ID, idToDbValue(spec.imageId));
+    contentValues.put(DbModel.PicturesTable.COLUMN_CAPTION, spec.caption);
+
+    return contentValues;
   }
 
   protected void writeTransportChanges(UUID routeDataId, List<TransportChangeSpec> specs) {

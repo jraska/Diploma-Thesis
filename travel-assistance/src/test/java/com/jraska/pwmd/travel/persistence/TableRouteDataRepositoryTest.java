@@ -3,11 +3,9 @@ package com.jraska.pwmd.travel.persistence;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 import com.jraska.BaseTest;
+import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.core.gps.Position;
-import com.jraska.pwmd.travel.data.Path;
-import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.data.RouteDescription;
-import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import com.jraska.pwmd.travel.data.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,7 +97,10 @@ public class TableRouteDataRepositoryTest extends BaseTest {
     specs.add(new TransportChangeSpec(generatePosition().latLng, TransportChangeSpec.TRANSPORT_TYPE_TRAIN, "ds"));
     specs.add(new TransportChangeSpec(generatePosition().latLng, TransportChangeSpec.TRANSPORT_TYPE_BUS, "uii"));
 
-    return new RouteData(routeDescription, new Path(positions), specs);
+    ArrayList<PictureSpec> pictureSpecs = new ArrayList<>();
+    pictureSpecs.add(new PictureSpec(generatePosition().latLng, UUID.randomUUID(), "das"));
+
+    return new RouteData(routeDescription, new Path(positions), specs, pictureSpecs);
   }
 
   @NonNull
@@ -113,7 +114,7 @@ public class TableRouteDataRepositoryTest extends BaseTest {
 
   public static Position generatePosition() {
     Random random = new Random();
-    return new Position(random.nextDouble() * 50, random.nextDouble() * 50, System.currentTimeMillis(), 30.0f, "GPS");
+    return new Position(new LatLng(random.nextDouble() * 50, random.nextDouble() * 50), System.currentTimeMillis(), 30.0f, "GPS");
   }
 
   //endregion

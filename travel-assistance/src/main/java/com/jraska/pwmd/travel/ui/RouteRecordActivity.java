@@ -1,12 +1,11 @@
 package com.jraska.pwmd.travel.ui;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -21,25 +20,36 @@ import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import com.jraska.pwmd.travel.media.PicturesManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import com.jraska.pwmd.travel.transport.SimpleTransportManager;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 import java.util.UUID;
 
 public class RouteRecordActivity extends BaseActivity {
 
+  //region Constants
+
+  public static final int REQUEST_IMAGE_CAPTURE = 1;
+
+  //endregion
+
   //region Fields
 
-  @Bind(R.id.btnStartTracking) View _startTrackingButton;
-  @Bind(R.id.btnStopTracking) View _stopTrackingButton;
-  @Bind(R.id.btnSaveRoute) View _saveRouteButton;
-  @Bind(R.id.btnChangeTransportType) ImageView _changeTransportButton;
+  @Bind(R.id.record_btnStartTracking) View _startTrackingButton;
+  @Bind(R.id.record_btnStopTracking) View _stopTrackingButton;
+  @Bind(R.id.record_btnSaveRoute) View _saveRouteButton;
+  @Bind(R.id.record_btnChangeTransportType) ImageView _changeTransportButton;
+  @Bind(R.id.record_photoPreview) ImageView _photoPreview;
+  @Bind(R.id.record_btnTakePhoto) View _takePhotoButton;
 
   @Inject SimpleTransportManager _transportManager;
   @Inject TrackingManager _trackingManager;
   @Inject TravelDataRepository _travelDataRepository;
+  @Inject PicturesManager _picturesManager;
 
   //endregion
 
@@ -56,17 +66,22 @@ public class RouteRecordActivity extends BaseActivity {
     updateTransportIcon();
   }
 
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    handleActivityResult(requestCode, resultCode, data);
+  }
+
   //endregion
 
   //region Methods
 
-  @OnClick(R.id.btnStartTracking) void startTracking() {
+  @OnClick(R.id.record_btnStartTracking) void startTracking() {
     _trackingManager.startTracking();
 
     updateStartStopButtons();
   }
 
-  @OnClick(R.id.btnStopTracking) void stopTracking() {
+  @OnClick(R.id.record_btnStopTracking) void stopTracking() {
     _trackingManager.stopTracking();
 
     updateStartStopButtons();
@@ -76,17 +91,19 @@ public class RouteRecordActivity extends BaseActivity {
     if (_trackingManager.isTracking()) {
       _startTrackingButton.setVisibility(View.GONE);
       _stopTrackingButton.setVisibility(View.VISIBLE);
+      _takePhotoButton.setVisibility(View.VISIBLE);
       _saveRouteButton.setEnabled(true);
       _changeTransportButton.setEnabled(true);
     } else {
       _startTrackingButton.setVisibility(View.VISIBLE);
       _stopTrackingButton.setVisibility(View.GONE);
+      _takePhotoButton.setVisibility(View.GONE);
       _saveRouteButton.setEnabled(false);
       _changeTransportButton.setEnabled(false);
     }
   }
 
-  @OnClick(R.id.btnSaveRoute) void saveRoute() {
+  @OnClick(R.id.record_btnSaveRoute) void saveRoute() {
     TrackingManager.PathInfo lastPath = _trackingManager.getLastPath();
     if (lastPath == null) {
       Toast.makeText(this, getString(R.string.noRouteToSave), Toast.LENGTH_SHORT).show();
@@ -95,14 +112,14 @@ public class RouteRecordActivity extends BaseActivity {
 
     RouteData routeData = new RouteData(new RouteDescription(UUID.randomUUID(),
         lastPath.getStart(), lastPath.getEnd(), "Test"), lastPath.getPath(),
-        lastPath.getTransportChangeSpecs());
+        lastPath.getTransportChangeSpecs(), lastPath.getPictureSpecs());
 
     _travelDataRepository.insertRoute(routeData);
 
     Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
   }
 
-  @OnClick(R.id.btnChangeTransportType) void changeTransportType() {
+  @OnClick(R.id.record_btnChangeTransportType) void changeTransportType() {
     Dialog dialog = new Dialog(this);
     FrameLayout dialogView = new FrameLayout(this);
 
@@ -127,6 +144,39 @@ public class RouteRecordActivity extends BaseActivity {
     _transportManager.setCurrentTransportType(type);
     addTransportationChange(type, title);
     updateTransportIcon();
+  }
+
+  @OnClick(R.id.record_btnTakePhoto) void takePhoto() {
+    dispatchTakePictureIntent();
+  }
+
+  protected void dispatchTakePictureIntent() {
+    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, _picturesManager.createImageUri());
+
+    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+      startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+    } else {
+      Timber.e("Cannot get image to capture.");
+      Toast.makeText(this, R.string.cannot_get_pictures, Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  private void handleActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+      handlePhotoTakenIntent(data);
+    }
+  }
+
+  private void handlePhotoTakenIntent(Intent data) {
+    Bundle extras = data.getExtras();
+    Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+    _photoPreview.setImageBitmap(imageBitmap);
+
+    UUID imageId = _picturesManager.getIdForUri(data.getData());
+    _trackingManager.addPicture(imageId, "Photo");
   }
 
   //endregion

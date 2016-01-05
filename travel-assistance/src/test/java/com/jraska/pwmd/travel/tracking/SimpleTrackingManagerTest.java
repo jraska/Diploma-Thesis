@@ -8,6 +8,8 @@ import com.jraska.pwmd.travel.persistence.TableRouteDataRepositoryTest;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.doReturn;
@@ -45,6 +47,17 @@ public class SimpleTrackingManagerTest extends BaseTest {
     _simpleTrackingManager.startTracking();
 
     assertThat(_simpleTrackingManager.getChanges(), hasSize(0));
+  }
+
+  @Test
+  public void testPicturesEmptyAfterStart() throws Exception {
+    _simpleTrackingManager.addPicture(UUID.randomUUID(), "s");
+
+
+    assertThat(_simpleTrackingManager.getPictures(), hasSize(1));
+    _simpleTrackingManager.startTracking();
+
+    assertThat(_simpleTrackingManager.getPictures(), hasSize(0));
   }
 
   @Test
