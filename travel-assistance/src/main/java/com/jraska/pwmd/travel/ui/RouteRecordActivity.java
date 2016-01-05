@@ -113,8 +113,8 @@ public class RouteRecordActivity extends BaseActivity {
     dialogHolder.show();
   }
 
-  protected boolean addTransportationChange(int type, @NonNull String title, String description) {
-    return _trackingManager.addChange(type, title, description);
+  protected boolean addTransportationChange(int type, @NonNull String title) {
+    return _trackingManager.addChange(type, title);
   }
 
   protected void updateTransportIcon() {
@@ -123,9 +123,9 @@ public class RouteRecordActivity extends BaseActivity {
     _changeTransportButton.setImageResource(iconRes);
   }
 
-  protected void onNewTransportationChange(int type, @NonNull String title, String description) {
+  protected void onNewTransportationChange(int type, @NonNull String title) {
     _transportManager.setCurrentTransportType(type);
-    addTransportationChange(type, title, description);
+    addTransportationChange(type, title);
     updateTransportIcon();
   }
 
@@ -138,7 +138,6 @@ public class RouteRecordActivity extends BaseActivity {
     private final View _rootView;
 
     @Bind(R.id.transport_change_title_input) EditText _titleInput;
-    @Bind(R.id.transport_change_description_input) EditText _descriptionInput;
 
     public DialogHolder(Dialog dialog, View rootView) {
       _dialog = dialog;
@@ -168,8 +167,7 @@ public class RouteRecordActivity extends BaseActivity {
     void addTransportInfo(int type) {
       RouteRecordActivity recordActivity = (RouteRecordActivity) _rootView.getContext();
 
-      recordActivity.onNewTransportationChange(type, _titleInput.getText().toString(),
-          _descriptionInput.getText().toString());
+      recordActivity.onNewTransportationChange(type, _titleInput.getText().toString());
     }
 
     public void show() {

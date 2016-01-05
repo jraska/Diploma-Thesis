@@ -38,7 +38,7 @@ public class SimpleTrackingManagerTest extends BaseTest {
 
   @Test
   public void testTransportChangesEmptyAfterStart() throws Exception {
-    _simpleTrackingManager.addChange(TransportChangeSpec.TRANSPORT_TYPE_BUS, "s", "sa");
+    _simpleTrackingManager.addChange(TransportChangeSpec.TRANSPORT_TYPE_BUS, "s");
 
 
     assertThat(_simpleTrackingManager.getChanges(), hasSize(1));
@@ -51,7 +51,7 @@ public class SimpleTrackingManagerTest extends BaseTest {
   public void testTransportChangesEmptyAfterStop() throws Exception {
     _simpleTrackingManager.startTracking();
 
-    _simpleTrackingManager.addChange(TransportChangeSpec.TRANSPORT_TYPE_BUS, "s", "sa");
+    _simpleTrackingManager.addChange(TransportChangeSpec.TRANSPORT_TYPE_BUS, "s");
     assertThat(_simpleTrackingManager.getChanges(), hasSize(1));
 
     _simpleTrackingManager.stopTracking();

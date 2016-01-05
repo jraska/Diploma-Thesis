@@ -23,7 +23,7 @@ public interface TrackingManager {
 
   void stopTracking();
 
-  boolean addChange(int type, @NonNull String title, @Nullable  String description);
+  boolean addChange(int type, @NonNull String title);
 
   //endregion
 

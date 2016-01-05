@@ -96,8 +96,8 @@ public class TableRouteDataRepositoryTest extends BaseTest {
     //build test route
     RouteDescription routeDescription = new RouteDescription(UUID.randomUUID(), new Date(), new Date(), "Test");
     ArrayList<TransportChangeSpec> specs = new ArrayList<>();
-    specs.add(new TransportChangeSpec(generatePosition().latLng, TransportChangeSpec.TRANSPORT_TYPE_TRAIN, "ds", "s"));
-    specs.add(new TransportChangeSpec(generatePosition().latLng, TransportChangeSpec.TRANSPORT_TYPE_BUS, "uii", null));
+    specs.add(new TransportChangeSpec(generatePosition().latLng, TransportChangeSpec.TRANSPORT_TYPE_TRAIN, "ds"));
+    specs.add(new TransportChangeSpec(generatePosition().latLng, TransportChangeSpec.TRANSPORT_TYPE_BUS, "uii"));
 
     return new RouteData(routeDescription, new Path(positions), specs);
   }

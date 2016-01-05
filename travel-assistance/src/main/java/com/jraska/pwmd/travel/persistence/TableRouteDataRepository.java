@@ -105,9 +105,8 @@ public class TableRouteDataRepository extends RouteRepositoryBase {
 
       int type = cursor.getInt(cursor.getColumnIndex(DbModel.TransportChangesTable.COLUMN_TRANSPORTATION_TYPE));
       String title = cursor.getString(cursor.getColumnIndex(DbModel.TransportChangesTable.COLUMN_TITLE));
-      String description = cursor.getString(cursor.getColumnIndex(DbModel.TransportChangesTable.COLUMN_DESCRIPTION));
 
-      TransportChangeSpec spec = new TransportChangeSpec(latLng, type, title, description);
+      TransportChangeSpec spec = new TransportChangeSpec(latLng, type, title);
       specs.add(spec);
     }
 
@@ -171,7 +170,6 @@ public class TableRouteDataRepository extends RouteRepositoryBase {
     contentValues.put(DbModel.TransportChangesTable.COLUMN_LONGITUDE, spec.latLng._longitude);
     contentValues.put(DbModel.TransportChangesTable.COLUMN_TRANSPORTATION_TYPE, spec.transportType);
     contentValues.put(DbModel.TransportChangesTable.COLUMN_TITLE, spec.title);
-    contentValues.put(DbModel.TransportChangesTable.COLUMN_DESCRIPTION, spec.description);
 
     return contentValues;
   }

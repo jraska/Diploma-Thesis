@@ -122,7 +122,7 @@ public class SimpleTrackingManager implements TrackingManager {
   }
 
   @Override
-  public boolean addChange(int type, @NonNull String title, @Nullable String description) {
+  public boolean addChange(int type, @NonNull String title) {
     ArgumentCheck.notNull(title);
 
     Position lastPosition = _locationService.getLastPosition();
@@ -132,7 +132,7 @@ public class SimpleTrackingManager implements TrackingManager {
       return false;
     }
 
-    _changes.add(new TransportChangeSpec(lastPosition.latLng, type, title, description));
+    _changes.add(new TransportChangeSpec(lastPosition.latLng, type, title));
 
     return true;
   }

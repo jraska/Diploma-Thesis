@@ -2,7 +2,6 @@ package com.jraska.pwmd.travel.data;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.travel.R;
@@ -21,21 +20,19 @@ public class TransportChangeSpec {
   @NonNull public final LatLng latLng;
   public final int transportType;
   @NonNull public final String title;
-  @NonNull public final String description;
 
   //endregion
 
   //region Constructors
 
   public TransportChangeSpec(@NonNull LatLng latLng, int transportType,
-                             @NonNull String title, @Nullable String description) {
+                             @NonNull String title) {
     ArgumentCheck.notNull(latLng, "latLng");
     ArgumentCheck.notNull(title);
 
     this.latLng = latLng;
     this.transportType = transportType;
     this.title = title;
-    this.description = description == null ? "" : description;
   }
 
   //endregion
@@ -89,25 +86,24 @@ public class TransportChangeSpec {
 
     if (transportType != spec.transportType) return false;
     if (!latLng.equals(spec.latLng)) return false;
-    if (!title.equals(spec.title)) return false;
-    return description.equals(spec.description);
+    return title.equals(spec.title);
 
   }
 
-  @Override public int hashCode() {
+  @Override
+  public int hashCode() {
     int result = latLng.hashCode();
     result = 31 * result + transportType;
     result = 31 * result + title.hashCode();
-    result = 31 * result + description.hashCode();
     return result;
   }
 
-  @Override public String toString() {
+  @Override
+  public String toString() {
     return "TransportChangeSpec{" +
         "latLng=" + latLng +
         ", transportType=" + transportType +
         ", title='" + title + '\'' +
-        ", description='" + description + '\'' +
         '}';
   }
 

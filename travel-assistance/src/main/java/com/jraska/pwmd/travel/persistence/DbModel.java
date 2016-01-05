@@ -59,7 +59,6 @@ public abstract class DbModel {
     public static final String COLUMN_LONGITUDE = "Long";
     public static final String COLUMN_TRANSPORTATION_TYPE = "Type";
     public static final String COLUMN_TITLE = "Title";
-    public static final String COLUMN_DESCRIPTION = "Description";
 
     public static final String CREATE_STATEMENT = "create table " + TABLE_NAME + "(" +
         COLUMN_ID + " text primary key, " +
@@ -67,8 +66,7 @@ public abstract class DbModel {
         COLUMN_LATITUDE + " real not null, " +
         COLUMN_LONGITUDE + " real not null, " +
         COLUMN_TRANSPORTATION_TYPE + " integer not null, " +
-        COLUMN_TITLE + " real not null, " +
-        COLUMN_DESCRIPTION + " text null)";
+        COLUMN_TITLE + " real not null);";
   }
 
   //endregion

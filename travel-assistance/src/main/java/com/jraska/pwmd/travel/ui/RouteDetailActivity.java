@@ -134,7 +134,6 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
 
       MarkerOptions routeChangeMarker = new MarkerOptions().position(markerLocation)
           .title(spec.title)
-          .snippet(spec.description)
           .icon(icon);
 
       _mapView.addMarker(routeChangeMarker);
