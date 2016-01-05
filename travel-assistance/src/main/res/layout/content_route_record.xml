@@ -78,6 +78,13 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_medium">
 
+        <ImageView
+            android:id="@+id/record_photoPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/photo_preview"
+            android:scaleType="centerCrop"/>
+
         <ImageButton
             android:id="@+id/record_btnTakePhoto"
             android:layout_width="wrap_content"
@@ -85,11 +92,7 @@
             android:src="@drawable/ic_add_a_photo_black_24dp"
             android:padding="@dimen/padding_large"
             android:layout_gravity="center"/>
-        <ImageView
-            android:id="@+id/record_photoPreview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/photo_preview" />
+
     </FrameLayout>
 
 </LinearLayout>

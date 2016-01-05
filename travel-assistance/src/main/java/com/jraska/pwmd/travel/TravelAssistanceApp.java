@@ -2,6 +2,8 @@ package com.jraska.pwmd.travel;
 
 import android.content.Context;
 import com.jraska.core.BaseApp;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import timber.log.Timber;
 
 import java.text.DateFormat;
@@ -31,6 +33,9 @@ public class TravelAssistanceApp extends BaseApp {
 
     _component = DaggerTravelAssistanceComponent.builder()
         .travelAssistanceModule(new TravelAssistanceModule(this)).build();
+
+    ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+    ImageLoader.getInstance().init(config);
   }
 
   //endregion

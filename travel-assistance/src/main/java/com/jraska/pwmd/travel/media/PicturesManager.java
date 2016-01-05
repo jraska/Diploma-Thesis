@@ -51,11 +51,16 @@ public class PicturesManager {
     return createPictureUri(uuid);
   }
 
-  protected Uri createPictureUri(UUID uuid) {
-    File imageFile = new File(_imagesDir, uuid.toString() + JPG_EXTENSION);
+  public Uri createPictureUri(UUID uuid) {
+    File imageFile = getImageFile(uuid);
     Uri imageUri = Uri.fromFile(imageFile);
 
     return imageUri;
+  }
+
+  @NonNull
+  public File getImageFile(UUID uuid) {
+    return new File(_imagesDir, uuid.toString() + JPG_EXTENSION);
   }
 
   public UUID getIdForUri(@NonNull Uri imageUri) {

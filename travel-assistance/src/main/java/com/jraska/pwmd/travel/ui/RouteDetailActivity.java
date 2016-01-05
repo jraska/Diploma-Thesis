@@ -1,6 +1,9 @@
 package com.jraska.pwmd.travel.ui;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,9 +12,13 @@ import com.google.android.gms.maps.model.*;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
+import com.jraska.pwmd.travel.data.PictureSpec;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import com.jraska.pwmd.travel.media.PicturesManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -30,8 +37,8 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
 
   private GoogleMap _mapView;
 
-  @Inject
-  TravelDataRepository _travelDataRepository;
+  @Inject TravelDataRepository _travelDataRepository;
+  @Inject PicturesManager _picturesManager;
 
   private UUID _routeId;
 
@@ -84,6 +91,7 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
 
     displayOnMap(routeData);
     displayRouteChanges(routeData);
+    displayPictures(routeData);
   }
 
   //endregion
@@ -137,6 +145,21 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
           .icon(icon);
 
       _mapView.addMarker(routeChangeMarker);
+    }
+  }
+
+  protected void displayPictures(RouteData routeData) {
+    for (PictureSpec spec : routeData.getPictureSpecs()) {
+      LatLng markerLocation = toGoogleLatLng(spec.latLng);
+
+      MarkerOptions routeChangeMarker = new MarkerOptions().position(markerLocation)
+          .title(spec.caption);
+
+      Uri pictureUri = _picturesManager.createPictureUri(spec.imageId);
+      Bitmap bitmap = ImageLoader.getInstance().loadImageSync(pictureUri.toString(), new ImageSize(32, 32));
+      routeChangeMarker.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
+
+      Marker marker = _mapView.addMarker(routeChangeMarker);
     }
   }
 
