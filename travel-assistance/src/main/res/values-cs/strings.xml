@@ -32,4 +32,5 @@
     <string name="cannot_get_pictures">Nelze získat obrázek</string>
     <string name="title_activity_navigation">Navigace</string>
     <string name="title_activity_route_record">Nahrávání cesty</string>
+    <string name="photo_preview">Ukázka fotografie</string>
 </resources>
