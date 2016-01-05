@@ -29,4 +29,7 @@
     <string name="transport_change_description">Popis</string>
     <string name="transport_change_select">Vyberte typ cestování</string>
     <string name="transport_change_title">Název změny</string>
+    <string name="cannot_get_pictures">Nelze získat obrázek</string>
+    <string name="title_activity_navigation">Navigace</string>
+    <string name="title_activity_route_record">Nahrávání cesty</string>
 </resources>

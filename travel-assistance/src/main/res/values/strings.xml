@@ -31,6 +31,6 @@
     <string name="transport_change_select">Select transport type</string>
     <string name="title_activity_route_record">Route Recording</string>
     <string name="title_activity_navigation">Navigation</string>
-    <string name="cannot_get_pictures">Cannot get image to capture.</string>
+    <string name="cannot_get_pictures">Cannot get image</string>
     <string name="photo_preview">Photo preview</string>
 </resources>
