@@ -63,11 +63,12 @@ public abstract class DbModel {
         COLUMN_TITLE + " real not null);";
   }
 
-  public static abstract class PicturesTable extends PositionTable{
-    public static final String TABLE_NAME = "Pictures";
+  public static abstract class NotesTable extends PositionTable{
+    public static final String TABLE_NAME = "Notes";
 
     public static final String COLUMN_ID = "Id";
-    public static final String COLUMN_PICTURE_ID = "Type";
+    public static final String COLUMN_PICTURE_ID = "PictureId";
+    public static final String COLUMN_SOUND_ID = "SoundId";
     public static final String COLUMN_CAPTION = "Caption";
 
     public static final String CREATE_STATEMENT = "create table " + TABLE_NAME + "(" +
@@ -76,6 +77,7 @@ public abstract class DbModel {
         COLUMN_LATITUDE + " real not null, " +
         COLUMN_LONGITUDE + " real not null, " +
         COLUMN_PICTURE_ID + " text not null, " +
+        COLUMN_SOUND_ID + " text not null, " +
         COLUMN_CAPTION + " real not null);";
   }
 

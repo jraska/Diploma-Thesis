@@ -3,7 +3,7 @@ package com.jraska.pwmd.travel.tracking;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.jraska.pwmd.travel.data.Path;
-import com.jraska.pwmd.travel.data.PictureSpec;
+import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 
 import java.util.Date;
@@ -27,7 +27,7 @@ public interface TrackingManager {
 
   boolean addChange(int type, @NonNull String title);
 
-  boolean addPicture(UUID imageId, String caption);
+  boolean addNote(@Nullable UUID imageId, @NonNull String caption, @Nullable UUID soundId);
 
   //endregion
 
@@ -38,14 +38,14 @@ public interface TrackingManager {
     private final Date _end;
     private final Path _path;
     private final List<TransportChangeSpec> _transportChangeSpecs;
-    private final List<PictureSpec> _pictureSpecs;
+    private final List<NoteSpec> _noteSpecs;
 
-    public PathInfo(Date start, Date end, Path path, List<TransportChangeSpec> specs, List<PictureSpec> pictureSpecs) {
+    public PathInfo(Date start, Date end, Path path, List<TransportChangeSpec> specs, List<NoteSpec> noteSpecs) {
       _start = start;
       _end = end;
       _path = path;
       _transportChangeSpecs = specs;
-      _pictureSpecs = pictureSpecs;
+      _noteSpecs = noteSpecs;
     }
 
     public Date getStart() {
@@ -64,8 +64,8 @@ public interface TrackingManager {
       return _transportChangeSpecs;
     }
 
-    public List<PictureSpec> getPictureSpecs() {
-      return _pictureSpecs;
+    public List<NoteSpec> getNoteSpecs() {
+      return _noteSpecs;
     }
   }
 

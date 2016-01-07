@@ -18,5 +18,10 @@ public class MediaModule {
     return context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
   }
 
+  @PerApp @Provides @Named(SoundsManager.SOUND_DIR)
+  public File provideSoundDir(Context context) {
+    return context.getExternalFilesDir(Environment.DIRECTORY_RINGTONES);
+  }
+
   //endregion
 }

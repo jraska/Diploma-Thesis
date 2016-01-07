@@ -50,14 +50,14 @@ public class SimpleTrackingManagerTest extends BaseTest {
   }
 
   @Test
-  public void testPicturesEmptyAfterStart() throws Exception {
-    _simpleTrackingManager.addPicture(UUID.randomUUID(), "s");
+  public void testNotesEmptyAfterStart() throws Exception {
+    _simpleTrackingManager.addNote(UUID.randomUUID(), "s", null);
 
 
-    assertThat(_simpleTrackingManager.getPictures(), hasSize(1));
+    assertThat(_simpleTrackingManager.getNoteSpecs(), hasSize(1));
     _simpleTrackingManager.startTracking();
 
-    assertThat(_simpleTrackingManager.getPictures(), hasSize(0));
+    assertThat(_simpleTrackingManager.getNoteSpecs(), hasSize(0));
   }
 
   @Test

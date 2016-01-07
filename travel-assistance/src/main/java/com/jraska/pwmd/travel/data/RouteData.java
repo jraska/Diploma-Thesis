@@ -11,7 +11,7 @@ public class RouteData {
   private final RouteDescription _description;
   private final Path _route;
   private final List<TransportChangeSpec> _transportChangeSpecs;
-  private final List<PictureSpec> _pictureSpecs;
+  private final List<NoteSpec> _noteSpecs;
 
 
   //endregion
@@ -21,17 +21,17 @@ public class RouteData {
 
   public RouteData(RouteDescription description, Path route) {
     this(description, route, Collections.<TransportChangeSpec>emptyList(),
-        Collections.<PictureSpec>emptyList());
+        Collections.<NoteSpec>emptyList());
   }
 
   public RouteData(RouteDescription description, Path route,
-                   List<TransportChangeSpec> changeSpecs, List<PictureSpec> pictureSpecs) {
+                   List<TransportChangeSpec> changeSpecs, List<NoteSpec> noteSpecs) {
     //TODO: checks
 
     _description = description;
     _route = route;
     _transportChangeSpecs = Collections.unmodifiableList(changeSpecs);
-    _pictureSpecs = pictureSpecs;
+    _noteSpecs = noteSpecs;
   }
 
   //endregion
@@ -66,8 +66,8 @@ public class RouteData {
     return _transportChangeSpecs;
   }
 
-  public List<PictureSpec> getPictureSpecs() {
-    return _pictureSpecs;
+  public List<NoteSpec> getNoteSpecs() {
+    return _noteSpecs;
   }
 
   //endregion
@@ -80,7 +80,7 @@ public class RouteData {
         "_description=" + _description +
         ", _route=" + _route +
         ", _transportChangeSpecs=" + _transportChangeSpecs +
-        ", _pictureSpecs=" + _pictureSpecs +
+        ", _pictureSpecs=" + _noteSpecs +
         '}';
   }
 
@@ -98,7 +98,7 @@ public class RouteData {
     if (_transportChangeSpecs != null ? !_transportChangeSpecs.equals(routeData._transportChangeSpecs) : routeData._transportChangeSpecs != null) {
       return false;
     }
-    return _pictureSpecs != null ? _pictureSpecs.equals(routeData._pictureSpecs) : routeData._pictureSpecs == null;
+    return _noteSpecs != null ? _noteSpecs.equals(routeData._noteSpecs) : routeData._noteSpecs == null;
 
   }
 
@@ -107,7 +107,7 @@ public class RouteData {
     int result = _description != null ? _description.hashCode() : 0;
     result = 31 * result + (_route != null ? _route.hashCode() : 0);
     result = 31 * result + (_transportChangeSpecs != null ? _transportChangeSpecs.hashCode() : 0);
-    result = 31 * result + (_pictureSpecs != null ? _pictureSpecs.hashCode() : 0);
+    result = 31 * result + (_noteSpecs != null ? _noteSpecs.hashCode() : 0);
     return result;
   }
 

@@ -97,10 +97,10 @@ public class TableRouteDataRepositoryTest extends BaseTest {
     specs.add(new TransportChangeSpec(generatePosition().latLng, TransportChangeSpec.TRANSPORT_TYPE_TRAIN, "ds"));
     specs.add(new TransportChangeSpec(generatePosition().latLng, TransportChangeSpec.TRANSPORT_TYPE_BUS, "uii"));
 
-    ArrayList<PictureSpec> pictureSpecs = new ArrayList<>();
-    pictureSpecs.add(new PictureSpec(generatePosition().latLng, UUID.randomUUID(), "das"));
+    ArrayList<NoteSpec> noteSpecs = new ArrayList<>();
+    noteSpecs.add(new NoteSpec(generatePosition().latLng, UUID.randomUUID(), "das"));
 
-    return new RouteData(routeDescription, new Path(positions), specs, pictureSpecs);
+    return new RouteData(routeDescription, new Path(positions), specs, noteSpecs);
   }
 
   @NonNull

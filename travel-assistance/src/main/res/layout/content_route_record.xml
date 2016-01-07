@@ -98,6 +98,36 @@
                 android:contentDescription="@string/record_save_photo"/>
         </FrameLayout>
 
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/record_btnAddTextNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_note_black_24dp"
+                android:padding="@dimen/padding_large"
+                android:layout_gravity="center"
+                android:contentDescription="@string/record_save_note"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/record_btnAddVoice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_record_voice_over_black_24dp"
+                android:padding="@dimen/padding_large"
+                android:layout_gravity="center"
+                android:contentDescription="@string/record_save_note"/>
+        </FrameLayout>
+
     </LinearLayout>
 
 </LinearLayout>

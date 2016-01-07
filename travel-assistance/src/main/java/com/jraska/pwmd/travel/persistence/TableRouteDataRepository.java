@@ -85,34 +85,36 @@ public class TableRouteDataRepository extends RouteRepositoryBase {
       cursor.close();
     }
 
-    cursor = getReadableDatabase().query(DbModel.PicturesTable.TABLE_NAME, null, "RouteId = ?", args, null, null, null);
+    cursor = getReadableDatabase().query(DbModel.NotesTable.TABLE_NAME, null, "RouteId = ?", args, null, null, null);
     try {
-      List<PictureSpec> pictureSpecs = readPictures(cursor);
+      List<NoteSpec> noteSpecs = readNotes(cursor);
 
-      return new RouteData(routeDescription, path, changeSpecs, pictureSpecs);
+      return new RouteData(routeDescription, path, changeSpecs, noteSpecs);
     }
     finally {
       cursor.close();
     }
   }
 
-  protected List<PictureSpec> readPictures(Cursor cursor) {
+  protected List<NoteSpec> readNotes(Cursor cursor) {
     if (cursor.getCount() == 0) {
       return Collections.emptyList();
     }
 
-    List<PictureSpec> specs = new ArrayList<>();
+    List<NoteSpec> specs = new ArrayList<>();
 
     while (cursor.moveToNext()) {
       // Data are rad as Strings to remove conversion errors
       LatLng latLng = readLatLng(cursor);
 
-      String caption = cursor.getString(cursor.getColumnIndex(DbModel.PicturesTable.COLUMN_CAPTION));
-      String idValue = cursor.getString(cursor.getColumnIndex(DbModel.PicturesTable.COLUMN_PICTURE_ID));
+      String caption = cursor.getString(cursor.getColumnIndex(DbModel.NotesTable.COLUMN_CAPTION));
+      String pictureIdValue = cursor.getString(cursor.getColumnIndex(DbModel.NotesTable.COLUMN_PICTURE_ID));
+      UUID pictureId = idFromDbValue(pictureIdValue);
 
-      UUID pictureId = idFromDbValue(idValue);
+      String soundIdValue = cursor.getString(cursor.getColumnIndex(DbModel.NotesTable.COLUMN_SOUND_ID));
+      UUID soundId = idFromDbValue(soundIdValue);
 
-      PictureSpec spec = new PictureSpec(latLng, pictureId, caption);
+      NoteSpec spec = new NoteSpec(latLng, pictureId, caption, soundId);
       specs.add(spec);
     }
 
@@ -179,31 +181,32 @@ public class TableRouteDataRepository extends RouteRepositoryBase {
 
     writePath(routeData.getId(), routeData.getPath());
     writeTransportChanges(routeData.getId(), routeData.getTransportChangeSpecs());
-    writePictures(routeData.getId(), routeData.getPictureSpecs());
+    writePictures(routeData.getId(), routeData.getNoteSpecs());
 
     database.setTransactionSuccessful();
     database.endTransaction();
     return insert;
   }
 
-  protected void writePictures(UUID id, List<PictureSpec> pictureSpecs) {
+  protected void writePictures(UUID id, List<NoteSpec> noteSpecs) {
     SQLiteDatabase database = getWritableDatabase();
 
-    for (PictureSpec spec : pictureSpecs) {
-      ContentValues pictureValues = preparePictureValues(spec, id);
+    for (NoteSpec spec : noteSpecs) {
+      ContentValues noteValues = prepareNoteValues(spec, id);
 
-      database.insert(DbModel.PicturesTable.TABLE_NAME, null, pictureValues);
+      database.insert(DbModel.NotesTable.TABLE_NAME, null, noteValues);
     }
   }
 
-  protected ContentValues preparePictureValues(PictureSpec spec, UUID id) {
+  protected ContentValues prepareNoteValues(NoteSpec spec, UUID id) {
     ContentValues contentValues = new ContentValues();
-    contentValues.put(DbModel.PicturesTable.COLUMN_ID, idToDbValue(UUID.randomUUID()));
-    contentValues.put(DbModel.PicturesTable.COLUMN_ROUTE_ID, idToDbValue(id));
-    contentValues.put(DbModel.PicturesTable.COLUMN_LATITUDE, spec.latLng._latitude);
-    contentValues.put(DbModel.PicturesTable.COLUMN_LONGITUDE, spec.latLng._longitude);
-    contentValues.put(DbModel.PicturesTable.COLUMN_PICTURE_ID, idToDbValue(spec.imageId));
-    contentValues.put(DbModel.PicturesTable.COLUMN_CAPTION, spec.caption);
+    contentValues.put(DbModel.NotesTable.COLUMN_ID, idToDbValue(UUID.randomUUID()));
+    contentValues.put(DbModel.NotesTable.COLUMN_ROUTE_ID, idToDbValue(id));
+    contentValues.put(DbModel.NotesTable.COLUMN_LATITUDE, spec.latLng._latitude);
+    contentValues.put(DbModel.NotesTable.COLUMN_LONGITUDE, spec.latLng._longitude);
+    contentValues.put(DbModel.NotesTable.COLUMN_PICTURE_ID, idToDbValue(spec.imageId));
+    contentValues.put(DbModel.NotesTable.COLUMN_CAPTION, spec.caption);
+    contentValues.put(DbModel.NotesTable.COLUMN_SOUND_ID, idToDbValue(spec.soundId));
 
     return contentValues;
   }

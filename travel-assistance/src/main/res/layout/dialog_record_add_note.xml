@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/record_note_caption_input"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/TextMain"
+    tools:text="@string/assistant_email"
+    android:hint="@string/caption"
+    android:padding="@dimen/padding_medium" />

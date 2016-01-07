@@ -24,6 +24,7 @@ import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.jraska.pwmd.travel.media.PicturesManager;
+import com.jraska.pwmd.travel.media.SoundsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import com.jraska.pwmd.travel.transport.SimpleTransportManager;
@@ -37,6 +38,7 @@ public class RouteRecordActivity extends BaseActivity {
   //region Constants
 
   public static final int REQUEST_IMAGE_CAPTURE = 1;
+  public static final int REQUEST_VOICE_RECORD = 2;
 
   //endregion
 
@@ -47,11 +49,15 @@ public class RouteRecordActivity extends BaseActivity {
   @Bind(R.id.record_btnSaveRoute) View _saveRouteButton;
   @Bind(R.id.record_btnChangeTransportType) ImageView _changeTransportButton;
   @Bind(R.id.record_btnTakePhoto) View _takePhotoButton;
+  @Bind(R.id.record_btnAddTextNote) View _addNoteButton;
+  @Bind(R.id.record_btnAddVoice) View _addSoundButton;
 
   @Inject SimpleTransportManager _transportManager;
   @Inject TrackingManager _trackingManager;
   @Inject TravelDataRepository _travelDataRepository;
   @Inject PicturesManager _picturesManager;
+  @Inject LayoutInflater _inflater;
+  @Inject SoundsManager _soundsManager;
 
   //endregion
 
@@ -90,19 +96,21 @@ public class RouteRecordActivity extends BaseActivity {
   }
 
   private void updateStartStopButtons() {
-    if (_trackingManager.isTracking()) {
+    boolean tracking = _trackingManager.isTracking();
+
+    if (tracking) {
       _startTrackingButton.setVisibility(View.GONE);
       _stopTrackingButton.setVisibility(View.VISIBLE);
-      _takePhotoButton.setVisibility(View.VISIBLE);
-      _saveRouteButton.setEnabled(true);
-      _changeTransportButton.setEnabled(true);
     } else {
       _startTrackingButton.setVisibility(View.VISIBLE);
       _stopTrackingButton.setVisibility(View.GONE);
-      _takePhotoButton.setVisibility(View.GONE);
-      _saveRouteButton.setEnabled(false);
-      _changeTransportButton.setEnabled(false);
     }
+
+    _takePhotoButton.setEnabled(tracking);
+    _addNoteButton.setEnabled(tracking);
+    _saveRouteButton.setEnabled(tracking);
+    _changeTransportButton.setEnabled(tracking);
+    _addSoundButton.setEnabled(tracking);
   }
 
   @OnClick(R.id.record_btnSaveRoute) void saveRoute() {
@@ -114,7 +122,7 @@ public class RouteRecordActivity extends BaseActivity {
 
     RouteData routeData = new RouteData(new RouteDescription(UUID.randomUUID(),
         lastPath.getStart(), lastPath.getEnd(), "Test"), lastPath.getPath(),
-        lastPath.getTransportChangeSpecs(), lastPath.getPictureSpecs());
+        lastPath.getTransportChangeSpecs(), lastPath.getNoteSpecs());
 
     _travelDataRepository.insertRoute(routeData);
 
@@ -169,6 +177,18 @@ public class RouteRecordActivity extends BaseActivity {
     if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
       handlePhotoTakenIntent(data);
     }
+    if (requestCode == REQUEST_VOICE_RECORD && resultCode == RESULT_OK) {
+      handleVoiceRecordTaken(data);
+    }
+  }
+
+  protected void handleVoiceRecordTaken(Intent data) {
+    UUID id = (UUID) data.getSerializableExtra(VoiceRecordActivity.RECORDED_ID_KEY);
+    String title = data.getStringExtra(VoiceRecordActivity.RECORDED_TITLE_KEY);
+
+    if (_trackingManager.addNote(null, title, id)) {
+      Toast.makeText(this, R.string.record_voice_saved, Toast.LENGTH_SHORT).show();
+    }
   }
 
   protected void handlePhotoTakenIntent(Intent data) {
@@ -180,8 +200,9 @@ public class RouteRecordActivity extends BaseActivity {
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle(getString(R.string.record_save_photo));
 
-    @SuppressLint("InflateParams") // cannot get parentoo
-    View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_record_photo_preview, null);
+    @SuppressLint("InflateParams") // cannot get parent
+        View dialogView = _inflater.inflate(R.layout.dialog_record_photo_preview, null);
+
     builder.setView(dialogView);
     final PhotoDialogHolder photoDialogHolder = new PhotoDialogHolder(dialogView);
     photoDialogHolder._imagePreview.setImageBitmap(imageBitmap);
@@ -190,11 +211,37 @@ public class RouteRecordActivity extends BaseActivity {
     builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
       @Override public void onClick(DialogInterface dialog, int which) {
         String caption = photoDialogHolder._captionInput.getText().toString();
-        _trackingManager.addPicture(imageId, caption);
+        _trackingManager.addNote(imageId, caption, null);
       }
     });
 
     builder.show();
+  }
+
+  @OnClick(R.id.record_btnAddTextNote) void addNote() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle(R.string.record_add_note);
+
+    @SuppressLint("InflateParams")
+    View dialogView = _inflater.inflate(R.layout.dialog_record_add_note, null);
+    builder.setView(dialogView);
+
+    final EditText noteInput = ButterKnife.findById(dialogView, R.id.record_note_caption_input);
+
+    builder.setNegativeButton(android.R.string.cancel, null);
+    builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+      @Override public void onClick(DialogInterface dialog, int which) {
+        String caption = noteInput.getText().toString();
+        _trackingManager.addNote(null, caption, null);
+      }
+    });
+
+    builder.show();
+  }
+
+  @OnClick(R.id.record_btnAddVoice) void addVoice() {
+    Intent voiceRecordIntent = new Intent(this, VoiceRecordActivity.class);
+    startActivityForResult(voiceRecordIntent, REQUEST_VOICE_RECORD);
   }
 
   //endregion

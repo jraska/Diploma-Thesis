@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/voice_record_speak_now"
+            style="@style/TextMain" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/voice_record_stop_recording"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_stop_black_24dp"
+                android:padding="@dimen/padding_large" />
+
+            <ImageButton
+                android:id="@+id/voice_record_save_recording"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_save_black_24dp"
+                android:padding="@dimen/padding_large"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+        <EditText
+            android:id="@+id/voice_record_title_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="100dp"
+            android:hint="@string/voice_record_title_hint" />
+    </LinearLayout>
+
+</FrameLayout>
