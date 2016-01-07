@@ -33,4 +33,6 @@
     <string name="title_activity_navigation">Navigation</string>
     <string name="cannot_get_pictures">Cannot get image</string>
     <string name="photo_preview">Photo preview</string>
+    <string name="caption">Caption</string>
+    <string name="record_save_photo">Save photo</string>
 </resources>

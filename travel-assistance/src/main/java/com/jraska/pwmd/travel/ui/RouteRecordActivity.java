@@ -1,11 +1,14 @@
 package com.jraska.pwmd.travel.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -43,7 +46,6 @@ public class RouteRecordActivity extends BaseActivity {
   @Bind(R.id.record_btnStopTracking) View _stopTrackingButton;
   @Bind(R.id.record_btnSaveRoute) View _saveRouteButton;
   @Bind(R.id.record_btnChangeTransportType) ImageView _changeTransportButton;
-  @Bind(R.id.record_photoPreview) ImageView _photoPreview;
   @Bind(R.id.record_btnTakePhoto) View _takePhotoButton;
 
   @Inject SimpleTransportManager _transportManager;
@@ -126,8 +128,8 @@ public class RouteRecordActivity extends BaseActivity {
     LayoutInflater.from(this).inflate(R.layout.dialog_choose_new_transport, dialogView);
     dialog.setContentView(dialogView);
     dialog.setTitle(R.string.transport_change_select);
-    DialogHolder dialogHolder = new DialogHolder(dialog, dialogView);
-    dialogHolder.show();
+    TransportDialogHolder transportDialogHolder = new TransportDialogHolder(dialog, dialogView);
+    transportDialogHolder.show();
   }
 
   protected boolean addTransportationChange(int type, @NonNull String title) {
@@ -173,23 +175,48 @@ public class RouteRecordActivity extends BaseActivity {
     Bundle extras = data.getExtras();
     Bitmap imageBitmap = (Bitmap) extras.get("data");
 
-    _photoPreview.setImageBitmap(imageBitmap);
+    final UUID imageId = _picturesManager.getIdForUri(data.getData());
 
-    UUID imageId = _picturesManager.getIdForUri(data.getData());
-    _trackingManager.addPicture(imageId, "Photo");
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle(getString(R.string.record_save_photo));
+
+    @SuppressLint("InflateParams") // cannot get parentoo
+    View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_record_photo_preview, null);
+    builder.setView(dialogView);
+    final PhotoDialogHolder photoDialogHolder = new PhotoDialogHolder(dialogView);
+    photoDialogHolder._imagePreview.setImageBitmap(imageBitmap);
+
+    builder.setNegativeButton(android.R.string.cancel, null);
+    builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+      @Override public void onClick(DialogInterface dialog, int which) {
+        String caption = photoDialogHolder._captionInput.getText().toString();
+        _trackingManager.addPicture(imageId, caption);
+      }
+    });
+
+    builder.show();
   }
 
   //endregion
 
   //region Nested classes
 
-  static class DialogHolder {
+  static class PhotoDialogHolder {
+    @Bind(R.id.record_photo_preview) ImageView _imagePreview;
+    @Bind(R.id.record_photo_caption) EditText _captionInput;
+
+    public PhotoDialogHolder(View rootView) {
+      ButterKnife.bind(this, rootView);
+    }
+  }
+
+  static class TransportDialogHolder {
     private final Dialog _dialog;
     private final View _rootView;
 
     @Bind(R.id.transport_change_title_input) EditText _titleInput;
 
-    public DialogHolder(Dialog dialog, View rootView) {
+    public TransportDialogHolder(Dialog dialog, View rootView) {
       _dialog = dialog;
       _rootView = rootView;
 

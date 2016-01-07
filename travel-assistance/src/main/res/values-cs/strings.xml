@@ -33,4 +33,6 @@
     <string name="title_activity_navigation">Navigace</string>
     <string name="title_activity_route_record">Nahrávání cesty</string>
     <string name="photo_preview">Ukázka fotografie</string>
+    <string name="caption">Popis obrázku</string>
+    <string name="record_save_photo">Uložit fotku</string>
 </resources>

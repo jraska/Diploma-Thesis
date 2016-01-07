@@ -24,7 +24,7 @@ public class TravelAssistanceApp extends BaseApp {
 
   //endregion
 
-  //region TravelAssistanceApplication overrides
+  //region Application overrides
 
   @Override public void onCreate() {
     super.onCreate();
@@ -45,11 +45,6 @@ public class TravelAssistanceApp extends BaseApp {
   public static TravelAssistanceComponent getComponent(Context context) {
     return ((TravelAssistanceApp) context.getApplicationContext())._component;
   }
-
-  //endregion
-
-  //region Nested classes
-
 
   //endregion
 }

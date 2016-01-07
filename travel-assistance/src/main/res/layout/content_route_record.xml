@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:baselineAligned="false"
         android:weightSum="3">
 
         <FrameLayout
@@ -53,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_save_black_24dp"
                 android:padding="@dimen/padding_large"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:contentDescription="@string/saveRoute"/>
         </FrameLayout>
 
         <FrameLayout
@@ -67,32 +69,35 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_directions_walk_black_24dp"
                 android:padding="@dimen/padding_large"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:contentDescription="@string/transport_change_select"/>
         </FrameLayout>
 
     </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/record_takePhotoContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_medium">
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:weightSum="3"
+        android:baselineAligned="false">
 
-        <ImageView
-            android:id="@+id/record_photoPreview"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/photo_preview"
-            android:scaleType="centerCrop"/>
+            android:layout_weight="1">
 
-        <ImageButton
-            android:id="@+id/record_btnTakePhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_a_photo_black_24dp"
-            android:padding="@dimen/padding_large"
-            android:layout_gravity="center"/>
+            <ImageButton
+                android:id="@+id/record_btnTakePhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_a_photo_black_24dp"
+                android:padding="@dimen/padding_large"
+                android:layout_gravity="center"
+                android:contentDescription="@string/record_save_photo"/>
+        </FrameLayout>
 
-    </FrameLayout>
+    </LinearLayout>
 
 </LinearLayout>
