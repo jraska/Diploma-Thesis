@@ -5,6 +5,7 @@ import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.travel.collection.CircularFifoQueue;
 
 import javax.inject.Inject;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -109,29 +110,29 @@ public class DirectionDecisionStrategy {
   }
 
   protected double computeDirectionCoefficient() {
-    Iterable<LatLng> data = _dataBuffer;
+    Collection<LatLng> data = _dataBuffer;
 
-    // first pass: read in data, compute xbar and ybar
-    double sumx = 0.0, sumy = 0.0, sumx2 = 0.0;
+    // first pass: read in data, compute xBar and yBar
+    double sumX = 0.0;
+    double sumY = 0.0;
     for (LatLng pos : data) {
-      sumx += pos._latitude;
-      sumx2 += pos._latitude * pos._latitude;
-      sumy += pos._longitude;
+      sumX += pos._latitude;
+      sumY += pos._longitude;
     }
 
-    double xbar = sumx / _dataBuffer.size();
-    double ybar = sumy / _dataBuffer.size();
+    double xBar = sumX / data.size();
+    double yBar = sumY / data.size();
 
     // second pass: compute summary statistics
-    double xxbar = 0.0, yybar = 0.0, xybar = 0.0;
+    double xxBar = 0.0;
+    double xyBar = 0.0;
 
-    for (LatLng pos : _dataBuffer) {
-      xxbar += (pos._latitude - xbar) * (pos._latitude - xbar);
-      yybar += (pos._longitude - ybar) * (pos._longitude - ybar);
-      xybar += (pos._latitude - xbar) * (pos._longitude - ybar);
+    for (LatLng pos : data) {
+      xxBar += (pos._latitude - xBar) * (pos._latitude - xBar);
+      xyBar += (pos._latitude - xBar) * (pos._longitude - yBar);
     }
 
-    double coefficient = xybar / xxbar;
+    double coefficient = xyBar / xxBar;
     return coefficient;
   }
 
