@@ -137,7 +137,7 @@ public class DirectionDecisionStrategy {
   }
 
   /**
-   * @param coefficient Coeffficient of line
+   * @param coefficient Coefficient of line
    * @return Angle in degrees from <-90, 90>
    */
   protected static int coefficientToAngle(double coefficient) {
