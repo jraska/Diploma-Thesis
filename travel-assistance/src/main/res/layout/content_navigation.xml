@@ -12,10 +12,13 @@
     tools:showIn="@layout/activity_navigation"
     tools:context="com.jraska.pwmd.travel.ui.NavigationActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ImageView
+        android:id="@+id/arrow_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_arrow_navigate_right_black_48dp"
         android:text="@string/not_implemented"
-        android:gravity="center"/>
+        android:contentDescription="@string/navigation_arrow"
+        android:layout_gravity="center"/>
 
 </FrameLayout>
