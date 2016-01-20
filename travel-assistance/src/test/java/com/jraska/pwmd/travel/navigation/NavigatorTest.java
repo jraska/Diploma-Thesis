@@ -20,13 +20,13 @@ public class NavigatorTest extends BaseTest {
         {90, 150, 150},
         {150, 90, 30}};
 
-    DirectionDecisionStrategy realDirectionSrategy = mock(DirectionDecisionStrategy.class);
+    Compass compass = mock(Compass.class);
     DirectionDecisionStrategy routeDirectionSrategy = mock(DirectionDecisionStrategy.class);
-    Navigator navigator = new Navigator(mock(EventBus.class), mock(EventBus.class),
-        realDirectionSrategy, routeDirectionSrategy);
+    Navigator navigator = new Navigator(mock(EventBus.class),
+        compass, routeDirectionSrategy);
 
     for (int[] testCase : data) {
-      doReturn(testCase[0]).when(realDirectionSrategy).getDirection();
+      doReturn(testCase[0]).when(compass).getDirection();
       doReturn(testCase[1]).when(routeDirectionSrategy).getDirection();
 
       assertThat(navigator.computeDesiredDirection()).isEqualTo(testCase[2]);

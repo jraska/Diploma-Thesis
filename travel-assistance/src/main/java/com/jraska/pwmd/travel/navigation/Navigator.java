@@ -3,7 +3,6 @@ package com.jraska.pwmd.travel.navigation;
 import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
-import com.jraska.pwmd.core.gps.Position;
 import de.greenrobot.event.EventBus;
 
 import javax.inject.Inject;
@@ -21,10 +20,9 @@ public class Navigator {
   //region Fields
 
   private final EventBus _eventBus;
-  private final EventBus _systemBus;
 
-  private final DirectionDecisionStrategy _realDirectionStrategy;
-  private final DirectionDecisionStrategy _followingRouteDirectionStrategy;
+  private final Compass _compass;
+  private final DirectionDecisionStrategy _routeDirectionStrategy;
 
   private int _lastDirectionDegrees = UNKNOWN_DIRECTION;
 
@@ -33,19 +31,15 @@ public class Navigator {
   //region Constructors
 
   @Inject @PerApp
-  public Navigator(@NonNull @Named(NAVIGATOR_BUS_NAME) EventBus eventBus, EventBus systemBus,
-                   DirectionDecisionStrategy realDirectionStrategy,
-                   DirectionDecisionStrategy routeDirectionStrategy) {
+  public Navigator(@NonNull @Named(NAVIGATOR_BUS_NAME) EventBus eventBus, @NonNull Compass compass,
+                   @NonNull DirectionDecisionStrategy routeDirectionStrategy) {
     ArgumentCheck.notNull(eventBus);
-    ArgumentCheck.notNull(systemBus);
+    ArgumentCheck.notNull(compass);
+    ArgumentCheck.notNull(routeDirectionStrategy);
 
     _eventBus = eventBus;
-    _systemBus = systemBus;
-
-    _realDirectionStrategy = realDirectionStrategy;
-    _followingRouteDirectionStrategy = routeDirectionStrategy;
-
-    _systemBus.register(this);
+    _compass = compass;
+    _routeDirectionStrategy = routeDirectionStrategy;
   }
 
   //endregion
@@ -64,19 +58,15 @@ public class Navigator {
 
   //region Methods
 
-  public void onEvent(Position position) {
-    _realDirectionStrategy.addPoint(position.latLng);
-    int desiredDirection = computeDesiredDirection();
-    onNewDirection(desiredDirection);
-  }
+  // TODO: 20/01/16 Figure out when the direction is recomputed
 
   protected int computeDesiredDirection() {
-    int realDirection = _realDirectionStrategy.getDirection();
+    int realDirection = _compass.getDirection();
     if (realDirection == UNKNOWN_DIRECTION) {
       return UNKNOWN_DIRECTION;
     }
 
-    int routeDirection = _followingRouteDirectionStrategy.getDirection();
+    int routeDirection = _routeDirectionStrategy.getDirection();
     if (routeDirection == UNKNOWN_DIRECTION) {
       return UNKNOWN_DIRECTION;
     }
