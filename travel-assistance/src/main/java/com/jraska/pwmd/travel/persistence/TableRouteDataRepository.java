@@ -5,25 +5,56 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
+import com.jraska.common.ArgumentCheck;
+import com.jraska.core.persistence.DbRepositoryBase;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.*;
+import de.greenrobot.event.EventBus;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-public class TableRouteDataRepository extends RouteRepositoryBase {
+public class TableRouteDataRepository extends DbRepositoryBase implements TravelDataRepository {
+  //region Fields
+
+  private EventBus _dataBus;
+
+  //endregion
+
   //region Constructors
 
-  public TableRouteDataRepository(SQLiteOpenHelper openHelper) {
+  public TableRouteDataRepository(@NonNull SQLiteOpenHelper openHelper, @NonNull EventBus dataBus) {
     super(openHelper);
+    ArgumentCheck.notNull(dataBus);
+
+    _dataBus = dataBus;
   }
 
   //endregion
 
-  //region ITravelDataPersistenceService impl
+  //region TravelDataRepository impl
+
+  @Override
+  public List<RouteDescription> selectAllRouteDescriptions() {
+    return getRouteDescriptionsFromDatabase();
+  }
+
+  @Override
+  public long updateRoute(RouteData routeData) {
+    SQLiteDatabase database = getWritableDatabase();
+
+    database.beginTransaction();
+    try {
+      deleteRoute(routeData.getId());
+      long route = insertRoute(routeData);
+
+      database.setTransactionSuccessful();
+      return route;
+    }
+    finally {
+      database.endTransaction();
+    }
+  }
 
   @Override
   public RouteData selectRouteData(UUID id) {
@@ -47,6 +78,44 @@ public class TableRouteDataRepository extends RouteRepositoryBase {
   //endregion
 
   //region Methods
+
+  protected List<RouteDescription> getRouteDescriptionsFromDatabase() {
+    Cursor cursor = getReadableDatabase().query(DbModel.RoutesTable.TABLE_NAME, DbModel.RoutesTable.DESCRIPTION_COLUMNS, null, null, null, null, null);
+
+    List<RouteDescription> descriptions = new ArrayList<>();
+
+    try {
+      while (cursor.moveToNext()) {
+        RouteDescription routeDescription = readRouteDescription(cursor);
+        descriptions.add(routeDescription);
+      }
+    }
+    finally {
+      cursor.close();
+    }
+
+    return descriptions;
+  }
+
+  protected RouteDescription readRouteDescription(Cursor c) {
+    String idValue = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_ID));
+    UUID id = idFromDbValue(idValue);
+
+    String title = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_TITLE));
+
+    String startValue = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_START));
+    Date start = parseDbDate(startValue);
+
+    String endValue = c.getString(c.getColumnIndex(DbModel.RoutesTable.COLUMN_END));
+    Date end = parseDbDate(endValue);
+
+    RouteDescription routeDescription = new RouteDescription(id, start, end, title);
+    return routeDescription;
+  }
+
+  protected void onNewRoute(RouteData routeData) {
+    _dataBus.post(new NewRouteEvent(routeData.getDescription()));
+  }
 
   protected RouteData getRouteDataFromDatabase(UUID id) {
     String[] args = {idToDbValue(id)};

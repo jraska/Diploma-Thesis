@@ -49,6 +49,8 @@ public class Navigator {
   //region Methods
 
   protected void onDesiredDirectionChanged(int degrees) {
+    _lastDirectionDegrees = degrees;
+
     _eventBus.post(new DirectionChangedEvent(degrees));
   }
 

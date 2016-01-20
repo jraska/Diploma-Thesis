@@ -8,13 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import butterknife.Bind;
-import com.jraska.common.events.Observer;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteDescription;
+import com.jraska.pwmd.travel.persistence.DataModule;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import de.greenrobot.event.EventBus;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
 public class RoutesListActivity extends BaseActivity {
@@ -25,13 +27,7 @@ public class RoutesListActivity extends BaseActivity {
 
   @Inject TravelDataRepository _travelDataRepository;
   @Inject RoutesAdapter _routesAdapter;
-
-  private Observer<RouteDescription> _descriptionsObserver = new Observer<RouteDescription>() {
-    @Override
-    public void update(Object sender, RouteDescription args) {
-      _routesAdapter.add(args);
-    }
-  };
+  @Inject @Named(DataModule.DATA_BUS_NAME) EventBus _dataEventBus;
 
   //endregion
 
@@ -46,7 +42,8 @@ public class RoutesListActivity extends BaseActivity {
 
     setupRoutes();
     refreshRoutes();
-    registerOnRouteChangedObservers();
+
+    _dataEventBus.register(this);
   }
 
   @Override
@@ -78,7 +75,7 @@ public class RoutesListActivity extends BaseActivity {
 
   @Override
   protected void onDestroy() {
-    unregisterOnRouteChangeObservers();
+    _dataEventBus.unregister(this);
 
     super.onDestroy();
   }
@@ -91,6 +88,13 @@ public class RoutesListActivity extends BaseActivity {
   //endregion
 
   //region Methods
+
+  public void onEvent(TravelDataRepository.NewRouteEvent newRouteEvent) {
+    int newPosition = _routesAdapter.getItemCount();
+
+    _routesAdapter.add(newRouteEvent._newRoute);
+    _routesAdapter.notifyItemInserted(newPosition);
+  }
 
   protected void setupRoutes() {
     _routesRecycler.setAdapter(_routesAdapter);
@@ -118,14 +122,6 @@ public class RoutesListActivity extends BaseActivity {
     intent.putExtra(RouteDetailActivity.ROUTE_ID, route.getId());
 
     startActivity(intent);
-  }
-
-  void registerOnRouteChangedObservers() {
-    _travelDataRepository.getOnNewRoute().registerObserver(_descriptionsObserver);
-  }
-
-  void unregisterOnRouteChangeObservers() {
-    _travelDataRepository.getOnNewRoute().registerObserver(_descriptionsObserver);
   }
 
   void refreshRoutes() {

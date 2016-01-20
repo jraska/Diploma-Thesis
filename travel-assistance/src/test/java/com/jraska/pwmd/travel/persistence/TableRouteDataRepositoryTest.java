@@ -6,6 +6,8 @@ import com.jraska.BaseTest;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.*;
+import de.greenrobot.event.EventBus;
+import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +22,7 @@ import static org.junit.Assert.assertThat;
 public class TableRouteDataRepositoryTest extends BaseTest {
   //region Fields
 
+  private EventBus _dataBus;
   private SQLiteOpenHelper _openHelper;
   protected TravelDataRepository _repository;
 
@@ -29,8 +32,9 @@ public class TableRouteDataRepositoryTest extends BaseTest {
 
   @Before
   public void setUp() throws Exception {
+    _dataBus = new EventBus();
     _openHelper = new TravelAssistanceDbHelper(getApplication(), "testDataDb.sqlite");
-    _repository = new TableRouteDataRepository(_openHelper);
+    _repository = new TableRouteDataRepository(_openHelper, _dataBus);
   }
 
   @After
@@ -83,6 +87,18 @@ public class TableRouteDataRepositoryTest extends BaseTest {
     assertThat(_repository.selectAllRouteDescriptions(), hasSize(0));
   }
 
+  @Test
+  public void whenRouteDataInserted_thenInsertEventFired() throws Exception {
+    RouteData routeData = createRouteData();
+
+    TestSubscriber testSubscriber = new TestSubscriber();
+    _dataBus.register(testSubscriber);
+
+    _repository.insertRoute(routeData);
+
+    Assertions.assertThat(testSubscriber._eventFired).isEqualTo(1);
+  }
+
   //endregion
 
   //region Methods
@@ -115,6 +131,18 @@ public class TableRouteDataRepositoryTest extends BaseTest {
   public static Position generatePosition() {
     Random random = new Random();
     return new Position(new LatLng(random.nextDouble() * 50, random.nextDouble() * 50), System.currentTimeMillis(), 30.0f, "GPS");
+  }
+
+  //endregion
+
+  //region Nested classes
+
+  public static class TestSubscriber {
+    public int _eventFired;
+
+    public void onEvent(TravelDataRepository.NewRouteEvent event) {
+      _eventFired++;
+    }
   }
 
   //endregion

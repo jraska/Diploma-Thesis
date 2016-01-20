@@ -4,7 +4,7 @@ import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.core.gps.GpsModule;
 import com.jraska.pwmd.travel.media.MediaModule;
 import com.jraska.pwmd.travel.navigation.NavigationModule;
-import com.jraska.pwmd.travel.persistence.TableRouteDataRepositoryModule;
+import com.jraska.pwmd.travel.persistence.DataModule;
 import com.jraska.pwmd.travel.settings.SettingsModule;
 import com.jraska.pwmd.travel.tracking.TrackingModule;
 import com.jraska.pwmd.travel.tracking.TrackingService;
@@ -16,7 +16,7 @@ import dagger.Component;
     modules = {
         GpsModule.class,
         SettingsModule.class,
-        TableRouteDataRepositoryModule.class,
+        DataModule.class,
         TrackingModule.class,
         MediaModule.class,
         NavigationModule.class,
