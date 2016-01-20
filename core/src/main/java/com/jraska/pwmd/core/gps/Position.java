@@ -16,6 +16,7 @@ public class Position {
   //region Constructors
 
   public Position(LatLng latLng, long time, float accuracy, String provider) {
+    ArgumentCheck.notNull(latLng);
     ArgumentCheck.notNull(provider);
 
     this.time = time;
