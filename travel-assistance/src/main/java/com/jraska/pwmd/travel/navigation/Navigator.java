@@ -11,12 +11,6 @@ import javax.inject.Named;
 import static com.jraska.pwmd.travel.navigation.DirectionDecisionStrategy.UNKNOWN_DIRECTION;
 
 public class Navigator {
-  //region Constants
-
-  public static final String NAVIGATOR_BUS_NAME = "navigatorBus";
-
-  //endregion
-
   //region Fields
 
   private final EventBus _eventBus;
@@ -31,7 +25,7 @@ public class Navigator {
   //region Constructors
 
   @Inject @PerApp
-  public Navigator(@NonNull @Named(NAVIGATOR_BUS_NAME) EventBus eventBus, @NonNull Compass compass,
+  public Navigator(EventBus eventBus, @NonNull Compass compass,
                    @NonNull DirectionDecisionStrategy routeDirectionStrategy) {
     ArgumentCheck.notNull(eventBus);
     ArgumentCheck.notNull(compass);
