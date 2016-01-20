@@ -5,16 +5,16 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import com.jraska.common.ArgumentCheck;
-import com.jraska.common.events.ObservableImpl;
+import de.greenrobot.event.EventBus;
 
 public class SimpleSystemLocationService implements LocationService, LocationStatusService {
   //region Fields
 
   private final LocationManager _locationManager;
+  private final EventBus _eventBus;
 
   private Position _lastPosition;
 
-  private ObservableImpl<Position> _newPosition;
   private boolean _tracking;
 
   private final LocationListener _locationListener = new InnerLocationListener();
@@ -23,10 +23,12 @@ public class SimpleSystemLocationService implements LocationService, LocationSta
 
   //region Constructors
 
-  public SimpleSystemLocationService(LocationManager locationManager) {
+  public SimpleSystemLocationService(LocationManager locationManager, EventBus eventBus) {
     ArgumentCheck.notNull(locationManager);
+    ArgumentCheck.notNull(eventBus);
 
     _locationManager = locationManager;
+    _eventBus = eventBus;
   }
 
   //endregion
@@ -56,15 +58,6 @@ public class SimpleSystemLocationService implements LocationService, LocationSta
 
 
   //region ILocationService impl
-
-  @Override
-  public ObservableImpl<Position> getNewPosition() {
-    if (_newPosition == null) {
-      _newPosition = new ObservableImpl<>();
-    }
-
-    return _newPosition;
-  }
 
   @Override
   public Position getLastPosition() {
@@ -115,7 +108,7 @@ public class SimpleSystemLocationService implements LocationService, LocationSta
   //region Methods
 
   protected Position toPosition(Location l) {
-    return new Position(l.getLatitude(), l.getLongitude(), System.currentTimeMillis(), l.getAccuracy(), l.getProvider());
+    return new Position(new LatLng(l.getLatitude(), l.getLongitude()), System.currentTimeMillis(), l.getAccuracy(), l.getProvider());
   }
 
   protected void onNewLocation(Location l) {
@@ -125,9 +118,7 @@ public class SimpleSystemLocationService implements LocationService, LocationSta
   protected final void onNewPosition(Position position) {
     _lastPosition = position;
 
-    if (_newPosition != null) {
-      _newPosition.notify(this, position);
-    }
+    _eventBus.post(position);
   }
 
   public Position getLastKnownPosition() throws SecurityException {

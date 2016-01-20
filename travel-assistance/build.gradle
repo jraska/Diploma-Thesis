@@ -59,7 +59,6 @@ dependencies {
   compile 'de.hdodenhof:circleimageview:2.0.0'
   compile 'com.jakewharton.timber:timber:4.1.0'
   compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-  compile 'de.greenrobot:eventbus:2.4.0'
 
   apt 'com.google.dagger:dagger-compiler:2.0.2'
 

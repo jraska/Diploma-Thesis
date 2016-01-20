@@ -1,9 +1,8 @@
 package com.jraska.pwmd.core.gps;
 
 import com.jraska.common.ArgumentCheck;
-import com.jraska.common.events.EventArgs;
 
-public class Position implements EventArgs {
+public class Position {
   //region Fields
 
   public final LatLng latLng;
@@ -15,11 +14,6 @@ public class Position implements EventArgs {
   //endregion
 
   //region Constructors
-
-  @Deprecated
-  public Position(double latitude, double longitude, long time, float accuracy, String provider) {
-    this(new LatLng(latitude, longitude), time, accuracy, provider);
-  }
 
   public Position(LatLng latLng, long time, float accuracy, String provider) {
     ArgumentCheck.notNull(provider);

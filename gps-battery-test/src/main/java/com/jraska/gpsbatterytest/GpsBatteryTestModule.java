@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.jraska.dagger.PerApp;
 import dagger.Module;
 import dagger.Provides;
+import de.greenrobot.event.EventBus;
 
 @Module
 public class GpsBatteryTestModule {
@@ -25,5 +26,9 @@ public class GpsBatteryTestModule {
 
   @Provides @PerApp Context provideContext(Application app) {
     return app;
+  }
+
+  @Provides @PerApp EventBus provideDefaultBus() {
+    return EventBus.getDefault();
   }
 }

@@ -5,16 +5,18 @@ import android.location.LocationManager;
 import com.jraska.dagger.PerApp;
 import dagger.Module;
 import dagger.Provides;
+import de.greenrobot.event.EventBus;
 
 @Module
-public class GpsModule {
+public class LocationModule {
   @Provides LocationManager provideLocationManager(Context context) {
     return (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
   }
 
   @Provides @PerApp
-  SimpleSystemLocationService provideLocationServiceImpl(LocationManager locationManager) {
-    return new SimpleSystemLocationService(locationManager);
+  SimpleSystemLocationService provideLocationServiceImpl(LocationManager locationManager,
+                                                         EventBus eventBus) {
+    return new SimpleSystemLocationService(locationManager, eventBus);
   }
 
   @Provides @PerApp LocationService provideLocationService(SimpleSystemLocationService svc) {

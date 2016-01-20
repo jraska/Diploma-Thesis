@@ -7,13 +7,13 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import com.jraska.common.events.Observer;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.ui.RoutesListActivity;
+import de.greenrobot.event.EventBus;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -37,15 +37,7 @@ public class TrackingService extends Service {
   private final Object _lock = new Object();
 
   @Inject LocationService _locationService;
-
-  private final Observer<Position> _positionObserver = new Observer<Position>() {
-    @Override
-    public void update(Object sender, Position args) {
-      synchronized (_lock) {
-        _positions.add(args);
-      }
-    }
-  };
+  @Inject EventBus _systemBus;
 
   //endregion
 
@@ -77,6 +69,9 @@ public class TrackingService extends Service {
     startForeground(ID, notification);
 
     stopTracking();
+
+    _systemBus.register(this);
+
     startTrackingNewPosition();
   }
 
@@ -97,16 +92,22 @@ public class TrackingService extends Service {
 
   @Override
   public void onDestroy() {
-    super.onDestroy();
+    _systemBus.unregister(this);
 
     stopTracking();
 
     _running = false;
+
+    super.onDestroy();
   }
 
   //endregion
 
   //region Methods
+
+  public void onEvent(Position position) {
+    _positions.add(position);
+  }
 
   protected Notification prepareForegroundNotification() {
     NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
@@ -131,7 +132,6 @@ public class TrackingService extends Service {
   protected void stopTracking() {
     LocationService locationService = _locationService;
     locationService.stopTracking();
-    locationService.getNewPosition().unregisterObserver(_positionObserver);
   }
 
   protected void startTrackingNewPosition() {
@@ -142,7 +142,6 @@ public class TrackingService extends Service {
     LocationService locationService = _locationService;
 
     locationService.startTracking(new LocationSettings(5, 5));
-    locationService.getNewPosition().registerObserver(_positionObserver);
   }
 
   //endregion

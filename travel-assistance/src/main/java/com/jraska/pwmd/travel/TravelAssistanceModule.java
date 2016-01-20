@@ -9,6 +9,7 @@ import com.jraska.pwmd.travel.tracking.LocationFilter;
 import com.jraska.pwmd.travel.tracking.SimpleTrackingManager;
 import dagger.Module;
 import dagger.Provides;
+import de.greenrobot.event.EventBus;
 
 @Module
 public class TravelAssistanceModule {
@@ -36,5 +37,9 @@ public class TravelAssistanceModule {
 
   @Provides @PerApp LayoutInflater provideInflater(Context context) {
     return LayoutInflater.from(context);
+  }
+
+  @Provides @PerApp EventBus provideDefaultBus() {
+    return EventBus.getDefault();
   }
 }

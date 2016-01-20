@@ -1,6 +1,7 @@
 package com.jraska.pwmd.travel.help;
 
 import com.jraska.BaseTest;
+import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.core.gps.Position;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +11,13 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class LostMessageTextBuilderTest extends BaseTest {
+  //region Constants
+
+  public static final Position TEST_POSITION = new Position(new LatLng(19.22216271, 49.190901121),
+      System.currentTimeMillis(), 1.1f, "unknown");
+
+  //endregion
+
 
   //region Fields
 
@@ -30,10 +38,7 @@ public class LostMessageTextBuilderTest extends BaseTest {
 
   @Test
   public void testBuildGoogleMapsUrl() throws Exception {
-    long timeMillis = System.currentTimeMillis();
-    Position position = new Position(19.22216271, 49.190901121, timeMillis, 1.1f, "unknown");
-
-    _builder.setFromPosition(position);
+    _builder.setFromPosition(TEST_POSITION);
     _builder.setZoom(12);
 
     String googleMapsUrl = _builder.buildGoogleMapsUrl();
@@ -42,8 +47,7 @@ public class LostMessageTextBuilderTest extends BaseTest {
 
   @Test
   public void testBuildSmsTextLength() throws Exception {
-    long timeMillis = System.currentTimeMillis();
-    Position position = new Position(19.22216271, 49.190901121, timeMillis, 1.1f, "unknown");
+    Position position = TEST_POSITION;
 
     _builder.setFromPosition(position);
 
