@@ -32,7 +32,7 @@ public class NavigationActivity extends BaseActivity {
 
     TravelAssistanceApp.getComponent(this).inject(this);
 
-    updateDesiredDirection(_navigator.getLastDirectionDegrees());
+    updateDesiredDirection(_navigator.getLastRequiredDirection());
     _navigator.getEventBus().register(this);
 
     // TODO: 18/01/16 Test code
@@ -50,7 +50,7 @@ public class NavigationActivity extends BaseActivity {
 
   //region Event consuming
 
-  public void onEvent(Navigator.DirectionChangedEvent changedEvent) {
+  public void onEvent(Navigator.RequiredDirectionEvent changedEvent) {
     updateDesiredDirection(changedEvent._directionDegrees);
   }
 

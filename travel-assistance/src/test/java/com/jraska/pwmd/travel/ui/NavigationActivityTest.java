@@ -18,7 +18,7 @@ public class NavigationActivityTest extends ActivityBaseTest<NavigationActivity>
     View arrowMock = mock(View.class);
     navigationActivity._arrowView = arrowMock;
 
-    navigationActivity._navigator.getEventBus().post(new Navigator.DirectionChangedEvent(1));
+    navigationActivity._navigator.getEventBus().post(new Navigator.RequiredDirectionEvent(1));
 
     verify(navigationActivity._arrowView, times(1)).setRotation(any(float.class));
   }
