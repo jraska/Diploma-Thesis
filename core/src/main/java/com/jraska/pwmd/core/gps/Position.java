@@ -29,6 +29,16 @@ public class Position {
 
   //region Object impl
 
+
+  @Override public String toString() {
+    return "Position{" +
+        "latLng=" + latLng +
+        ", time=" + time +
+        ", accuracy=" + accuracy +
+        ", provider='" + provider + '\'' +
+        '}';
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

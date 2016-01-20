@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import com.jraska.common.events.Observer;
 import com.jraska.gpsbatterytest.logging.CompositeLogger;
 import com.jraska.gpsbatterytest.logging.ConsoleLogger;
 import com.jraska.gpsbatterytest.logging.Logger;
@@ -17,6 +16,7 @@ import com.jraska.pwmd.core.battery.BatteryStatsReader;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
+import de.greenrobot.event.EventBus;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -39,10 +39,10 @@ public class GpsBatteryTestService extends Service {
 
   private Logger _logger;
   private final ScheduledExecutorService _executor = Executors.newSingleThreadScheduledExecutor();
-  private final LocationObserver _locationObserver = new LocationObserver();
 
   @Inject LocationService _locationService;
   @Inject BatteryStatsReader _batteryStatsReader;
+  @Inject EventBus _systemBus;
 
   //endregion
 
@@ -61,6 +61,8 @@ public class GpsBatteryTestService extends Service {
 
     startLocationLogging();
     startBatteryLogging();
+
+    _systemBus.register(this);
   }
 
   @Override
@@ -70,10 +72,12 @@ public class GpsBatteryTestService extends Service {
 
   @Override
   public void onDestroy() {
+    _systemBus.unregister(this);
     _logger.dispose();
 
     stopLocationLogging();
     stopBatteryLogging();
+
 
     super.onDestroy();
   }
@@ -87,6 +91,10 @@ public class GpsBatteryTestService extends Service {
 
   //region Methods
 
+  public void onEvent(Position position) {
+    log(position);
+  }
+
   private void startBatteryLogging() {
     _executor.scheduleAtFixedRate(new CheckBatteryRunnable(), 1, 5 * 60, TimeUnit.SECONDS);
   }
@@ -98,14 +106,12 @@ public class GpsBatteryTestService extends Service {
   private void startLocationLogging() {
     final LocationService locationService = _locationService;
 
-    locationService.getNewPosition().registerObserver(_locationObserver);
     locationService.startTracking(new LocationSettings(5, 5));
   }
 
   private void stopLocationLogging() {
     final LocationService locationService = _locationService;
 
-    locationService.getNewPosition().unregisterObserver(_locationObserver);
     locationService.stopTracking();
   }
 
@@ -153,13 +159,6 @@ public class GpsBatteryTestService extends Service {
   //endregion
 
   //region Nested classes
-
-  class LocationObserver implements Observer<Position> {
-    @Override
-    public void update(Object sender, Position args) {
-      log(args);
-    }
-  }
 
   class CheckBatteryRunnable implements Runnable {
     @Override
