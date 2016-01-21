@@ -27,4 +27,8 @@ public class LocationModule {
   LocationStatusService provideLocationStatusService(SimpleSystemLocationService svc) {
     return svc;
   }
+
+  @Provides Position provideLastPosition(LocationService locationService) {
+    return locationService.getLastPosition();
+  }
 }

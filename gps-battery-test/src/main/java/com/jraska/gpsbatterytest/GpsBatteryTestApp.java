@@ -10,14 +10,6 @@ public class GpsBatteryTestApp extends BaseApp {
 
   //endregion
 
-  //region Properties
-
-  public GpsBatteryTestComponent getComponent() {
-    return _component;
-  }
-
-  //endregion
-
   //region Application overrides
 
   @Override

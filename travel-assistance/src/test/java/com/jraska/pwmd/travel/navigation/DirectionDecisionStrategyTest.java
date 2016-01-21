@@ -25,7 +25,12 @@ public class DirectionDecisionStrategyTest extends BaseTest {
       new LatLng(70, 65),
       new LatLng(60, 70)));
 
+  public static final List<LatLng> TEST_DATA2 = Collections.unmodifiableList(Lists.newArrayList(
+      new LatLng(42.1234584, -83.1234577),
+      new LatLng(42.1234583, -83.1234510)));
+
   public static final int TEST_DATA_DIRECTION = 180 + 33;
+  public static final int TEST_DATA_DIRECTION2 = 91;
 
   //endregion
 
@@ -41,6 +46,17 @@ public class DirectionDecisionStrategyTest extends BaseTest {
     double coefficient = decisionStrategy.computeDirectionCoefficient();
 
     assertThat(coefficient).isCloseTo(0.644, Offset.offset(0.001));
+  }
+
+  @Test
+  public void testGetDirectionTestData2() throws Exception {
+    DirectionDecisionStrategy decisionStrategy = new DirectionDecisionStrategy(2);
+    for (LatLng latLng : TEST_DATA2) {
+      decisionStrategy.addPoint(latLng);
+    }
+
+    int direction = decisionStrategy.getDirection();
+    assertThat(direction).isEqualTo(TEST_DATA_DIRECTION2);
   }
 
   @Test

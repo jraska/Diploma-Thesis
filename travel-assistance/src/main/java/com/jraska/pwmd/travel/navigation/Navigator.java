@@ -1,12 +1,12 @@
 package com.jraska.pwmd.travel.navigation;
 
 import android.support.annotation.NonNull;
+import com.google.android.gms.maps.model.LatLng;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import de.greenrobot.event.EventBus;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import static com.jraska.pwmd.travel.navigation.DirectionDecisionStrategy.UNKNOWN_DIRECTION;
 
@@ -48,6 +48,10 @@ public class Navigator {
     return _lastDirectionDegrees;
   }
 
+  public int getCompassDirection() {
+    return _compass.getDirection();
+  }
+
   //endregion
 
   //region Methods
@@ -77,6 +81,14 @@ public class Navigator {
       _lastDirectionDegrees = degrees;
       _eventBus.post(new RequiredDirectionEvent(degrees));
     }
+  }
+
+  //endregion
+
+  //region Static Methods
+
+  public static LatLng toGoogleLatLng(@NonNull com.jraska.pwmd.core.gps.LatLng latLng) {
+    return new LatLng(latLng._latitude, latLng._longitude);
   }
 
   //endregion

@@ -1,6 +1,7 @@
 package com.jraska.pwmd.travel.navigation;
 
 import android.support.annotation.NonNull;
+import com.jraska.console.Console;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.travel.collection.CircularFifoQueue;
 
@@ -19,7 +20,7 @@ import java.util.Iterator;
 public class DirectionDecisionStrategy {
   //region Constants
 
-  public static final int DEFAULT_BUFFER_SIZE = 4;
+  public static final int DEFAULT_BUFFER_SIZE = 2;
   public static final int UNKNOWN_DIRECTION = -1;
 
   //endregion
@@ -69,17 +70,24 @@ public class DirectionDecisionStrategy {
   }
 
   protected int linearRegression() {
+    Console.writeLine("");
+    Console.writeLine("--------------------");
+
     double coefficient = computeDirectionCoefficient();
 
     int angle = coefficientToAngle(coefficient);
     // we need to check if the data has ascending or descending x coordinate, due to that,
     // we determine the direction of the line
     boolean ascending = isLatitudeAscending();
-    if (ascending) {
-      return angle;
-    } else {
-      return 180 + angle;
+
+    if (!ascending) {
+      angle += 180;
     }
+
+    Console.writeLine("Computed angle: " + angle);
+    Console.writeLine("--------------------");
+
+    return angle;
   }
 
   protected boolean isLatitudeAscending() {
@@ -111,6 +119,12 @@ public class DirectionDecisionStrategy {
 
   protected double computeDirectionCoefficient() {
     Collection<LatLng> data = _dataBuffer;
+
+    int order = 1;
+    for (LatLng latLng : _dataBuffer) {
+      Console.writeLine("#" + order++ + ": " + latLng._latitude + ", " + latLng._longitude);
+    }
+
 
     // first pass: read in data, compute xBar and yBar
     double sumX = 0.0;

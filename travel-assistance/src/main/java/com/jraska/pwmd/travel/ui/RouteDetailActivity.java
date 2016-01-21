@@ -26,12 +26,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.jraska.pwmd.travel.navigation.Navigator.toGoogleLatLng;
+import static com.jraska.pwmd.travel.ui.MapHelper.ZOOM;
+
 public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
   //region Constants
 
   public static final String ROUTE_ID = "RouteId";
   protected static final int ROUTE_WIDTH = 5;
-  public static final int ZOOM = 18;
 
   //endregion
 
@@ -91,6 +93,8 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
   public void onMapReady(GoogleMap googleMap) {
     _mapView = googleMap;
 
+    MapHelper.configureMap(googleMap);
+
     RouteData routeData = loadRoute();
     setTitle(routeData.getTitle());
 
@@ -127,7 +131,8 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
   }
 
   protected void displayOnMap(RouteData routeData) {
-    PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH).color(Color.BLUE).visible(true);
+    PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH)
+        .color(Color.BLUE).visible(true);
 
     List<Position> points = routeData.getPath().getPoints();
 
@@ -142,16 +147,11 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
     GoogleMap map = _mapView;
     map.addPolyline(polylineOptions);
 
-    map.setMyLocationEnabled(true);
-
-    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(toGoogleLatLng(points.get(0).latLng), ZOOM);
+    LatLng latLng = toGoogleLatLng(points.get(0).latLng);
+    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, ZOOM);
     map.animateCamera(cameraUpdate);
 
     map.setOnMarkerClickListener(this);
-  }
-
-  protected LatLng toGoogleLatLng(com.jraska.pwmd.core.gps.LatLng latLng) {
-    return new LatLng(latLng._latitude, latLng._longitude);
   }
 
   protected void startNavigation() {

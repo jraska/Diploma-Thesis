@@ -12,6 +12,13 @@
     tools:showIn="@layout/activity_navigation"
     tools:context="com.jraska.pwmd.travel.ui.NavigationActivity">
 
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        tools:layout="@layout/google_map_placeholder" />
+
     <ImageView
         android:id="@+id/arrow_view"
         android:layout_width="wrap_content"
@@ -19,6 +26,6 @@
         android:background="@drawable/ic_arrow_navigate_right_black_48dp"
         android:text="@string/not_implemented"
         android:contentDescription="@string/navigation_arrow"
-        android:layout_gravity="center"/>
+        android:layout_gravity="bottom|center"/>
 
 </FrameLayout>
