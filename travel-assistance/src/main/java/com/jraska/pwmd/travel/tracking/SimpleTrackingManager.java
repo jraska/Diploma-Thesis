@@ -14,6 +14,8 @@ import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
 import java.util.*;
@@ -32,19 +34,23 @@ public class SimpleTrackingManager implements TrackingManager {
   private final List<TransportChangeSpec> _changes = new ArrayList<>();
   private final List<NoteSpec> _noteSpecs = new ArrayList<>();
   private final LocationService _locationService;
+  private final EventBus _dataBus;
 
   //endregion
 
   //region Constructors
 
-  public SimpleTrackingManager(Context context, LocationService locationService, LocationFilter filter) {
+  public SimpleTrackingManager(Context context, LocationService locationService,
+                               LocationFilter filter, EventBus dataBus) {
     ArgumentCheck.notNull(context);
     ArgumentCheck.notNull(locationService);
     ArgumentCheck.notNull(filter);
+    ArgumentCheck.notNull(dataBus);
 
     _context = context;
     _filter = filter;
     _locationService = locationService;
+    _dataBus = dataBus;
   }
 
   //endregion
@@ -116,8 +122,15 @@ public class SimpleTrackingManager implements TrackingManager {
     if (!_running) {
       return;
     }
-
     _changes.clear();
+
+    for (NoteSpec spec : _noteSpecs) {
+      if (!spec.exists()) {
+        _dataBus.post(new TravelDataRepository.NoteSpecDeletedEvent(spec));
+      }
+    }
+
+    _noteSpecs.clear();
 
     _context.unbindService(_connection);
     _context.stopService(getServiceIntent());
