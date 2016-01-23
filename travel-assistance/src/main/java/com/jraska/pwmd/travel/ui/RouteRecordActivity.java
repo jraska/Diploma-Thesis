@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +60,8 @@ public class RouteRecordActivity extends BaseActivity {
   @Inject PicturesManager _picturesManager;
   @Inject LayoutInflater _inflater;
   @Inject SoundsManager _soundsManager;
+
+  private UUID _lastPhotoRequestId;
 
   //endregion
 
@@ -163,9 +167,12 @@ public class RouteRecordActivity extends BaseActivity {
   protected void dispatchTakePictureIntent() {
     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, _picturesManager.createPictureUri());
+    _lastPhotoRequestId = _picturesManager.createPictureId();
+    Uri pictureUri = _picturesManager.createPictureUri(_lastPhotoRequestId);
+    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
 
     if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+      Timber.d("Starting Camera");
       startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     } else {
       Timber.e("Cannot get image to capture.");
@@ -191,11 +198,19 @@ public class RouteRecordActivity extends BaseActivity {
     }
   }
 
-  protected void handlePhotoTakenIntent(Intent data) {
-    Bundle extras = data.getExtras();
-    Bitmap imageBitmap = (Bitmap) extras.get("data");
+  protected void handlePhotoTakenIntent(@Nullable Intent data) {
+    final UUID imageId = _lastPhotoRequestId;
+    if (!_picturesManager.imageExists(imageId)) {
+      Timber.e("Image does not exisst on successfull picture taken. Id= " + imageId);
+      return;
+    }
 
-    final UUID imageId = _picturesManager.getIdForUri(data.getData());
+
+    Bitmap imageBitmap = null;
+    if (data != null) {
+      Bundle extras = data.getExtras();
+      imageBitmap = (Bitmap) extras.get("data");
+    }
 
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle(getString(R.string.record_save_photo));
@@ -205,9 +220,20 @@ public class RouteRecordActivity extends BaseActivity {
 
     builder.setView(dialogView);
     final PhotoDialogHolder photoDialogHolder = new PhotoDialogHolder(dialogView);
-    photoDialogHolder._imagePreview.setImageBitmap(imageBitmap);
+    if (imageBitmap != null) {
+      photoDialogHolder._imagePreview.setImageBitmap(imageBitmap);
+    }
 
-    builder.setNegativeButton(android.R.string.cancel, null);
+    builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+      @Override public void onCancel(DialogInterface dialog) {
+        _picturesManager.deleteImage(imageId);
+      }
+    });
+    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+      @Override public void onClick(DialogInterface dialog, int which) {
+        _picturesManager.deleteImage(imageId);
+      }
+    });
     builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
       @Override public void onClick(DialogInterface dialog, int which) {
         String caption = photoDialogHolder._captionInput.getText().toString();

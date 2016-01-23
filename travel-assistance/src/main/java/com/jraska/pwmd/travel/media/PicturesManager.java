@@ -67,10 +67,12 @@ public class PicturesManager {
 
   //region Methods
 
-  public Uri createPictureUri() {
-    UUID uuid = UUID.randomUUID();
+  public boolean imageExists(UUID id) {
+    return getImageFile(id).exists();
+  }
 
-    return createPictureUri(uuid);
+  public UUID createPictureId() {
+    return UUID.randomUUID();
   }
 
   public Uri createPictureUri(UUID uuid) {
@@ -95,12 +97,14 @@ public class PicturesManager {
     return UUID.fromString(uuidValue);
   }
 
-  private void deleteImage(UUID imageId) {
+  public boolean deleteImage(UUID imageId) {
     File imageFile = getImageFile(imageId);
     if (imageFile.exists() && imageFile.delete()) {
       Timber.i("Image " + imageId + " successfully deleted");
+      return true;
     } else {
       Timber.w("Image " + imageId + " was not deleted ");
+      return false;
     }
   }
 
