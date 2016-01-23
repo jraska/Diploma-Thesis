@@ -6,6 +6,7 @@ import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.jraska.pwmd.travel.persistence.DBFlowDataRepositoryTest;
+import de.greenrobot.event.EventBus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class SimpleTrackingManagerTest extends BaseTest {
         .when(locationService).getLastPosition();
 
     _simpleTrackingManager = new SimpleTrackingManager(mock(Context.class), locationService,
-        mock(LocationFilter.class));
+        mock(LocationFilter.class), new EventBus());
   }
 
   //endregion
