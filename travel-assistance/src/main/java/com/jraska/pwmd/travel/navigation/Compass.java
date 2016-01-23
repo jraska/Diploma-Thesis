@@ -12,6 +12,7 @@ import javax.inject.Inject;
  * <p/>
  * Currently it uses jsut last GPS coordinates to determine direction
  */
+@PerApp
 public class Compass {
   //region Fields
 
@@ -22,7 +23,7 @@ public class Compass {
 
   //region Constructors
 
-  @Inject @PerApp
+  @Inject
   public Compass(@NonNull DirectionDecisionStrategy decisionStrategy, EventBus systemBus) {
     _decisionStrategy = decisionStrategy;
     _systemBus = systemBus;

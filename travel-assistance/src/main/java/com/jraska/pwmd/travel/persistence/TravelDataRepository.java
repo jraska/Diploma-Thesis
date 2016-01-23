@@ -2,21 +2,19 @@ package com.jraska.pwmd.travel.persistence;
 
 import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
-import com.jraska.common.Disposable;
+import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.data.RouteDescription;
 
 import java.util.List;
-import java.util.UUID;
 
-public interface TravelDataRepository extends Disposable {
+public interface TravelDataRepository {
   //region Methods
 
-  List<RouteDescription> selectAllRouteDescriptions();
+  List<RouteData> selectAllRouteDescriptions();
 
-  RouteData selectRouteData(UUID id);
+  RouteData selectRouteData(long id);
 
-  long deleteRoute(UUID id);
+  long deleteRoute(RouteData routeData);
 
   long updateRoute(RouteData routeData);
 
@@ -26,13 +24,33 @@ public interface TravelDataRepository extends Disposable {
 
   //region Nested classes
 
-  class NewRouteEvent {
-    public final RouteDescription _newRoute;
+  class RouteDeletedEvent {
+    public final RouteData _deletedRoute;
 
-    public NewRouteEvent(@NonNull RouteDescription newRoute) {
+    public RouteDeletedEvent(RouteData deletedRoute) {
+      ArgumentCheck.notNull(deletedRoute);
+
+      _deletedRoute = deletedRoute;
+    }
+  }
+
+  class NewRouteEvent {
+    public final RouteData _newRoute;
+
+    public NewRouteEvent(@NonNull RouteData newRoute) {
       ArgumentCheck.notNull(newRoute);
 
       _newRoute = newRoute;
+    }
+  }
+
+  class NoteSpecDeletedEvent {
+    public final NoteSpec _noteSpec;
+
+    public NoteSpecDeletedEvent(@NonNull NoteSpec noteSpec) {
+      ArgumentCheck.notNull(noteSpec);
+
+      _noteSpec = noteSpec;
     }
   }
 

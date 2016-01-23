@@ -8,7 +8,6 @@ import java.util.UUID;
 public class RouteDescription {
   //region Fields
 
-  private final UUID _id;
   private final Date _mStart;
   private final Date _end;
   private final String _title;
@@ -17,13 +16,11 @@ public class RouteDescription {
 
   //region Constructors
 
-  public RouteDescription(UUID id, Date start, Date end, String title) {
-    ArgumentCheck.notNull(id);
+  public RouteDescription(Date start, Date end, String title) {
     ArgumentCheck.notNull(start);
     ArgumentCheck.notNull(end);
     ArgumentCheck.notNull(title);
 
-    _id = id;
     _mStart = start;
     _end = end;
     _title = title;
@@ -32,10 +29,6 @@ public class RouteDescription {
   //endregion
 
   //region Properties
-
-  public UUID getId() {
-    return _id;
-  }
 
   public Date getStart() {
     return _mStart;
@@ -56,8 +49,7 @@ public class RouteDescription {
   @Override
   public String toString() {
     return "RouteDescription{" +
-        "_id=" + _id +
-        ", _mStart=" + _mStart +
+        ", _start=" + _mStart +
         ", _end=" + _end +
         ", _title='" + _title + '\'' +
         '}';
@@ -71,7 +63,6 @@ public class RouteDescription {
     RouteDescription that = (RouteDescription) o;
 
     if (!_end.equals(that._end)) return false;
-    if (!_id.equals(that._id)) return false;
     if (!_mStart.equals(that._mStart)) return false;
     if (!_title.equals(that._title)) return false;
 
@@ -80,8 +71,7 @@ public class RouteDescription {
 
   @Override
   public int hashCode() {
-    int result = _id.hashCode();
-    result = 31 * result + _mStart.hashCode();
+    int result = _mStart.hashCode();
     result = 31 * result + _end.hashCode();
     result = 31 * result + _title.hashCode();
     return result;

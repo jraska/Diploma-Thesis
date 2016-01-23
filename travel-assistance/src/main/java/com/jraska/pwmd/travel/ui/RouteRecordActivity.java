@@ -120,7 +120,7 @@ public class RouteRecordActivity extends BaseActivity {
       return;
     }
 
-    RouteData routeData = new RouteData(new RouteDescription(UUID.randomUUID(),
+    RouteData routeData = new RouteData(new RouteDescription(
         lastPath.getStart(), lastPath.getEnd(), "Test"), lastPath.getPath(),
         lastPath.getTransportChangeSpecs(), lastPath.getNoteSpecs());
 

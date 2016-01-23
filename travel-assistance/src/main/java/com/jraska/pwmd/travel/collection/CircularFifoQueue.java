@@ -47,7 +47,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
   private transient int start = 0;
 
   /**
-   * Index mod maxElements of the array position following the last queue
+   * Index mod maxElements of the array latLng following the last queue
    * element.  Queue elements start at elements[start] and "wrap around"
    * elements[maxElements-1], ending at elements[decrement(end)].
    * For example, elements = {c,a,b}, start=1, end=1 corresponds to
@@ -239,11 +239,11 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
   }
 
   /**
-   * Returns the element at the specified position in this queue.
+   * Returns the element at the specified latLng in this queue.
    *
-   * @param index the position of the element in the queue
-   * @return the element at position {@code index}
-   * @throws NoSuchElementException if the requested position is outside the range [0, size)
+   * @param index the latLng of the element in the queue
+   * @return the element at latLng {@code index}
+   * @throws NoSuchElementException if the requested latLng is outside the range [0, size)
    */
   public E get(final int index) {
     final int sz = size();

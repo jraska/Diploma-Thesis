@@ -6,6 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
+import com.jraska.pwmd.travel.data.NoteSpec;
+import com.jraska.pwmd.travel.persistence.DataModule;
+import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import de.greenrobot.event.EventBus;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -13,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+@PerApp
 public class SoundsManager implements MediaPlayer.OnCompletionListener {
   //region Constants
 
@@ -24,6 +30,7 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
   //region Fields
 
   private final File _soundsDir;
+  private final EventBus _dataBus;
 
   private MediaRecorder _recorder;
   private MediaPlayer _mediaPlayer;
@@ -33,11 +40,16 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
 
   //region Constructors
 
-  @Inject @PerApp
-  public SoundsManager(@Named(SOUND_DIR) @NonNull File soundsDir) {
+  @Inject
+  public SoundsManager(@Named(SOUND_DIR) @NonNull File soundsDir,
+                       @Named(DataModule.DATA_BUS_NAME) EventBus dataBus) {
     ArgumentCheck.notNull(soundsDir);
+    ArgumentCheck.notNull(dataBus);
 
     _soundsDir = soundsDir;
+    _dataBus = dataBus;
+
+    _dataBus.register(this);
   }
 
   //endregion
@@ -58,6 +70,27 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
 
   @Override public void onCompletion(MediaPlayer mp) {
     stopPlaying();
+  }
+
+  //endregion
+
+  //region Events
+
+  public void onEvent(TravelDataRepository.NoteSpecDeletedEvent deletedEvent) {
+    NoteSpec spec = deletedEvent._noteSpec;
+    if (spec.getSoundId() != null) {
+      deleteSound(spec.getSoundId());
+    }
+  }
+
+  private void deleteSound(UUID soundId) {
+    File soundFile = getFileForId(soundId);
+    if (soundFile.exists() && soundFile.delete()) {
+      Timber.i("Sound " + soundId + " successfully deleted");
+    } else {
+      Timber.w("Sound " + soundId + " was not deleted ");
+
+    }
   }
 
   //endregion

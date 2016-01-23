@@ -3,8 +3,9 @@ package com.jraska.pwmd.travel.tracking;
 import android.content.Context;
 import com.jraska.BaseTest;
 import com.jraska.pwmd.core.gps.LocationService;
+import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
-import com.jraska.pwmd.travel.persistence.TableRouteDataRepositoryTest;
+import com.jraska.pwmd.travel.persistence.DBFlowDataRepositoryTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,7 +28,7 @@ public class SimpleTrackingManagerTest extends BaseTest {
   @Before
   public void setUp() throws Exception {
     LocationService locationService = mock(LocationService.class);
-    doReturn(TableRouteDataRepositoryTest.generatePosition())
+    doReturn(generatePosition())
         .when(locationService).getLastPosition();
 
     _simpleTrackingManager = new SimpleTrackingManager(mock(Context.class), locationService,
@@ -69,6 +70,15 @@ public class SimpleTrackingManagerTest extends BaseTest {
 
     _simpleTrackingManager.stopTracking();
     assertThat(_simpleTrackingManager.getChanges(), hasSize(0));
+  }
+
+  //endregion
+
+  //region Methods
+
+  private Position generatePosition() {
+    return new Position(DBFlowDataRepositoryTest.generatePosition(),
+        System.currentTimeMillis(), 1.0f, "asdjk");
   }
 
   //endregion

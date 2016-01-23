@@ -10,10 +10,11 @@ import android.view.View;
 import butterknife.Bind;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
-import com.jraska.pwmd.travel.data.RouteDescription;
+import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.persistence.DataModule;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import de.greenrobot.event.EventBus;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -90,10 +91,19 @@ public class RoutesListActivity extends BaseActivity {
   //region Methods
 
   public void onEvent(TravelDataRepository.NewRouteEvent newRouteEvent) {
-    int newPosition = _routesAdapter.getItemCount();
+    Timber.d("New route event received");
 
     _routesAdapter.add(newRouteEvent._newRoute);
-    _routesAdapter.notifyItemInserted(newPosition);
+
+    refreshRoutes();
+  }
+
+  public void onEvent(TravelDataRepository.RouteDeletedEvent routeDeleted) {
+    Timber.d("Delete route event received");
+
+    _routesAdapter.remove(routeDeleted._deletedRoute);
+
+    refreshRoutes();
   }
 
   protected void setupRoutes() {
@@ -113,11 +123,11 @@ public class RoutesListActivity extends BaseActivity {
   }
 
   protected void showRoute(int position) {
-    RouteDescription item = _routesAdapter.getItem(position);
+    RouteData item = _routesAdapter.getItem(position);
     showRoute(item);
   }
 
-  protected void showRoute(RouteDescription route) {
+  protected void showRoute(RouteData route) {
     Intent intent = new Intent(this, RouteDetailActivity.class);
     intent.putExtra(RouteDetailActivity.ROUTE_ID, route.getId());
 
@@ -126,7 +136,7 @@ public class RoutesListActivity extends BaseActivity {
 
   void refreshRoutes() {
     TravelDataRepository service = _travelDataRepository;
-    List<RouteDescription> routeDescriptions = service.selectAllRouteDescriptions();
+    List<RouteData> routeDescriptions = service.selectAllRouteDescriptions();
 
     _routesAdapter.clear();
 
@@ -146,9 +156,8 @@ public class RoutesListActivity extends BaseActivity {
     }
   }
 
-  protected void deleteRoute(RouteDescription route) {
-    _travelDataRepository.deleteRoute(route.getId());
-    refreshRoutes();
+  protected void deleteRoute(RouteData route) {
+    _travelDataRepository.deleteRoute(route);
   }
 
   protected void openHelpRequests() {

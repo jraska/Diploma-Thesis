@@ -9,10 +9,10 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.jraska.common.ArgumentCheck;
+import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.NoteSpec;
-import com.jraska.pwmd.travel.data.Path;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import timber.log.Timber;
 
@@ -101,13 +101,13 @@ public class SimpleTrackingManager implements TrackingManager {
 
     List<Position> positions = _serviceBinder.getService().getPositions();
 
-    positions = filterPositions(positions);
+    List<LatLng> pos = filterPositions(positions);
 
     if (positions.size() == 0) {
       return null;
     }
 
-    return new PathInfo(_start, new Date(), new Path(positions),
+    return new PathInfo(_start, new Date(), pos,
         new ArrayList<>(_changes), new ArrayList<>(_noteSpecs));
   }
 
@@ -152,10 +152,7 @@ public class SimpleTrackingManager implements TrackingManager {
       return false;
     }
 
-    UUID imageId = checkNoteId(imageIdInput);
-    UUID soundId = checkNoteId(soundIdInput);
-
-    _noteSpecs.add(new NoteSpec(lastPosition.latLng, imageId, caption, soundId));
+    _noteSpecs.add(new NoteSpec(lastPosition.latLng, imageIdInput, caption, soundIdInput));
 
     return true;
   }
@@ -164,22 +161,13 @@ public class SimpleTrackingManager implements TrackingManager {
 
   //region Methods
 
-  @NonNull
-  protected UUID checkNoteId(@Nullable UUID id) {
-    if (id == null) {
-      return NoteSpec.EMPTY_UUID;
-    }
-
-    return id;
-  }
-
-  protected List<Position> filterPositions(List<Position> positions) {
-    List<Position> filtered = new ArrayList<>(positions.size());
+  protected List<LatLng> filterPositions(List<Position> positions) {
+    List<LatLng> filtered = new ArrayList<>(positions.size());
 
     LocationFilter filter = getFilter();
     for (Position position : positions) {
       if (filter.accept(position)) {
-        filtered.add(position);
+        filtered.add(position.latLng);
       }
     }
 

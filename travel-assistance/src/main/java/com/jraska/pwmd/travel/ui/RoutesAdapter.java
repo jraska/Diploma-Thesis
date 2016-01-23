@@ -12,7 +12,7 @@ import butterknife.OnClick;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
-import com.jraska.pwmd.travel.data.RouteDescription;
+import com.jraska.pwmd.travel.data.RouteData;
 
 import javax.inject.Inject;
 import java.text.DateFormat;
@@ -23,7 +23,7 @@ import java.util.List;
 public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewHolder> {
   //region Fields
 
-  private final List<RouteDescription> _routes = new ArrayList<>();
+  private final List<RouteData> _routes = new ArrayList<>();
   private final DateFormat _endFormat = TravelAssistanceApp.USER_DETAILED_TIME_FORMAT;
 
   private OnItemClickListener _itemClickListener;
@@ -68,7 +68,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
 
   @Override
   public void onBindViewHolder(RouteViewHolder holder, int position) {
-    RouteDescription rout = _routes.get(position);
+    RouteData rout = _routes.get(position);
 
     holder._routeTitle.setText(rout.getTitle());
     holder._routeDate.setText(_endFormat.format(rout.getEnd()));
@@ -94,26 +94,35 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     }
   }
 
-  protected void onRouteDelete(int position, View v) {
+  protected void onRouteDeleteClick(int position, View v) {
     if (_itemDeleteListener != null) {
       _itemDeleteListener.onItemDelete(position, v);
     }
   }
 
-  public RouteDescription getItem(int position) {
+  public RouteData getItem(int position) {
     return _routes.get(position);
   }
 
-  public void add(RouteDescription route) {
+  public void add(RouteData route) {
     _routes.add(route);
   }
 
-  public void addAll(Collection<? extends RouteDescription> collection) {
+  public void addAll(Collection<? extends RouteData> collection) {
     _routes.addAll(collection);
   }
 
   public void clear() {
     _routes.clear();
+  }
+
+  public void remove(RouteData deletedRoute) {
+    for (RouteData route : _routes) {
+      if (route.getId() == deletedRoute.getId()) {
+        _routes.remove(deletedRoute);
+        return;
+      }
+    }
   }
 
   //endregion
@@ -141,7 +150,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     }
 
     @OnClick(R.id.route_delete) void deleteRoute(View v) {
-      _routesAdapter.onRouteDelete(_position, v);
+      _routesAdapter.onRouteDeleteClick(_position, v);
     }
   }
 

@@ -3,6 +3,7 @@ package com.jraska.pwmd.travel.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import butterknife.Bind;
 import com.google.android.gms.maps.*;
@@ -33,7 +34,7 @@ public class NavigationActivity extends BaseActivity implements OnMapReadyCallba
   @Inject Navigator _navigator;
   @Inject EventBus _systemBus;
   @Inject TrackingManager _trackingManager;
-  @Inject Position _lastPosition;
+  @Inject @Nullable Position _lastPosition;
 
   private GoogleMap _map;
   private int _markerCounter;
@@ -148,7 +149,7 @@ public class NavigationActivity extends BaseActivity implements OnMapReadyCallba
     _arrowView.setRotation(-degrees);
   }
 
-  public static void startNavigationActivity(Activity fromActivity, UUID routeId) {
+  public static void startNavigationActivity(Activity fromActivity, long routeId) {
     Intent startNavigationIntent = new Intent(fromActivity, NavigationActivity.class);
     startNavigationIntent.putExtra(RouteDetailActivity.ROUTE_ID, routeId);
 

@@ -21,15 +21,10 @@ public class DataModule {
 
   //region Provide Methods
 
-  @Provides @PerApp SQLiteOpenHelper provideOpenHelper(Context context) {
-    File dbFile = context.getDatabasePath(TravelAssistanceApp.DB_NAME);
-    return new TravelAssistanceDbHelper(context, dbFile.getAbsolutePath());
-  }
 
   @Provides @PerApp
-  public TravelDataRepository providePersistenceService(SQLiteOpenHelper openHelper,
-                                                        @Named(DATA_BUS_NAME) EventBus dataBus) {
-    return new TableRouteDataRepository(openHelper, dataBus);
+  public TravelDataRepository providePersistenceService(@Named(DATA_BUS_NAME) EventBus dataBus) {
+    return new DBFlowDataRepository(dataBus);
   }
 
   @Provides @PerApp @Named(DATA_BUS_NAME) EventBus provideDataBus() {

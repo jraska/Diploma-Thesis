@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import static com.jraska.pwmd.travel.navigation.DirectionDecisionStrategy.UNKNOWN_DIRECTION;
 
+@PerApp
 public class Navigator {
   //region Fields
 
@@ -24,7 +25,7 @@ public class Navigator {
 
   //region Constructors
 
-  @Inject @PerApp
+  @Inject
   public Navigator(EventBus eventBus, @NonNull Compass compass,
                    @NonNull DirectionDecisionStrategy routeDirectionStrategy) {
     ArgumentCheck.notNull(eventBus);

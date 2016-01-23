@@ -4,6 +4,7 @@ import android.content.Context;
 import com.jraska.core.BaseApp;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import timber.log.Timber;
 
 import java.text.DateFormat;
@@ -30,6 +31,7 @@ public class TravelAssistanceApp extends BaseApp {
     super.onCreate();
 
     Timber.plant(new Timber.DebugTree());
+    FlowManager.init(this);
 
     _component = DaggerTravelAssistanceComponent.builder()
         .travelAssistanceModule(new TravelAssistanceModule(this)).build();

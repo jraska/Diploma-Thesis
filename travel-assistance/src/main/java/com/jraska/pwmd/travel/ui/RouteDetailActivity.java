@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
@@ -24,7 +23,6 @@ import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.jraska.pwmd.travel.navigation.Navigator.toGoogleLatLng;
 import static com.jraska.pwmd.travel.ui.MapHelper.ZOOM;
@@ -45,7 +43,7 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
   @Inject PicturesManager _picturesManager;
   @Inject SoundsManager _soundsManager;
 
-  private UUID _routeId;
+  private long _routeId;
 
   private Map<Marker, NoteSpec> _noteSpecMap = new HashMap<>();
 
@@ -64,7 +62,7 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
 
     mapFragment.getMapAsync(this);
 
-    _routeId = (UUID) getIntent().getSerializableExtra(ROUTE_ID);
+    _routeId = getIntent().getLongExtra(ROUTE_ID, 0);
   }
 
   @Override
@@ -111,8 +109,8 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
   public boolean onMarkerClick(Marker marker) {
     NoteSpec noteSpec = _noteSpecMap.get(marker);
     if (noteSpec != null) {
-      if (!NoteSpec.EMPTY_UUID.equals(noteSpec.soundId)) {
-        _soundsManager.play(noteSpec.soundId);
+      if (noteSpec.getSoundId() != null) {
+        _soundsManager.play(noteSpec.getSoundId());
         return false;
       }
     }
@@ -125,7 +123,7 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
   //region Methods
 
   protected RouteData loadRoute() {
-    UUID routeId = (UUID) getIntent().getSerializableExtra(ROUTE_ID);
+    long routeId = getIntent().getLongExtra(ROUTE_ID, 0);
     RouteData routeData = _travelDataRepository.selectRouteData(routeId);
     return routeData;
   }
@@ -134,20 +132,20 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
     PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH)
         .color(Color.BLUE).visible(true);
 
-    List<Position> points = routeData.getPath().getPoints();
+    List<com.jraska.pwmd.core.gps.LatLng> points = routeData.getPath();
 
     if (points.size() == 0) {
       throw new IllegalStateException("No points to display");
     }
 
-    for (Position position : points) {
-      polylineOptions.add(toGoogleLatLng(position.latLng));
+    for (com.jraska.pwmd.core.gps.LatLng position : points) {
+      polylineOptions.add(toGoogleLatLng(position));
     }
 
     GoogleMap map = _mapView;
     map.addPolyline(polylineOptions);
 
-    LatLng latLng = toGoogleLatLng(points.get(0).latLng);
+    LatLng latLng = toGoogleLatLng(points.get(0));
     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, ZOOM);
     map.animateCamera(cameraUpdate);
 
@@ -162,10 +160,10 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
     for (TransportChangeSpec spec : routeData.getTransportChangeSpecs()) {
       BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(spec.getLightIconRes());
 
-      LatLng markerLocation = toGoogleLatLng(spec.latLng);
+      LatLng markerLocation = toGoogleLatLng(spec.getLatLng());
 
       MarkerOptions routeChangeMarker = new MarkerOptions().position(markerLocation)
-          .title(spec.title)
+          .title(spec.getTitle())
           .icon(icon);
 
       _mapView.addMarker(routeChangeMarker);
@@ -174,13 +172,13 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
 
   protected void displayNotes(RouteData routeData) {
     for (NoteSpec spec : routeData.getNoteSpecs()) {
-      LatLng markerLocation = toGoogleLatLng(spec.latLng);
+      LatLng markerLocation = toGoogleLatLng(spec.getLatLng());
 
       MarkerOptions routeChangeMarker = new MarkerOptions().position(markerLocation)
-          .title(spec.caption);
+          .title(spec.getCaption());
 
-      if (!NoteSpec.EMPTY_UUID.equals(spec.imageId)) {
-        Uri pictureUri = _picturesManager.createPictureUri(spec.imageId);
+      if (spec.getImageId() != null) {
+        Uri pictureUri = _picturesManager.createPictureUri(spec.getImageId());
         Bitmap bitmap = ImageLoader.getInstance().loadImageSync(pictureUri.toString(), new ImageSize(32, 32));
         routeChangeMarker.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
       }

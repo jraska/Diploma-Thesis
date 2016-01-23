@@ -5,8 +5,13 @@ import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.travel.R;
+import com.raizlabs.android.dbflow.annotation.Column;
+import com.raizlabs.android.dbflow.annotation.PrimaryKey;
+import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class TransportChangeSpec {
+@Table(database = TravelDatabase.class)
+public class TransportChangeSpec extends BaseModel {
   //region Constants
 
   public static final int TRANSPORT_TYPE_WALK = 0;
@@ -17,13 +22,18 @@ public class TransportChangeSpec {
 
   //region Fields
 
-  @NonNull public final LatLng latLng;
-  public final int transportType;
-  @NonNull public final String title;
+  @PrimaryKey(autoincrement = true) long _id;
+  @Column long _routeId;
+  @Column LatLng latLng;
+  @Column int transportType;
+  @Column String title;
 
   //endregion
 
   //region Constructors
+
+  TransportChangeSpec() {
+  }
 
   public TransportChangeSpec(@NonNull LatLng latLng, int transportType,
                              @NonNull String title) {
@@ -34,6 +44,23 @@ public class TransportChangeSpec {
     this.transportType = transportType;
     this.title = title;
   }
+
+  //endregion
+
+  //region Properties
+
+  public LatLng getLatLng() {
+    return latLng;
+  }
+
+  public int getTransportType() {
+    return transportType;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
 
   //endregion
 

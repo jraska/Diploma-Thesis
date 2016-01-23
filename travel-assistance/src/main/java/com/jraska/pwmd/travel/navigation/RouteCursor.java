@@ -4,7 +4,7 @@ import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.RouteData;
 
 /**
- * Class which hould determine teh closest point of the rout from current position
+ * Class which hould determine teh closest point of the rout from current latLng
  * and which point is supposed to be next.
  */
 public class RouteCursor {

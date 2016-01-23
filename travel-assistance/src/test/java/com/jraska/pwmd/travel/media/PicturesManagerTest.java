@@ -2,6 +2,7 @@ package com.jraska.pwmd.travel.media;
 
 import android.net.Uri;
 import com.jraska.BaseTest;
+import de.greenrobot.event.EventBus;
 import org.junit.Test;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public class PicturesManagerTest extends BaseTest {
   public void testGetIdForUri() throws Exception {
     UUID testId = UUID.randomUUID();
 
-    PicturesManager picturesManager = new PicturesManager(new File("."));
+    PicturesManager picturesManager = new PicturesManager(new File("."), new EventBus());
     Uri pictureUri = picturesManager.createPictureUri(testId);
 
     UUID idForUri = picturesManager.getIdForUri(pictureUri);

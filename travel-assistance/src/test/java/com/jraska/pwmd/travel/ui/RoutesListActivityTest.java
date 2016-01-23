@@ -1,6 +1,7 @@
 package com.jraska.pwmd.travel.ui;
 
 import com.jraska.ActivityBaseTest;
+import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import org.junit.Test;
@@ -15,8 +16,8 @@ public class RoutesListActivityTest extends ActivityBaseTest<RoutesListActivity>
     RoutesListActivity activity = Robolectric.setupActivity(RoutesListActivity.class);
 
     activity._routesRecycler.layout(1,1,1,1);
-    RouteDescription routeDescription = mock(RouteDescription.class);
-    activity._dataEventBus.post(new TravelDataRepository.NewRouteEvent(routeDescription));
+    RouteData routeData = mock(RouteData.class);
+    activity._dataEventBus.post(new TravelDataRepository.NewRouteEvent(routeData));
 
     assertThat(activity._routesRecycler).hasLayoutRequested();
   }

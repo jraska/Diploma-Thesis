@@ -4,12 +4,18 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
+import com.jraska.pwmd.travel.data.NoteSpec;
+import com.jraska.pwmd.travel.persistence.DataModule;
+import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import de.greenrobot.event.EventBus;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
 import java.util.UUID;
 
+@PerApp
 public class PicturesManager {
   //region Constants
 
@@ -21,16 +27,22 @@ public class PicturesManager {
   //region Fields
 
   private final File _imagesDir;
+  private final EventBus _dataBus;
 
   //endregion
 
   //region Constructors
 
-  @Inject @PerApp
-  public PicturesManager(@Named(PICTURES_DIR) @NonNull File imagesDir) {
+  @Inject
+  public PicturesManager(@Named(PICTURES_DIR) @NonNull File imagesDir,
+                         @Named(DataModule.DATA_BUS_NAME) EventBus dataBus) {
     ArgumentCheck.notNull(imagesDir);
+    ArgumentCheck.notNull(dataBus);
 
     _imagesDir = imagesDir;
+    _dataBus = dataBus;
+
+    _dataBus.register(this);
   }
 
   //endregion
@@ -41,6 +53,16 @@ public class PicturesManager {
     return _imagesDir;
   }
 
+  //endregion
+
+  //region Events handling
+
+  public void onEvent(TravelDataRepository.NoteSpecDeletedEvent deletedEvent) {
+    NoteSpec spec = deletedEvent._noteSpec;
+    if (spec.getImageId() != null) {
+      deleteImage(spec.getImageId());
+    }
+  }
   //endregion
 
   //region Methods
@@ -71,6 +93,15 @@ public class PicturesManager {
     String uuidValue = uriValue.substring(lastIndexOfPath + 1, lastIndex);
 
     return UUID.fromString(uuidValue);
+  }
+
+  private void deleteImage(UUID imageId) {
+    File imageFile = getImageFile(imageId);
+    if (imageFile.exists() && imageFile.delete()) {
+      Timber.i("Image " + imageId + " successfully deleted");
+    } else {
+      Timber.w("Image " + imageId + " was not deleted ");
+    }
   }
 
   //endregion

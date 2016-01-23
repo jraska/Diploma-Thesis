@@ -2,7 +2,7 @@ package com.jraska.pwmd.travel.tracking;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.jraska.pwmd.travel.data.Path;
+import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 
@@ -36,11 +36,11 @@ public interface TrackingManager {
   class PathInfo {
     private final Date _start;
     private final Date _end;
-    private final Path _path;
+    private final List<LatLng> _path;
     private final List<TransportChangeSpec> _transportChangeSpecs;
     private final List<NoteSpec> _noteSpecs;
 
-    public PathInfo(Date start, Date end, Path path, List<TransportChangeSpec> specs, List<NoteSpec> noteSpecs) {
+    public PathInfo(Date start, Date end, List<LatLng> path, List<TransportChangeSpec> specs, List<NoteSpec> noteSpecs) {
       _start = start;
       _end = end;
       _path = path;
@@ -56,7 +56,7 @@ public interface TrackingManager {
       return _end;
     }
 
-    public Path getPath() {
+    public List<LatLng> getPath() {
       return _path;
     }
 

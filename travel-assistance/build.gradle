@@ -49,6 +49,8 @@ android {
 
 apply plugin: 'com.neenbedankt.android-apt'
 
+def dbflow_version = "3.0.0-beta2"
+
 dependencies {
   compile project(':core')
 
@@ -62,6 +64,10 @@ dependencies {
   compile 'com.jraska:console:0.2.0'
 
   apt 'com.google.dagger:dagger-compiler:2.0.2'
+
+  apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+  compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+  compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
 
   testCompile 'junit:junit:4.12'
   testCompile 'org.robolectric:robolectric:3.0'
