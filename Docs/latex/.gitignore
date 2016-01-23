@@ -1,0 +1,10 @@
+*.lol
+*.log
+*.aux
+*.lof
+*.lot
+*.out
+*.pdf
+*.synctex.gz
+*.toc
+*.xmpi
