@@ -42,4 +42,6 @@
     <string name="voice_record_title_hint">Titulek</string>
     <string name="navigation_arrow">Navigační šipka</string>
     <string name="record_route">Nahrát cestu</string>
+    <string name="route_title">Název cesty</string>
+    <string name="route_default_title">Cesta v %s</string>
 </resources>

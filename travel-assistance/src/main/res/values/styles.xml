@@ -32,6 +32,11 @@
         <item name="android:textSize">@dimen/textSecondary</item>
     </style>
 
+    <style name="TextInputMain" parent="TextMain">
+        <item name="android:textColorHint">@color/textSecondary</item>
+        <item name="android:textColorHighlight">@color/colorPrimary</item>
+    </style>
+
     <style name="IconButton">
         <item name="android:padding">@dimen/padding_large</item>
     </style>

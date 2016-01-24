@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ import com.jraska.pwmd.travel.transport.SimpleTransportManager;
 import timber.log.Timber;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.UUID;
 
 public class RouteRecordActivity extends BaseActivity {
@@ -53,6 +55,7 @@ public class RouteRecordActivity extends BaseActivity {
   @Bind(R.id.record_btnTakePhoto) View _takePhotoButton;
   @Bind(R.id.record_btnAddTextNote) View _addNoteButton;
   @Bind(R.id.record_btnAddVoice) View _addSoundButton;
+  @Bind(R.id.record_route_title_input) EditText _titleInput;
 
   @Inject SimpleTransportManager _transportManager;
   @Inject TrackingManager _trackingManager;
@@ -125,7 +128,7 @@ public class RouteRecordActivity extends BaseActivity {
     }
 
     RouteData routeData = new RouteData(new RouteDescription(
-        lastPath.getStart(), lastPath.getEnd(), "Test"), lastPath.getPath(),
+        lastPath.getStart(), lastPath.getEnd(), getInputTitle()), lastPath.getPath(),
         lastPath.getTransportChangeSpecs(), lastPath.getNoteSpecs());
 
     _travelDataRepository.insertRoute(routeData);
@@ -142,6 +145,20 @@ public class RouteRecordActivity extends BaseActivity {
     dialog.setTitle(R.string.transport_change_select);
     TransportDialogHolder transportDialogHolder = new TransportDialogHolder(dialog, dialogView);
     transportDialogHolder.show();
+  }
+
+  protected String getInputTitle() {
+    String titleText = _titleInput.getText().toString();
+
+    if (TextUtils.isEmpty(titleText)) {
+      return getString(R.string.route_default_title, getCurrentTimeText());
+    }
+
+    return titleText;
+  }
+
+  protected String getCurrentTimeText() {
+    return TravelAssistanceApp.USER_TIME_FORMAT.format(new Date());
   }
 
   protected boolean addTransportationChange(int type, @NonNull String title) {

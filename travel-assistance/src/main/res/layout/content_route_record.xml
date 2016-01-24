@@ -13,6 +13,18 @@
     tools:showIn="@layout/activity_route_record"
     tools:context="com.jraska.pwmd.travel.ui.RouteRecordActivity">
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/record_route_title_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/route_title"
+            style="@style/TextInputMain" />
+    </android.support.design.widget.TextInputLayout>
+
     <LinearLayout
         android:id="@+id/record_tracking_controls_container"
         android:layout_width="match_parent"
@@ -33,7 +45,7 @@
                 android:src="@drawable/ic_smart_record_black_24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/record_route"
-                style="@style/IconButton"/>
+                style="@style/IconButton" />
 
             <ImageButton
                 android:id="@+id/record_btnStopTracking"
@@ -42,7 +54,8 @@
                 android:src="@drawable/ic_stop_black_24dp"
                 android:layout_gravity="center"
                 tools:visibility="gone"
-                style="@style/IconButton"/>
+                android:contentDescription="@string/stopTracking"
+                style="@style/IconButton" />
         </FrameLayout>
 
         <FrameLayout
@@ -57,8 +70,7 @@
                 android:src="@drawable/ic_save_black_24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/saveRoute"
-                style="@style/IconButton"
-                />
+                style="@style/IconButton" />
         </FrameLayout>
 
         <FrameLayout
@@ -73,7 +85,7 @@
                 android:src="@drawable/ic_directions_walk_black_24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/transport_change_select"
-                style="@style/IconButton"/>
+                style="@style/IconButton" />
         </FrameLayout>
 
     </LinearLayout>
@@ -98,7 +110,7 @@
                 android:src="@drawable/ic_add_a_photo_black_24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/record_save_photo"
-                style="@style/IconButton"/>
+                style="@style/IconButton" />
         </FrameLayout>
 
         <FrameLayout
@@ -113,7 +125,7 @@
                 android:src="@drawable/ic_add_note_black_24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/record_save_note"
-                style="@style/IconButton"/>
+                style="@style/IconButton" />
         </FrameLayout>
 
         <FrameLayout
@@ -128,7 +140,7 @@
                 android:src="@drawable/ic_record_voice_over_black_24dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/record_save_note"
-                style="@style/IconButton"/>
+                style="@style/IconButton" />
         </FrameLayout>
 
     </LinearLayout>

@@ -42,4 +42,6 @@
     <string name="record_voice_saved">Recording saved</string>
     <string name="navigation_arrow">Navigation arrow</string>
     <string name="record_route">Record route</string>
+    <string name="route_title">Route title</string>
+    <string name="route_default_title">Route from %s</string>
 </resources>
