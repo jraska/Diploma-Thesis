@@ -116,7 +116,7 @@ public class RouteRecordActivity extends BaseActivity {
   //region Methods
 
   private void setFromUserInput(TrackingManager.UserInput lastUserInput) {
-    _titleInput.setText(lastUserInput.getTitle());
+    setInputTitle(lastUserInput.getTitle());
   }
 
   private TrackingManager.UserInput getUserInput() {
@@ -124,7 +124,12 @@ public class RouteRecordActivity extends BaseActivity {
   }
 
   protected void setInputTitle(String text) {
+    if (text == null) {
+      return;
+    }
+
     _titleInput.setText(text);
+    _titleInput.setSelection(text.length());
   }
 
   protected String getUserInputTitle() {
