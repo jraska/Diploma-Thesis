@@ -50,7 +50,7 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.routes, menu);
+    getMenuInflater().inflate(R.menu.menu_routes, menu);
 
     return true;
   }

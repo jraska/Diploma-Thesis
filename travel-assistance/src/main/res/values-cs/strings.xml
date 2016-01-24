@@ -48,4 +48,5 @@
     <string name="sound_record_title">Nahrávání hlasu</string>
     <string name="routes">Cesty</string>
     <string name="help_request">Pomoc</string>
+    <string name="more">Více</string>
 </resources>

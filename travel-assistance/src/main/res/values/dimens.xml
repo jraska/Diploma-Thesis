@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="list_item_height">72dp</dimen>
+    <dimen name="list_item_vertical_margin">12dp</dimen>
     <dimen name="side_padding">16dp</dimen>
     <dimen name="icon_size">48dp</dimen>
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_medium">8dp</dimen>
+
+    <dimen name="textTitle">20sp</dimen>
+    <dimen name="textSubtitle">16sp</dimen>
 
     <dimen name="textMain">16sp</dimen>
     <dimen name="textSecondary">14sp</dimen>

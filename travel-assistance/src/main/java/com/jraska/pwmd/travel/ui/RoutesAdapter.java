@@ -1,8 +1,12 @@
 package com.jraska.pwmd.travel.ui;
 
+import android.content.Context;
+import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -133,7 +137,8 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
 
   //region Nested classes
 
-  static class RouteViewHolder extends RecyclerView.ViewHolder {
+
+  static class RouteViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
     @Bind(R.id.route_title) TextView _routeTitle;
     @Bind(R.id.route_date) TextView _routeDate;
     @Bind(R.id.route_duration) TextView _routeDuration;
@@ -151,12 +156,34 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
       _routesAdapter.onItemClicked(getAdapterPosition(), itemView);
     }
 
-    @OnClick(R.id.route_delete) void deleteRoute(View v) {
+    @OnClick(R.id.route_item_more) void showMore(View v) {
+      // This is fix because of parsing error fail with some theme issues
+      Context wrapper = new ContextThemeWrapper(v.getContext(), R.style.PopupMenuCompat);
+      PopupMenu popup = new PopupMenu(wrapper, v);
+      popup.inflate(R.menu.menu_route_popup);
+
+      popup.setOnMenuItemClickListener(this);
+
+      popup.show();
+    }
+
+    protected void deleteRoute() {
       _routesAdapter.onRouteDeleteClick(getAdapterPosition(), itemView);
     }
 
-    @OnClick(R.id.route_navigate) void navigateRoute(View v) {
+    @OnClick(R.id.route_navigate) void navigateRoute() {
       _routesAdapter.onNavigateRouteClick(getAdapterPosition(), itemView);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+      switch (item.getItemId()) {
+        case R.id.route_item_menu_delete:
+          deleteRoute();
+          return true;
+        default:
+          return false;
+      }
     }
   }
 

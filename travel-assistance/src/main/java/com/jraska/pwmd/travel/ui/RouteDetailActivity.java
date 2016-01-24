@@ -67,7 +67,7 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.route_detail, menu);
+    getMenuInflater().inflate(R.menu.menu_route_detail, menu);
 
     return true;
   }

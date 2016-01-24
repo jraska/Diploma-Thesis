@@ -48,4 +48,5 @@
     <string name="help_request">Request help</string>
     <string name="sound_record_listening">Listening…</string>
     <string name="sound_record_title">Voice Recording</string>
+    <string name="more">More</string>
 </resources>

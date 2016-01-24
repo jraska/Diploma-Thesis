@@ -14,7 +14,7 @@ import java.util.Locale;
 public class TravelAssistanceApp extends BaseApp {
   //region Constants
 
-  public static final DateFormat USER_DETAILED_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss, MM.dd.yyyy", Locale.US);
+  public static final DateFormat USER_DETAILED_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss, dd.MM", Locale.US);
   public static final DateFormat USER_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.US);
 
   //endregion
