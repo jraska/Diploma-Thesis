@@ -3,7 +3,6 @@ package com.jraska.pwmd.travel.data;
 import com.jraska.common.ArgumentCheck;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class RouteDescription {
   //region Fields

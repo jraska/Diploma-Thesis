@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import com.jraska.common.ArgumentCheck;
 
-import javax.inject.Inject;
-
 public class EmailSender {
   //region Fields
 

@@ -1,15 +1,11 @@
 package com.jraska.pwmd.travel.persistence;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteOpenHelper;
 import com.jraska.dagger.PerApp;
-import com.jraska.pwmd.travel.TravelAssistanceApp;
 import dagger.Module;
 import dagger.Provides;
 import de.greenrobot.event.EventBus;
 
 import javax.inject.Named;
-import java.io.File;
 
 @Module
 public class DataModule {
