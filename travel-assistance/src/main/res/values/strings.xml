@@ -29,7 +29,7 @@
     <string name="transport_change_title">Change title</string>
     <string name="transport_change_description">Description</string>
     <string name="transport_change_select">Select transport type</string>
-    <string name="title_activity_route_record">Route Recording</string>
+    <string name="title_activity_route_record">Recording</string>
     <string name="title_activity_navigation">Navigation</string>
     <string name="cannot_get_pictures">Cannot get image</string>
     <string name="photo_preview">Photo preview</string>
@@ -44,4 +44,8 @@
     <string name="record_route">Record route</string>
     <string name="route_title">Route title</string>
     <string name="route_default_title">Route from %s</string>
+    <string name="routes">Routes</string>
+    <string name="help_request">Request help</string>
+    <string name="sound_record_listening">Listening…</string>
+    <string name="sound_record_title">Voice Recording</string>
 </resources>

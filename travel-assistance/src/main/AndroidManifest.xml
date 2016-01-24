@@ -27,6 +27,7 @@
 
         <activity
             android:name=".ui.RoutesListActivity"
+            android:label="@string/routes"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,12 +38,14 @@
         <activity
             android:name=".ui.RouteDetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
+            <!--Label is ise in code depending on data-->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jraska.pwmd.travel.ui.RoutesListActivity" />
         </activity>
         <activity
             android:name=".ui.HelpRequestSendActivity"
+            android:label="@string/help_request"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -51,7 +54,9 @@
 
         <service android:name=".tracking.TrackingService" />
 
-        <activity android:name=".ui.SettingsActivity" />
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/settings" />
         <activity
             android:name=".ui.RouteRecordActivity"
             android:label="@string/title_activity_route_record"
@@ -67,6 +72,7 @@
 
         <activity
             android:name=".ui.VoiceRecordActivity"
+            android:label="@string/sound_record_title"
             android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

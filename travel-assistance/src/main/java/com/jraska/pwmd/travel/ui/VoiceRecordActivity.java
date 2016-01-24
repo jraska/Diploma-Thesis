@@ -44,14 +44,21 @@ public class VoiceRecordActivity extends BaseActivity {
 
     TravelAssistanceApp.getComponent(this).inject(this);
 
-    _soundsManager.startRecording();
+    startRecording();
   }
 
   //endregion
 
   //region Methods
 
+  void startRecording() {
+    setTitle(R.string.sound_record_listening);
+    _soundsManager.startRecording();
+  }
+
   @OnClick(R.id.voice_record_stop_recording) void stopRecording() {
+    setTitle(R.string.sound_record_title);
+
     _saveRecordingButton.setVisibility(View.GONE);
     _saveRecordingButton.setVisibility(View.VISIBLE);
 

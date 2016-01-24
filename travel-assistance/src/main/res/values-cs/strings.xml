@@ -31,7 +31,7 @@
     <string name="transport_change_title">Název změny</string>
     <string name="cannot_get_pictures">Nelze získat obrázek</string>
     <string name="title_activity_navigation">Navigace</string>
-    <string name="title_activity_route_record">Nahrávání cesty</string>
+    <string name="title_activity_route_record">Nahrávání</string>
     <string name="photo_preview">Ukázka fotografie</string>
     <string name="caption">Popis obrázku</string>
     <string name="record_save_photo">Uložit fotku</string>
@@ -44,4 +44,8 @@
     <string name="record_route">Nahrát cestu</string>
     <string name="route_title">Název cesty</string>
     <string name="route_default_title">Cesta v %s</string>
+    <string name="sound_record_listening">Poslouchám</string>
+    <string name="sound_record_title">Nahrávání hlasu</string>
+    <string name="routes">Cesty</string>
+    <string name="help_request">Pomoc</string>
 </resources>

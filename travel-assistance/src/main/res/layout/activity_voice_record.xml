@@ -25,15 +25,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_stop_black_24dp"
-                android:padding="@dimen/padding_large" />
+                style="@style/IconButton" />
 
             <ImageButton
                 android:id="@+id/voice_record_save_recording"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_save_black_24dp"
-                android:padding="@dimen/padding_large"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                style="@style/IconButton"/>
         </FrameLayout>
 
         <EditText
