@@ -22,7 +22,9 @@ import com.jraska.pwmd.travel.util.SplineCounter;
 import com.jraska.pwmd.travel.util.Stopwatch;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -230,29 +232,50 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
       MarkerOptions routeChangeMarker = new MarkerOptions().position(markerLocation)
           .title(spec.getCaption());
 
-      if (spec.getImageId() != null) {
-        Uri pictureUri = _picturesManager.createPictureUri(spec.getImageId());
-        Bitmap bitmap = loadImage(pictureUri);
-        routeChangeMarker.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
-      }
 
       Marker marker = _mapView.addMarker(routeChangeMarker);
       _noteSpecMap.put(marker, spec);
+
+      loadImage(spec, marker);
     }
 
     stopwatch.stop();
     Timber.d("Displaying images took " + stopwatch.getElapsedMs() + "ms");
   }
 
-  private Bitmap loadImage(Uri pictureUri) {
-    Bitmap loadedImage = ImageLoader.getInstance().loadImageSync(pictureUri.toString(),
-        _photoIconSize, _imageOptions);
-    return loadedImage;
+  private void loadImage(NoteSpec spec, Marker marker) {
+    if (spec.getImageId() != null) {
+      Uri pictureUri = _picturesManager.createPictureUri(spec.getImageId());
+      ImageLoader.getInstance().loadImage(pictureUri.toString(),
+          _photoIconSize, _imageOptions, new ImageLoadListener(marker));
+    }
   }
 
   //endregion
 
   //region Nested classes
+
+  static class ImageLoadListener implements ImageLoadingListener {
+    private final Marker _marker;
+
+    public ImageLoadListener(Marker marker) {
+      _marker = marker;
+    }
+
+    @Override public void onLoadingStarted(String imageUri, View view) {
+    }
+
+    @Override public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+      Timber.e(failReason.getCause(), "Loading for image " + imageUri + " failed.");
+    }
+
+    @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+      _marker.setIcon(BitmapDescriptorFactory.fromBitmap(loadedImage));
+    }
+
+    @Override public void onLoadingCancelled(String imageUri, View view) {
+    }
+  }
 
   interface EventListener {
     boolean onNoteSpecClicked(NoteSpec noteSpec);
