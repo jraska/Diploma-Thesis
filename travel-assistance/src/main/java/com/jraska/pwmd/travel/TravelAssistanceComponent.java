@@ -40,4 +40,6 @@ public interface TravelAssistanceComponent {
   void inject(NavigationActivity navigationActivity);
 
   void inject(VoiceRecordActivity voiceRecordActivity);
+
+  void inject(RouteDisplayFragment routeDisplayFragment);
 }
