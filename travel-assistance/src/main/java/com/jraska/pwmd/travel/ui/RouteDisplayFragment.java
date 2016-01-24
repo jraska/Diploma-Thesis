@@ -210,7 +210,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
 
   protected void displayRouteChanges(RouteData routeData) {
     for (TransportChangeSpec spec : routeData.getTransportChangeSpecs()) {
-      BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(spec.getLightIconRes());
+      BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(spec.getHardIconRes());
 
       LatLng markerLocation = toGoogleLatLng(spec.getLatLng());
 

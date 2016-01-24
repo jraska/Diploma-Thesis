@@ -66,19 +66,24 @@ public class TransportChangeSpec extends BaseModel {
 
   //region Methods
 
-  public int getLightIconRes() {
-    return getLightIconRes(transportType);
+  /**
+   * Gets icon displayable as static icon over maps as markers
+   *
+   * @return res of icon.
+   */
+  public int getHardIconRes() {
+    return getHardIconRes(transportType);
   }
 
   @DrawableRes
-  public static int getLightIconRes(int transportType) {
+  public static int getHardIconRes(int transportType) {
     switch (transportType) {
       case TRANSPORT_TYPE_WALK:
-        return R.drawable.ic_directions_walk_white;
+        return R.drawable.ic_directions_walk_black;
       case TRANSPORT_TYPE_BUS:
-        return R.drawable.ic_directions_bus_white;
+        return R.drawable.ic_directions_bus_black;
       case TRANSPORT_TYPE_TRAIN:
-        return R.drawable.ic_directions_railway_white;
+        return R.drawable.ic_directions_railway_black;
 
       default:
         throw new IllegalStateException("unknown transport type");
