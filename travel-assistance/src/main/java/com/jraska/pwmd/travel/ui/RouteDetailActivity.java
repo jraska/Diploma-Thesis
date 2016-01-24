@@ -16,8 +16,13 @@ import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.jraska.pwmd.travel.media.PicturesManager;
 import com.jraska.pwmd.travel.media.SoundsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import com.jraska.pwmd.travel.util.CircleImageProcessor;
+import com.jraska.pwmd.travel.util.SplineCounter;
+import com.jraska.pwmd.travel.util.Stopwatch;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -31,7 +36,7 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
   //region Constants
 
   public static final String ROUTE_ID = "RouteId";
-  protected static final int ROUTE_WIDTH = 5;
+  protected static final int ROUTE_WIDTH = 7;
 
   //endregion
 
@@ -42,10 +47,24 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
   @Inject TravelDataRepository _travelDataRepository;
   @Inject PicturesManager _picturesManager;
   @Inject SoundsManager _soundsManager;
+  @Inject SplineCounter _splineCounter;
 
   private long _routeId;
 
   private Map<Marker, NoteSpec> _noteSpecMap = new HashMap<>();
+  private DisplayImageOptions _imageOptions = new DisplayImageOptions.Builder()
+      .preProcessor(new CircleImageProcessor(getImageSize())).build();
+
+  private ImageSize _photoIconSize = new ImageSize(getImageSize(), getImageSize());
+
+  //endregion
+
+  //region Properties
+
+  public int getImageSize() {
+    // TODO: 24/01/16 Determine with screen dimension
+    return 128;
+  }
 
   //endregion
 
@@ -129,27 +148,40 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
   }
 
   protected void displayOnMap(RouteData routeData) {
-    PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH)
-        .color(Color.BLUE).visible(true);
-
     List<com.jraska.pwmd.core.gps.LatLng> points = routeData.getPath();
 
     if (points.size() == 0) {
       throw new IllegalStateException("No points to display");
     }
 
-    for (com.jraska.pwmd.core.gps.LatLng position : points) {
-      polylineOptions.add(toGoogleLatLng(position));
-    }
 
     GoogleMap map = _mapView;
-    map.addPolyline(polylineOptions);
 
-    LatLng latLng = toGoogleLatLng(points.get(0));
-    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, ZOOM);
-    map.animateCamera(cameraUpdate);
+    Stopwatch stopwatch = Stopwatch.started();
+    PolylineOptions spLineOptions = getSPLineOptions(points);
+    stopwatch.stop();
+    Timber.d("Making spline for " + points.size() + " points took " + stopwatch.getElapsedMs() + " ms");
+
+    map.addPolyline(spLineOptions);
+
+    LatLng start = toGoogleLatLng(points.get(0));
+
+    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(start, ZOOM);
+    map.moveCamera(cameraUpdate);
 
     map.setOnMarkerClickListener(this);
+  }
+
+  private PolylineOptions getSPLineOptions(List<com.jraska.pwmd.core.gps.LatLng> points) {
+    PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH)
+        .color(Color.BLUE).visible(true);
+
+    LatLng[] spLinePoints = _splineCounter.calculateSpline(points);
+
+    for (LatLng position : spLinePoints) {
+      polylineOptions.add(position);
+    }
+    return polylineOptions;
   }
 
   protected void startNavigation() {
@@ -171,7 +203,10 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
   }
 
   protected void displayNotes(RouteData routeData) {
-    for (NoteSpec spec : routeData.getNoteSpecs()) {
+    List<NoteSpec> noteSpecs = routeData.getNoteSpecs();
+
+    Stopwatch stopwatch = Stopwatch.started();
+    for (NoteSpec spec : noteSpecs) {
       LatLng markerLocation = toGoogleLatLng(spec.getLatLng());
 
       MarkerOptions routeChangeMarker = new MarkerOptions().position(markerLocation)
@@ -179,14 +214,24 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
 
       if (spec.getImageId() != null) {
         Uri pictureUri = _picturesManager.createPictureUri(spec.getImageId());
-        Bitmap bitmap = ImageLoader.getInstance().loadImageSync(pictureUri.toString(), new ImageSize(32, 32));
+        Bitmap bitmap = loadImage(pictureUri);
         routeChangeMarker.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
       }
 
       Marker marker = _mapView.addMarker(routeChangeMarker);
       _noteSpecMap.put(marker, spec);
     }
+
+    stopwatch.stop();
+    Timber.d("Displaying images took " + stopwatch.getElapsedMs() + "ms");
+  }
+
+  private Bitmap loadImage(Uri pictureUri) {
+    Bitmap loadedImage = ImageLoader.getInstance().loadImageSync(pictureUri.toString(),
+        _photoIconSize, _imageOptions);
+    return loadedImage;
   }
 
   //endregion
 }
+
