@@ -16,7 +16,7 @@ public class RoutesListActivityTest extends ActivityBaseTest<RoutesListActivity>
 
     activity._routesRecycler.layout(1, 1, 1, 1);
     RouteData routeData = mock(RouteData.class);
-    activity._dataEventBus.post(new TravelDataRepository.NewRouteEvent(routeData));
+    activity._eventBus.post(new TravelDataRepository.NewRouteEvent(routeData));
 
     assertThat(activity._routesRecycler).hasLayoutRequested();
   }

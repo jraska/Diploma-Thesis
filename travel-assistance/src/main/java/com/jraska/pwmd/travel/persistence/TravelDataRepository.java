@@ -10,15 +10,13 @@ import java.util.List;
 public interface TravelDataRepository {
   //region Methods
 
-  List<RouteData> selectAllRouteDescriptions();
+  List<RouteData> selectAll();
 
-  RouteData selectRouteData(long id);
+  RouteData select(long id);
 
-  long deleteRoute(RouteData routeData);
+  long delete(RouteData routeData);
 
-  long updateRoute(RouteData routeData);
-
-  long insertRoute(RouteData routeData);
+  long insertOrUpdate(RouteData routeData);
 
   //endregion
 

@@ -13,11 +13,8 @@ import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.ui.RoutesListActivity;
-import de.greenrobot.event.EventBus;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Service for system location tracking
@@ -31,25 +28,16 @@ public class TrackingService extends Service {
 
   //region Fields
 
-  private final List<Position> _positions = new ArrayList<>();
   private boolean _running;
 
-  private final Object _lock = new Object();
-
   @Inject LocationService _locationService;
-  @Inject EventBus _systemBus;
 
   //endregion
 
   //region Properties
 
-
   public boolean isRunning() {
     return _running;
-  }
-
-  public List<Position> getPositions() {
-    return new ArrayList<>(_positions);
   }
 
   //endregion
@@ -69,8 +57,6 @@ public class TrackingService extends Service {
     startForeground(ID, notification);
 
     stopTracking();
-
-    _systemBus.register(this);
 
     startTrackingNewPosition();
   }
@@ -92,8 +78,6 @@ public class TrackingService extends Service {
 
   @Override
   public void onDestroy() {
-    _systemBus.unregister(this);
-
     stopTracking();
 
     _running = false;
@@ -104,10 +88,6 @@ public class TrackingService extends Service {
   //endregion
 
   //region Methods
-
-  public void onEvent(Position position) {
-    _positions.add(position);
-  }
 
   protected Notification prepareForegroundNotification() {
     NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
@@ -135,10 +115,6 @@ public class TrackingService extends Service {
   }
 
   protected void startTrackingNewPosition() {
-    synchronized (_lock) {
-      _positions.clear();
-    }
-
     LocationService locationService = _locationService;
 
     locationService.startTracking(new LocationSettings(5, 5));

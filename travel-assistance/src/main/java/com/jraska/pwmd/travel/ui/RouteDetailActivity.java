@@ -124,7 +124,7 @@ public class RouteDetailActivity extends BaseActivity implements OnMapReadyCallb
 
   protected RouteData loadRoute() {
     long routeId = getIntent().getLongExtra(ROUTE_ID, 0);
-    RouteData routeData = _travelDataRepository.selectRouteData(routeId);
+    RouteData routeData = _travelDataRepository.select(routeId);
     return routeData;
   }
 

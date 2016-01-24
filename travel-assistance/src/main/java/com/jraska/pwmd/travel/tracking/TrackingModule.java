@@ -14,8 +14,7 @@ import javax.inject.Named;
 public class TrackingModule {
   @Provides @PerApp
   TrackingManager provideTrackingManager(Context context, LocationService locationService,
-                                         LocationFilter locationFilter,
-                                         @Named(DataModule.DATA_BUS_NAME) EventBus dataBus) {
-    return new SimpleTrackingManager(context, locationService, locationFilter, dataBus);
+                                         LocationFilter locationFilter, EventBus systemBus) {
+    return new SimpleTrackingManager(context, locationService, locationFilter, systemBus);
   }
 }

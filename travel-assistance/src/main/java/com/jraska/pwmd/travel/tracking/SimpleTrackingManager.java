@@ -13,6 +13,8 @@ import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.NoteSpec;
+import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.data.RouteDescription;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import de.greenrobot.event.EventBus;
@@ -27,30 +29,38 @@ public class SimpleTrackingManager implements TrackingManager {
   private final LocationFilter _filter;
 
   private boolean _running;
+
+  @Nullable
   private TrackingService.TrackingServiceBinder _serviceBinder;
   private Date _start;
 
   private final TrackingServiceConnection _connection = new TrackingServiceConnection();
-  private final List<TransportChangeSpec> _changes = new ArrayList<>();
-  private final List<NoteSpec> _noteSpecs = new ArrayList<>();
+  private final List<TransportChangeSpec> _pendingChanges = new ArrayList<>();
+  private final List<NoteSpec> _pendingNoteSpecs = new ArrayList<>();
+  private final List<Position> _pendingPositions = new ArrayList<>();
   private final LocationService _locationService;
   private final EventBus _dataBus;
+
+  private RouteData _routeData;
+  private UserInput _lastUserInput;
 
   //endregion
 
   //region Constructors
 
   public SimpleTrackingManager(Context context, LocationService locationService,
-                               LocationFilter filter, EventBus dataBus) {
+                               LocationFilter filter, EventBus eventBus) {
     ArgumentCheck.notNull(context);
     ArgumentCheck.notNull(locationService);
     ArgumentCheck.notNull(filter);
-    ArgumentCheck.notNull(dataBus);
+    ArgumentCheck.notNull(eventBus);
 
     _context = context;
     _filter = filter;
     _locationService = locationService;
-    _dataBus = dataBus;
+    _dataBus = eventBus;
+
+    eventBus.register(this);
   }
 
   //endregion
@@ -65,17 +75,22 @@ public class SimpleTrackingManager implements TrackingManager {
     return _filter;
   }
 
-  protected List<TransportChangeSpec> getChanges() {
-    return Collections.unmodifiableList(_changes);
+  protected List<TransportChangeSpec> getPendingChanges() {
+    return Collections.unmodifiableList(_pendingChanges);
   }
 
-  protected List<NoteSpec> getNoteSpecs() {
-    return Collections.unmodifiableList(_noteSpecs);
+  protected List<NoteSpec> getPendingNoteSpecs() {
+    return Collections.unmodifiableList(_pendingNoteSpecs);
   }
 
   //endregion
 
   //region ITrackingManagementService impl
+
+
+  @Nullable @Override public UserInput getLastUserInput() {
+    return _lastUserInput;
+  }
 
   @Override
   public boolean isTracking() {
@@ -88,8 +103,8 @@ public class SimpleTrackingManager implements TrackingManager {
       return;
     }
 
-    _changes.clear();
-    _noteSpecs.clear();
+    _pendingChanges.clear();
+    _pendingNoteSpecs.clear();
 
     _start = new Date();
     Intent intent = getServiceIntent();
@@ -99,22 +114,47 @@ public class SimpleTrackingManager implements TrackingManager {
     _running = true;
   }
 
-  @Override
-  public PathInfo getLastPath() {
-    if (_serviceBinder == null) {
+  @Override @Nullable
+  public RouteData getRouteData(@NonNull UserInput userInput) {
+    ArgumentCheck.notNull(userInput);
+
+    _lastUserInput = userInput;
+
+    if (!isTracking() || _serviceBinder == null) {
       return null;
     }
 
-    List<Position> positions = _serviceBinder.getService().getPositions();
-
-    List<LatLng> pos = filterPositions(positions);
-
-    if (positions.size() == 0) {
+    List<LatLng> positions = filterPositions(_pendingPositions);
+    if (positions.size() == 0 && _routeData == null) {
       return null;
     }
 
-    return new PathInfo(_start, new Date(), pos,
-        new ArrayList<>(_changes), new ArrayList<>(_noteSpecs));
+    if (_routeData == null) {
+      RouteDescription routeDescription = new RouteDescription(_start, new Date(), userInput.getTitle());
+
+      _routeData = new RouteData(routeDescription, positions, _pendingChanges, _pendingNoteSpecs);
+    } else {
+      _routeData.setTitle(userInput.getTitle());
+      _routeData.setEnd(new Date());
+
+      for (NoteSpec spec : _pendingNoteSpecs) {
+        _routeData.addNote(spec);
+      }
+
+      for (TransportChangeSpec spec : _pendingChanges) {
+        _routeData.addChange(spec);
+      }
+
+      for (LatLng latLng : positions) {
+        _routeData.addLatLng(latLng);
+      }
+    }
+
+    _pendingChanges.clear();
+    _pendingNoteSpecs.clear();
+    _pendingPositions.clear();
+
+    return _routeData;
   }
 
   @Override
@@ -122,15 +162,17 @@ public class SimpleTrackingManager implements TrackingManager {
     if (!_running) {
       return;
     }
-    _changes.clear();
+    _pendingChanges.clear();
 
-    for (NoteSpec spec : _noteSpecs) {
+    for (NoteSpec spec : _pendingNoteSpecs) {
       if (!spec.exists()) {
         _dataBus.post(new TravelDataRepository.NoteSpecDeletedEvent(spec));
       }
     }
 
-    _noteSpecs.clear();
+    _pendingNoteSpecs.clear();
+    _routeData = null;
+    _lastUserInput = null;
 
     _context.unbindService(_connection);
     _context.stopService(getServiceIntent());
@@ -150,7 +192,7 @@ public class SimpleTrackingManager implements TrackingManager {
       return false;
     }
 
-    _changes.add(new TransportChangeSpec(lastPosition.latLng, type, title));
+    _pendingChanges.add(new TransportChangeSpec(lastPosition.latLng, type, title));
 
     return true;
   }
@@ -165,7 +207,7 @@ public class SimpleTrackingManager implements TrackingManager {
       return false;
     }
 
-    _noteSpecs.add(new NoteSpec(lastPosition.latLng, imageIdInput, caption, soundIdInput));
+    _pendingNoteSpecs.add(new NoteSpec(lastPosition.latLng, imageIdInput, caption, soundIdInput));
 
     return true;
   }
@@ -173,6 +215,21 @@ public class SimpleTrackingManager implements TrackingManager {
   //endregion
 
   //region Methods
+
+  public void onEvent(Position position) {
+    if (isTracking()) {
+      _pendingPositions.add(position);
+    }
+  }
+
+  public void onEvent(TravelDataRepository.RouteDeletedEvent event) {
+    // This happen in the case when route is recording and saved but the user
+    // press delete in routes list
+    if (_routeData != null && event._deletedRoute.getDeletedId() == _routeData.getId()) {
+      Timber.d("Current route data were deleted. Invalidating...");
+      _routeData = null;
+    }
+  }
 
   protected List<LatLng> filterPositions(List<Position> positions) {
     List<LatLng> filtered = new ArrayList<>(positions.size());

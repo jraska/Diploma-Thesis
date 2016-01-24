@@ -1,5 +1,7 @@
 package com.jraska.pwmd.travel.data;
 
+import android.support.annotation.NonNull;
+import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.OneToMany;
@@ -16,6 +18,8 @@ import java.util.List;
 @Table(database = TravelDatabase.class)
 public class RouteData extends BaseModel {
   //region Fields
+
+  private long _deletedId;
 
   @PrimaryKey(autoincrement = true) long _id;
   @Column Date _start;
@@ -49,8 +53,8 @@ public class RouteData extends BaseModel {
       _positions.add(new DbPosition(latLng));
     }
 
-    _transportChangeSpecs = Collections.unmodifiableList(changeSpecs);
-    _noteSpecs = noteSpecs;
+    _transportChangeSpecs = new ArrayList<>(changeSpecs);
+    _noteSpecs = new ArrayList<>(noteSpecs);
   }
 
   //endregion
@@ -69,8 +73,23 @@ public class RouteData extends BaseModel {
     return _end;
   }
 
+  public void setEnd(@NonNull Date end) {
+    ArgumentCheck.notNull(end);
+
+    _end = end;
+  }
+
   public String getTitle() {
     return _title;
+  }
+
+  public void setTitle(@NonNull String title) {
+    ArgumentCheck.notNull(title);
+    _title = title;
+  }
+
+  public long getDeletedId() {
+    return _deletedId;
   }
 
   public List<LatLng> getPath() {
@@ -85,6 +104,10 @@ public class RouteData extends BaseModel {
 
   @OneToMany(methods = {OneToMany.Method.DELETE}, variableName = "_positions")
   public List<DbPosition> getPositions() {
+    return Collections.unmodifiableList(getPositionsInternal());
+  }
+
+  private List<DbPosition> getPositionsInternal() {
     if (_positions == null) {
       if (exists()) {
         _positions = SQLite.select().from(DbPosition.class)
@@ -97,8 +120,16 @@ public class RouteData extends BaseModel {
     return _positions;
   }
 
+  public void addLatLng(LatLng latLng) {
+    getPositionsInternal().add(new DbPosition(latLng));
+  }
+
   @OneToMany(methods = {OneToMany.Method.DELETE}, variableName = "_transportChangeSpecs")
   public List<TransportChangeSpec> getTransportChangeSpecs() {
+    return Collections.unmodifiableList(getTransportChangesInternal());
+  }
+
+  private List<TransportChangeSpec> getTransportChangesInternal() {
     if (_transportChangeSpecs == null) {
       if (exists()) {
         _transportChangeSpecs = SQLite.select().from(TransportChangeSpec.class)
@@ -111,8 +142,16 @@ public class RouteData extends BaseModel {
     return _transportChangeSpecs;
   }
 
+  public void addChange(TransportChangeSpec spec) {
+    getTransportChangesInternal().add(spec);
+  }
+
   @OneToMany(methods = {OneToMany.Method.DELETE}, variableName = "_noteSpecs")
   public List<NoteSpec> getNoteSpecs() {
+    return Collections.unmodifiableList(getNoteSpecsInternal());
+  }
+
+  private List<NoteSpec> getNoteSpecsInternal() {
     if (_noteSpecs == null) {
       if (exists()) {
         _noteSpecs = SQLite.select().from(NoteSpec.class)
@@ -123,6 +162,12 @@ public class RouteData extends BaseModel {
     }
 
     return _noteSpecs;
+  }
+
+  public void addNote(NoteSpec spec) {
+    ArgumentCheck.notNull(spec);
+
+    getNoteSpecsInternal().add(spec);
   }
 
   //endregion
@@ -150,6 +195,12 @@ public class RouteData extends BaseModel {
     }
   }
 
+  @Override public void delete() {
+    _deletedId = _id;
+
+    super.delete();
+  }
+
   public RouteDescription getDescription() {
     return new RouteDescription(_start, _end, _title);
   }
@@ -169,6 +220,7 @@ public class RouteData extends BaseModel {
         ", _positions=" + _positions +
         '}';
   }
+
 
   // TODO: 23/01/16 Equals etc
 

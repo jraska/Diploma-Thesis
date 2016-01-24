@@ -2,12 +2,8 @@ package com.jraska.pwmd.travel.tracking;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.jraska.pwmd.core.gps.LatLng;
-import com.jraska.pwmd.travel.data.NoteSpec;
-import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import com.jraska.pwmd.travel.data.RouteData;
 
-import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 public interface TrackingManager {
@@ -15,13 +11,16 @@ public interface TrackingManager {
 
   boolean isTracking();
 
+  @Nullable
+  UserInput getLastUserInput();
+
   //endregion
 
   //region Methods
 
   void startTracking();
 
-  PathInfo getLastPath();
+  @Nullable RouteData getRouteData(@NonNull UserInput userInput);
 
   void stopTracking();
 
@@ -31,43 +30,15 @@ public interface TrackingManager {
 
   //endregion
 
-  //region Nested classes
+  class UserInput {
+    private final String _title;
 
-  class PathInfo {
-    private final Date _start;
-    private final Date _end;
-    private final List<LatLng> _path;
-    private final List<TransportChangeSpec> _transportChangeSpecs;
-    private final List<NoteSpec> _noteSpecs;
-
-    public PathInfo(Date start, Date end, List<LatLng> path, List<TransportChangeSpec> specs, List<NoteSpec> noteSpecs) {
-      _start = start;
-      _end = end;
-      _path = path;
-      _transportChangeSpecs = specs;
-      _noteSpecs = noteSpecs;
+    public UserInput(String title) {
+      _title = title;
     }
 
-    public Date getStart() {
-      return _start;
-    }
-
-    public Date getEnd() {
-      return _end;
-    }
-
-    public List<LatLng> getPath() {
-      return _path;
-    }
-
-    public List<TransportChangeSpec> getTransportChangeSpecs() {
-      return _transportChangeSpecs;
-    }
-
-    public List<NoteSpec> getNoteSpecs() {
-      return _noteSpecs;
+    public String getTitle() {
+      return _title;
     }
   }
-
-  //endregion
 }

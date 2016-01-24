@@ -35,7 +35,7 @@ public class PicturesManager {
 
   @Inject
   public PicturesManager(@Named(PICTURES_DIR) @NonNull File imagesDir,
-                         @Named(DataModule.DATA_BUS_NAME) EventBus dataBus) {
+                          EventBus dataBus) {
     ArgumentCheck.notNull(imagesDir);
     ArgumentCheck.notNull(dataBus);
 

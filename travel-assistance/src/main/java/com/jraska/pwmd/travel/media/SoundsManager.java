@@ -41,8 +41,7 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
   //region Constructors
 
   @Inject
-  public SoundsManager(@Named(SOUND_DIR) @NonNull File soundsDir,
-                       @Named(DataModule.DATA_BUS_NAME) EventBus dataBus) {
+  public SoundsManager(@Named(SOUND_DIR) @NonNull File soundsDir, EventBus dataBus) {
     ArgumentCheck.notNull(soundsDir);
     ArgumentCheck.notNull(dataBus);
 

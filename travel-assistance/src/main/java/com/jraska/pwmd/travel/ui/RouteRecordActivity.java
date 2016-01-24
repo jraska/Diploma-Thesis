@@ -24,7 +24,6 @@ import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.data.RouteDescription;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.jraska.pwmd.travel.media.PicturesManager;
 import com.jraska.pwmd.travel.media.SoundsManager;
@@ -43,6 +42,10 @@ public class RouteRecordActivity extends BaseActivity {
 
   public static final int REQUEST_IMAGE_CAPTURE = 1;
   public static final int REQUEST_VOICE_RECORD = 2;
+
+  // We need to explicitly save the input to handle the case
+  // when user currently changed the title, did not saved so far and activity rotated.
+  private static final String STATE_KEY_TITLE = "titleInput";
 
   //endregion
 
@@ -79,6 +82,11 @@ public class RouteRecordActivity extends BaseActivity {
 
     updateStartStopButtons();
     updateTransportIcon();
+
+    TrackingManager.UserInput lastUserInput = _trackingManager.getLastUserInput();
+    if (lastUserInput != null) {
+      setFromUserInput(lastUserInput);
+    }
   }
 
   @Override
@@ -86,9 +94,52 @@ public class RouteRecordActivity extends BaseActivity {
     handleActivityResult(requestCode, resultCode, data);
   }
 
+  @Override protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+
+    if (savedInstanceState != null) {
+      String title = savedInstanceState.getString(STATE_KEY_TITLE);
+      if (title != null) {
+        setInputTitle(title);
+      }
+    }
+  }
+
+  @Override protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+
+    outState.putString(STATE_KEY_TITLE, getInputTitle());
+  }
+
   //endregion
 
   //region Methods
+
+  private void setFromUserInput(TrackingManager.UserInput lastUserInput) {
+    _titleInput.setText(lastUserInput.getTitle());
+  }
+
+  private TrackingManager.UserInput getUserInput() {
+    return new TrackingManager.UserInput(getUserInputTitle());
+  }
+
+  protected void setInputTitle(String text) {
+    _titleInput.setText(text);
+  }
+
+  protected String getUserInputTitle() {
+    String titleText = getInputTitle();
+
+    if (TextUtils.isEmpty(titleText)) {
+      return getString(R.string.route_default_title, getCurrentTimeText());
+    }
+
+    return titleText;
+  }
+
+  @NonNull private String getInputTitle() {
+    return _titleInput.getText().toString();
+  }
 
   @OnClick(R.id.record_btnStartTracking) void startTracking() {
     _trackingManager.startTracking();
@@ -121,17 +172,14 @@ public class RouteRecordActivity extends BaseActivity {
   }
 
   @OnClick(R.id.record_btnSaveRoute) void saveRoute() {
-    TrackingManager.PathInfo lastPath = _trackingManager.getLastPath();
-    if (lastPath == null) {
+    TrackingManager.UserInput userInput = new TrackingManager.UserInput(getUserInputTitle());
+    RouteData routeData = _trackingManager.getRouteData(userInput);
+    if (routeData == null) {
       Toast.makeText(this, getString(R.string.noRouteToSave), Toast.LENGTH_SHORT).show();
       return;
     }
 
-    RouteData routeData = new RouteData(new RouteDescription(
-        lastPath.getStart(), lastPath.getEnd(), getInputTitle()), lastPath.getPath(),
-        lastPath.getTransportChangeSpecs(), lastPath.getNoteSpecs());
-
-    _travelDataRepository.insertRoute(routeData);
+    _travelDataRepository.insertOrUpdate(routeData);
 
     Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
   }
@@ -145,16 +193,6 @@ public class RouteRecordActivity extends BaseActivity {
     dialog.setTitle(R.string.transport_change_select);
     TransportDialogHolder transportDialogHolder = new TransportDialogHolder(dialog, dialogView);
     transportDialogHolder.show();
-  }
-
-  protected String getInputTitle() {
-    String titleText = _titleInput.getText().toString();
-
-    if (TextUtils.isEmpty(titleText)) {
-      return getString(R.string.route_default_title, getCurrentTimeText());
-    }
-
-    return titleText;
   }
 
   protected String getCurrentTimeText() {

@@ -12,13 +12,11 @@ import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.persistence.DataModule;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.List;
 
 public class RoutesListActivity extends BaseActivity implements RoutesAdapter.OnItemMenuListener {
@@ -29,7 +27,7 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
 
   @Inject TravelDataRepository _travelDataRepository;
   @Inject RoutesAdapter _routesAdapter;
-  @Inject @Named(DataModule.DATA_BUS_NAME) EventBus _dataEventBus;
+  @Inject EventBus _eventBus;
 
   //endregion
 
@@ -45,7 +43,7 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     setupRoutes();
     refreshRoutes();
 
-    _dataEventBus.register(this);
+    _eventBus.register(this);
   }
 
   @Override
@@ -77,7 +75,7 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
 
   @Override
   protected void onDestroy() {
-    _dataEventBus.unregister(this);
+    _eventBus.unregister(this);
 
     super.onDestroy();
   }
@@ -164,7 +162,7 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
 
   void refreshRoutes() {
     TravelDataRepository service = _travelDataRepository;
-    List<RouteData> routeDescriptions = service.selectAllRouteDescriptions();
+    List<RouteData> routeDescriptions = service.selectAll();
 
     _routesAdapter.clear();
 
@@ -185,7 +183,7 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
   }
 
   protected void deleteRoute(RouteData route) {
-    _travelDataRepository.deleteRoute(route);
+    _travelDataRepository.delete(route);
   }
 
   protected void openHelpRequests() {

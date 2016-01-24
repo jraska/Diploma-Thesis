@@ -37,15 +37,15 @@ public class DBFlowDataRepository implements TravelDataRepository {
 
   //region TravelDataRepository impl
 
-  @Override public List<RouteData> selectAllRouteDescriptions() {
+  @Override public List<RouteData> selectAll() {
     return SQLite.select().from(RouteData.class).queryList();
   }
 
-  @Override public RouteData selectRouteData(long id) {
+  @Override public RouteData select(long id) {
     return SQLite.select().from(RouteData.class).where(RouteData_Table._id.eq(id)).querySingle();
   }
 
-  @Override public long deleteRoute(RouteData routeData) {
+  @Override public long delete(RouteData routeData) {
     routeData.async().withListener(new DeletedListener(routeData.getNoteSpecs())).delete();
 
     // COde to test delete and insert
@@ -54,11 +54,7 @@ public class DBFlowDataRepository implements TravelDataRepository {
     return 1;
   }
 
-  @Override public long updateRoute(RouteData routeData) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override public long insertRoute(final RouteData routeData) {
+  @Override public long insertOrUpdate(final RouteData routeData) {
     routeData.async().withListener(_insertListener).save();
 
     // code to test deleet and insert

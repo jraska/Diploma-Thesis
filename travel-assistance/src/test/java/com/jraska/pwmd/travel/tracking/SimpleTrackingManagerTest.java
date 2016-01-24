@@ -45,10 +45,10 @@ public class SimpleTrackingManagerTest extends BaseTest {
     _simpleTrackingManager.addChange(TransportChangeSpec.TRANSPORT_TYPE_BUS, "s");
 
 
-    assertThat(_simpleTrackingManager.getChanges(), hasSize(1));
+    assertThat(_simpleTrackingManager.getPendingChanges(), hasSize(1));
     _simpleTrackingManager.startTracking();
 
-    assertThat(_simpleTrackingManager.getChanges(), hasSize(0));
+    assertThat(_simpleTrackingManager.getPendingChanges(), hasSize(0));
   }
 
   @Test
@@ -56,10 +56,10 @@ public class SimpleTrackingManagerTest extends BaseTest {
     _simpleTrackingManager.addNote(UUID.randomUUID(), "s", null);
 
 
-    assertThat(_simpleTrackingManager.getNoteSpecs(), hasSize(1));
+    assertThat(_simpleTrackingManager.getPendingNoteSpecs(), hasSize(1));
     _simpleTrackingManager.startTracking();
 
-    assertThat(_simpleTrackingManager.getNoteSpecs(), hasSize(0));
+    assertThat(_simpleTrackingManager.getPendingNoteSpecs(), hasSize(0));
   }
 
   @Test
@@ -67,10 +67,10 @@ public class SimpleTrackingManagerTest extends BaseTest {
     _simpleTrackingManager.startTracking();
 
     _simpleTrackingManager.addChange(TransportChangeSpec.TRANSPORT_TYPE_BUS, "s");
-    assertThat(_simpleTrackingManager.getChanges(), hasSize(1));
+    assertThat(_simpleTrackingManager.getPendingChanges(), hasSize(1));
 
     _simpleTrackingManager.stopTracking();
-    assertThat(_simpleTrackingManager.getChanges(), hasSize(0));
+    assertThat(_simpleTrackingManager.getPendingChanges(), hasSize(0));
   }
 
   //endregion

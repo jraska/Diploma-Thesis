@@ -57,14 +57,14 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     CountDownLatch insertLatch = new SubscriberLatch(1);
     _dataBus.register(insertLatch);
 
-    _repository.insertRoute(insertedData);
+    _repository.insertOrUpdate(insertedData);
     boolean await = insertLatch.await(1000, TimeUnit.MILLISECONDS);
     assertTrue("Not inserted in time", await);
 
-    List<RouteData> routeDescriptions = _repository.selectAllRouteDescriptions();
+    List<RouteData> routeDescriptions = _repository.selectAll();
     assertThat(routeDescriptions, hasSize(1));
 
-    RouteData loadedData = _repository.selectRouteData(routeDescriptions.get(0).getId());
+    RouteData loadedData = _repository.select(routeDescriptions.get(0).getId());
 
     assertThat(loadedData.getNoteSpecs(), equalTo(insertedData.getNoteSpecs()));
     assertThat(loadedData.getPositions(), equalTo(insertedData.getPositions()));
@@ -75,16 +75,16 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   public void testUpdate() {
 
     RouteData routeData = createRouteData();
-    _repository.insertRoute(routeData);
+    _repository.insertOrUpdate(routeData);
 
     ArrayList<LatLng> positions = new ArrayList<>(routeData.getPath());
     positions.add(generatePosition());
     RouteData routeData2 = new RouteData(routeData.getDescription(), positions);
 
-    _repository.updateRoute(routeData2);
+    _repository.insertOrUpdate(routeData2);
 
     //try get all
-    RouteData updatedData = _repository.selectRouteData(routeData2.getId());
+    RouteData updatedData = _repository.select(routeData2.getId());
     assertThat(updatedData.getPath(), equalTo(routeData2.getPath()));
   }
 
@@ -97,20 +97,20 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     CountDownLatch insertLatch = new SubscriberLatch(1);
     _dataBus.register(insertLatch);
 
-    _repository.insertRoute(routeData);
+    _repository.insertOrUpdate(routeData);
     boolean await = insertLatch.await(1000, TimeUnit.MILLISECONDS);
     assertTrue("Not inserted in time", await);
 
-    assertThat(_repository.selectAllRouteDescriptions(), hasSize(1));
+    assertThat(_repository.selectAll(), hasSize(1));
 
     CountDownLatch deleteLatch = new SubscriberLatch(1);
     _dataBus.register(deleteLatch);
-    _repository.deleteRoute(routeData);
+    _repository.delete(routeData);
 
     await = deleteLatch.await(1000, TimeUnit.MILLISECONDS);
     assertTrue("Not deleted in time", await);
 
-    assertThat(_repository.selectAllRouteDescriptions(), hasSize(0));
+    assertThat(_repository.selectAll(), hasSize(0));
   }
 
   //endregion
