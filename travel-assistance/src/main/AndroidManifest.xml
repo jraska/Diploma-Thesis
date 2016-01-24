@@ -56,7 +56,12 @@
 
         <activity
             android:name=".ui.SettingsActivity"
-            android:label="@string/settings" />
+            android:label="@string/settings"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.jraska.pwmd.travel.ui.RoutesListActivity" />
+
         <activity
             android:name=".ui.RouteRecordActivity"
             android:label="@string/title_activity_route_record"

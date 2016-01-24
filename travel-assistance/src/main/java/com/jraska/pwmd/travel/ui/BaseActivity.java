@@ -3,6 +3,7 @@ package com.jraska.pwmd.travel.ui;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import butterknife.Bind;
@@ -37,6 +38,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     onSetContentView();
   }
 
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == android.R.id.home) {
+      if (onNavigationIconClicked()) {
+        return true;
+      }
+    }
+
+    return super.onOptionsItemSelected(item);
+  }
+
   //endregion
 
   //region Methods
@@ -46,7 +57,20 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     if (_toolbar != null) {
       setSupportActionBar(_toolbar);
+      int navigationIconId = getNavigationIconId();
+      if (navigationIconId != View.NO_ID) {
+        _toolbar.setNavigationIcon(navigationIconId);
+      }
     }
+  }
+
+  protected boolean onNavigationIconClicked() {
+    finish();
+    return true;
+  }
+
+  protected int getNavigationIconId() {
+    return R.drawable.ic_arrow_back_white_24dp;
   }
 
   //endregion

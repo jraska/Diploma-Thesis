@@ -45,8 +45,6 @@
         android:layout_toRightOf="@id/route_date"
         android:layout_toEndOf="@id/route_date"
         android:layout_below="@id/route_title"
-        android:layout_toLeftOf="@+id/route_navigate"
-        android:layout_toStartOf="@+id/route_navigate"
         tools:text="@string/app_name" />
 
     <ImageView
@@ -71,6 +69,7 @@
         android:layout_marginRight="@dimen/side_padding"
         android:src="@drawable/ic_delete_24dp"
         android:clickable="true"
-        android:background="@android:drawable/list_selector_background" />
+        android:background="@android:drawable/list_selector_background"
+        android:contentDescription="@string/delete"/>
 
 </RelativeLayout>

@@ -47,6 +47,23 @@ public class VoiceRecordActivity extends BaseActivity {
     startRecording();
   }
 
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+  }
+
+  //endregion
+
+  //region BaseActivity overrides
+
+  @Override
+  protected boolean onNavigationIconClicked() {
+    // Make sure recording noe longer continues
+    _soundsManager.stopRecording();
+
+    return super.onNavigationIconClicked();
+  }
+
   //endregion
 
   //region Methods

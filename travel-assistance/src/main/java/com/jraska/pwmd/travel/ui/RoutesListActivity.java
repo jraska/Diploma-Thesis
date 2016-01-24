@@ -89,6 +89,21 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
 
   //endregion
 
+  //region BaseActivity overrides
+
+  @Override
+  protected int getNavigationIconId() {
+    return R.drawable.ic_logo;
+  }
+
+  @Override
+  protected boolean onNavigationIconClicked() {
+    // TODO: 24/01/16 Show about dialog
+    return false;
+  }
+
+  //endregion
+
   //region OnItemMenuListener impl
 
   @Override
