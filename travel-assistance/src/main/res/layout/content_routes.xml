@@ -12,14 +12,35 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/routes_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:visibility="gone" />
 
-    <TextView
+    <FrameLayout
         android:id="@+id/routes_empty_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/noRoutes"
-        android:gravity="center" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/noRoutes"
+                android:gravity="center"
+                style="@style/TextMain" />
+
+            <ImageButton
+                android:id="@+id/routes_empty_view_btn_tracking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_smart_record_black_24dp"
+                android:contentDescription="@string/record_route"
+                style="@style/IconButton" />
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>
 

@@ -45,7 +45,22 @@
         android:layout_toRightOf="@id/route_date"
         android:layout_toEndOf="@id/route_date"
         android:layout_below="@id/route_title"
+        android:layout_toLeftOf="@+id/route_navigate"
+        android:layout_toStartOf="@+id/route_navigate"
         tools:text="@string/app_name" />
+
+    <ImageView
+        android:id="@+id/route_navigate"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:padding="@dimen/padding_medium"
+        android:src="@drawable/ic_navigation_black_24dp"
+        android:clickable="true"
+        android:layout_toLeftOf="@+id/route_delete"
+        android:layout_toStartOf="@+id/route_delete"
+        android:background="@android:drawable/list_selector_background"
+        android:contentDescription="@string/navigate"/>
+
 
     <ImageView
         android:id="@+id/route_delete"
@@ -56,6 +71,6 @@
         android:layout_marginRight="@dimen/side_padding"
         android:src="@drawable/ic_delete_24dp"
         android:clickable="true"
-        android:background="@android:drawable/list_selector_background"/>
+        android:background="@android:drawable/list_selector_background" />
 
 </RelativeLayout>

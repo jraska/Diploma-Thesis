@@ -32,5 +32,8 @@
         <item name="android:textSize">@dimen/textSecondary</item>
     </style>
 
+    <style name="IconButton">
+        <item name="android:padding">@dimen/padding_large</item>
+    </style>
 
 </resources>

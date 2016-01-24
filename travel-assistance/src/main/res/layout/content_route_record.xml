@@ -30,17 +30,19 @@
                 android:id="@+id/record_btnStartTracking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_send_black_24dp"
-                android:padding="@dimen/padding_large"
-                android:layout_gravity="center" />
+                android:src="@drawable/ic_smart_record_black_24dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/record_route"
+                style="@style/IconButton"/>
 
             <ImageButton
                 android:id="@+id/record_btnStopTracking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_stop_black_24dp"
-                android:padding="@dimen/padding_large"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                tools:visibility="gone"
+                style="@style/IconButton"/>
         </FrameLayout>
 
         <FrameLayout
@@ -53,9 +55,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_save_black_24dp"
-                android:padding="@dimen/padding_large"
                 android:layout_gravity="center"
-                android:contentDescription="@string/saveRoute"/>
+                android:contentDescription="@string/saveRoute"
+                style="@style/IconButton"
+                />
         </FrameLayout>
 
         <FrameLayout
@@ -68,9 +71,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_directions_walk_black_24dp"
-                android:padding="@dimen/padding_large"
                 android:layout_gravity="center"
-                android:contentDescription="@string/transport_change_select"/>
+                android:contentDescription="@string/transport_change_select"
+                style="@style/IconButton"/>
         </FrameLayout>
 
     </LinearLayout>
@@ -93,9 +96,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_add_a_photo_black_24dp"
-                android:padding="@dimen/padding_large"
                 android:layout_gravity="center"
-                android:contentDescription="@string/record_save_photo"/>
+                android:contentDescription="@string/record_save_photo"
+                style="@style/IconButton"/>
         </FrameLayout>
 
         <FrameLayout
@@ -108,9 +111,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_add_note_black_24dp"
-                android:padding="@dimen/padding_large"
                 android:layout_gravity="center"
-                android:contentDescription="@string/record_save_note"/>
+                android:contentDescription="@string/record_save_note"
+                style="@style/IconButton"/>
         </FrameLayout>
 
         <FrameLayout
@@ -123,9 +126,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_record_voice_over_black_24dp"
-                android:padding="@dimen/padding_large"
                 android:layout_gravity="center"
-                android:contentDescription="@string/record_save_note"/>
+                android:contentDescription="@string/record_save_note"
+                style="@style/IconButton"/>
         </FrameLayout>
 
     </LinearLayout>

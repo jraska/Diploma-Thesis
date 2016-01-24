@@ -27,7 +27,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
   private final DateFormat _endFormat = TravelAssistanceApp.USER_DETAILED_TIME_FORMAT;
 
   private OnItemClickListener _itemClickListener;
-  private OnItemDeleteListener _itemDeleteListener;
+  private OnItemMenuListener _itemMenuListener;
 
   private final LayoutInflater _layoutInflater;
 
@@ -50,8 +50,8 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     _itemClickListener = itemClickListener;
   }
 
-  public void setItemDeleteClickListener(OnItemDeleteListener itemDeleteListener) {
-    _itemDeleteListener = itemDeleteListener;
+  public void setItemDeleteClickListener(OnItemMenuListener itemDeleteListener) {
+    _itemMenuListener = itemDeleteListener;
   }
 
   //endregion
@@ -76,8 +76,6 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     long durationSeconds = (rout.getEnd().getTime() - rout.getStart().getTime()) / 1000;
     String timeText = DateUtils.formatElapsedTime(durationSeconds);
     holder._routeDuration.setText(timeText);
-
-    holder._position = position;
   }
 
   @Override public int getItemCount() {
@@ -88,15 +86,21 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
 
   //region Methods
 
-  protected void onItemClicked(int position, View view) {
+  protected void onItemClicked(int position, View itemView) {
     if (_itemClickListener != null) {
-      _itemClickListener.onItemClick(position, view);
+      _itemClickListener.onItemClick(position, itemView);
     }
   }
 
-  protected void onRouteDeleteClick(int position, View v) {
-    if (_itemDeleteListener != null) {
-      _itemDeleteListener.onItemDelete(position, v);
+  protected void onRouteDeleteClick(int position, View itemView) {
+    if (_itemMenuListener != null) {
+      _itemMenuListener.onItemDeleteClick(position, itemView);
+    }
+  }
+
+  protected void onNavigateRouteClick(int position, View itemView) {
+    if (_itemMenuListener != null) {
+      _itemMenuListener.onItemNavigateClick(position, itemView);
     }
   }
 
@@ -136,8 +140,6 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
 
     private final RoutesAdapter _routesAdapter;
 
-    int _position;
-
     public RouteViewHolder(RoutesAdapter routesAdapter, View itemView) {
       super(itemView);
       _routesAdapter = routesAdapter;
@@ -146,11 +148,15 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     }
 
     @OnClick(R.id.route_item_container) void onItemClick(View v) {
-      _routesAdapter.onItemClicked(_position, v);
+      _routesAdapter.onItemClicked(getAdapterPosition(), itemView);
     }
 
     @OnClick(R.id.route_delete) void deleteRoute(View v) {
-      _routesAdapter.onRouteDeleteClick(_position, v);
+      _routesAdapter.onRouteDeleteClick(getAdapterPosition(), itemView);
+    }
+
+    @OnClick(R.id.route_navigate) void navigateRoute(View v) {
+      _routesAdapter.onNavigateRouteClick(getAdapterPosition(), itemView);
     }
   }
 
@@ -158,8 +164,10 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     void onItemClick(int position, View itemView);
   }
 
-  public interface OnItemDeleteListener {
-    void onItemDelete(int position, View itemView);
+  public interface OnItemMenuListener {
+    void onItemNavigateClick(int position, View itemView);
+
+    void onItemDeleteClick(int position, View itemView);
   }
 
   //endregion

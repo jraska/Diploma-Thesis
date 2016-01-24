@@ -41,4 +41,5 @@
     <string name="voice_record_title_hint">Title</string>
     <string name="record_voice_saved">Recording saved</string>
     <string name="navigation_arrow">Navigation arrow</string>
+    <string name="record_route">Record route</string>
 </resources>

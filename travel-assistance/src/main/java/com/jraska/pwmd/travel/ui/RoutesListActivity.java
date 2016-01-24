@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import butterknife.Bind;
+import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
@@ -20,7 +21,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
 
-public class RoutesListActivity extends BaseActivity {
+public class RoutesListActivity extends BaseActivity implements RoutesAdapter.OnItemMenuListener {
   //region Fields
 
   @Bind(R.id.routes_recycler_view) RecyclerView _routesRecycler;
@@ -88,6 +89,22 @@ public class RoutesListActivity extends BaseActivity {
 
   //endregion
 
+  //region OnItemMenuListener impl
+
+  @Override
+  public void onItemNavigateClick(int position, View itemView) {
+    RouteData item = _routesAdapter.getItem(position);
+    NavigationActivity.startNavigationActivity(this, item.getId());
+  }
+
+  @Override
+  public void onItemDeleteClick(int position, View itemView) {
+    deleteRoute(_routesAdapter.getItem(position));
+  }
+
+
+  //endregion
+
   //region Methods
 
   public void onEvent(TravelDataRepository.NewRouteEvent newRouteEvent) {
@@ -115,11 +132,7 @@ public class RoutesListActivity extends BaseActivity {
         showRoute(position);
       }
     });
-    _routesAdapter.setItemDeleteClickListener(new RoutesAdapter.OnItemDeleteListener() {
-      @Override public void onItemDelete(int position, View itemView) {
-        deleteRoute(_routesAdapter.getItem(position));
-      }
-    });
+    _routesAdapter.setItemDeleteClickListener(this);
   }
 
   protected void showRoute(int position) {
@@ -166,6 +179,11 @@ public class RoutesListActivity extends BaseActivity {
 
   protected void openSettings() {
     startActivity(new Intent(this, SettingsActivity.class));
+  }
+
+  @OnClick(R.id.routes_empty_view_btn_tracking)
+  protected void onEmptyViewRecordButtonClick() {
+    openRouteRecording();
   }
 
   protected void openRouteRecording() {

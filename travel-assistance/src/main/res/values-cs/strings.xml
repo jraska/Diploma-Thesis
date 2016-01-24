@@ -41,4 +41,5 @@
     <string name="voice_record_speak_now">Nyní mluvte</string>
     <string name="voice_record_title_hint">Titulek</string>
     <string name="navigation_arrow">Navigační šipka</string>
+    <string name="record_route">Nahrát cestu</string>
 </resources>
