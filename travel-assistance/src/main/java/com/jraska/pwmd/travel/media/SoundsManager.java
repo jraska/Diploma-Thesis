@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
-import com.jraska.pwmd.travel.persistence.DataModule;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import de.greenrobot.event.EventBus;
 import timber.log.Timber;

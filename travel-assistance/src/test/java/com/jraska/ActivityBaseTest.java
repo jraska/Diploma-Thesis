@@ -54,7 +54,7 @@ public abstract class ActivityBaseTest<T extends Activity> extends BaseTest {
       }
     }
 
-    throw new Error("Cannot determine correct class for getType() method.");
+    throw new ClassFormatError("Cannot determine correct class for getType() method.");
   }
 
   /**

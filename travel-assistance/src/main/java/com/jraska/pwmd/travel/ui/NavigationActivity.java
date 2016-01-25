@@ -21,7 +21,6 @@ import de.greenrobot.event.EventBus;
 
 import javax.inject.Inject;
 import java.text.DecimalFormat;
-import java.util.UUID;
 
 import static com.jraska.pwmd.travel.navigation.Navigator.toGoogleLatLng;
 

@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
-import com.jraska.pwmd.travel.persistence.DataModule;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import de.greenrobot.event.EventBus;
 import timber.log.Timber;
@@ -35,7 +34,7 @@ public class PicturesManager {
 
   @Inject
   public PicturesManager(@Named(PICTURES_DIR) @NonNull File imagesDir,
-                          EventBus dataBus) {
+                         EventBus dataBus) {
     ArgumentCheck.notNull(imagesDir);
     ArgumentCheck.notNull(dataBus);
 

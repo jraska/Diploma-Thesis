@@ -145,6 +145,7 @@ public class Console extends ScrollView {
 
         default:
           super.handleMessage(msg);
+          break;
       }
     }
   }
