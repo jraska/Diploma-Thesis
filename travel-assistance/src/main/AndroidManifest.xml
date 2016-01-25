@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.jraska.pwmd.travel">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -17,7 +18,9 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <!--TODO 25/01/2016 app indexing warning-->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -38,7 +41,8 @@
         <activity
             android:name=".ui.RouteDetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--Label is ise in code depending on data-->
+
+            <!-- Label is ise in code depending on data -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jraska.pwmd.travel.ui.RoutesListActivity" />
@@ -58,6 +62,7 @@
             android:name=".ui.SettingsActivity"
             android:label="@string/settings"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.jraska.pwmd.travel.ui.RoutesListActivity" />
@@ -74,15 +79,18 @@
             android:name=".ui.NavigationActivity"
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".ui.VoiceRecordActivity"
-            android:label="@string/sound_record_title"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:label="@string/sound_record_title">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jraska.pwmd.travel.ui.RouteRecordActivity" />
         </activity>
+        <activity
+            android:name=".ui.NfcWriteActivity"
+            android:label="@string/title_activity_write_nfc"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

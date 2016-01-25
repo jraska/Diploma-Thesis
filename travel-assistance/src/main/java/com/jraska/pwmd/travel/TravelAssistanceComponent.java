@@ -42,4 +42,6 @@ public interface TravelAssistanceComponent {
   void inject(VoiceRecordActivity voiceRecordActivity);
 
   void inject(RouteDisplayFragment routeDisplayFragment);
+
+  void inject(NfcWriteActivity nfcWriteActivity);
 }

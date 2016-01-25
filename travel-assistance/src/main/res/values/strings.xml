@@ -49,4 +49,9 @@
     <string name="sound_record_listening">Listening…</string>
     <string name="sound_record_title">Voice Recording</string>
     <string name="more">More</string>
+    <string name="nfc_write">Write NFC tag</string>
+    <string name="title_activity_write_nfc">NFC tag write</string>
+
+    <string name="nfc_write_description">Move NFC tag next the device</string>
+    <string name="nfc_write_success">Route successfuly written</string>
 </resources>

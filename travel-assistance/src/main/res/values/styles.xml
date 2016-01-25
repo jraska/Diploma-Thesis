@@ -41,7 +41,7 @@
         <item name="android:padding">@dimen/padding_large</item>
     </style>
 
-    This is here to fix bug with inflating
+    <!--This is here to fix bug with inflating-->
     <style name="PopupMenuCompat" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:popupBackground">#0F213F</item>
         <item name="android:disabledAlpha">0.5</item>

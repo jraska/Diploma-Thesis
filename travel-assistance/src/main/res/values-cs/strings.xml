@@ -49,4 +49,9 @@
     <string name="routes">Cesty</string>
     <string name="help_request">Pomoc</string>
     <string name="more">Více</string>
+    <string name="title_activity_write_nfc">Zápis NFC tagu</string>
+
+    <string name="nfc_write">Zapsat do NFC tagu</string>
+    <string name="nfc_write_description">Přiložte NFC tag k zařízení.</string>
+    <string name="nfc_write_success">NFC tag úspěšně zapsán.</string>
 </resources>

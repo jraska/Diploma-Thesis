@@ -10,4 +10,11 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_route_write_nfc"
+        android:title="@string/nfc_write"
+        android:icon="@drawable/ic_nfc_write_white_24dp"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+
 </menu>

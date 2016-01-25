@@ -1,5 +1,6 @@
 package com.jraska.pwmd.travel.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,9 +59,21 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
       case R.id.action_route_navigate:
         startNavigation();
         return true;
+      case R.id.action_route_write_nfc:
+        startNfcWrite();
+        return true;
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == NfcWriteActivity.REQUEST_CODE_WRITE_NFC) {
+      onResultWriteNfc(resultCode, data);
+    }
+
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   //endregion
@@ -76,6 +89,16 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
     return false;
   }
 
+  protected void startNfcWrite() {
+    Intent intent = new Intent(this, NfcWriteActivity.class);
+    intent.putExtra(ROUTE_ID, _routeId);
+
+    startActivityForResult(intent, NfcWriteActivity.REQUEST_CODE_WRITE_NFC);
+  }
+
+  protected void onResultWriteNfc(int resultCode, Intent data) {
+    // TODO: 25/01/16 Handle somehow the result
+  }
 
   //endregion
 
