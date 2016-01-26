@@ -235,7 +235,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
 
     map.addPolyline(spLineOptions);
 
-    com.google.android.gms.maps.model.LatLng start = toGoogleLatLng(points.get(0));
+    LatLng start = toGoogleLatLng(points.get(0));
 
     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(start, ZOOM);
     map.moveCamera(cameraUpdate);
@@ -247,9 +247,9 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH)
         .color(Color.BLUE).visible(true);
 
-    com.google.android.gms.maps.model.LatLng[] spLinePoints = _splineCounter.calculateSpline(points);
+    LatLng[] spLinePoints = _splineCounter.calculateSpline(points);
 
-    for (com.google.android.gms.maps.model.LatLng position : spLinePoints) {
+    for (LatLng position : spLinePoints) {
       polylineOptions.add(position);
     }
     return polylineOptions;

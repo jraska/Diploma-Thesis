@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
-import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.ui.RoutesListActivity;
