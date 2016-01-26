@@ -7,14 +7,15 @@
     android:background="@android:drawable/list_selector_background"
     android:id="@+id/route_item_container">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/route_icon"
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
         android:layout_marginTop="@dimen/list_item_vertical_margin"
         android:layout_marginLeft="@dimen/side_padding"
         android:layout_marginRight="@dimen/side_padding"
-        android:src="@drawable/route_placeholder" />
+        tools:src="@drawable/ic_sport_48dp"
+        android:contentDescription="@string/route_icon"/>
 
     <TextView
         android:id="@+id/route_title"

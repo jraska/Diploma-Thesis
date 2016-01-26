@@ -21,6 +21,8 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.google.android.gms.maps.*;
+import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
@@ -30,13 +32,16 @@ import com.jraska.pwmd.travel.media.SoundsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import com.jraska.pwmd.travel.transport.SimpleTransportManager;
+import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.UUID;
 
-public class RouteRecordActivity extends BaseActivity {
+import static com.jraska.pwmd.travel.navigation.Navigator.toGoogleLatLng;
+
+public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallback {
 
   //region Constants
 
@@ -66,8 +71,11 @@ public class RouteRecordActivity extends BaseActivity {
   @Inject PicturesManager _picturesManager;
   @Inject LayoutInflater _inflater;
   @Inject SoundsManager _soundsManager;
+  @Inject EventBus _eventBus;
+  @Inject @Nullable Position _lastPosition;
 
   private UUID _lastPhotoRequestId;
+  private GoogleMap _map;
 
   //endregion
 
@@ -83,10 +91,16 @@ public class RouteRecordActivity extends BaseActivity {
     updateStartStopButtons();
     updateTransportIcon();
 
+    SupportMapFragment mapFragment =
+        (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+    mapFragment.getMapAsync(this);
+
     TrackingManager.UserInput lastUserInput = _trackingManager.getLastUserInput();
     if (lastUserInput != null) {
       setFromUserInput(lastUserInput);
     }
+
+    _eventBus.register(this);
   }
 
   @Override
@@ -94,7 +108,8 @@ public class RouteRecordActivity extends BaseActivity {
     handleActivityResult(requestCode, resultCode, data);
   }
 
-  @Override protected void onRestoreInstanceState(Bundle savedInstanceState) {
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
     super.onRestoreInstanceState(savedInstanceState);
 
     if (savedInstanceState != null) {
@@ -105,15 +120,55 @@ public class RouteRecordActivity extends BaseActivity {
     }
   }
 
-  @Override protected void onSaveInstanceState(Bundle outState) {
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
 
     outState.putString(STATE_KEY_TITLE, getInputTitle());
   }
 
+  @Override
+  protected void onDestroy() {
+    _eventBus.unregister(this);
+
+    super.onDestroy();
+  }
+
+  //endregion
+
+  //region OnMapReadyCallback
+
+  @Override
+  public void onMapReady(GoogleMap map) {
+    MapHelper.configureMap(map);
+    _map = map;
+    CameraUpdate cameraUpdate = CameraUpdateFactory.zoomTo(MapHelper.ZOOM);
+    _map.moveCamera(cameraUpdate);
+
+    if (_lastPosition != null) {
+      centerMapToLastPosition(false);
+    }
+  }
+
   //endregion
 
   //region Methods
+
+  public void onEvent(Position position) {
+    _lastPosition = position;
+    centerMapToLastPosition(true);
+  }
+
+  public void centerMapToLastPosition(boolean animate) {
+    if (_lastPosition != null && _map != null) {
+      CameraUpdate center = CameraUpdateFactory.newLatLng(toGoogleLatLng(_lastPosition.latLng));
+      if (animate) {
+        _map.animateCamera(center);
+      } else {
+        _map.moveCamera(center);
+      }
+    }
+  }
 
   private void setFromUserInput(TrackingManager.UserInput lastUserInput) {
     setInputTitle(lastUserInput.getTitle());

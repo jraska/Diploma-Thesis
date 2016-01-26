@@ -6,25 +6,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import butterknife.Bind;
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
-import com.jraska.pwmd.travel.collection.CircularFifoQueue;
+import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.navigation.DirectionDecisionStrategy;
 import com.jraska.pwmd.travel.navigation.Navigator;
+import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import de.greenrobot.event.EventBus;
 
 import javax.inject.Inject;
-import java.text.DecimalFormat;
 
-import static com.jraska.pwmd.travel.navigation.Navigator.toGoogleLatLng;
-
-public class NavigationActivity extends BaseActivity implements OnMapReadyCallback {
+public class NavigationActivity extends BaseActivity {
 
   //region Fields
 
@@ -34,12 +28,10 @@ public class NavigationActivity extends BaseActivity implements OnMapReadyCallba
   @Inject EventBus _systemBus;
   @Inject TrackingManager _trackingManager;
   @Inject @Nullable Position _lastPosition;
+  @Inject TravelDataRepository _travelDataRepository;
 
-  private GoogleMap _map;
-  private int _markerCounter;
-
-  private final CircularFifoQueue<Marker> _markers = new CircularFifoQueue<>(2);
-  private final DecimalFormat _latLngFormat = new DecimalFormat("#.#######");
+  private RouteDisplayFragment _routeDisplayFragment;
+  private long _routeId;
 
   //endregion
 
@@ -60,10 +52,15 @@ public class NavigationActivity extends BaseActivity implements OnMapReadyCallba
 
     _trackingManager.startTracking();
 
-    SupportMapFragment mapFragment =
-        (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+    _routeDisplayFragment = (RouteDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+    _routeId = getIntent().getLongExtra(RouteDetailActivity.ROUTE_ID, 0);
+  }
 
-    mapFragment.getMapAsync(this);
+  @Override
+  protected void onStart() {
+    super.onStart();
+
+    showRoute();
   }
 
   @Override
@@ -84,53 +81,8 @@ public class NavigationActivity extends BaseActivity implements OnMapReadyCallba
   }
 
   public void onEvent(Position position) {
-    addPositionMarker(position);
+    _routeDisplayFragment.addPositionMarker(position);
     updateDesiredDirection(_navigator.getCompassDirection());
-  }
-
-  protected void addPositionMarker(Position position) {
-    if (_map == null) {
-      return;
-    }
-
-    com.jraska.pwmd.core.gps.LatLng latLng = position.latLng;
-
-    String title = "#" + ++_markerCounter + " " + _latLngFormat.format(latLng._latitude)
-        + ", " + _latLngFormat.format(latLng._longitude);
-    MarkerOptions markerOptions = new MarkerOptions().position(toGoogleLatLng(latLng))
-        .alpha(0.5f).title(title);
-    Marker marker = _map.addMarker(markerOptions);
-
-    if (_markers.isAtFullCapacity()) {
-      Marker toRemove = _markers.remove();
-      toRemove.remove();
-    }
-
-    _markers.add(marker);
-  }
-
-  //endregion
-
-  //region OnMapReadyCallback impl
-
-  @Override
-  public void onMapReady(GoogleMap map) {
-    _map = map;
-
-    MapHelper.configureMap(map);
-
-    LatLng center;
-    if (_lastPosition != null) {
-      center = toGoogleLatLng(_lastPosition.latLng);
-    } else {
-      center = new LatLng(49, 19);
-    }
-
-    CameraUpdate update = CameraUpdateFactory.newLatLng(center);
-    map.moveCamera(update);
-
-    CameraUpdate zoomTo = CameraUpdateFactory.zoomTo(MapHelper.ZOOM);
-    map.animateCamera(zoomTo);
   }
 
   //endregion
@@ -153,6 +105,19 @@ public class NavigationActivity extends BaseActivity implements OnMapReadyCallba
     startNavigationIntent.putExtra(RouteDetailActivity.ROUTE_ID, routeId);
 
     fromActivity.startActivity(startNavigationIntent);
+  }
+
+  public void showRoute() {
+    if (!_routeDisplayFragment.isRouteDisplayed()) {
+      RouteData routeData = loadRoute();
+
+      _routeDisplayFragment.displayRoute(routeData);
+    }
+  }
+
+  protected RouteData loadRoute() {
+    RouteData routeData = _travelDataRepository.select(_routeId);
+    return routeData;
   }
 
   //endregion

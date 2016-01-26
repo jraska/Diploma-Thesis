@@ -54,4 +54,5 @@
 
     <string name="nfc_write_description">Move NFC tag next the device</string>
     <string name="nfc_write_success">Route successfuly written</string>
+    <string name="route_icon">Route icon</string>
 </resources>

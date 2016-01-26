@@ -1,6 +1,7 @@
 package com.jraska.pwmd.travel.ui;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -17,6 +18,7 @@ public class NfcWriteActivity extends BaseActivity {
   //region Fields
 
   @Bind(R.id.nfc_write_info_text) TextView _messageView;
+  @Bind(R.id.nfc_write_success_text) TextView _successView;
 
   //endregion
 
@@ -27,6 +29,8 @@ public class NfcWriteActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_write_nfc);
     TravelAssistanceApp.getComponent(this).inject(this);
+
+    onNfcTagWriteRequested();
   }
 
   //endregion
@@ -34,11 +38,21 @@ public class NfcWriteActivity extends BaseActivity {
   //region Methods
 
   @OnClick(R.id.nfc_write_info_text) void onIconClicked() {
-    showWritedText();
+    //// TODO: 26/01/16 Example code here
+    onNfcTagWritten();
   }
 
-  private void showWritedText() {
-    _messageView.setText(R.string.nfc_write_success);
+  protected void onNfcTagWriteRequested() {
+    _messageView.setVisibility(View.VISIBLE);
+    _successView.setVisibility(View.GONE);
+
+  }
+
+  protected void onNfcTagWritten() {
+    _messageView.setVisibility(View.GONE);
+    _successView.setVisibility(View.VISIBLE);
+
+    setResult(RESULT_OK);
   }
 
   //endregion

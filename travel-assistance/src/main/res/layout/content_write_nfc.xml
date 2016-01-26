@@ -22,4 +22,15 @@
         android:drawableBottom="@drawable/ic_nfc_write_grey_128dp"
         style="@style/TextMain" />
 
+    <TextView
+        android:id="@+id/nfc_write_success_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/nfc_write_success"
+        android:visibility="gone"
+        android:drawableBottom="@drawable/ic_nfc_write_black_128dp"
+        style="@style/TextMain" />
+
 </FrameLayout>

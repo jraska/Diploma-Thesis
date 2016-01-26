@@ -118,7 +118,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   //region Methods
 
   @NonNull
-  protected RouteData createRouteData() {
+  public static RouteData createRouteData() {
     List<LatLng> positions = generatePositions(3);
 
     //build test route
@@ -134,7 +134,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   }
 
   @NonNull
-  protected List<LatLng> generatePositions(int pointsCount) {
+  protected static List<LatLng> generatePositions(int pointsCount) {
     List<LatLng> positions = new ArrayList<>(pointsCount);
     for (int i = 0; i < pointsCount; i++) {
       positions.add(generatePosition());

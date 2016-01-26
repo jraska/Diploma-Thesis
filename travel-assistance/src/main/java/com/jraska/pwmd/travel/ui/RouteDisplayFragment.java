@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.jraska.common.ArgumentCheck;
+import com.jraska.pwmd.core.gps.Position;
+import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
+import com.jraska.pwmd.travel.collection.CircularFifoQueue;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
@@ -28,6 +31,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import timber.log.Timber;
 
 import javax.inject.Inject;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +56,15 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   private GoogleMap _mapView;
 
   private Map<Marker, NoteSpec> _noteSpecMap = new HashMap<>();
-  private DisplayImageOptions _imageOptions = new DisplayImageOptions.Builder()
-      .preProcessor(new CircleImageProcessor(getImageSize())).build();
 
-  private ImageSize _photoIconSize = new ImageSize(getImageSize(), getImageSize());
+  private DisplayImageOptions _imageOptions;
+  private ImageSize _photoIconSize;
+
   private EventListener _eventListener;
+
+  private final CircularFifoQueue<Marker> _markers = new CircularFifoQueue<>(2);
+  private final DecimalFormat _latLngFormat = new DecimalFormat("#.#######");
+  private int _markerCounter;
 
   //endregion
 
@@ -74,9 +82,13 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     return _routeData != null;
   }
 
-  public int getImageSize() {
-    // TODO: 24/01/16 Determine with screen dimension
-    return 128;
+  public ImageSize getPhotoIconSize() {
+    if (_photoIconSize == null) {
+      int imageSize = getResources().getDimensionPixelSize(R.dimen.map_image_size_default);
+      _photoIconSize = new ImageSize(imageSize, imageSize);
+    }
+
+    return _photoIconSize;
   }
 
   //endregion
@@ -109,6 +121,12 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     super.onCreate(savedInstanceState);
 
     TravelAssistanceApp.getComponent(getActivity()).inject(this);
+
+
+    int imageSize = getResources().getDimensionPixelSize(R.dimen.map_image_size_default);
+    _photoIconSize = new ImageSize(imageSize, imageSize);
+    _imageOptions = new DisplayImageOptions.Builder()
+        .preProcessor(new CircleImageProcessor(imageSize)).build();
   }
 
   @Override
@@ -144,6 +162,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   @Override
   public void onMapReady(GoogleMap googleMap) {
     _mapView = googleMap;
+    MapHelper.configureMap(googleMap);
     if (_routeData != null) {
       displayRoute(_routeData);
     }
@@ -152,6 +171,27 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   //endregion
 
   //region Methods
+
+  public void addPositionMarker(Position position) {
+    if (_mapView == null) {
+      return;
+    }
+
+    com.jraska.pwmd.core.gps.LatLng latLng = position.latLng;
+
+    String title = "#" + ++_markerCounter + " " + _latLngFormat.format(latLng._latitude)
+        + ", " + _latLngFormat.format(latLng._longitude);
+    MarkerOptions markerOptions = new MarkerOptions().position(toGoogleLatLng(latLng))
+        .alpha(0.5f).title(title);
+    Marker marker = _mapView.addMarker(markerOptions);
+
+    if (_markers.isAtFullCapacity()) {
+      Marker toRemove = _markers.remove();
+      toRemove.remove();
+    }
+
+    _markers.add(marker);
+  }
 
   public void displayRoute(@NonNull RouteData routeData) {
     ArgumentCheck.notNull(routeData);
@@ -170,6 +210,13 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
 
   private void setupActivity(Activity activity) {
     activity.setTitle(_routeData.getTitle());
+
+    if (activity instanceof BaseActivity) {
+      BaseActivity baseActivity = (BaseActivity) activity;
+      if (baseActivity._toolbar != null) {
+        baseActivity._toolbar.setLogo(RoutesAdapter.getRouteIcon(_routeData));
+      }
+    }
   }
 
   protected void displayOnMap(RouteData routeData) {
@@ -247,7 +294,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     if (spec.getImageId() != null) {
       Uri pictureUri = _picturesManager.createPictureUri(spec.getImageId());
       ImageLoader.getInstance().loadImage(pictureUri.toString(),
-          _photoIconSize, _imageOptions, new ImageLoadListener(marker));
+          getPhotoIconSize(), _imageOptions, new ImageLoadListener(marker));
     }
   }
 
