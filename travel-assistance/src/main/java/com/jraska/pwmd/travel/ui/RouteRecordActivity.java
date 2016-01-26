@@ -232,7 +232,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   }
 
   @OnClick(R.id.record_btnSaveRoute) void saveRoute() {
-    TrackingManager.UserInput userInput = new TrackingManager.UserInput(getUserInputTitle());
+    TrackingManager.UserInput userInput = getUserInput();
     RouteData routeData = _trackingManager.getRouteData(userInput);
     if (routeData == null) {
       Toast.makeText(this, getString(R.string.noRouteToSave), Toast.LENGTH_SHORT).show();
