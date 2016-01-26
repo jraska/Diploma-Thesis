@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -80,10 +81,17 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     long durationSeconds = (rout.getEnd().getTime() - rout.getStart().getTime()) / 1000;
     String timeText = DateUtils.formatElapsedTime(durationSeconds);
     holder._routeDuration.setText(timeText);
+
+    int routeIcon = getRouteIcon(rout);
+    holder._routeIcon.setImageResource(routeIcon);
   }
 
   @Override public int getItemCount() {
     return _routes.size();
+  }
+
+  public static int getRouteIcon(RouteData rout) {
+    return R.drawable.ic_location_48dp;
   }
 
   //endregion
@@ -142,6 +150,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     @Bind(R.id.route_title) TextView _routeTitle;
     @Bind(R.id.route_date) TextView _routeDate;
     @Bind(R.id.route_duration) TextView _routeDuration;
+    @Bind(R.id.route_icon) ImageView _routeIcon;
 
     private final RoutesAdapter _routesAdapter;
 
