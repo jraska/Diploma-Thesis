@@ -39,10 +39,8 @@ public abstract class BaseActivity extends AppCompatActivity {
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
-    if (item.getItemId() == android.R.id.home) {
-      if (onNavigationIconClicked()) {
-        return true;
-      }
+    if (item.getItemId() == android.R.id.home && onNavigationIconClicked()) {
+      return true;
     }
 
     return super.onOptionsItemSelected(item);
