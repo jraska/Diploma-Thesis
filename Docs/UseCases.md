@@ -24,7 +24,7 @@
 * * Blizi se nahravka - Vibrace/Zvuk nahravka se prehraje
 * * Blizi se poznamka - Vibrace/Zvuk poznamka se zobrazi/prehraje
 * * Uzivatel se vzdaluje od dane cesty - Upozorneni
-* * Sipka reaguej na pohyb uzivatele
+* * Sipka reaguje na pohyb uzivatele
 
 * Volani pomoci
 * * Uzivatel zavola
