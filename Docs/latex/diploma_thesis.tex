@@ -5,7 +5,7 @@
 \documentclass{article}
 
 \usepackage[czech]{babel}
-\usepackage[T1]{fontenc} 
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{color}
 \usepackage{geometry}
@@ -14,12 +14,13 @@
 \usepackage[stable]{footmisc}
 \usepackage{hyperref}
 \usepackage{amsfonts}
- \usepackage{bbm} 
+ \usepackage{bbm}
  \usepackage{booktabs}
  \usepackage{url}
- 
- 
- 
+ \usepackage{nameref}
+
+
+
 % \ThesisAuthor{Josef Raška}
 
 % U bakalarske praxe neni nutne nazev zadavat
@@ -43,14 +44,14 @@
 %\EnglishAbstract{English abstract}
 
 %\EnglishKeywords{Android, development}
- 
+
 \title{Diplomová práce}
 \author{Josef Raška \(ras0029\)}
 \newtheorem{priklad}{Příklad}[section]
 \newtheorem{veta}{Věta}[section]
 \newtheorem{alg}{Algoritmus}[section]
 
-\newcommand{\usecase}[1]{\paragraph{#1}\mbox{}\\ \newline \noindent}
+\newcommand{\usecase}[2]{\paragraph{#1}\label{#2}\mbox{}\\ \newline \noindent}
 
 \begin{document}
 %\maketitle
@@ -94,6 +95,7 @@ nachází. Dále může aplikaci využít ke snadnému kontaktování svého asi
 \subsubsection{Uživatel Administrátor}
 
 \subsection{Use casy}
+\label{labelx}
 Pro uživatele klienta i asistenta jsou definovány případy užití zvlášť, neboť se celé chodvání
 a použití aplikace bude v obou případech značně lišit.
 
@@ -109,7 +111,7 @@ krokům přihlížet, pokud o to projeví zájem.
         \label{fig:UseCasesAsistant}
 \end{figure}
 
-%\usecase{name}
+%\usecase{name}{label}
 %\textbf{Aktéři:} Asisitent
 %
 %\vspace{0.1cm}
