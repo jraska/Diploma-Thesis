@@ -1,1 +1,1 @@
-include ':core', ':gps-battery-test', ':travel-assistance'
+include ':core', ':gps-battery-test', ':travel-assistance', ':latex-output-files-cleaner'
