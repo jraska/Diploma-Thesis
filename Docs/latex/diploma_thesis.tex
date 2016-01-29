@@ -1,6 +1,5 @@
 % !TEX TS-program = pdflatex
 % !TEX encoding = UTF-8 Unicode
-%\documentclass{article}
 
 %\documentclass[ing,male,java,dept460,oneside]{diploma}
 \documentclass{article}
@@ -12,8 +11,6 @@
 \usepackage{geometry}
 \usepackage{float}
 \usepackage{graphicx}
-\usepackage{amsmath}
-%\usepackage{amsthm}
 \usepackage[stable]{footmisc}
 \usepackage{hyperref}
 \usepackage{amsfonts}
@@ -47,12 +44,14 @@
 
 %\EnglishKeywords{Android, development}
  
-\title{Bakalářská práce}
+\title{Diplomová práce}
 \author{Josef Raška \(ras0029\)}
-\numberwithin{equation}{section}
 \newtheorem{priklad}{Příklad}[section]
 \newtheorem{veta}{Věta}[section]
 \newtheorem{alg}{Algoritmus}[section]
+
+\newcommand{\usecase}[1]{\paragraph{#1}\mbox{}\\ \newline \noindent}
+
 \begin{document}
 %\maketitle
 %\MakeTitlePages
@@ -76,6 +75,24 @@
         \label{fig:actors}
 \end{figure}
 
+\subsubsection{Uživatel Asistent}
+Jedná se o aktéra, který je zároveň klientovi s mentálním postižením odborným asistentem,
+jenž o něj pečuje a poskytuje mu podporu. Tento aktér je releventní k vytváření obsahu,
+který má pomoci klientovi k lepší orientaci při cestování a také mu může připravenou
+cestu předvést. Může také nahraná data editovat a případně je rozšiřovat. Může také zadat
+do aplikace zadat své kontaktní údaje pro možnou nečekanou situaci klienta na cestách, případně
+nastavit zálohování uložených dat pro zamezení jejich ztráty při ztrátě telefonu nebo jeho výměně
+za jiný.
+
+\subsubsection{Uživatel Klient}
+Klient je osoba pro kterou je aplikace primárně určena a má mu pomoci vyřešit problém,
+v tomto případě pomoci z orientací při cestování. Může si prohlížet obsah a zejména ho
+využívat při cestách v terénu. Uživatel by měl být upozorněn na všechny uložené a rozeznané
+data v závisloti na své pozici a měl by tak získat releventní informace k tomu, kde se právě
+nachází. Dále může aplikaci využít ke snadnému kontaktování svého asistenta.
+
+\subsubsection{Uživatel Administrátor}
+
 \subsection{Use casy}
 Pro uživatele klienta i asistenta jsou definovány případy užití zvlášť, neboť se celé chodvání
 a použití aplikace bude v obou případech značně lišit.
@@ -92,6 +109,27 @@ krokům přihlížet, pokud o to projeví zájem.
         \label{fig:UseCasesAsistant}
 \end{figure}
 
+%\usecase{name}
+%\textbf{Aktéři:} Asisitent
+%
+%\vspace{0.1cm}
+%\noindent
+%\textbf{Hlavní scénář:}
+%
+%\vspace{0.1cm}
+%\noindent
+%\textbf{Prekondice:}
+%
+%\vspace{0.1cm}
+%\noindent
+%\textbf{Spouštěč:}
+%
+%\vspace{0.1cm}
+%\noindent
+%\textbf{Rozšíření:}
+
+
+
 \subsubsection{Uživatel klient}
 Pro klienta jsou určeny více intuitivní a nenáročné operace vyžadující co nejméně aktivních
 kroků z klientovi strany. Aplikace by měla na základě polohy a dalších údajů sama rozpoznat,
@@ -103,6 +141,8 @@ co má v  danou chvíli udělat.
         \caption{Diagram use casů uživatele klient}
         \label{fig:UseCasesClient}
 \end{figure}
+
+
 
 \subsection{Použité nástroje}
 \subsubsection{draw.io (\url{http://www.draw.io})}
