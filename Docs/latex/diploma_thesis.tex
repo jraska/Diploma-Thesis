@@ -110,7 +110,7 @@ krokům přihlížet, pokud o to projeví zájem.
         \caption{Diagram use casů uživatele asistent}
         \label{fig:UseCasesAsistant}
 \end{figure}
-
+%
 %\usecase{name}{label}
 %\textbf{Aktéři:} Asisitent
 %
@@ -130,6 +130,174 @@ krokům přihlížet, pokud o to projeví zájem.
 %\noindent
 %\textbf{Rozšíření:}
 
+\usecase{Prohlížení seznamu nahraných cest}{prohizeniasistent}
+\textbf{Aktéři:} Asisitent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Na úvodní obrazovce jsou zobrazeny všechny dosud nahrané cesty ve seznamu pod sebou.
+Lze vidět pouze základní údaje a přiřazený obrázek pro snadnou orientaci. Uživatel se pomocí
+kliknutí na řádek může podívat na celý detail cesty, případně pomocí rychlých akcí spustit ihned asistenci
+a podobně.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel spustí aplikaci nebo se do ní vrátí pomocí notifikace v notifikační liště.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Rozšíření:}
+\begin{itemize}
+  \item \nameref{detailasistent}
+  \item \nameref{nfczapis}
+\end{itemize}
+
+
+\usecase{Zobrazení detailu cesty}{detailasistent}
+\textbf{Aktéři:} Asisitent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí detail cesty se všemi informacemi, ktré jsou o ní uloženy.
+Na mapě si může prohlédnout kudy vedla, an místech fotografií jsou miniatury fotek, při změně dopravních
+prostředků lze vidět ikony daných prostředků, zvukově a textové záznamy jsou označeny příslušnou ikonou.
+Při klepnutí na indikátor některého z těchto záznamů se zobrazí jeho popis, který uživatel dříve zadal.
+V detailu cesty lze poklepáním na tlačítko editovat přejít do módu editace cesty a všechny dříve zmíněné
+záznamy upravit
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Cesta je uložena.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepne na řádek se zobrazenou cestou v seznamu cest.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Rozšíření:}
+\begin{itemize}
+  \item \nameref{editacecesty}
+  \item \nameref{nfczapis}
+\end{itemize}
+
+\usecase{Zapsání cesty do NFC tagu}{nfczapis}
+\textbf{Aktéři:} Asisitent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí
+obrazovka, která jej instruuje k přiložení NFC tagu k telefonu. Jakmile telefon zaznamená blízkost tagu,
+zapíše do něj informaci o uložené cestě pro následné rychlé spouštění při přiložení tagu k telefonu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Cesta je uložena.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepne na ikonu NFC v detailu cesty nebo an rozšiřující menu v seznamu cest.
+
+
+\usecase{Editace cesty}{editacecesty}
+\textbf{Aktéři:} Asisitent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživatel může editovat všechny uložné informace o cestě. Přepsání editačních
+polí může změnit názvy a popis nahrané cesty, podržením a přetažením miniatur fotek nebo ikon dalších údajů na mapě může změnit
+jejich pozici a tudíž místo, kdy se později vyvolají. Dále může podržením přetažením měnit tvar trasy,
+při klepnutí na mapu přidat další záznamy. Jakmile je uživatel s editací spokojen, klepnutím na tlačíko
+uložit se údaje zapíší do databáze a následující asistence cestování bude tyto údaje používat.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Cesta je uložena.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepne na tlačítko editovat v detailu cesty.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Rozšíření:}
+\begin{itemize}
+  \item \nameref{pridanifotky}
+  \item \nameref{pridaninahravky}
+  \item \nameref{pridanipoznamky}
+  \item \nameref{pridanizmenyprostredku}
+\end{itemize}
+
+\usecase{Přídání fotky}{pridanifotky}
+\textbf{Aktéři:} Asisitent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Spustí se fotoaparát zařízení a uživatel může začít fotit. Jakmile pořídí
+fotografii, zobrazí se v aplikace okno pro zadání názvu fotky s dotazem pro uložení. Uživatel zadá název
+a klepnutím na potvrzovací tlačítko se fotka uloží mezi data aplikace a zobrazí mezi aktuálními fotografiemi
+na místě polohy uživatele v době pořízení fotografie.
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat fotku
+
+\usecase{Přídání zvukové nahrávky}{pridaninahravky}
+\textbf{Aktéři:} Asisitent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí obrazovka s textem mluvte a zvuk se zaznamenává.
+Když je uživatel hotov, klepne na tlačítko stop a může nahrávce přidat název, který se bude později zobrazovat.
+Poté tlačítkem nahrávku uloží mezi data aplikace s přiřazenou aktuální polohou uživatele.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat nahrávku
+
+\usecase{Přídání poznámky}{pridanipoznamky}
+\textbf{Aktéři:} Asisitent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí okno s textovým vstupem a vysune se klávesnice. Uživatel
+zadá textovou poznámku a po klepnutí na potvrzovací tlačítko se poznámka uloži s asociací k aktuální poloze
+uživatele.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat poznámku
+
+\usecase{Přídání změny dopravního prostředku}{pridanizmenyprostredku}
+\textbf{Aktéři:} Asisitent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Zobrazí se okno se nabídkou tlačítek s obrázkem dopravního prostředku.
+Uživatel může zároveň přidat ke změně dopravního prostředku přidat popis. Po kliknutí na
+tlačítko s dopravním prostředkem se změna dopravního prostředku uloží s asociovanou aktuální polohou
+uživatele.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko s aktuálním dopravním prostředkem
+
+
 
 
 \subsubsection{Uživatel klient}
@@ -146,8 +314,15 @@ co má v  danou chvíli udělat.
 
 
 
+
+
+
+
+
+
+
 \subsection{Použité nástroje}
-\subsubsection{draw.io (\url{http://www.draw.io})}
+\subsubsection{draw.io (http://www.draw.io)}
 Online nástroj pro tvorbu grafů, všech různých typů diagramů, myšlenkových map a dalších.
 Celý edior běží pouze v prohlížeči a synchronizuje vytvářené grafy s připojeným úložištěm
 Google Drive nebo Dropbox. Grafy jsou tak přístupné  a editovatelné odkudkoliv a aplikace
