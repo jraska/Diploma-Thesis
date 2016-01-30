@@ -16,6 +16,7 @@
 * * To same jako nahravani
 * * Zmena cesty pretazenim??
 * * Zapsani spusteni cesty do nfc tagu
+* * PRIDANI UPOZORNENI ZE V CASE X MA PODNIKNOUT CESTU
 
 * Navigace
 * * Spusteni navigace z ikony navigovat

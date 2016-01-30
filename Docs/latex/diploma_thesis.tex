@@ -112,7 +112,7 @@ krokům přihlížet, pokud o to projeví zájem.
 \end{figure}
 %
 %\usecase{name}{label}
-%\textbf{Aktéři:} Asisitent
+%\textbf{Aktéři:} Asistent
 %
 %\vspace{0.1cm}
 %\noindent
@@ -131,7 +131,7 @@ krokům přihlížet, pokud o to projeví zájem.
 %\textbf{Rozšíření:}
 
 \usecase{Prohlížení seznamu nahraných cest}{prohizeniasistent}
-\textbf{Aktéři:} Asisitent
+\textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
 \noindent
@@ -148,13 +148,14 @@ a podobně.
 \noindent
 \textbf{Rozšíření:}
 \begin{itemize}
+  \item \nameref{nahravanicesty}
   \item \nameref{detailasistent}
   \item \nameref{nfczapis}
 \end{itemize}
 
 
 \usecase{Zobrazení detailu cesty}{detailasistent}
-\textbf{Aktéři:} Asisitent
+\textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
 \noindent
@@ -182,7 +183,7 @@ záznamy upravit
 \end{itemize}
 
 \usecase{Zapsání cesty do NFC tagu}{nfczapis}
-\textbf{Aktéři:} Asisitent
+\textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
 \noindent
@@ -200,7 +201,7 @@ zapíše do něj informaci o uložené cestě pro následné rychlé spouštěn�
 
 
 \usecase{Editace cesty}{editacecesty}
-\textbf{Aktéři:} Asisitent
+\textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
 \noindent
@@ -226,10 +227,14 @@ uložit se údaje zapíší do databáze a následující asistence cestování 
   \item \nameref{pridaninahravky}
   \item \nameref{pridanipoznamky}
   \item \nameref{pridanizmenyprostredku}
+    \item \nameref{odebranifotky}
+    \item \nameref{odebraninahravky}
+    \item \nameref{odebranipoznamky}
+    \item \nameref{odebranizmenyprostredku}
 \end{itemize}
 
 \usecase{Přídání fotky}{pridanifotky}
-\textbf{Aktéři:} Asisitent
+\textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
 \noindent
@@ -246,7 +251,7 @@ na místě polohy uživatele v době pořízení fotografie.
 \textbf{Spouštěč:} Uživatel klepl na tlačítko přidat fotku
 
 \usecase{Přídání zvukové nahrávky}{pridaninahravky}
-\textbf{Aktéři:} Asisitent
+\textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
 \noindent
@@ -263,7 +268,7 @@ Poté tlačítkem nahrávku uloží mezi data aplikace s přiřazenou aktuální
 \textbf{Spouštěč:} Uživatel klepl na tlačítko přidat nahrávku
 
 \usecase{Přídání poznámky}{pridanipoznamky}
-\textbf{Aktéři:} Asisitent
+\textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
 \noindent
@@ -280,7 +285,7 @@ uživatele.
 \textbf{Spouštěč:} Uživatel klepl na tlačítko přidat poznámku
 
 \usecase{Přídání změny dopravního prostředku}{pridanizmenyprostredku}
-\textbf{Aktéři:} Asisitent
+\textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
 \noindent
@@ -295,7 +300,211 @@ uživatele.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Uživatel klepl na tlačítko s aktuálním dopravním prostředkem
+\textbf{Spouštěč:} Uživatel klepl na tlačítko s aktuálním dopravním prostředkem.
+
+
+\usecase{Nahrávání cesty}{nahravanicesty}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí nahrávací okno, kde může vidět svou aktuální pozici
+a po klepnutí na tlačítko nahrávat začne aplikace sbírat data o poloze a umožní mu přidávat další data
+k právě nahrávené pozici. V notifikační liště se objeví notifikace o tom, že aplikace právě nahrává.
+Uživatel může v tu chvíli odejít z aplikace, případně navštívit její jiné obrazovky a poté se do nahrávání vrátit,
+aniž by ztratil právě nahrávaná data. Stejně tak po opuštění aplikace při nahrávání se do ní může vrátit
+klepnutím na zobrazenou notifikaci.
+
+Na mapě vidí uživatel dosud nahranou a uloženou cestu a případné přidané data.
+Klepnutím na tlačítko uložit se aktuálně nahraní data a média uloží, případně aktualizují.
+Pokud uživatel dokončil nahrávání cesty, klepne na tlačítko uložit a poté tlačítkem stop zastaví nahrávání,
+notifikace zmizí a cesta je v seznamu cest připraveno pro spuštění asistence, případně následnou editaci.
+Pokud uživatel ukončí nahrávání bez uložení, je na toto upozorněn a při potvrzení ukončení jsou nahraná data
+smazána.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel má v telefonu povolené získávání polohy pomocí GPS..
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepne na tlačítko nahrávat v seznamu nahraných cest.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Rozšíření:}
+\begin{itemize}
+  \item \nameref{pridanifotky}
+  \item \nameref{pridaninahravky}
+  \item \nameref{pridanipoznamky}
+  \item \nameref{pridanizmenyprostredku}
+  \item \nameref{odebranifotky}
+  \item \nameref{odebraninahravky}
+  \item \nameref{odebranipoznamky}
+  \item \nameref{odebranizmenyprostredku}
+\end{itemize}
+
+
+\usecase{Odebrání fotky}{odebranifotky}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem zda chce fotku odebrat. Po klepnutí na
+potvrzovací tlačítko je fotka smazána z úložiště a odstraněna její miniatura z aktuální cesty.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou fotografii.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel podrží prst na miniatuře fotografie a vybere možnost smazat.
+
+
+
+\usecase{Odebrání zvukové nahrávky}{odebraninahravky}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí dotaz zda chce nahrávku opravdu smazat, po potvrzení
+se uložená nahrávka odstraní a zmizí její ikona.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou nahrávku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel podrží prst na ikoně nahrávky a vybere možnost smazat.
+
+
+
+\usecase{Odebrání poznámky}{odebranipoznamky}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem na smazání poznámky. Po potvrzení se
+nahrávka smaže a zmizí ikona indikující nahrávku.
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou poznámku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel podrží prst na ikoně poznámky a vybere možnost smazat.
+
+
+\usecase{Odebrání změny dopravního prostředku}{odebranizmenyprostredku}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem na smazání změny dopravního prostředku.
+Po potvrzení se nahrávka smaže a zmizí ikona indikující nahrávku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou změnu dopravního prostředku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel podrží prst na ikoně změny dopravního prostředku a vybere možnost smazat.
+
+
+\usecase{Nastavení údajů asistenta}{nastaveniudaju}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí obrazovka s nastavením údajů, kde může vyplnit své údaje.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko nastavení.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Rozšíření:}
+\begin{itemize}
+  \item \nameref{nastavenicisla}
+  \item \nameref{nastaveniemailu}
+\end{itemize}
+
+\usecase{Nastavení telefonního čísla asistenta}{nastavenicisla}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Editovatelné pole pro telefonní číslo se zvýrazní a vysune se numerická klávesnice.
+Uživatel zadá své telefonní číslo, které se automaticky formátuje do přívětivějšího formátu. Po ukončení
+editace je telefonní číslo automaticky uloženo. Pokud telefonní číslo neodpovídá formátu telefonních čísel
+v České Republice, uživatel je na toto upozorněn a je vyzván k úpravě vstupu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na editační pole s telefonním číslem asistenta.
+
+
+\usecase{Nastavení emailu asistenta}{nastaveniemailu}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Editovatelné pole pro emailovou adresu se zvýrazní a vysune se klávesnice.
+Uživatel zadá svou emailovou adresu. Po ukončení editace je emailová adresa automaticky uložena.
+Pokud emailová adresa neodpovídá správnému formátu emailové adresy, uživatel je na toto upozorněn
+a vyzván k úpravě vstupu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na editovatelné pole emailové adresy.
+
+
+\usecase{Nastavení zamčení editace}{nastavenizamceni}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí editovatelné pole, kde může zadat heslo pro zamčení editace
+obsahu aplikace. Pokud toto heslo nezadá, aplikace bue stále v módu edotace a uložená data bude možné upravit.
+Uživatel zadá heslo, to bude uloženo a bude nyní vyžadováno pro zpřistupnění úprav cest, případně nastavení.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko nastavení zamčení.
+
+\usecase{Nastavení zálohování}{nastavenizalohovani}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí výběr z listu zda chce zálohovat manuálně, jednou za den, týden
+nebo za měsíc. Uživatel vybere jednu z možností a podle výběru se naplánují příslušné akce.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel má na zařízení přidán Google účet.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko nastavení zálohování.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
