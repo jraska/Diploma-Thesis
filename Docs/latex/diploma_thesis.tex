@@ -324,7 +324,7 @@ smazána.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Prekondice:} Uživatel má v telefonu povolené získávání polohy pomocí GPS..
+\textbf{Prekondice:} Uživatel má v telefonu povolené získávání polohy pomocí GPS.
 
 \vspace{0.1cm}
 \noindent
@@ -521,6 +521,303 @@ co má v  danou chvíli udělat.
         \label{fig:UseCasesClient}
 \end{figure}
 
+
+\usecase{Prohlížení seznamu nahraných cest}{prohlizeniklient}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Na úvodní obrazovce jsou pod sebou vyobrazeny všechny cesty, pro které může
+uživateli aplikace poskytnout asistenci. Uživatel si prohlíží cesty, které mají zobrazeny pouze
+základní informace a jsou označeny vybraným obrázkem pro snažsí orientaci. Uživatel si poklepnutím
+na řádek cesty může dostat na její detail případně rychlými akcemi spusti navigaci.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Užvatel klepne na ikonu aplikace v telefonu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Rozšíření:}
+\begin{itemize}
+  \item \nameref{detailklient}
+  \item \nameref{asistence}
+\end{itemize}
+
+\usecase{Detail nahrané cesty}{detailklient}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Klientovi se zobrazí obrazovka se všemi údaji, které mu mají na cestě pomoci.
+Fotky jsou vidět jako miniatury na místě, kde byly pořízeny, podobně nahrávky, změny dopravního prostředku
+a poznámky, které jsou reprezentovány svými příslušnými jednoduchými ikonami.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel má nahranou cestu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepne na řádek cesty v seznamu nahraných cest.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Rozšíření:}
+\begin{itemize}
+  \item \nameref{asistence}
+\end{itemize}
+
+
+\usecase{Asistence cestování}{asistence}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí jednoduchá mapka s vyznačenou cestou, kterou má absolvovat.
+Zobrazí se mu všechny dostupné informace jako čas do cíle, doporučený směr, nejbližší nahrané fotky,
+nahrávky nebo poznámky. Zkontroluje se podle uožených statistik, zda bude uživateli stačit baterie
+k absolvování cesty a pokud ne, bude na to upozorněn.
+Aplikace využívá klientovu polohu pro zobrazení relevantních nahraných informací
+a snaží se mu napovífat následující směr pomocí zobrazené šipky. Jak se klient pohybuje, aplikace mu
+poskytuje nahraný obsah asisitentem, který by mu měl pomoci v danou chvíli se lépe zorientovat.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Klient má nahranou cestu a spustil asistenci cestování po této cestě.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Klient klepl na obrázek navigovat.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Rozšíření:}
+\begin{itemize}
+  \item \nameref{zobrazenifotky}
+  \item \nameref{prehraninahravky}
+  \item \nameref{zobrazenipoznamky}
+  \item \nameref{upozorneniprostredek}
+  \item \nameref{analyzabaterie}
+  \item \nameref{zobrazenismeru}
+  \item \nameref{upozorneninespravnysmer}
+\end{itemize}
+
+\usecase{Zobrazení fotografie}{zobrazenifotky}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživatel se přiblíží k místu pořízení fotografie, aplikace toto rozpozná
+a upozorní uživatele na přitomnost fotky, která se zobrazí na dobu, po kterou je uživatel nablízku.
+Přes spodní část fotky je zobrazen popisek, který této fotce dříve zadal asistent.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel má k dané cestě uloženou fotku..
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel se přiblíží místu pořízení fotky nebo klepne na miniaturu fotky.
+
+
+\usecase{Přehrání uložené zvukové nahrávky}{prehraninahravky}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživatel se se zapnutou asistencí cestování přiblíží místu,
+kde byla dríve za pomoci asistenta pořízena zvuková nahrávka. Uložená nahrávka se načte
+a začne se uživateli přehrávat. Zárove%n se zobrazí popis nahrávky a tlačítko umožňující
+nahrávku přehrát znovu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel má k dané cestě uloženou zvukovou nahrávku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel se přiblíži k místu pořízení nahrávky nebo klepne na ikonu nahrávky.
+
+\usecase{Zobrazení uložené poznámky}{zobrazenipoznamky}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživatel je při přiblížení se místu poznámky upozorněn a poznámka se zobrazí.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel má k dané cestě uloženou poznámku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel se přiblíží k místu pořízení poznámky nebo klepne na ikonu poznámky.
+
+\usecase{Upozornění na změnu dopravního prostředku}{upozorneniprostredek}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli je při přiblížení ke změně dopravního prostředku upozorněn,
+zobrazí se mu obrázek dopravního prostředku, do kterého má nastoupit nebo naopak vystoupit spolu
+s textem, který byl při nahrávání cesty zadán.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel má uloženo upozornění na změnu dopravního prostředku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel se přiblíží k místu změny dopravního prostředku.
+
+
+
+\usecase{Analýza spotřeby baterie}{analyzabaterie}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Během cestování se ukládají průběžně data o spotřebě beterie a délce trvání
+cesty. Data jsou poté spolu s předchozími záznamy statisticky analyzována a je odhadována a upřesňována
+očekávaná výdrž baterie během navigace. Na základě těchto analýz může být uživatel poté upozorněn na
+nebezpečí vybití baterie v terénu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel využívá asistence při cestování
+
+
+
+\usecase{Zobrazení doporučeného směru}{zobrazenismeru}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Na základě pohybu uživatele jsou data vyhodnocována a vypočítán aktuální směr uživatele.
+Ten se porovná s očekávaným a uloženým směrem a podle rozdílu se zobrazí směr, kterým by se uživatel měl ideálně
+vydat. Informace je zobrazena v dolní čáasti obrazovky v podobě jednoduché šípky.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel se pohybuje po cestě nebo chodníku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel využívá asistence při cestování.
+
+
+\usecase{Upozornění na nesprávný směr}{upozorneninespravnysmer}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Když se uživatel nepohybuje dle očekávané trasy, aplikace může vyhodnotit
+tento pohyb jako nesprávný. V takovém případě začne uživatele upozorňovat a pokud směr nezmění nebo
+neklepne na tlačítko známý směr, bude s upozorňováním pokračovat a nabízet směr správný.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel se během asistence cestování určitou dobu pohybuje jiným, než očekávaným směrem.
+
+
+\usecase{Spuštění asistence cestování po přiložení NFC tagy k telefonu}{prilozeninfc}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Klient přiloží telefon k nálepce, kartě nebo čemukoliv jinému, co bylo použito
+jako NFC tag a obsahuje informace o cestě. Tato informace se přečte a spustí se aplikace se zapnutou
+asistencí cestování na cetsu zapsanou na tagu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Klient má k dispozici NFC tag, na který byla dříve zapsána informace o cestě.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Klient přiloží telefon k NFC tagu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Rozšíření:}
+\begin{itemize}
+  \item \nameref{pridanifotky}
+\end{itemize}
+
+\usecase{Vyvolání obrazovky pomoci}{pomoc}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zbrazí obrazovka s volbami rychlých akcí,
+které kontaktují jeho asistenta.
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} V zařízení jsou uloženy kontaktní údaje asistenta.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepne na obrázek pomoc v aplikaci.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Rozšíření:}
+\begin{itemize}
+  \item \nameref{pomocvolani}
+  \item \nameref{pomocsms}
+  \item \nameref{pomoemail}
+\end{itemize}
+
+\usecase{Volání asistentovi}{pomocvolani}
+\textbf{Aktéři:} Klient, Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí obrazovka, kde vidí vytáčení čísla na svého asistenta.
+Hovor se poté uskuteční.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} V aplikaci je uloženo telefonní číslo asistenta.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepne na číslo asistenta.
+
+\usecase{Poslání SMS zprávy s aktuální polohou}{pomocsms}
+\textbf{Aktéři:} Klient, Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí potvrzení o odeslání SMS zprávy a její znění.
+Asistentovi se zobrazí zpráva, ve které je také odkaz na mapu s GPS polohou klienta v době odesílání zprávy.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} V aplikaci je uloženo telefonní číslo asistenta.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepne na tlačítko poslat SMS.
+
+
+\usecase{}{pomoemail}
+\textbf{Aktéři:} Klient, Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Kientovi se otevře emailová aplikace s nachystanou zprávou a adresou aisstenta
+a klient klepne odeslat. Asistentovi přijde email s žádostí o pomoc a odkazem na mapu s GPS polohou
+klienta v době odeslání emailu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} V aplikaci je uložena emailová adresa asistenta.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepne na tlačítko odeslat email.
 
 
 
