@@ -51,7 +51,8 @@
 \newtheorem{veta}{Věta}[section]
 \newtheorem{alg}{Algoritmus}[section]
 
-\newcommand{\usecase}[2]{\paragraph{#1}\label{#2}\mbox{}\\ \newline \noindent}
+\newcommand{\usecase}[2]{\subsubsection{#1}\label{#2}}
+\setcounter{tocdepth}{2}
 
 \begin{document}
 %\maketitle
@@ -76,9 +77,12 @@
         \label{fig:actors}
 \end{figure}
 
+Pro uživatele klienta i asistenta jsou definovány případy užití zvlášť, neboť se celé chování
+a použití aplikace bude v obou případech značně lišit.
+
 \subsubsection{Uživatel Asistent}
 Jedná se o aktéra, který je zároveň klientovi s mentálním postižením odborným asistentem,
-jenž o něj pečuje a poskytuje mu podporu. Tento aktér je releventní k vytváření obsahu,
+jenž o něj pečuje a poskytuje mu podporu. Tento aktér je relevantní k vytváření obsahu,
 který má pomoci klientovi k lepší orientaci při cestování a také mu může připravenou
 cestu předvést. Může také nahraná data editovat a případně je rozšiřovat. Může také zadat
 do aplikace zadat své kontaktní údaje pro možnou nečekanou situaci klienta na cestách, případně
@@ -89,17 +93,15 @@ za jiný.
 Klient je osoba pro kterou je aplikace primárně určena a má mu pomoci vyřešit problém,
 v tomto případě pomoci z orientací při cestování. Může si prohlížet obsah a zejména ho
 využívat při cestách v terénu. Uživatel by měl být upozorněn na všechny uložené a rozeznané
-data v závisloti na své pozici a měl by tak získat releventní informace k tomu, kde se právě
+data v závislosti na své pozici a měl by tak získat relevantní informace k tomu, kde se právě
 nachází. Dále může aplikaci využít ke snadnému kontaktování svého asistenta.
+
+
 
 \subsubsection{Uživatel Administrátor}
 
-\subsection{Use casy}
-\label{labelx}
-Pro uživatele klienta i asistenta jsou definovány případy užití zvlášť, neboť se celé chodvání
-a použití aplikace bude v obou případech značně lišit.
 
-\subsubsection{Uživatel asistent}
+\subsection{Use casy uživatel Asistent}
 Pro uživatele asistnta jsou určeny složitější operace pro vytváření interaktivního obsahu pro klienta,
 nastavování aplikace a prezentace klientovi. Pro use casy asistenta platí, že klient může těmto
 krokům přihlížet, pokud o to projeví zájem.
@@ -159,7 +161,7 @@ a podobně.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí detail cesty se všemi informacemi, ktré jsou o ní uloženy.
+\textbf{Hlavní scénář:} Uživateli se zobrazí detail cesty se všemi informacemi, které jsou o ní uloženy.
 Na mapě si může prohlédnout kudy vedla, an místech fotografií jsou miniatury fotek, při změně dopravních
 prostředků lze vidět ikony daných prostředků, zvukově a textové záznamy jsou označeny příslušnou ikonou.
 Při klepnutí na indikátor některého z těchto záznamů se zobrazí jeho popis, který uživatel dříve zadal.
@@ -205,10 +207,10 @@ zapíše do něj informaci o uložené cestě pro následné rychlé spouštěn�
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Uživatel může editovat všechny uložné informace o cestě. Přepsání editačních
+\textbf{Hlavní scénář:} Uživatel může editovat všechny uložené informace o cestě. Přepsání editačních
 polí může změnit názvy a popis nahrané cesty, podržením a přetažením miniatur fotek nebo ikon dalších údajů na mapě může změnit
 jejich pozici a tudíž místo, kdy se později vyvolají. Dále může podržením přetažením měnit tvar trasy,
-při klepnutí na mapu přidat další záznamy. Jakmile je uživatel s editací spokojen, klepnutím na tlačíko
+při klepnutí na mapu přidat další záznamy. Jakmile je uživatel s editací spokojen, klepnutím na tlačítko
 uložit se údaje zapíší do databáze a následující asistence cestování bude tyto údaje používat.
 
 \vspace{0.1cm}
@@ -233,7 +235,7 @@ uložit se údaje zapíší do databáze a následující asistence cestování 
     \item \nameref{odebranizmenyprostredku}
 \end{itemize}
 
-\usecase{Přídání fotky}{pridanifotky}
+\usecase{Přidání fotky}{pridanifotky}
 \textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
@@ -250,7 +252,7 @@ na místě polohy uživatele v době pořízení fotografie.
 \noindent
 \textbf{Spouštěč:} Uživatel klepl na tlačítko přidat fotku
 
-\usecase{Přídání zvukové nahrávky}{pridaninahravky}
+\usecase{Přidání zvukové nahrávky}{pridaninahravky}
 \textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
@@ -267,13 +269,13 @@ Poté tlačítkem nahrávku uloží mezi data aplikace s přiřazenou aktuální
 \noindent
 \textbf{Spouštěč:} Uživatel klepl na tlačítko přidat nahrávku
 
-\usecase{Přídání poznámky}{pridanipoznamky}
+\usecase{Přidání poznámky}{pridanipoznamky}
 \textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
 \noindent
 \textbf{Hlavní scénář:} Uživateli se zobrazí okno s textovým vstupem a vysune se klávesnice. Uživatel
-zadá textovou poznámku a po klepnutí na potvrzovací tlačítko se poznámka uloži s asociací k aktuální poloze
+zadá textovou poznámku a po klepnutí na potvrzovací tlačítko se poznámka uloží s asociací k aktuální poloze
 uživatele.
 
 \vspace{0.1cm}
@@ -284,7 +286,7 @@ uživatele.
 \noindent
 \textbf{Spouštěč:} Uživatel klepl na tlačítko přidat poznámku
 
-\usecase{Přídání změny dopravního prostředku}{pridanizmenyprostredku}
+\usecase{Přidání změny dopravního prostředku}{pridanizmenyprostredku}
 \textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
@@ -310,7 +312,7 @@ uživatele.
 \noindent
 \textbf{Hlavní scénář:} Uživateli se zobrazí nahrávací okno, kde může vidět svou aktuální pozici
 a po klepnutí na tlačítko nahrávat začne aplikace sbírat data o poloze a umožní mu přidávat další data
-k právě nahrávené pozici. V notifikační liště se objeví notifikace o tom, že aplikace právě nahrává.
+k právě nahrávané pozici. V notifikační liště se objeví notifikace o tom, že aplikace právě nahrává.
 Uživatel může v tu chvíli odejít z aplikace, případně navštívit její jiné obrazovky a poté se do nahrávání vrátit,
 aniž by ztratil právě nahrávaná data. Stejně tak po opuštění aplikace při nahrávání se do ní může vrátit
 klepnutím na zobrazenou notifikaci.
@@ -469,8 +471,8 @@ a vyzván k úpravě vstupu.
 \vspace{0.1cm}
 \noindent
 \textbf{Hlavní scénář:} Uživateli se zobrazí editovatelné pole, kde může zadat heslo pro zamčení editace
-obsahu aplikace. Pokud toto heslo nezadá, aplikace bue stále v módu edotace a uložená data bude možné upravit.
-Uživatel zadá heslo, to bude uloženo a bude nyní vyžadováno pro zpřistupnění úprav cest, případně nastavení.
+obsahu aplikace. Pokud toto heslo nezadá, aplikace bude stále v módu editace a uložená data bude možné upravit.
+Uživatel zadá heslo, to bude uloženo a bude nyní vyžadováno pro zpřístupnění úprav cest, případně nastavení.
 
 \vspace{0.1cm}
 \noindent
@@ -509,7 +511,7 @@ nebo za měsíc. Uživatel vybere jednu z možností a podle výběru se naplán
 
 
 
-\subsubsection{Uživatel klient}
+\subsection{Use casy uživatele Klient}
 Pro klienta jsou určeny více intuitivní a nenáročné operace vyžadující co nejméně aktivních
 kroků z klientovi strany. Aplikace by měla na základě polohy a dalších údajů sama rozpoznat,
 co má v  danou chvíli udělat.
@@ -529,12 +531,12 @@ co má v  danou chvíli udělat.
 \noindent
 \textbf{Hlavní scénář:} Na úvodní obrazovce jsou pod sebou vyobrazeny všechny cesty, pro které může
 uživateli aplikace poskytnout asistenci. Uživatel si prohlíží cesty, které mají zobrazeny pouze
-základní informace a jsou označeny vybraným obrázkem pro snažsí orientaci. Uživatel si poklepnutím
-na řádek cesty může dostat na její detail případně rychlými akcemi spusti navigaci.
+základní informace a jsou označeny vybraným obrázkem pro snažší orientaci. Uživatel si poklepnutím
+na řádek cesty může dostat na její detail případně rychlými akcemi spustí navigaci.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Užvatel klepne na ikonu aplikace v telefonu.
+\textbf{Spouštěč:} Uživatel klepne na ikonu aplikace v telefonu.
 
 \vspace{0.1cm}
 \noindent
@@ -576,11 +578,11 @@ a poznámky, které jsou reprezentovány svými příslušnými jednoduchými ik
 \noindent
 \textbf{Hlavní scénář:} Uživateli se zobrazí jednoduchá mapka s vyznačenou cestou, kterou má absolvovat.
 Zobrazí se mu všechny dostupné informace jako čas do cíle, doporučený směr, nejbližší nahrané fotky,
-nahrávky nebo poznámky. Zkontroluje se podle uožených statistik, zda bude uživateli stačit baterie
+nahrávky nebo poznámky. Zkontroluje se podle uložených statistik, zda bude uživateli stačit baterie
 k absolvování cesty a pokud ne, bude na to upozorněn.
 Aplikace využívá klientovu polohu pro zobrazení relevantních nahraných informací
-a snaží se mu napovífat následující směr pomocí zobrazené šipky. Jak se klient pohybuje, aplikace mu
-poskytuje nahraný obsah asisitentem, který by mu měl pomoci v danou chvíli se lépe zorientovat.
+a snaží se mu napovídat následující směr pomocí zobrazené šipky. Jak se klient pohybuje, aplikace mu
+poskytuje nahraný obsah asistentem, který by mu měl pomoci v danou chvíli se lépe zorientovat.
 
 \vspace{0.1cm}
 \noindent
@@ -609,7 +611,7 @@ poskytuje nahraný obsah asisitentem, který by mu měl pomoci v danou chvíli s
 \vspace{0.1cm}
 \noindent
 \textbf{Hlavní scénář:} Uživatel se přiblíží k místu pořízení fotografie, aplikace toto rozpozná
-a upozorní uživatele na přitomnost fotky, která se zobrazí na dobu, po kterou je uživatel nablízku.
+a upozorní uživatele na přítomnost fotky, která se zobrazí na dobu, po kterou je uživatel nablízku.
 Přes spodní část fotky je zobrazen popisek, který této fotce dříve zadal asistent.
 
 \vspace{0.1cm}
@@ -628,7 +630,7 @@ Přes spodní část fotky je zobrazen popisek, který této fotce dříve zadal
 \noindent
 \textbf{Hlavní scénář:} Uživatel se se zapnutou asistencí cestování přiblíží místu,
 kde byla dríve za pomoci asistenta pořízena zvuková nahrávka. Uložená nahrávka se načte
-a začne se uživateli přehrávat. Zárove%n se zobrazí popis nahrávky a tlačítko umožňující
+a začne se uživateli přehrávat. Zároveň se zobrazí popis nahrávky a tlačítko umožňující
 nahrávku přehrát znovu.
 
 \vspace{0.1cm}
@@ -637,7 +639,7 @@ nahrávku přehrát znovu.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Uživatel se přiblíži k místu pořízení nahrávky nebo klepne na ikonu nahrávky.
+\textbf{Spouštěč:} Uživatel se přiblíží k místu pořízení nahrávky nebo klepne na ikonu nahrávky.
 
 \usecase{Zobrazení uložené poznámky}{zobrazenipoznamky}
 \textbf{Aktéři:} Klient
@@ -696,7 +698,7 @@ nebezpečí vybití baterie v terénu.
 \noindent
 \textbf{Hlavní scénář:} Na základě pohybu uživatele jsou data vyhodnocována a vypočítán aktuální směr uživatele.
 Ten se porovná s očekávaným a uloženým směrem a podle rozdílu se zobrazí směr, kterým by se uživatel měl ideálně
-vydat. Informace je zobrazena v dolní čáasti obrazovky v podobě jednoduché šípky.
+vydat. Informace je zobrazena v dolní části obrazovky v podobě jednoduché šípky.
 
 \vspace{0.1cm}
 \noindent
@@ -728,7 +730,7 @@ neklepne na tlačítko známý směr, bude s upozorňováním pokračovat a nab�
 \noindent
 \textbf{Hlavní scénář:} Klient přiloží telefon k nálepce, kartě nebo čemukoliv jinému, co bylo použito
 jako NFC tag a obsahuje informace o cestě. Tato informace se přečte a spustí se aplikace se zapnutou
-asistencí cestování na cetsu zapsanou na tagu.
+asistencí cestování na cestu zapsanou na tagu.
 
 \vspace{0.1cm}
 \noindent
@@ -766,7 +768,7 @@ které kontaktují jeho asistenta.
 \begin{itemize}
   \item \nameref{pomocvolani}
   \item \nameref{pomocsms}
-  \item \nameref{pomoemail}
+  \item \nameref{pomocemail}
 \end{itemize}
 
 \usecase{Volání asistentovi}{pomocvolani}
@@ -802,12 +804,12 @@ Asistentovi se zobrazí zpráva, ve které je také odkaz na mapu s GPS polohou 
 \textbf{Spouštěč:} Uživatel klepne na tlačítko poslat SMS.
 
 
-\usecase{}{pomoemail}
+\usecase{Poslání emailu s aktuální polohou}{pomocemail}
 \textbf{Aktéři:} Klient, Asistent
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Kientovi se otevře emailová aplikace s nachystanou zprávou a adresou aisstenta
+\textbf{Hlavní scénář:} Kientovi se otevře emailová aplikace s nachystanou zprávou a adresou asistenta
 a klient klepne odeslat. Asistentovi přijde email s žádostí o pomoc a odkazem na mapu s GPS polohou
 klienta v době odeslání emailu.
 
@@ -830,12 +832,12 @@ klienta v době odeslání emailu.
 \subsection{Použité nástroje}
 \subsubsection{draw.io (http://www.draw.io)}
 Online nástroj pro tvorbu grafů, všech různých typů diagramů, myšlenkových map a dalších.
-Celý edior běží pouze v prohlížeči a synchronizuje vytvářené grafy s připojeným úložištěm
+Celý editor běží pouze v prohlížeči a synchronizuje vytvářené grafy s připojeným úložištěm
 Google Drive nebo Dropbox. Grafy jsou tak přístupné  a editovatelné odkudkoliv a aplikace
-je opravdu pokročilá a při práci není vůbec poznat, že vše probíhá pouze v prohížeči.
+je opravdu pokročilá a při práci není vůbec poznat, že vše probíhá pouze v prohlížeči.
 Umožňuje sdílení i export zhotovených diagramů do mnoha formátů a je tedy velice snadné
 sdílet a používat vytvořenou práci.
-Nástroj byl použit pro vytváření use case diagramů a třídnách diagramů v této práci.
+Nástroj byl použit pro vytváření use case diagramů a třídních diagramů v této práci.
 \begin{figure}[H]
         \centering
                 \includegraphics[scale=0.2]{img/drawiologo.png}
