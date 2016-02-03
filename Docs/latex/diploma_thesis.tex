@@ -72,13 +72,13 @@
 \subsection{Popis aktérů}
 \begin{figure}[H]
         \centering
-                \includegraphics[scale=0.15]{img/actors.png}
+                \includegraphics[scale=0.14]{img/actors.png}
         \caption{Aktéři systému}
         \label{fig:actors}
 \end{figure}
 
 Pro uživatele klienta i asistenta jsou definovány případy užití zvlášť, neboť se celé chování
-a použití aplikace bude v obou případech značně lišit.
+a použití aplikace bude v obou případech značně lišit. Grafické zobrazní aktéru je na obrázku~\ref{fig:actors}.
 
 \subsubsection{Uživatel Asistent}
 Jedná se o aktéra, který je zároveň klientovi s mentálním postižením odborným asistentem,
@@ -102,9 +102,9 @@ nachází. Dále může aplikaci využít ke snadnému kontaktování svého asi
 
 
 \subsection{Use casy uživatel Asistent}
-Pro uživatele asistnta jsou určeny složitější operace pro vytváření interaktivního obsahu pro klienta,
+Pro uživatele asistenta jsou určeny složitější operace pro vytváření interaktivního obsahu pro klienta,
 nastavování aplikace a prezentace klientovi. Pro use casy asistenta platí, že klient může těmto
-krokům přihlížet, pokud o to projeví zájem.
+krokům přihlížet, pokud o to projeví zájem. Use casy asistenta a jejich vztahy lze vidět na obrázku~\ref{fig:UseCasesAsistant}.
 
 \begin{figure}[H]
         \centering
@@ -112,27 +112,8 @@ krokům přihlížet, pokud o to projeví zájem.
         \caption{Diagram use casů uživatele asistent}
         \label{fig:UseCasesAsistant}
 \end{figure}
-%
-%\usecase{name}{label}
-%\textbf{Aktéři:} Asistent
-%
-%\vspace{0.1cm}
-%\noindent
-%\textbf{Hlavní scénář:}
-%
-%\vspace{0.1cm}
-%\noindent
-%\textbf{Prekondice:}
-%
-%\vspace{0.1cm}
-%\noindent
-%\textbf{Spouštěč:}
-%
-%\vspace{0.1cm}
-%\noindent
-%\textbf{Rozšíření:}
 
-\usecase{Prohlížení seznamu nahraných cest}{prohizeniasistent}
+\usecase{Prohlížení seznamu nahraných cest}{prohlizeniasistent}
 \textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
@@ -140,7 +121,7 @@ krokům přihlížet, pokud o to projeví zájem.
 \textbf{Hlavní scénář:} Na úvodní obrazovce jsou zobrazeny všechny dosud nahrané cesty ve seznamu pod sebou.
 Lze vidět pouze základní údaje a přiřazený obrázek pro snadnou orientaci. Uživatel se pomocí
 kliknutí na řádek může podívat na celý detail cesty, případně pomocí rychlých akcí spustit ihned asistenci
-a podobně.
+a podobně. Obrazovku prohlížení cest lze vidět na obrázku~\ref{fig:prohlizeniasistent}.
 
 \vspace{0.1cm}
 \noindent
@@ -155,6 +136,13 @@ a podobně.
   \item \nameref{nfczapis}
 \end{itemize}
 
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/seznamcest.png}
+        \caption{Prohlížení seznamu cest}
+        \label{fig:prohlizeniasistent}
+\end{figure}
+
 
 \usecase{Zobrazení detailu cesty}{detailasistent}
 \textbf{Aktéři:} Asistent
@@ -166,7 +154,7 @@ Na mapě si může prohlédnout kudy vedla, an místech fotografií jsou miniatu
 prostředků lze vidět ikony daných prostředků, zvukově a textové záznamy jsou označeny příslušnou ikonou.
 Při klepnutí na indikátor některého z těchto záznamů se zobrazí jeho popis, který uživatel dříve zadal.
 V detailu cesty lze poklepáním na tlačítko editovat přejít do módu editace cesty a všechny dříve zmíněné
-záznamy upravit
+záznamy upravit. Ukázku lze vidět na obrázku~\ref{fig:detailasistent}.
 
 \vspace{0.1cm}
 \noindent
@@ -184,6 +172,15 @@ záznamy upravit
   \item \nameref{nfczapis}
 \end{itemize}
 
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/detailcesty.png}
+        \caption{Zobrazení detailu cesty}
+        \label{fig:detailasistent}
+\end{figure}
+
+
+
 \usecase{Zapsání cesty do NFC tagu}{nfczapis}
 \textbf{Aktéři:} Asistent
 
@@ -192,6 +189,7 @@ záznamy upravit
 \textbf{Hlavní scénář:} Uživateli se zobrazí
 obrazovka, která jej instruuje k přiložení NFC tagu k telefonu. Jakmile telefon zaznamená blízkost tagu,
 zapíše do něj informaci o uložené cestě pro následné rychlé spouštění při přiložení tagu k telefonu.
+Obrazovku zápisu do NFC tagu lze vidět na obrázku~\ref{fig:nfczapis}.
 
 \vspace{0.1cm}
 \noindent
@@ -200,6 +198,14 @@ zapíše do něj informaci o uložené cestě pro následné rychlé spouštěn�
 \vspace{0.1cm}
 \noindent
 \textbf{Spouštěč:} Uživatel klepne na ikonu NFC v detailu cesty nebo an rozšiřující menu v seznamu cest.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/zapisdonfc.png}
+        \caption{Zápis do NFC tagu}
+        \label{fig:nfczapis}
+\end{figure}
+
 
 
 \usecase{Editace cesty}{editacecesty}
@@ -243,14 +249,23 @@ uložit se údaje zapíší do databáze a následující asistence cestování 
 \textbf{Hlavní scénář:} Spustí se fotoaparát zařízení a uživatel může začít fotit. Jakmile pořídí
 fotografii, zobrazí se v aplikace okno pro zadání názvu fotky s dotazem pro uložení. Uživatel zadá název
 a klepnutím na potvrzovací tlačítko se fotka uloží mezi data aplikace a zobrazí mezi aktuálními fotografiemi
-na místě polohy uživatele v době pořízení fotografie.
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu
+na místě polohy uživatele v době pořízení fotografie. Uložení fotky lze vidět na obrázku~\ref{fig:pridanifotky}.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat fotku
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat fotku.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/ulozenifotky.png}
+        \caption{Pojmenování fotky po pořízení}
+        \label{fig:pridanifotky}
+\end{figure}
+
 
 \usecase{Přidání zvukové nahrávky}{pridaninahravky}
 \textbf{Aktéři:} Asistent
@@ -260,14 +275,24 @@ na místě polohy uživatele v době pořízení fotografie.
 \textbf{Hlavní scénář:} Uživateli se zobrazí obrazovka s textem mluvte a zvuk se zaznamenává.
 Když je uživatel hotov, klepne na tlačítko stop a může nahrávce přidat název, který se bude později zobrazovat.
 Poté tlačítkem nahrávku uloží mezi data aplikace s přiřazenou aktuální polohou uživatele.
+Zobrazení nahrávání lze vidět na obrázku~\ref{fig:pridaninahravky}.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat nahrávku
+\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat nahrávku.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/nahravaninahravky.png}
+        \caption{Přidání zvukové nahrávky}
+        \label{fig:pridaninahravky}
+\end{figure}
+
+
 
 \usecase{Přidání poznámky}{pridanipoznamky}
 \textbf{Aktéři:} Asistent
@@ -276,33 +301,49 @@ Poté tlačítkem nahrávku uloží mezi data aplikace s přiřazenou aktuální
 \noindent
 \textbf{Hlavní scénář:} Uživateli se zobrazí okno s textovým vstupem a vysune se klávesnice. Uživatel
 zadá textovou poznámku a po klepnutí na potvrzovací tlačítko se poznámka uloží s asociací k aktuální poloze
-uživatele.
+uživatele. Okno přidávání poznámky lze vidět na obrázku~\ref{fig:pridanipoznamky}.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat poznámku
+\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat poznámku.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/pridanipoznamky.png}
+        \caption{Přidání poznámky}
+        \label{fig:pridanipoznamky}
+\end{figure}
+
 
 \usecase{Přidání změny dopravního prostředku}{pridanizmenyprostredku}
 \textbf{Aktéři:} Asistent
+
 
 \vspace{0.1cm}
 \noindent
 \textbf{Hlavní scénář:} Zobrazí se okno se nabídkou tlačítek s obrázkem dopravního prostředku.
 Uživatel může zároveň přidat ke změně dopravního prostředku přidat popis. Po kliknutí na
 tlačítko s dopravním prostředkem se změna dopravního prostředku uloží s asociovanou aktuální polohou
-uživatele.
+uživatele. Okno změny dopravního prostředku lze vidět na obrázku~\ref{fig:pridanizmenyprostredku}.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
 
 \vspace{0.1cm}
 \noindent
 \textbf{Spouštěč:} Uživatel klepl na tlačítko s aktuálním dopravním prostředkem.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/zmenaprostredku.png}
+        \caption{Přidání změny dopravního prostředku}
+        \label{fig:pridanizmenyprostredku}
+\end{figure}
 
 
 \usecase{Nahrávání cesty}{nahravanicesty}
@@ -322,7 +363,8 @@ Klepnutím na tlačítko uložit se aktuálně nahraní data a média uloží, p
 Pokud uživatel dokončil nahrávání cesty, klepne na tlačítko uložit a poté tlačítkem stop zastaví nahrávání,
 notifikace zmizí a cesta je v seznamu cest připraveno pro spuštění asistence, případně následnou editaci.
 Pokud uživatel ukončí nahrávání bez uložení, je na toto upozorněn a při potvrzení ukončení jsou nahraná data
-smazána.
+smazána. Obrazovku nahrávání můžeme vidět na obrázku~\ref{fig:nahravanicesty} a zobrazenou notifikaci
+na obrázku~\ref{fig:notifikacenahravanicesty}.
 
 \vspace{0.1cm}
 \noindent
@@ -345,6 +387,20 @@ smazána.
   \item \nameref{odebranipoznamky}
   \item \nameref{odebranizmenyprostredku}
 \end{itemize}
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/nahravani.png}
+        \caption{Nahrávání cesty}
+        \label{fig:nahravanicesty}
+\end{figure}
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/notifikace.png}
+        \caption{Zobrazená notifikace během nahrávání}
+        \label{fig:notifikacenahravanicesty}
+\end{figure}
 
 
 \usecase{Odebrání fotky}{odebranifotky}
@@ -390,6 +446,7 @@ se uložená nahrávka odstraní a zmizí její ikona.
 \noindent
 \textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem na smazání poznámky. Po potvrzení se
 nahrávka smaže a zmizí ikona indikující nahrávku.
+
 \vspace{0.1cm}
 \noindent
 \textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou poznámku.
@@ -405,7 +462,8 @@ nahrávka smaže a zmizí ikona indikující nahrávku.
 \vspace{0.1cm}
 \noindent
 \textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem na smazání změny dopravního prostředku.
-Po potvrzení se nahrávka smaže a zmizí ikona indikující nahrávku.
+Po potvrzení se nahrávka smaže a zmizí ikona indikující nahrávku. Zobrazené nstavení údajů
+lze vidět na obrázku~\ref{fig:nastaveniudaju}.
 
 \vspace{0.1cm}
 \noindent
@@ -435,6 +493,14 @@ Po potvrzení se nahrávka smaže a zmizí ikona indikující nahrávku.
   \item \nameref{nastaveniemailu}
 \end{itemize}
 
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/nastaveni.png}
+        \caption{Spuštění nastavení údajů asistenta}
+        \label{fig:nastaveniudaju}
+\end{figure}
+
+
 \usecase{Nastavení telefonního čísla asistenta}{nastavenicisla}
 \textbf{Aktéři:} Asistent
 
@@ -443,11 +509,20 @@ Po potvrzení se nahrávka smaže a zmizí ikona indikující nahrávku.
 \textbf{Hlavní scénář:} Editovatelné pole pro telefonní číslo se zvýrazní a vysune se numerická klávesnice.
 Uživatel zadá své telefonní číslo, které se automaticky formátuje do přívětivějšího formátu. Po ukončení
 editace je telefonní číslo automaticky uloženo. Pokud telefonní číslo neodpovídá formátu telefonních čísel
-v České Republice, uživatel je na toto upozorněn a je vyzván k úpravě vstupu.
+v České Republice, uživatel je na toto upozorněn a je vyzván k úpravě vstupu. Zadávání telefonního čísla
+vidíme na obrázku~\ref{fig:nastavenicisla}.
 
 \vspace{0.1cm}
 \noindent
 \textbf{Spouštěč:} Uživatel klepl na editační pole s telefonním číslem asistenta.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/nastaveniasistent.png}
+        \caption{Nastavení telefonního čísla asistenta}
+        \label{fig:nastavenicisla}
+\end{figure}
+
 
 
 \usecase{Nastavení emailu asistenta}{nastaveniemailu}
@@ -514,7 +589,7 @@ nebo za měsíc. Uživatel vybere jednu z možností a podle výběru se naplán
 \subsection{Use casy uživatele Klient}
 Pro klienta jsou určeny více intuitivní a nenáročné operace vyžadující co nejméně aktivních
 kroků z klientovi strany. Aplikace by měla na základě polohy a dalších údajů sama rozpoznat,
-co má v  danou chvíli udělat.
+co má v danou chvíli udělat. Use casy klienta a jejich vztahy lze vidět na obrázku~\ref{fig:UseCasesClient}.
 
 \begin{figure}[H]
         \centering
@@ -583,6 +658,7 @@ k absolvování cesty a pokud ne, bude na to upozorněn.
 Aplikace využívá klientovu polohu pro zobrazení relevantních nahraných informací
 a snaží se mu napovídat následující směr pomocí zobrazené šipky. Jak se klient pohybuje, aplikace mu
 poskytuje nahraný obsah asistentem, který by mu měl pomoci v danou chvíli se lépe zorientovat.
+Obrazovku asistence cestování lze vidět na obrázku~\ref{fig:asistence}.
 
 \vspace{0.1cm}
 \noindent
@@ -605,6 +681,13 @@ poskytuje nahraný obsah asistentem, který by mu měl pomoci v danou chvíli se
   \item \nameref{upozorneninespravnysmer}
 \end{itemize}
 
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/asistencecestovani.png}
+        \caption{Asistence cestování}
+        \label{fig:asistence}
+\end{figure}
+
 \usecase{Zobrazení fotografie}{zobrazenifotky}
 \textbf{Aktéři:} Klient
 
@@ -616,7 +699,7 @@ Přes spodní část fotky je zobrazen popisek, který této fotce dříve zadal
 
 \vspace{0.1cm}
 \noindent
-\textbf{Prekondice:} Uživatel má k dané cestě uloženou fotku..
+\textbf{Prekondice:} Uživatel má k dané cestě uloženou fotku.
 
 \vspace{0.1cm}
 \noindent
@@ -687,7 +770,7 @@ nebezpečí vybití baterie v terénu.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Uživatel využívá asistence při cestování
+\textbf{Spouštěč:} Uživatel využívá asistence při cestování.
 
 
 
@@ -753,7 +836,8 @@ asistencí cestování na cestu zapsanou na tagu.
 \vspace{0.1cm}
 \noindent
 \textbf{Hlavní scénář:} Uživateli se zbrazí obrazovka s volbami rychlých akcí,
-které kontaktují jeho asistenta.
+které kontaktují jeho asistenta. Obrazovka pomoci je na obrázku~\ref{fig:pomoc}.
+
 \vspace{0.1cm}
 \noindent
 \textbf{Prekondice:} V zařízení jsou uloženy kontaktní údaje asistenta.
@@ -770,6 +854,14 @@ které kontaktují jeho asistenta.
   \item \nameref{pomocsms}
   \item \nameref{pomocemail}
 \end{itemize}
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.14]{img/screen/volanipomoc.jpg}
+        \caption{Obrazovka pomoci}
+        \label{fig:pomoc}
+\end{figure}
+
 
 \usecase{Volání asistentovi}{pomocvolani}
 \textbf{Aktéři:} Klient, Asistent
