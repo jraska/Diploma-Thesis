@@ -18,6 +18,8 @@
  \usepackage{booktabs}
  \usepackage{url}
  \usepackage{nameref}
+ \usepackage{caption}
+ \usepackage{subcaption}
 
 
 
@@ -137,12 +139,20 @@ a podobně. Obrazovku prohlížení cest lze vidět na obrázku~\ref{fig:prohliz
 \end{itemize}
 
 \begin{figure}[H]
-        \centering
+\begin{minipage}{.5\textwidth}
+\centering
                 \includegraphics[scale=0.14]{img/screen/seznamcest.png}
         \caption{Prohlížení seznamu cest}
         \label{fig:prohlizeniasistent}
-\end{figure}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+    \centering
+                    \includegraphics[scale=0.14]{img/screen/detailcesty.png}
+            \caption{Zobrazení detailu cesty}
+            \label{fig:detailasistent}
 
+       \end{minipage}
+\end{figure}
 
 \usecase{Zobrazení detailu cesty}{detailasistent}
 \textbf{Aktéři:} Asistent
@@ -172,12 +182,8 @@ záznamy upravit. Ukázku lze vidět na obrázku~\ref{fig:detailasistent}.
   \item \nameref{nfczapis}
 \end{itemize}
 
-\begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.14]{img/screen/detailcesty.png}
-        \caption{Zobrazení detailu cesty}
-        \label{fig:detailasistent}
-\end{figure}
+
+
 
 
 
@@ -189,7 +195,8 @@ záznamy upravit. Ukázku lze vidět na obrázku~\ref{fig:detailasistent}.
 \textbf{Hlavní scénář:} Uživateli se zobrazí
 obrazovka, která jej instruuje k přiložení NFC tagu k telefonu. Jakmile telefon zaznamená blízkost tagu,
 zapíše do něj informaci o uložené cestě pro následné rychlé spouštění při přiložení tagu k telefonu.
-Obrazovku zápisu do NFC tagu lze vidět na obrázku~\ref{fig:nfczapis}.
+Obrazovku zápisu do NFC tagu lze vidět na obrázku~\ref{fig:nfczapis} a oznámení o zapsaném tagu
+na obrázku~\ref{fig:nfczapsano}.
 
 \vspace{0.1cm}
 \noindent
@@ -199,11 +206,21 @@ Obrazovku zápisu do NFC tagu lze vidět na obrázku~\ref{fig:nfczapis}.
 \noindent
 \textbf{Spouštěč:} Uživatel klepne na ikonu NFC v detailu cesty nebo an rozšiřující menu v seznamu cest.
 
+
 \begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.14]{img/screen/zapisdonfc.png}
+\begin{minipage}{.5\textwidth}
+\centering
+                \includegraphics[scale=0.14]{img/screen/zapisnfcdetail.png}
         \caption{Zápis do NFC tagu}
         \label{fig:nfczapis}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+    \centering
+                    \includegraphics[scale=0.14]{img/screen/zapisdonfc.png}
+            \caption{Zapsáno do NFC tagu}
+            \label{fig:nfczapsano}
+
+       \end{minipage}
 \end{figure}
 
 
@@ -260,12 +277,20 @@ na místě polohy uživatele v době pořízení fotografie. Uložení fotky lze
 \textbf{Spouštěč:} Uživatel klepl na tlačítko přidat fotku.
 
 \begin{figure}[H]
-        \centering
+\begin{minipage}{.5\textwidth}
+\centering
                 \includegraphics[scale=0.14]{img/screen/ulozenifotky.png}
         \caption{Pojmenování fotky po pořízení}
         \label{fig:pridanifotky}
-\end{figure}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+     \centering
+                     \includegraphics[scale=0.14]{img/screen/nahravaninahravky.png}
+             \caption{Přidání zvukové nahrávky}
+             \label{fig:pridaninahravky}
 
+       \end{minipage}
+\end{figure}
 
 \usecase{Přidání zvukové nahrávky}{pridaninahravky}
 \textbf{Aktéři:} Asistent
@@ -285,12 +310,6 @@ Zobrazení nahrávání lze vidět na obrázku~\ref{fig:pridaninahravky}.
 \noindent
 \textbf{Spouštěč:} Uživatel klepl na tlačítko přidat nahrávku.
 
-\begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.14]{img/screen/nahravaninahravky.png}
-        \caption{Přidání zvukové nahrávky}
-        \label{fig:pridaninahravky}
-\end{figure}
 
 
 
@@ -312,12 +331,20 @@ uživatele. Okno přidávání poznámky lze vidět na obrázku~\ref{fig:pridani
 \textbf{Spouštěč:} Uživatel klepl na tlačítko přidat poznámku.
 
 \begin{figure}[H]
-        \centering
+\begin{minipage}{.5\textwidth}
+\centering
                 \includegraphics[scale=0.14]{img/screen/pridanipoznamky.png}
         \caption{Přidání poznámky}
         \label{fig:pridanipoznamky}
-\end{figure}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+  \centering
+                  \includegraphics[scale=0.14]{img/screen/zmenaprostredku.png}
+          \caption{Změna dopravního prostředku}
+          \label{fig:pridanizmenyprostredku}
 
+       \end{minipage}
+\end{figure}
 
 \usecase{Přidání změny dopravního prostředku}{pridanizmenyprostredku}
 \textbf{Aktéři:} Asistent
@@ -338,12 +365,7 @@ uživatele. Okno změny dopravního prostředku lze vidět na obrázku~\ref{fig:
 \noindent
 \textbf{Spouštěč:} Uživatel klepl na tlačítko s aktuálním dopravním prostředkem.
 
-\begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.14]{img/screen/zmenaprostredku.png}
-        \caption{Přidání změny dopravního prostředku}
-        \label{fig:pridanizmenyprostredku}
-\end{figure}
+
 
 
 \usecase{Nahrávání cesty}{nahravanicesty}
@@ -389,17 +411,21 @@ na obrázku~\ref{fig:notifikacenahravanicesty}.
 \end{itemize}
 
 \begin{figure}[H]
+\begin{minipage}{.5\textwidth}
+
+
         \centering
                 \includegraphics[scale=0.14]{img/screen/nahravani.png}
         \caption{Nahrávání cesty}
         \label{fig:nahravanicesty}
-\end{figure}
-
-\begin{figure}[H]
-        \centering
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+  \centering
                 \includegraphics[scale=0.14]{img/screen/notifikace.png}
-        \caption{Zobrazená notifikace během nahrávání}
+        \caption{Zobrazená notifikace}
         \label{fig:notifikacenahravanicesty}
+
+       \end{minipage}
 \end{figure}
 
 
@@ -494,12 +520,19 @@ lze vidět na obrázku~\ref{fig:nastaveniudaju}.
 \end{itemize}
 
 \begin{figure}[H]
-        \centering
+\begin{minipage}{.5\textwidth}
+\centering
                 \includegraphics[scale=0.14]{img/screen/nastaveni.png}
-        \caption{Spuštění nastavení údajů asistenta}
+        \caption{Spuštění nastavení údajů}
         \label{fig:nastaveniudaju}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+\centering
+                \includegraphics[scale=0.14]{img/screen/nastaveniasistent.png}
+        \caption{Nastavení telefonního čísla}
+        \label{fig:nastavenicisla}
+    \end{minipage}
 \end{figure}
-
 
 \usecase{Nastavení telefonního čísla asistenta}{nastavenicisla}
 \textbf{Aktéři:} Asistent
@@ -515,15 +548,6 @@ vidíme na obrázku~\ref{fig:nastavenicisla}.
 \vspace{0.1cm}
 \noindent
 \textbf{Spouštěč:} Uživatel klepl na editační pole s telefonním číslem asistenta.
-
-\begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.14]{img/screen/nastaveniasistent.png}
-        \caption{Nastavení telefonního čísla asistenta}
-        \label{fig:nastavenicisla}
-\end{figure}
-
-
 
 \usecase{Nastavení emailu asistenta}{nastaveniemailu}
 \textbf{Aktéři:} Asistent
@@ -563,7 +587,7 @@ nebo za měsíc. Uživatel vybere jednu z možností a podle výběru se naplán
 
 \vspace{0.1cm}
 \noindent
-\textbf{Prekondice:} Uživatel má na zařízení přidán Google účet.
+\textbf{Prekondice:} Uživatel má na zařízení uložen nastaven účet umožňující zálohování.
 
 \vspace{0.1cm}
 \noindent
@@ -681,12 +705,23 @@ Obrazovku asistence cestování lze vidět na obrázku~\ref{fig:asistence}.
   \item \nameref{upozorneninespravnysmer}
 \end{itemize}
 
+
 \begin{figure}[H]
-        \centering
+\begin{minipage}{.5\textwidth}
+\centering
                 \includegraphics[scale=0.14]{img/screen/asistencecestovani.png}
         \caption{Asistence cestování}
         \label{fig:asistence}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+\centering
+                \includegraphics[scale=0.14]{img/screen/volanipomoc.jpg}
+        \caption{Obrazovka pomoci}
+        \label{fig:pomoc}
+    \end{minipage}
 \end{figure}
+
+
 
 \usecase{Zobrazení fotografie}{zobrazenifotky}
 \textbf{Aktéři:} Klient
@@ -855,12 +890,6 @@ které kontaktují jeho asistenta. Obrazovka pomoci je na obrázku~\ref{fig:pomo
   \item \nameref{pomocemail}
 \end{itemize}
 
-\begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.14]{img/screen/volanipomoc.jpg}
-        \caption{Obrazovka pomoci}
-        \label{fig:pomoc}
-\end{figure}
 
 
 \usecase{Volání asistentovi}{pomocvolani}
