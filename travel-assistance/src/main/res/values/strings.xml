@@ -58,4 +58,7 @@
     <string name="help_call">Call</string>
     <string name="help_no_app_for_email">No app for email</string>
     <string name="no_app_for_call">Phone call cannot be performed.</string>
+    <string name="nfc_not_supported">Device does not support NFC</string>
+    <string name="nfc_disabled">Nfc is disabled</string>
+    <string name="nfc_enable">Enable</string>
 </resources>

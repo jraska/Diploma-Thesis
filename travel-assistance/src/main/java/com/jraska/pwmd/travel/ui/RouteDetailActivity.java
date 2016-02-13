@@ -91,7 +91,7 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
 
   protected void startNfcWrite() {
     Intent intent = new Intent(this, NfcWriteActivity.class);
-    intent.putExtra(ROUTE_ID, _routeId);
+    intent.putExtra(NfcWriteActivity.KEY_ROUTE_ID, _routeId);
 
     startActivityForResult(intent, NfcWriteActivity.REQUEST_CODE_WRITE_NFC);
   }

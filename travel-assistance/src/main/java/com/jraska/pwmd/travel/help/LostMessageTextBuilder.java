@@ -8,6 +8,7 @@ import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 
 import java.util.Date;
+import java.util.Locale;
 
 public class LostMessageTextBuilder {
   //region Constants
@@ -123,7 +124,7 @@ public class LostMessageTextBuilder {
   }
 
   public String buildGoogleMapsUrl() {
-    String url = String.format("http://maps.google.com/maps?&z=%d&q=%.6f+%.6f",
+    String url = String.format(Locale.US, "http://maps.google.com/maps?&z=%d&q=%.6f+%.6f",
         _zoom, _latitude, _longitude);
 
     return url;
