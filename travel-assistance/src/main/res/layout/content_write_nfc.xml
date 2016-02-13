@@ -13,6 +13,17 @@
     tools:context=".ui.NfcWriteActivity">
 
     <TextView
+        android:id="@+id/nfc_write_nfc_off"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/nfc_write_nfc_off"
+        android:visibility="gone"
+        android:drawableBottom="@drawable/ic_nfc_off_grey_128dp"
+        style="@style/TextMain" />
+
+    <TextView
         android:id="@+id/nfc_write_info_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

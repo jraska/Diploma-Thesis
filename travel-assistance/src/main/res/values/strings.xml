@@ -63,4 +63,5 @@
     <string name="nfc_enable">Enable</string>
     <string name="nfc_error_write">Error writing NFC tag</string>
     <string name="nfc_try_again">Try again</string>
+    <string name="nfc_write_nfc_off">NFC is disabled, tap to enable</string>
 </resources>

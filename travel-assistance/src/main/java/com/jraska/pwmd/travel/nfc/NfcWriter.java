@@ -44,7 +44,6 @@ public class NfcWriter {
 
   private final Context _context;
   private final EventBus _eventBus;
-  private final NfcStatusChecker _nfcStatusChecker;
   private final NfcAdapter _nfcAdapter;
 
   private long _routeId = NO_ROUTE_ID;
@@ -54,14 +53,12 @@ public class NfcWriter {
   //region Constructors
 
   @Inject
-  public NfcWriter(Context context, EventBus eventBus, NfcStatusChecker statusChecker) {
+  public NfcWriter(Context context, EventBus eventBus) {
     ArgumentCheck.notNull(context);
     ArgumentCheck.notNull(eventBus);
-    ArgumentCheck.notNull(statusChecker);
 
     _context = context.getApplicationContext();
     _eventBus = eventBus;
-    _nfcStatusChecker = statusChecker;
     _nfcAdapter = NfcAdapter.getDefaultAdapter(_context);
   }
 
