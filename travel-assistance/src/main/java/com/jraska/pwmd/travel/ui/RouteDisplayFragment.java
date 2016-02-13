@@ -126,7 +126,9 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     int imageSize = getResources().getDimensionPixelSize(R.dimen.map_image_size_default);
     _photoIconSize = new ImageSize(imageSize, imageSize);
     _imageOptions = new DisplayImageOptions.Builder()
-        .preProcessor(new CircleImageProcessor(imageSize)).build();
+        .preProcessor(new CircleImageProcessor(imageSize))
+        .considerExifParams(true)
+        .build();
   }
 
   @Override
