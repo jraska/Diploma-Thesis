@@ -11,10 +11,16 @@
     tools:context=".ui.HelpRequestSendActivity">
 
     <Button
-        android:id="@+id/btnSendSms"
+        android:id="@+id/help_btnSendSms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/help_send_sms" />
+
+    <Button
+        android:id="@+id/help_btnCall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/help_call" />
 
     <Button
         android:id="@+id/btnSendEmail"

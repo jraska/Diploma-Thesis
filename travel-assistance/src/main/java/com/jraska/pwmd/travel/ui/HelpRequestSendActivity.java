@@ -1,9 +1,9 @@
 package com.jraska.pwmd.travel.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.OnClick;
 import com.jraska.pwmd.core.gps.LocationService;
@@ -11,6 +11,7 @@ import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
+import com.jraska.pwmd.travel.help.Dialer;
 import com.jraska.pwmd.travel.help.EmailSender;
 import com.jraska.pwmd.travel.help.LostMessageTextBuilder;
 import com.jraska.pwmd.travel.help.SmsSender;
@@ -74,7 +75,7 @@ public class HelpRequestSendActivity extends BaseActivity {
 
   //region Methods
 
-  @OnClick(R.id.btnSendSms) void sendSms() {
+  @OnClick(R.id.help_btnSendSms) void sendSms() {
     Position position = getPosition();
     if (!checkPosition(position)) {
       return;
@@ -83,7 +84,7 @@ public class HelpRequestSendActivity extends BaseActivity {
     String assistantPhone = _settingsManager.getAssistantPhone();
     if (TextUtils.isEmpty(assistantPhone)) {
       // TODO: Check this on startup to disable buttons
-      showToast(R.string.no_assistant_number);
+      showSnackbar(R.string.no_assistant_number);
       return;
     }
 
@@ -92,12 +93,11 @@ public class HelpRequestSendActivity extends BaseActivity {
     String message = getMessage(position);
     _messageView.setText(message);
 
-    SmsSender smsSender = _smsSender;
-
-    if (smsSender.sendSms(assistantPhone, message)) {
-      showToast(R.string.sent);
+    boolean messageSent = _smsSender.sendSms(assistantPhone, message);
+    if (messageSent) {
+      showSnackbar(R.string.sent);
     } else {
-      showToast(R.string.not_sent);
+      showSnackbar(R.string.not_sent);
     }
   }
 
@@ -105,6 +105,22 @@ public class HelpRequestSendActivity extends BaseActivity {
     LostMessageTextBuilder builder = new LostMessageTextBuilder(this);
     builder.setFromPosition(position);
     return builder.buildSmsText();
+  }
+
+
+  @OnClick(R.id.help_btnCall) void callAsistant() {
+    String assistantPhone = _settingsManager.getAssistantPhone();
+    if (TextUtils.isEmpty(assistantPhone)) {
+      showSnackbar(R.string.no_assistant_number);
+      return;
+    }
+
+    Dialer dialer = new Dialer(this);
+    boolean phoneCall = dialer.phoneCall(assistantPhone);
+
+    if (!phoneCall) {
+      showSnackbar(R.string.no_app_for_call);
+    }
   }
 
   @OnClick(R.id.btnSendEmail) void sendEmail() {
@@ -123,16 +139,24 @@ public class HelpRequestSendActivity extends BaseActivity {
     _messageView.setText(message);
 
     EmailSender emailSender = new EmailSender(this); // No DI because we need Activity context here
-    emailSender.sendEmail(assistantEmail, getString(R.string.i_am_lost), message);
+    boolean emailSent = emailSender.sendEmail(assistantEmail, getString(R.string.i_am_lost), message);
+
+    if (!emailSent) {
+      onEmailSentFailed();
+    }
   }
 
-  protected void showToast(int messageRes) {
-    Toast.makeText(this, messageRes, Toast.LENGTH_SHORT).show();
+  private void onEmailSentFailed() {
+    showSnackbar(R.string.help_no_app_for_email);
+  }
+
+  protected void showSnackbar(int messageRes) {
+    Snackbar.make(_messageView, messageRes, Snackbar.LENGTH_LONG).show();
   }
 
   protected boolean checkPosition(Position position) {
     if (position == null) {
-      showToast(R.string.no_position);
+      showSnackbar(R.string.no_position);
       return false;
     }
 

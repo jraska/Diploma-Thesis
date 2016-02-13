@@ -1,43 +1,53 @@
 package com.jraska.pwmd.travel.help;
 
-import android.content.Context;
+import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.support.v4.app.ShareCompat;
 import com.jraska.common.ArgumentCheck;
+import timber.log.Timber;
 
 public class EmailSender {
   //region Fields
 
-  private final Context _context;
+  private final Activity _activity;
 
   //endregion
 
   //region Constructors
 
-  public EmailSender(Context context) {
-    ArgumentCheck.notNull(context, "context");
+  public EmailSender(Activity activity) {
+    ArgumentCheck.notNull(activity, "activity");
 
-    _context = context;
+    _activity = activity;
   }
 
   //endregion
 
   //region Methods
 
-  public void sendEmail(String[] emails, String subject, String message) {
-    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+  /**
+   * Starts app with email prepared.
+   *
+   * @return True if the email could be sent, false fi no app for email found.
+   */
+  public boolean sendEmail(String email, String subject, String message) {
+    ShareCompat.IntentBuilder emailIntentBuilder = ShareCompat.IntentBuilder.from(_activity)
+        .addEmailTo(email)
+        .setSubject(subject)
+        .setType("text/html")
+        .setText(message);
 
-    //array of strings is required for emails
-    emailIntent.putExtra(Intent.EXTRA_EMAIL, emails);
+    Intent intent = emailIntentBuilder.getIntent();
+    ComponentName componentName = intent.resolveActivity(_activity.getPackageManager());
 
-    emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-    emailIntent.putExtra(Intent.EXTRA_TEXT, message);
-    emailIntent.setType("plain/text");
-    _context.startActivity(emailIntent);
-  }
-
-  public void sendEmail(String email, String subject, String message) {
-    String[] emails = {email};
-    sendEmail(emails, subject, message);
+    if (componentName != null) {
+      _activity.startActivity(intent);
+      return true;
+    } else {
+      Timber.w("Could not resolve email intent. Nothing sent.");
+      return false;
+    }
   }
 
   //endregion

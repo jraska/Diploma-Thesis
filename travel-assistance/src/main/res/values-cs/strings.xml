@@ -5,17 +5,17 @@
     <string name="startTracking">Začít sledovat polohu</string>
     <string name="stopTracking">Zastavit sledování polohy</string>
     <string name="saveRoute">Uložit cestu</string>
-    <string name="noRouteToSave">není nahrána žádná cesta</string>
+    <string name="noRouteToSave">Není nahrána žádná cesta.</string>
     <string name="saved">Uloženo</string>
-    <string name="noRoutes">Nejsou uloženy žádné cesty</string>
+    <string name="noRoutes">Nejsou uloženy žádné cesty.</string>
     <string name="tap_to_return">Klikněte pro návrat do aplikace</string>
     <string name="lost_sms_message_template">Ztratil jsem se. Jsem zde %1$s +- %2$.0f m. Data z %3$s.</string>
     <string name="unknown_position">Neznámá</string>
     <string name="help_send_sms">Odeslat sms s pozicí</string>
     <string name="help_send_email">Odeslat email</string>
-    <string name="no_position">Pozice není k dispozici</string>
+    <string name="no_position">Pozice není k dispozici.</string>
     <string name="sent">Odesláno</string>
-    <string name="not_sent">Nepodařilo se odeslat zprávu</string>
+    <string name="not_sent">Nepodařilo se odeslat zprávu.</string>
     <string name="i_am_lost">Ztratil jsem se</string>
     <string name="assistant_email">Email asistenta</string>
     <string name="assistant_phone">Telefon asistenta</string>
@@ -55,4 +55,7 @@
     <string name="nfc_write_description">Přiložte NFC tag k zařízení.</string>
     <string name="nfc_write_success">NFC tag úspěšně zapsán.</string>
     <string name="route_icon">Ikona cesty</string>
+    <string name="help_call">Volat asistentovi</string>
+    <string name="help_no_app_for_email">V telefonu není emailová aplikace</string>
+    <string name="no_app_for_call">Ze zařízení není možné volat.</string>
 </resources>

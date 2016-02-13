@@ -55,4 +55,7 @@
     <string name="nfc_write_description">Move NFC tag next the device</string>
     <string name="nfc_write_success">Route successfuly written</string>
     <string name="route_icon">Route icon</string>
+    <string name="help_call">Call</string>
+    <string name="help_no_app_for_email">No app for email</string>
+    <string name="no_app_for_call">Phone call cannot be performed.</string>
 </resources>
