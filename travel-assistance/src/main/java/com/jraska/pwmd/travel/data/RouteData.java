@@ -9,6 +9,8 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +18,8 @@ import java.util.Date;
 import java.util.List;
 
 @Table(database = TravelDatabase.class)
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class RouteData extends BaseModel {
   //region Fields
 
@@ -204,25 +208,6 @@ public class RouteData extends BaseModel {
   public RouteDescription getDescription() {
     return new RouteDescription(_start, _end, _title);
   }
-
-  //endregion
-
-  //region Object impl
-
-  @Override public String toString() {
-    return "RouteData{" +
-        "_id=" + _id +
-        ", _start=" + _start +
-        ", _end=" + _end +
-        ", _title='" + _title + '\'' +
-        ", _transportChangeSpecs=" + _transportChangeSpecs +
-        ", _noteSpecs=" + _noteSpecs +
-        ", _positions=" + _positions +
-        '}';
-  }
-
-
-  // TODO: 23/01/16 Equals etc
 
   //endregion
 }

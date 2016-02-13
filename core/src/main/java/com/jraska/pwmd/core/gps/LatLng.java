@@ -2,7 +2,11 @@ package com.jraska.pwmd.core.gps;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public class LatLng implements Parcelable {
   //region Fields
 
@@ -43,42 +47,6 @@ public class LatLng implements Parcelable {
       return new LatLng[size];
     }
   };
-
-  //endregion
-
-  //region Object impl
-
-  @Override
-  public String toString() {
-    return getClass().getSimpleName() +
-        " _latitude=" + _latitude +
-        ", _longitude=" + _longitude +
-        '}';
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    LatLng latLng = (LatLng) o;
-
-    if (Double.compare(latLng._latitude, _latitude) != 0) return false;
-    if (Double.compare(latLng._longitude, _longitude) != 0) return false;
-
-    return true;
-  }
-
-  @Override
-  public int hashCode() {
-    int result;
-    long temp;
-    temp = Double.doubleToLongBits(_latitude);
-    result = (int) (temp ^ (temp >>> 32));
-    temp = Double.doubleToLongBits(_longitude);
-    result = 31 * result + (int) (temp ^ (temp >>> 32));
-    return result;
-  }
 
   //endregion
 }

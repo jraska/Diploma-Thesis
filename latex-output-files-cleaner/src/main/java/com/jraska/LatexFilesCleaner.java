@@ -14,19 +14,19 @@ import java.util.concurrent.TimeUnit;
  * Simple util to delete periodically crap LaTeX files which are causing Typeset to fail.
  */
 public class LatexFilesCleaner {
+  //region Constants
+
+  public static final String[] SUFFIXES_TO_DELETE = {".aux", ".out"};
+  private static final DateFormat DATE_FORMAT = DateFormat.getTimeInstance(DateFormat.FULL);
+
+  //endregion
+
   //region Main methods
 
   public static void main(String[] args) {
     LatexFilesCleaner latexFilesCleaner = new LatexFilesCleaner();
     latexFilesCleaner.run(args);
   }
-
-  //endregion
-
-  //region Constants
-
-  public static final String[] SUFFIXES_TO_DELETE = {".aux", ".out"};
-  private static final DateFormat DATE_FORMAT = DateFormat.getTimeInstance(DateFormat.FULL);
 
   //endregion
 

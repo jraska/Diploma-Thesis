@@ -8,6 +8,8 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.UUID;
 
@@ -15,6 +17,8 @@ import java.util.UUID;
  * Note spec can also contain images or text
  */
 @Table(database = TravelDatabase.class)
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class NoteSpec extends BaseModel {
   //region Fields
 
@@ -75,40 +79,6 @@ public class NoteSpec extends BaseModel {
   @Nullable
   public UUID getSoundId() {
     return soundId;
-  }
-
-
-  //endregion
-
-  //region Object impl
-
-  @Override public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    NoteSpec noteSpec = (NoteSpec) o;
-
-    if (_id != noteSpec._id) return false;
-    if (_routeId != noteSpec._routeId) return false;
-    if (latLng != null ? !latLng.equals(noteSpec.latLng) : noteSpec.latLng != null) return false;
-    if (caption != null ? !caption.equals(noteSpec.caption) : noteSpec.caption != null) {
-      return false;
-    }
-    if (imageId != null ? !imageId.equals(noteSpec.imageId) : noteSpec.imageId != null) {
-      return false;
-    }
-    return soundId != null ? soundId.equals(noteSpec.soundId) : noteSpec.soundId == null;
-
-  }
-
-  @Override public int hashCode() {
-    int result = (int) (_id ^ (_id >>> 32));
-    result = 31 * result + (int) (_routeId ^ (_routeId >>> 32));
-    result = 31 * result + (latLng != null ? latLng.hashCode() : 0);
-    result = 31 * result + (caption != null ? caption.hashCode() : 0);
-    result = 31 * result + (imageId != null ? imageId.hashCode() : 0);
-    result = 31 * result + (soundId != null ? soundId.hashCode() : 0);
-    return result;
   }
 
 

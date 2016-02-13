@@ -1,7 +1,11 @@
 package com.jraska.pwmd.core.gps;
 
 import com.jraska.common.ArgumentCheck;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public class Position {
   //region Fields
 
@@ -24,45 +28,6 @@ public class Position {
     this.provider = provider;
     this.latLng = latLng;
   }
-
-  //endregion
-
-  //region Object impl
-
-
-  @Override public String toString() {
-    return "Position{" +
-        "latLng=" + latLng +
-        ", time=" + time +
-        ", accuracy=" + accuracy +
-        ", provider='" + provider + '\'' +
-        '}';
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Position position = (Position) o;
-
-    if (time != position.time) return false;
-    if (Float.compare(position.accuracy, accuracy) != 0) return false;
-    if (provider != null ? !provider.equals(position.provider) : position.provider != null) {
-      return false;
-    }
-    return !(latLng != null ? !latLng.equals(position.latLng) : position.latLng != null);
-
-  }
-
-  @Override public int hashCode() {
-    int result = (int) (time ^ (time >>> 32));
-    result = 31 * result + (accuracy != +0.0f ? Float.floatToIntBits(accuracy) : 0);
-    result = 31 * result + (provider != null ? provider.hashCode() : 0);
-    result = 31 * result + (latLng != null ? latLng.hashCode() : 0);
-    return result;
-  }
-
 
   //endregion
 }

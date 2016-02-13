@@ -9,8 +9,12 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Table(database = TravelDatabase.class)
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class TransportChangeSpec extends BaseModel {
   //region Constants
 
@@ -103,40 +107,6 @@ public class TransportChangeSpec extends BaseModel {
       default:
         throw new IllegalStateException("unknown transport type");
     }
-  }
-
-  //endregion
-
-  //region Object impl
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    TransportChangeSpec spec = (TransportChangeSpec) o;
-
-    if (transportType != spec.transportType) return false;
-    if (!latLng.equals(spec.latLng)) return false;
-    return title.equals(spec.title);
-
-  }
-
-  @Override
-  public int hashCode() {
-    int result = latLng.hashCode();
-    result = 31 * result + transportType;
-    result = 31 * result + title.hashCode();
-    return result;
-  }
-
-  @Override
-  public String toString() {
-    return "TransportChangeSpec{" +
-        "latLng=" + latLng +
-        ", transportType=" + transportType +
-        ", title='" + title + '\'' +
-        '}';
   }
 
   //endregion
