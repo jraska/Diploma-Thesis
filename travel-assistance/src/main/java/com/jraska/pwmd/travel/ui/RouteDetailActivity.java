@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
@@ -97,7 +98,9 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
   }
 
   protected void onResultWriteNfc(int resultCode, Intent data) {
-    // TODO: 25/01/16 Handle somehow the result
+    if (resultCode == RESULT_OK) {
+      Toast.makeText(this, R.string.nfc_write_success, Toast.LENGTH_SHORT).show();
+    }
   }
 
   //endregion

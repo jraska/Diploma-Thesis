@@ -23,6 +23,8 @@ public class NfcWriteActivity extends BaseActivity {
   public static final String KEY_ROUTE_ID = "RouteIdToNfcWrite";
   public static final int REQUEST_CODE_WRITE_NFC = 2384; // random value
 
+  private static final int FINISH_DELAY_AFTER_WRITE = 1000;
+
   //endregion
 
   //region Fields
@@ -171,6 +173,14 @@ public class NfcWriteActivity extends BaseActivity {
     _nfcOffView.setVisibility(View.GONE);
 
     setResult(RESULT_OK);
+
+    _messageView.postDelayed(new Runnable() {
+      @Override public void run() {
+        if (!isFinishing()) {
+          finish();
+        }
+      }
+    }, FINISH_DELAY_AFTER_WRITE);
   }
 
   protected void onNfcTagWriteError(int result) {

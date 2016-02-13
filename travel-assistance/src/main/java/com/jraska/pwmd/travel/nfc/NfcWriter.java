@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
@@ -123,11 +124,17 @@ public class NfcWriter {
   }
 
   protected void onDetectedNfcIntent(Intent intent) {
-    write(createRouteNdefMessage(), intent);
+    int result = write(createRouteNdefMessage(), intent);
+
+    TagWriteResultEvent resultEvent = new TagWriteResultEvent(_routeId, result);
+    onTagWriteResult(resultEvent);
   }
 
   private NdefMessage createRouteNdefMessage() {
-    throw new UnsupportedOperationException(); // TODO: 13/02/16
+    NdefRecord deepLink = NdefRecord.createUri("http://www.seznam.cz");
+//    NdefRecord applicationRecord = NdefRecord.createApplicationRecord(_context.getPackageName());
+
+    return new NdefMessage(deepLink);
   }
 
   protected int write(NdefMessage rawMessage, Intent tagReadyIntent) {
