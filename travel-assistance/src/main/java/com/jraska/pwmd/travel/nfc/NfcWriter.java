@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
@@ -46,6 +45,7 @@ public class NfcWriter {
   private final Context _context;
   private final EventBus _eventBus;
   private final NfcAdapter _nfcAdapter;
+  private final NfcRouteEncoder _routeEncoder;
 
   private long _routeId = NO_ROUTE_ID;
 
@@ -54,12 +54,15 @@ public class NfcWriter {
   //region Constructors
 
   @Inject
-  public NfcWriter(Context context, EventBus eventBus) {
+  public NfcWriter(Context context, EventBus eventBus, NfcRouteEncoder encoder) {
     ArgumentCheck.notNull(context);
     ArgumentCheck.notNull(eventBus);
+    ArgumentCheck.notNull(encoder);
 
     _context = context.getApplicationContext();
     _eventBus = eventBus;
+    _routeEncoder = encoder;
+
     _nfcAdapter = NfcAdapter.getDefaultAdapter(_context);
   }
 
@@ -131,10 +134,7 @@ public class NfcWriter {
   }
 
   private NdefMessage createRouteNdefMessage() {
-    NdefRecord deepLink = NdefRecord.createUri("http://www.seznam.cz");
-//    NdefRecord applicationRecord = NdefRecord.createApplicationRecord(_context.getPackageName());
-
-    return new NdefMessage(deepLink);
+    return _routeEncoder.encodeRoute(_routeId);
   }
 
   protected int write(NdefMessage rawMessage, Intent tagReadyIntent) {

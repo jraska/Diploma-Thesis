@@ -184,7 +184,6 @@ public class NfcWriteActivity extends BaseActivity {
   }
 
   protected void onNfcTagWriteError(int result) {
-    stopNfcWrite();
     Snackbar snackbar = Snackbar.make(_messageView, R.string.nfc_error_write, Snackbar.LENGTH_INDEFINITE);
     snackbar.setAction(R.string.nfc_try_again, new View.OnClickListener() {
       @Override public void onClick(View v) {

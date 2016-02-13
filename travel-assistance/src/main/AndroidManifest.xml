@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <!--TODO 25/01/2016 app indexing warning-->
+
+        <!-- TODO 25/01/2016 app indexing warning -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -94,9 +95,18 @@
         </activity>
         <activity
             android:name=".ui.NfcWriteActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_write_nfc"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize" />
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.NfcRouteDispatchActivity">
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="http"
+                    android:host="pwmd.travel"
+                    android:pathPrefix="/route" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
