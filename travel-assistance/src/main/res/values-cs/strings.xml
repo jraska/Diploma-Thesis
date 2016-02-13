@@ -61,4 +61,6 @@
     <string name="nfc_disabled">Nfc je vypnuto</string>
     <string name="nfc_enable">Zapnout</string>
     <string name="nfc_not_supported">Zařízení nepodporuje NFC</string>
+    <string name="nfc_error_write">Chyba pří zápisu tagu.</string>
+    <string name="nfc_try_again">Znovu</string>
 </resources>

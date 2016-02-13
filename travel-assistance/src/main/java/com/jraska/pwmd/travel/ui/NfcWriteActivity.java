@@ -1,5 +1,6 @@
 package com.jraska.pwmd.travel.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -30,11 +31,13 @@ public class NfcWriteActivity extends BaseActivity {
 
   @Inject EventBus _eventBus;
   @Inject NfcStatusChecker _nfcStatusChecker;
-  @Inject NfcWriter _writer;
+  @Inject NfcWriter _nfcWriter;
 
   private Snackbar _lastNfcOffSnackbar;
 
   private long _routeId;
+  private boolean _resumed;
+  private boolean _writeRequestPending;
 
   //endregion
 
@@ -63,27 +66,46 @@ public class NfcWriteActivity extends BaseActivity {
     onNfcTagWriteRequested();
   }
 
-  @Override protected void onResume() {
+  @Override
+  protected void onResume() {
     super.onResume();
 
     if (!isFinishing() && _nfcStatusChecker.isNfcOff()) {
       showNfcOffMessage();
     }
+
+    _resumed = true;
+    if (_writeRequestPending) {
+      startNfcWrite();
+    }
   }
 
-  @Override protected void onPause() {
+  @Override
+  protected void onPause() {
     if (_lastNfcOffSnackbar != null) {
       _lastNfcOffSnackbar.dismiss();
       _lastNfcOffSnackbar = null;
     }
 
+    _resumed = false;
+    stopNfcWrite();
+
     super.onPause();
   }
 
-  @Override protected void onDestroy() {
+  @Override
+  protected void onDestroy() {
     _eventBus.unregister(this);
+    _nfcWriter.removePendingWrites();
 
     super.onDestroy();
+  }
+
+  @Override
+  protected void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+
+    _nfcWriter.onNewIntent(intent);
   }
 
   //endregion
@@ -92,6 +114,23 @@ public class NfcWriteActivity extends BaseActivity {
 
   public void onEvent(NfcStatusChecker.NfcSettingsChangedEvent event) {
     onNfcTagWriteRequested();
+  }
+
+  public void onEvent(NfcWriter.TagWriteResultEvent event) {
+    if (event._routeId != _routeId) {
+      return;
+    }
+
+    if (event.isSuccess()) {
+      onNfcTagWritten();
+    } else {
+      onNfcTagWriteError(event._result);
+    }
+  }
+
+  private void stopNfcWrite() {
+    _nfcWriter.cancelPendingTagWrites(this);
+    _writeRequestPending = false;
   }
 
   @OnClick(R.id.nfc_write_info_text) void onIconClicked() {
@@ -106,16 +145,25 @@ public class NfcWriteActivity extends BaseActivity {
 
     if (_nfcStatusChecker.isNfcOn()) {
       startNfcWrite();
+    } else {
+      showNfcOffMessage();
     }
   }
 
   private void startNfcWrite() {
-    // TODO: 13/02/16 Start Nfc Write
-    onNfcTagWritten();
+    if (_resumed) {
+      _nfcWriter.requestTagWrite(this, _routeId);
+    } else {
+      _writeRequestPending = true;
+    }
   }
 
 
   private void showNfcOffMessage() {
+    if (_lastNfcOffSnackbar != null && _lastNfcOffSnackbar.isShownOrQueued()) {
+      return;
+    }
+
     Snackbar snackbar = Snackbar.make(_messageView, R.string.nfc_disabled, Snackbar.LENGTH_INDEFINITE);
     snackbar.setAction(R.string.nfc_enable, new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -136,6 +184,18 @@ public class NfcWriteActivity extends BaseActivity {
     _successView.setVisibility(View.VISIBLE);
 
     setResult(RESULT_OK);
+  }
+
+  protected void onNfcTagWriteError(int result) {
+    stopNfcWrite();
+    Snackbar snackbar = Snackbar.make(_messageView, R.string.nfc_error_write, Snackbar.LENGTH_INDEFINITE);
+    snackbar.setAction(R.string.nfc_try_again, new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        onNfcTagWriteRequested();
+      }
+    });
+
+    snackbar.show();
   }
 
   private void showNoNfcMessage() {

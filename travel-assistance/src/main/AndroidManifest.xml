@@ -13,7 +13,9 @@
     <uses-permission android:name="android.permission.NFC" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.nfc" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="false" />
 
     <application
         android:name=".TravelAssistanceApp"
@@ -93,7 +95,8 @@
         <activity
             android:name=".ui.NfcWriteActivity"
             android:label="@string/title_activity_write_nfc"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>
