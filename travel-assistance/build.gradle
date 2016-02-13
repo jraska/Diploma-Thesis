@@ -7,6 +7,7 @@ android {
   defaultConfig {
     applicationId "com.jraska.pwmd.travel"
     minSdkVersion 15
+    //noinspection OldTargetApi
     targetSdkVersion 22 //TODO: Permissions implementation
     versionCode 1
     versionName "1.0"
@@ -49,7 +50,7 @@ android {
 
 apply plugin: 'com.neenbedankt.android-apt'
 
-def dbflow_version = "3.0.0-beta2"
+def dbflow_version = "3.0.0-beta3"
 
 dependencies {
   compile project(':core')
