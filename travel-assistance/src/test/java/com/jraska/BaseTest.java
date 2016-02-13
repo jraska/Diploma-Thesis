@@ -2,6 +2,8 @@ package com.jraska;
 
 import android.app.Application;
 import com.jraska.pwmd.travel.BuildConfig;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
@@ -13,12 +15,19 @@ import timber.log.Timber;
  * automatically for all of them.
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21, shadows = {UnitTestTree.class})
+@Config(constants = BuildConfig.class, sdk = 21)
 public abstract class BaseTest {
-  //region Constructors
+  //region Setup Methods
 
-  public BaseTest() {
+  @Before
+  public void plantTimber() {
+    Timber.uprootAll();
     Timber.plant(new UnitTestTree());
+  }
+
+  @After
+  public void uprootTimber() {
+    Timber.uprootAll();
   }
 
   //endregion
