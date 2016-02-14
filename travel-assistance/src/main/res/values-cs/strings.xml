@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Asistence cestování</string>
-    <string name="test">Test</string>
-    <string name="startTracking">Začít sledovat polohu</string>
-    <string name="stopTracking">Zastavit sledování polohy</string>
+    <string name="route_stop_recording">Zastavit nahrávání cesty</string>
     <string name="saveRoute">Uložit cestu</string>
     <string name="noRouteToSave">Není nahrána žádná cesta.</string>
     <string name="saved">Uloženo</string>
@@ -21,12 +19,9 @@
     <string name="assistant_phone">Telefon asistenta</string>
     <string name="delete">Smazat</string>
     <string name="navigate">Navigovat</string>
-    <string name="no_assistant_email">Není nastaven email uživatele</string>
     <string name="no_assistant_number">Není nastaven telefon asistenta</string>
     <string name="not_implemented">Není implementováno</string>
     <string name="settings">Nastavení</string>
-    <string name="title_activity_maps">Mapa</string>
-    <string name="transport_change_description">Popis</string>
     <string name="transport_change_select">Vyberte typ cestování</string>
     <string name="transport_change_title">Název změny</string>
     <string name="cannot_get_pictures">Nelze získat obrázek</string>
@@ -41,7 +36,7 @@
     <string name="voice_record_speak_now">Nyní mluvte</string>
     <string name="voice_record_title_hint">Titulek</string>
     <string name="navigation_arrow">Navigační šipka</string>
-    <string name="record_route">Nahrát cestu</string>
+    <string name="record_start_record_route">Nahrát cestu</string>
     <string name="route_title">Název cesty</string>
     <string name="route_default_title">Cesta v %s</string>
     <string name="sound_record_listening">Poslouchám</string>
@@ -58,12 +53,15 @@
     <string name="help_call">Volat asistentovi</string>
     <string name="help_no_app_for_email">V telefonu není emailová aplikace</string>
     <string name="no_app_for_call">Ze zařízení není možné volat.</string>
-    <string name="nfc_disabled">Nfc je vypnuto</string>
-    <string name="nfc_enable">Zapnout</string>
     <string name="nfc_not_supported">Zařízení nepodporuje NFC</string>
     <string name="nfc_error_write">Chyba pří zápisu tagu.</string>
     <string name="nfc_try_again">Znovu</string>
     <string name="nfc_write_nfc_off">NFC je vypnuto, ťukněte pro zapnutí</string>
     <string name="route_nfc_not_found_title">Cesta nenalezena</string>
     <string name="route_nfc_not_found_message">Cesta z přiloženého NFC tagu nenalezena. Byla pravděpodbně smazána.\nDo tagu můžete nahrát novou cestu.</string>
+    <string name="sound_record_save">Uložit nahrávku</string>
+    <string name="sound_record_stop">Zastavit nahrávání</string>
+    <string name="transport_bus">Autobus</string>
+    <string name="transport_tram">Tramvaj</string>
+    <string name="transport_walking">Chůze</string>
 </resources>

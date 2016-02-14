@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_smart_record_black_24dp"
                 android:layout_gravity="center"
-                android:contentDescription="@string/record_route"
+                android:contentDescription="@string/record_start_record_route"
                 style="@style/IconButton" />
 
             <ImageButton
@@ -54,7 +54,7 @@
                 android:src="@drawable/ic_stop_black_24dp"
                 android:layout_gravity="center"
                 tools:visibility="gone"
-                android:contentDescription="@string/stopTracking"
+                android:contentDescription="@string/route_stop_recording"
                 style="@style/IconButton" />
         </FrameLayout>
 

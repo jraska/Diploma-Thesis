@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:baselineAligned="false"
             android:weightSum="3">
 
             <FrameLayout
@@ -39,6 +40,7 @@
                     android:id="@+id/btn_transport_change_select_walking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/transport_walking"
                     android:src="@drawable/ic_directions_walk_black_24dp"
                     android:padding="@dimen/padding_large"
                     android:layout_gravity="center" />
@@ -54,6 +56,7 @@
                     android:id="@+id/btn_transport_change_select_bus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/transport_bus"
                     android:src="@drawable/ic_directions_bus_black_24dp"
                     android:padding="@dimen/padding_large"
                     android:layout_gravity="center" />
@@ -68,6 +71,7 @@
                     android:id="@+id/btn_transport_change_select_train"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/transport_tram"
                     android:src="@drawable/ic_directions_railway_black_24dp"
                     android:padding="@dimen/padding_large"
                     android:layout_gravity="center" />

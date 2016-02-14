@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TravelAssistance</string>
-    <string name="test">Test</string>
-    <string name="startTracking">Start tracking</string>
-    <string name="stopTracking">Stop tracking</string>
+    <string name="route_stop_recording">Stop recording</string>
     <string name="saveRoute">Save route</string>
     <string name="noRouteToSave">No tracked route to save.</string>
     <string name="saved">Saved</string>
@@ -18,8 +16,6 @@
     <string name="not_sent">Message not sent</string>
     <string name="i_am_lost">I am lost</string>
     <string name="delete">Delete</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="no_assistant_email">No assistant email</string>
     <string name="settings">Settings</string>
     <string name="assistant_email">Assistant email</string>
     <string name="assistant_phone">Assistant phone</string>
@@ -27,7 +23,6 @@
     <string name="navigate">Navigate</string>
     <string name="not_implemented">Not implemented now</string>
     <string name="transport_change_title">Change title</string>
-    <string name="transport_change_description">Description</string>
     <string name="transport_change_select">Select transport type</string>
     <string name="title_activity_route_record">Recording</string>
     <string name="title_activity_navigation">Navigation</string>
@@ -41,7 +36,7 @@
     <string name="voice_record_title_hint">Title</string>
     <string name="record_voice_saved">Recording saved</string>
     <string name="navigation_arrow">Navigation arrow</string>
-    <string name="record_route">Record route</string>
+    <string name="record_start_record_route">Record route</string>
     <string name="route_title">Route title</string>
     <string name="route_default_title">Route from %s</string>
     <string name="routes">Routes</string>
@@ -59,11 +54,14 @@
     <string name="help_no_app_for_email">No app for email</string>
     <string name="no_app_for_call">Phone call cannot be performed.</string>
     <string name="nfc_not_supported">Device does not support NFC</string>
-    <string name="nfc_disabled">Nfc is disabled</string>
-    <string name="nfc_enable">Enable</string>
     <string name="nfc_error_write">Error writing NFC tag</string>
     <string name="nfc_try_again">Try again</string>
     <string name="nfc_write_nfc_off">NFC is disabled, tap to enable</string>
     <string name="route_nfc_not_found_title">Route not found</string>
     <string name="route_nfc_not_found_message">Route from NFC tag not found. It was probably deleted.\nYou can write new route to the tag.</string>
+    <string name="sound_record_stop">Stop voice recording</string>
+    <string name="sound_record_save">Save recording</string>
+    <string name="transport_walking">Walking</string>
+    <string name="transport_bus">Bus</string>
+    <string name="transport_tram">Tram</string>
 </resources>
