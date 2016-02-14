@@ -70,11 +70,11 @@ public class Console extends ScrollView {
 
   //region Static Methods
 
-  public static void writeLn(Object o) {
-    if (o == null) {
+  public static void writeLn(Object object) {
+    if (object == null) {
       writeLn("null");
     } else {
-      writeLn(o.toString());
+      writeLn(object.toString());
     }
   }
 

@@ -2,6 +2,7 @@ package com.jraska.gpsbatterytest.logging;
 
 import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
+import lombok.SneakyThrows;
 
 import java.io.*;
 
@@ -36,20 +37,16 @@ public class TextFileLogger implements Logger {
 
   //region ILogger impl
 
+  @SneakyThrows(IOException.class)
   @Override
   public void log(@NonNull Object o) {
     ArgumentCheck.notNull(o);
 
     ensureNotDisposed();
 
-    try {
-      ensureCreatedAndOpened();
-      _writer.write(o.toString());
-      _writer.newLine();
-    }
-    catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    ensureCreatedAndOpened();
+    _writer.write(o.toString());
+    _writer.newLine();
   }
 
   @Override

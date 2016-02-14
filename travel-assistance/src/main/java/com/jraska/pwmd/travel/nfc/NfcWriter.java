@@ -42,7 +42,6 @@ public class NfcWriter {
 
   //region Fields
 
-  private final Context _context;
   private final EventBus _eventBus;
   private final NfcAdapter _nfcAdapter;
   private final NfcRouteEncoder _routeEncoder;
@@ -59,11 +58,10 @@ public class NfcWriter {
     ArgumentCheck.notNull(eventBus);
     ArgumentCheck.notNull(encoder);
 
-    _context = context.getApplicationContext();
     _eventBus = eventBus;
     _routeEncoder = encoder;
 
-    _nfcAdapter = NfcAdapter.getDefaultAdapter(_context);
+    _nfcAdapter = NfcAdapter.getDefaultAdapter(context.getApplicationContext());
   }
 
   //endregion

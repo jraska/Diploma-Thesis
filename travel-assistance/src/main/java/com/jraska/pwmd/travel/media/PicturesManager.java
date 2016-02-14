@@ -89,7 +89,7 @@ public class PicturesManager {
   public UUID getIdForUri(@NonNull Uri imageUri) {
     String uriValue = imageUri.toString();
 
-    int lastIndexOfPath = uriValue.lastIndexOf("/");
+    int lastIndexOfPath = uriValue.lastIndexOf('/');
     int lastIndex = uriValue.length() - JPG_EXTENSION.length();
     String uuidValue = uriValue.substring(lastIndexOfPath + 1, lastIndex);
 

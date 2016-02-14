@@ -130,9 +130,9 @@ public class GpsBatteryTestService extends Service {
     return new CompositeLogger(loggers);
   }
 
-  protected void log(Object o) {
+  protected void log(Object object) {
     if (_logger != null) {
-      _logger.log(o);
+      _logger.log(object);
     }
   }
 

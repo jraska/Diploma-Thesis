@@ -91,7 +91,7 @@ public class DirectionDecisionStrategy {
   }
 
   protected boolean isLatitudeAscending() {
-    if (_dataBuffer.size() <= 1) {
+    if (_dataBuffer.size() < 2) {
       return true; //just default to return something
     }
 

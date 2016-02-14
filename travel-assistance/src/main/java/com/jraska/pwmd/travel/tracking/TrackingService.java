@@ -71,11 +71,6 @@ public class TrackingService extends Service {
   }
 
   @Override
-  public boolean onUnbind(Intent intent) {
-    return super.onUnbind(intent);
-  }
-
-  @Override
   public void onDestroy() {
     stopTracking();
 

@@ -10,6 +10,7 @@ import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import de.greenrobot.event.EventBus;
+import lombok.SneakyThrows;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -65,7 +66,7 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
 
   //region OnCompletionListener impl
 
-  @Override public void onCompletion(MediaPlayer mp) {
+  @Override public void onCompletion(MediaPlayer mediaPlayer) {
     stopPlaying();
   }
 
@@ -95,6 +96,7 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
 
   //region Methods
 
+  @SneakyThrows(IOException.class)
   public void startRecording() {
     if (isRecording()) {
       return;
@@ -109,12 +111,7 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
     _recorder.setOutputFile(outputFile.getAbsolutePath());
     _recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
-    try {
-      _recorder.prepare();
-    }
-    catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    _recorder.prepare();
 
     _recorder.start();
   }

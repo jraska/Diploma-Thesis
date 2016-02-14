@@ -107,8 +107,9 @@ public class SimpleSystemLocationService implements LocationService, LocationSta
 
   //region Methods
 
-  protected Position toPosition(Location l) {
-    return new Position(new LatLng(l.getLatitude(), l.getLongitude()), System.currentTimeMillis(), l.getAccuracy(), l.getProvider());
+  protected Position toPosition(Location location) {
+    return new Position(new LatLng(location.getLatitude(), location.getLongitude()),
+        System.currentTimeMillis(), location.getAccuracy(), location.getProvider());
   }
 
   protected void onNewLocation(Location l) {

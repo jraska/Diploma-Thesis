@@ -44,7 +44,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
   /**
    * Array index of first (oldest) queue element.
    */
-  private transient int start = 0;
+  private transient int start;
 
   /**
    * Index mod maxElements of the array latLng following the last queue
@@ -53,12 +53,12 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
    * For example, elements = {c,a,b}, start=1, end=1 corresponds to
    * the queue [a,b,c].
    */
-  private transient int end = 0;
+  private transient int end;
 
   /**
    * Flag to indicate if the queue is currently full.
    */
-  private transient boolean full = false;
+  private transient boolean full;
 
   /**
    * Capacity of the queue.
@@ -98,48 +98,6 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
     this(coll.size());
     addAll(coll);
   }
-
-  //-----------------------------------------------------------------------
-
-  /**
-   * Write the queue out using a custom routine.
-   *
-   * @param out the output stream
-   * @throws IOException if an I/O error occurs while writing to the output stream
-   */
-  private void writeObject(final ObjectOutputStream out) throws IOException {
-    out.defaultWriteObject();
-    out.writeInt(size());
-    for (final E e : this) {
-      out.writeObject(e);
-    }
-  }
-
-  /**
-   * Read the queue in using a custom routine.
-   *
-   * @param in the input stream
-   * @throws IOException            if an I/O error occurs while writing to the output stream
-   * @throws ClassNotFoundException if the class of a serialized object can not be found
-   */
-  @SuppressWarnings("unchecked")
-  private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
-    in.defaultReadObject();
-    elements = (E[]) new Object[maxElements];
-    final int size = in.readInt();
-    for (int i = 0; i < size; i++) {
-      elements[i] = (E) in.readObject();
-    }
-    start = 0;
-    full = size == maxElements;
-    if (full) {
-      end = 0;
-    } else {
-      end = size;
-    }
-  }
-
-  //-----------------------------------------------------------------------
 
   /**
    * Returns the number of elements stored in the queue.

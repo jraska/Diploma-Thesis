@@ -4,6 +4,8 @@ import android.graphics.*;
 import com.nostra13.universalimageloader.core.process.BitmapProcessor;
 
 public class CircleImageProcessor implements BitmapProcessor {
+  private static final int COLOR = 0xff424242;
+
   private final int _size;
 
   public CircleImageProcessor(int size) {
@@ -21,14 +23,14 @@ public class CircleImageProcessor implements BitmapProcessor {
     Bitmap output = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), Bitmap.Config.ARGB_8888);
     Canvas canvas = new Canvas(output);
 
-    final int color = 0xff424242;
+
     final Paint paint = new Paint();
     final Rect rect = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
 
     paint.setAntiAlias(true);
     canvas.drawARGB(0, 0, 0, 0);
 
-    paint.setColor(color);
+    paint.setColor(COLOR);
 
     int radius = Math.min(bmp.getHeight(), bmp.getWidth()) / 2;
     canvas.drawCircle(bmp.getWidth() / 2, bmp.getHeight() / 2, radius, paint);

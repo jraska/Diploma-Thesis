@@ -39,8 +39,8 @@ public class LatLng implements Parcelable {
   }
 
   public static final Parcelable.Creator<LatLng> CREATOR = new Parcelable.Creator<LatLng>() {
-    public LatLng createFromParcel(Parcel p) {
-      return new LatLng(p.readDouble(), p.readDouble());
+    public LatLng createFromParcel(Parcel parcel) {
+      return new LatLng(parcel.readDouble(), parcel.readDouble());
     }
 
     public LatLng[] newArray(int size) {

@@ -55,7 +55,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   private RouteData _routeData;
   private GoogleMap _mapView;
 
-  private Map<Marker, NoteSpec> _noteSpecMap = new HashMap<>();
+  private final Map<Marker, NoteSpec> _noteSpecMap = new HashMap<>();
 
   private DisplayImageOptions _imageOptions;
   private ImageSize _photoIconSize;
@@ -224,7 +224,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   protected void displayOnMap(RouteData routeData) {
     List<com.jraska.pwmd.core.gps.LatLng> points = routeData.getPath();
 
-    if (points.size() == 0) {
+    if (points.isEmpty()) {
       throw new IllegalStateException("No points to display");
     }
 

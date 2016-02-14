@@ -14,7 +14,7 @@ public class CompositeLogger implements Logger {
 
   //region Constructors
 
-  public CompositeLogger(Logger[] loggers) {
+  public CompositeLogger(Logger... loggers) {
     ArgumentCheck.notNull(loggers);
 
     _loggers = Arrays.copyOf(loggers, loggers.length);

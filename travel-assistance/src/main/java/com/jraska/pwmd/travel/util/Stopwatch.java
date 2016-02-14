@@ -10,8 +10,8 @@ import android.os.SystemClock;
 public final class Stopwatch {
   //region Fields
 
-  private long _elapsedMs = 0;
-  private long _lastMs = 0;
+  private long _elapsedMs;
+  private long _lastMs;
   private boolean _running;
 
   //endregion

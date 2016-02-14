@@ -10,6 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.Locale.US;
+
 /**
  * Simple util to delete periodically crap LaTeX files which are causing Typeset to fail.
  */
@@ -18,6 +20,7 @@ public class LatexFilesCleaner {
 
   public static final String[] SUFFIXES_TO_DELETE = {".aux", ".out"};
   private static final DateFormat DATE_FORMAT = DateFormat.getTimeInstance(DateFormat.FULL);
+  private static final int REQUIRED_ARGS_COUNT = 2;
 
   //endregion
 
@@ -33,8 +36,9 @@ public class LatexFilesCleaner {
   //region Methods
 
   private void run(String[] args) throws IOException {
-    if (args.length != 2) {
-      throw new IllegalArgumentException("Exactly two arguments are requid");
+    if (args.length != REQUIRED_ARGS_COUNT) {
+      String message = String.format(US, "Exactly %d arguments is required", REQUIRED_ARGS_COUNT);
+      throw new IllegalArgumentException(message);
     }
 
     File targetDir = new File(args[0]);

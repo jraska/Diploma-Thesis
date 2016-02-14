@@ -11,13 +11,15 @@ import static com.jraska.pwmd.travel.navigation.Navigator.toGoogleLatLng;
 @PerApp
 public class SplineCounter {
 
+  private static final int MIN_REQUIRED_POINTS = 5;
+
   @Inject
   public SplineCounter() {
   }
 
   public LatLng[] calculateSpline(List<com.jraska.pwmd.core.gps.LatLng> latLngs) {
     // Nonsense to do splines with just few points
-    if (latLngs.size() < 5) {
+    if (latLngs.size() < MIN_REQUIRED_POINTS) {
       LatLng[] toReturn = new LatLng[latLngs.size()];
       for (int i = 0; i < latLngs.size(); i++) {
         toReturn[i] = toGoogleLatLng(latLngs.get(i));
