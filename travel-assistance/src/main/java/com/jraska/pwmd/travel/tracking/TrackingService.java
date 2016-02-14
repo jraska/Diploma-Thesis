@@ -21,7 +21,7 @@ import javax.inject.Inject;
 public class TrackingService extends Service {
   //region Constants
 
-  protected final int ID = 26802; //random number
+  protected static final int ID = 26802; //random number
 
   //endregion
 

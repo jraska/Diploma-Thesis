@@ -5,9 +5,6 @@ package com.jraska.pwmd.travel.collection;
 
 import android.support.annotation.NonNull;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 

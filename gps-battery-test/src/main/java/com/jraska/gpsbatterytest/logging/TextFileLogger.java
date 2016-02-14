@@ -49,6 +49,7 @@ public class TextFileLogger implements Logger {
     _writer.newLine();
   }
 
+  @SneakyThrows(IOException.class)
   @Override
   public void dispose() {
     if (_disposed) {
@@ -59,9 +60,6 @@ public class TextFileLogger implements Logger {
       if (_writer != null) {
         _writer.close();
       }
-    }
-    catch (IOException e) {
-      throw new RuntimeException(e);
     }
     finally {
       _disposed = true;

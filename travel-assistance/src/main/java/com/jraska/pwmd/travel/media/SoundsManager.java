@@ -151,20 +151,17 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
     }
   }
 
+  @SneakyThrows(IOException.class)
   protected void play(File file) {
     if (isPlaying()) {
       return;
     }
 
     _mediaPlayer = new MediaPlayer();
-    try {
-      _mediaPlayer.setDataSource(file.getAbsolutePath());
-      _mediaPlayer.prepare();
-      _mediaPlayer.start();
-    }
-    catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+
+    _mediaPlayer.setDataSource(file.getAbsolutePath());
+    _mediaPlayer.prepare();
+    _mediaPlayer.start();
 
     _mediaPlayer.setOnCompletionListener(this);
   }

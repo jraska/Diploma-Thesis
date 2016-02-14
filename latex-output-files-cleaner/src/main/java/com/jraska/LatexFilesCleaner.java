@@ -35,7 +35,7 @@ public class LatexFilesCleaner {
 
   //region Methods
 
-  private void run(String[] args) throws IOException {
+  private void run(String... args) throws IOException {
     if (args.length != REQUIRED_ARGS_COUNT) {
       String message = String.format(US, "Exactly %d arguments is required", REQUIRED_ARGS_COUNT);
       throw new IllegalArgumentException(message);
