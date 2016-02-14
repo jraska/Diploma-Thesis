@@ -1,8 +1,10 @@
 package com.jraska.pwmd.travel.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -10,10 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import butterknife.Bind;
 import butterknife.OnClick;
+import com.jraska.annotations.Event;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import com.jraska.pwmd.travel.settings.SettingsManager;
 import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
@@ -21,6 +26,12 @@ import javax.inject.Inject;
 import java.util.List;
 
 public class RoutesListActivity extends BaseActivity implements RoutesAdapter.OnItemMenuListener {
+  //region Constants
+
+  public static final String KEY_NFC_PROCESSED = "ForwardIntent";
+
+  //endregion
+
   //region Fields
 
   @Bind(R.id.routes_recycler_view) RecyclerView _routesRecycler;
@@ -29,6 +40,9 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
   @Inject TravelDataRepository _travelDataRepository;
   @Inject RoutesAdapter _routesAdapter;
   @Inject EventBus _eventBus;
+  @Inject SettingsManager _settingsManager;
+  @Inject TravelAssistanceApp _app;
+  @Inject NfcRouteEncoder _routeEncoder;
 
   //endregion
 
@@ -74,6 +88,13 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     }
   }
 
+  @Override protected void onResume() {
+    super.onResume();
+
+    Intent intent = getIntent();
+    checkNfcUsed(intent);
+  }
+
   @Override
   protected void onDestroy() {
     _eventBus.unregister(this);
@@ -84,6 +105,8 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
   @Override
   protected void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
+
+    checkNfcIntent(intent);
   }
 
   //endregion
@@ -108,7 +131,7 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
   @Override
   public void onItemNavigateClick(int position, View itemView) {
     RouteData item = _routesAdapter.getItem(position);
-    NavigationActivity.startNavigationActivity(this, item.getId());
+    startNavigation(item.getId());
   }
 
   @Override
@@ -116,11 +139,11 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     deleteRoute(_routesAdapter.getItem(position));
   }
 
-
   //endregion
 
   //region Methods
 
+  @Event
   public void onEvent(TravelDataRepository.NewRouteEvent newRouteEvent) {
     Timber.d("New route event received");
 
@@ -129,12 +152,73 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     refreshRoutes();
   }
 
+  @Event
   public void onEvent(TravelDataRepository.RouteDeletedEvent routeDeleted) {
     Timber.d("Delete route event received");
 
     _routesAdapter.remove(routeDeleted._deletedRoute);
 
     refreshRoutes();
+  }
+
+  private void checkNfcUsed(Intent intent) {
+    checkNfcIntent(intent);
+  }
+
+  private boolean isNfcIntent(Intent intent) {
+    return NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction());
+  }
+
+  private void checkNfcIntent(Intent intent) {
+    if (isNfcIntent(intent) && !intent.getBooleanExtra(KEY_NFC_PROCESSED, false)) {
+      intent.putExtra(KEY_NFC_PROCESSED, true);
+
+      long routeId = _routeEncoder.extractNavigationRouteId(intent);
+      boolean routeExists = routeExists(routeId);
+      if (!routeExists) {
+        Timber.w("Route form NFC tag with id %d does not exist in database.", routeId);
+        showNfcRouteNotExistsMessage();
+        return; // Do nothing more
+      }
+
+      Iterable<Activity> runningActivities = _app.getRunningActivities();
+      // clear top
+      for (Activity activity : runningActivities) {
+        if (activity != this) {
+          activity.finish();
+        }
+      }
+
+      startNavigation(routeId);
+    }
+  }
+
+  private void showNfcRouteNotExistsMessage() {
+    Activity activity = _app.getTopActivity();
+    if (activity == null) {
+      activity = this;
+    }
+
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+    dialogBuilder.setTitle(R.string.route_nfc_not_found_title)
+        .setMessage(R.string.route_nfc_not_found_message)
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .setPositiveButton(android.R.string.cancel, null)
+        .show();
+  }
+
+  private boolean routeExists(long routeId) {
+    for (RouteData routeData : _routesAdapter) {
+      if (routeData.getId() == routeId) {
+        return true;
+      }
+    }
+
+    return _travelDataRepository.routeExists(routeId);
+  }
+
+  private void startNavigation(long id) {
+    NavigationActivity.startNew(this, id);
   }
 
   protected void setupRoutes() {
@@ -155,10 +239,12 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
   }
 
   protected void showRoute(RouteData route) {
-    Intent intent = new Intent(this, RouteDetailActivity.class);
-    intent.putExtra(RouteDetailActivity.ROUTE_ID, route.getId());
+    long id = route.getId();
+    startDetail(id);
+  }
 
-    startActivity(intent);
+  private void startDetail(long id) {
+    RouteDetailActivity.startNew(this, id);
   }
 
   void refreshRoutes() {

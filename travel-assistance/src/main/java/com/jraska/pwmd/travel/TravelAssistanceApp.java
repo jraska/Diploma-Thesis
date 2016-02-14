@@ -1,7 +1,11 @@
 package com.jraska.pwmd.travel;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import com.jraska.core.BaseApp;
+import com.jraska.pwmd.travel.util.ActivityMonitorCallbacks;
+import com.jraska.pwmd.travel.util.TravelDebugTree;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -22,6 +26,20 @@ public class TravelAssistanceApp extends BaseApp {
   //region Fields
 
   private TravelAssistanceComponent _component;
+  private ActivityMonitorCallbacks _monitorCallbacks;
+
+  //endregion
+
+  //region Properties
+
+  public Iterable<Activity> getRunningActivities() {
+    return _monitorCallbacks.getActivities();
+  }
+
+  @Nullable
+  public Activity getTopActivity() {
+    return _monitorCallbacks.getTopActivity();
+  }
 
   //endregion
 
@@ -30,8 +48,11 @@ public class TravelAssistanceApp extends BaseApp {
   @Override public void onCreate() {
     super.onCreate();
 
-    Timber.plant(new Timber.DebugTree());
+    Timber.plant(new TravelDebugTree());
     FlowManager.init(this);
+
+    _monitorCallbacks = new ActivityMonitorCallbacks();
+    registerActivityLifecycleCallbacks(_monitorCallbacks);
 
     _component = DaggerTravelAssistanceComponent.builder()
         .travelAssistanceModule(new TravelAssistanceModule(this)).build();

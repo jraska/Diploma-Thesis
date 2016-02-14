@@ -14,6 +14,8 @@ public interface TravelDataRepository {
 
   RouteData select(long id);
 
+  boolean routeExists(long id);
+
   long delete(RouteData routeData);
 
   long insertOrUpdate(RouteData routeData);

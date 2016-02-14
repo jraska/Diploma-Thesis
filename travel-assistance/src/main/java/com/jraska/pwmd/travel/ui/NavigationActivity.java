@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import butterknife.Bind;
+import com.jraska.annotations.Event;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
@@ -15,10 +16,17 @@ import com.jraska.pwmd.travel.navigation.Navigator;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import de.greenrobot.event.EventBus;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 
 public class NavigationActivity extends BaseActivity {
+
+  //region Constants
+
+  public static final String KEY_INTENT_ROUTE_ID = "NavigationRouteId";
+
+  //endregion
 
   //region Fields
 
@@ -32,6 +40,14 @@ public class NavigationActivity extends BaseActivity {
 
   private RouteDisplayFragment _routeDisplayFragment;
   private long _routeId;
+
+  //endregion
+
+  //region Properties
+
+  public long getRouteId() {
+    return _routeId;
+  }
 
   //endregion
 
@@ -53,7 +69,9 @@ public class NavigationActivity extends BaseActivity {
     _trackingManager.startTracking();
 
     _routeDisplayFragment = (RouteDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-    _routeId = getIntent().getLongExtra(RouteDetailActivity.ROUTE_ID, 0);
+    _routeId = getIntent().getLongExtra(KEY_INTENT_ROUTE_ID, 0);
+
+    _navigator.startNavigation(_routeId);
   }
 
   @Override
@@ -67,7 +85,10 @@ public class NavigationActivity extends BaseActivity {
   protected void onDestroy() {
     _navigator.getEventBus().unregister(this);
 
-    _trackingManager.stopTracking(); // TODO: Handle starting diferent way
+    if (!isChangingConfigurations()) {
+      _trackingManager.stopTracking();
+      _navigator.stopNavigation();
+    }
 
     super.onDestroy();
   }
@@ -76,10 +97,12 @@ public class NavigationActivity extends BaseActivity {
 
   //region Event consuming
 
+  @Event
   public void onEvent(Navigator.RequiredDirectionEvent changedEvent) {
     updateDesiredDirection(changedEvent._directionDegrees);
   }
 
+  @Event
   public void onEvent(Position position) {
     _routeDisplayFragment.addPositionMarker(position);
     updateDesiredDirection(_navigator.getCompassDirection());
@@ -100,24 +123,39 @@ public class NavigationActivity extends BaseActivity {
     _arrowView.setRotation(-degrees);
   }
 
-  public static void startNavigationActivity(Activity fromActivity, long routeId) {
-    Intent startNavigationIntent = new Intent(fromActivity, NavigationActivity.class);
-    startNavigationIntent.putExtra(RouteDetailActivity.ROUTE_ID, routeId);
-
-    fromActivity.startActivity(startNavigationIntent);
-  }
-
   public void showRoute() {
     if (!_routeDisplayFragment.isRouteDisplayed()) {
       RouteData routeData = loadRoute();
 
-      _routeDisplayFragment.displayRoute(routeData);
+      if (routeData != null) {
+        _routeDisplayFragment.displayRoute(routeData);
+      } else {
+        onRouteNotFound();
+      }
     }
+  }
+
+  private void onRouteNotFound() {
+    Timber.w("Route with id %s not found.", _routeId);
+
+    finish();
   }
 
   protected RouteData loadRoute() {
     RouteData routeData = _travelDataRepository.select(_routeId);
     return routeData;
+  }
+
+  public static void startNew(Activity fromActivity, long routeId) {
+    Intent startNavigationIntent = createIntent(fromActivity, routeId);
+
+    fromActivity.startActivity(startNavigationIntent);
+  }
+
+  public static Intent createIntent(Activity fromActivity, long routeId) {
+    Intent startNavigationIntent = new Intent(fromActivity, NavigationActivity.class);
+    startNavigationIntent.putExtra(KEY_INTENT_ROUTE_ID, routeId);
+    return startNavigationIntent;
   }
 
   //endregion

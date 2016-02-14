@@ -64,4 +64,6 @@
     <string name="nfc_error_write">Chyba pří zápisu tagu.</string>
     <string name="nfc_try_again">Znovu</string>
     <string name="nfc_write_nfc_off">NFC je vypnuto, ťukněte pro zapnutí</string>
+    <string name="route_nfc_not_found_title">Cesta nenalezena</string>
+    <string name="route_nfc_not_found_message">Cesta z přiloženého NFC tagu nenalezena. Byla pravděpodbně smazána.\nDo tagu můžete nahrát novou cestu.</string>
 </resources>

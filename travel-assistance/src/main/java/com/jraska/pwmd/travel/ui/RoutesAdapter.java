@@ -23,9 +23,11 @@ import javax.inject.Inject;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
-public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewHolder> {
+public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewHolder>
+    implements Iterable<RouteData> {
   //region Fields
 
   private final List<RouteData> _routes = new ArrayList<>();
@@ -92,6 +94,15 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
 
   public static int getRouteIcon(RouteData rout) {
     return R.drawable.ic_location_48dp;
+  }
+
+  //endregion
+
+  //region Iterable<RouteData> impl
+
+  @Override
+  public Iterator<RouteData> iterator() {
+    return _routes.iterator();
   }
 
   //endregion

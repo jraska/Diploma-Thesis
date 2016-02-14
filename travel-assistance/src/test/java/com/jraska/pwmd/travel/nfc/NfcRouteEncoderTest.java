@@ -42,7 +42,7 @@ public class NfcRouteEncoderTest extends BaseTest {
 
     for (long id : TEST_IDS) {
       Uri routeUri = encoder.createRouteUri(id);
-      long extractedId = encoder.extractRouteId(routeUri);
+      long extractedId = encoder.extractNavigationRouteId(routeUri);
 
       assertThat(extractedId).isEqualTo(id);
     }
@@ -53,9 +53,9 @@ public class NfcRouteEncoderTest extends BaseTest {
     NfcRouteEncoder encoder = _encoder;
 
     for (long id : TEST_IDS) {
-      NdefMessage ndefMessage = encoder.encodeRoute(id);
+      NdefMessage ndefMessage = encoder.encodeRouteNavigation(id);
       Uri routeUri = encoder.extractUri(ndefMessage);
-      long extractedId = encoder.extractRouteId(routeUri);
+      long extractedId = encoder.extractNavigationRouteId(routeUri);
 
       assertThat(extractedId).isEqualTo(id);
     }
@@ -76,7 +76,7 @@ public class NfcRouteEncoderTest extends BaseTest {
   public void testUriFoundWithEmptyData() throws Exception {
     long testId = TEST_IDS[0];
     Uri expectedUri = _encoder.createRouteUri(testId);
-    Parcelable[] messages = {_encoder.encodeRoute(testId)};
+    Parcelable[] messages = {_encoder.encodeRouteNavigation(testId)};
     Intent intent = new Intent();
     intent.putExtra(NfcAdapter.EXTRA_NDEF_MESSAGES, messages);
 

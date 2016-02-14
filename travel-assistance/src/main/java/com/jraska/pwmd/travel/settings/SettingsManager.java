@@ -44,7 +44,7 @@ public class SettingsManager {
   }
 
   /**
-   * @return Assistant phoen if available, null otherwise
+   * @return Assistant phone if available, null otherwise
    */
   @Nullable
   public String getAssistantPhone() {

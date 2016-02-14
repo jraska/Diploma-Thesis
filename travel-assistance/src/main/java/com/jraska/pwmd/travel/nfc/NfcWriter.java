@@ -134,7 +134,7 @@ public class NfcWriter {
   }
 
   private NdefMessage createRouteNdefMessage() {
-    return _routeEncoder.encodeRoute(_routeId);
+    return _routeEncoder.encodeRouteNavigation(_routeId);
   }
 
   protected int write(NdefMessage rawMessage, Intent tagReadyIntent) {

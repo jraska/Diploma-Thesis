@@ -3,6 +3,7 @@ package com.jraska.pwmd.travel.persistence;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteData_Table;
+import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.AsyncModel;
 import com.raizlabs.android.dbflow.structure.Model;
@@ -43,6 +44,11 @@ public class DBFlowDataRepository implements TravelDataRepository {
 
   @Override public RouteData select(long id) {
     return SQLite.select().from(RouteData.class).where(RouteData_Table._id.eq(id)).querySingle();
+  }
+
+  @Override public boolean routeExists(long id) {
+    return SQLite.select(Method.count()).from(RouteData.class)
+        .where(RouteData_Table._id.eq(id)).count() > 0;
   }
 
   @Override public long delete(RouteData routeData) {

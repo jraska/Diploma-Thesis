@@ -37,11 +37,21 @@
         <activity
             android:name=".ui.RoutesListActivity"
             android:label="@string/routes"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:scheme="http"
+                    android:host="pwmd.travel"
+                    android:pathPrefix="/navigate" />
             </intent-filter>
         </activity>
         <activity
@@ -98,15 +108,6 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_write_nfc"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.NfcRouteDispatchActivity">
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="http"
-                    android:host="pwmd.travel"
-                    android:pathPrefix="/route" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

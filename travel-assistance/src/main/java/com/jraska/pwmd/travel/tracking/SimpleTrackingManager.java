@@ -103,6 +103,8 @@ public class SimpleTrackingManager implements TrackingManager {
       return;
     }
 
+    Timber.i("Starting tracking");
+
     _pendingChanges.clear();
     _pendingNoteSpecs.clear();
 
@@ -162,6 +164,9 @@ public class SimpleTrackingManager implements TrackingManager {
     if (!_running) {
       return;
     }
+
+    Timber.i("Stopping tracking");
+
     _pendingChanges.clear();
 
     for (NoteSpec spec : _pendingNoteSpecs) {

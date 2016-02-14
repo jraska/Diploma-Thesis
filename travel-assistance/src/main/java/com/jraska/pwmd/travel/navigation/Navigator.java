@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import de.greenrobot.event.EventBus;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 
@@ -20,6 +21,7 @@ public class Navigator {
   private final DirectionDecisionStrategy _routeDirectionStrategy;
 
   private int _lastDirectionDegrees = UNKNOWN_DIRECTION;
+  private long _currentRouteId;
 
   //endregion
 
@@ -90,6 +92,17 @@ public class Navigator {
 
   public static LatLng toGoogleLatLng(@NonNull com.jraska.pwmd.core.gps.LatLng latLng) {
     return new LatLng(latLng._latitude, latLng._longitude);
+  }
+
+  public void startNavigation(long routeId) {
+    // TODO: 13/02/16
+    _currentRouteId = routeId;
+    Timber.i("Navigation for route %d started.", _currentRouteId);
+  }
+
+  public void stopNavigation() {
+    Timber.i("Navigation for route %d ended", _currentRouteId);
+    _currentRouteId = 0;
   }
 
   //endregion

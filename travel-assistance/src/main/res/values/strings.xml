@@ -64,4 +64,6 @@
     <string name="nfc_error_write">Error writing NFC tag</string>
     <string name="nfc_try_again">Try again</string>
     <string name="nfc_write_nfc_off">NFC is disabled, tap to enable</string>
+    <string name="route_nfc_not_found_title">Route not found</string>
+    <string name="route_nfc_not_found_message">Route from NFC tag not found. It was probably deleted.\nYou can write new route to the tag.</string>
 </resources>

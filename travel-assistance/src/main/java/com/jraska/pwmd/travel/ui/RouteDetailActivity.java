@@ -1,5 +1,6 @@
 package com.jraska.pwmd.travel.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,7 +18,7 @@ import javax.inject.Inject;
 public class RouteDetailActivity extends BaseActivity implements RouteDisplayFragment.EventListener {
   //region Constants
 
-  public static final String ROUTE_ID = "RouteId";
+  public static final String KEY_INTENT_ROUTE_ID = "RouteId";
 
   //endregion
 
@@ -42,7 +43,7 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
 
     _routeDisplayFragment = (RouteDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-    _routeId = getIntent().getLongExtra(ROUTE_ID, 0);
+    _routeId = getIntent().getLongExtra(KEY_INTENT_ROUTE_ID, 0);
 
     showRoute();
   }
@@ -116,13 +117,24 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
   }
 
   protected RouteData loadRoute() {
-    long routeId = getIntent().getLongExtra(ROUTE_ID, 0);
-    RouteData routeData = _travelDataRepository.select(routeId);
+    RouteData routeData = _travelDataRepository.select(_routeId);
     return routeData;
   }
 
   protected void startNavigation() {
-    NavigationActivity.startNavigationActivity(this, _routeId);
+    NavigationActivity.startNew(this, _routeId);
+  }
+
+  public static void startNew(Activity fromActivity, long routeId) {
+    Intent startDetailIntent = createIntent(fromActivity, routeId);
+
+    fromActivity.startActivity(startDetailIntent);
+  }
+
+  public static Intent createIntent(Activity fromActivity, long routeId) {
+    Intent startDetailIntent = new Intent(fromActivity, RouteDetailActivity.class);
+    startDetailIntent.putExtra(KEY_INTENT_ROUTE_ID, routeId);
+    return startDetailIntent;
   }
 
   //endregion

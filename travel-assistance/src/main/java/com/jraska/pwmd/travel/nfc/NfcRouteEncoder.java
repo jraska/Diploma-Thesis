@@ -21,7 +21,7 @@ public class NfcRouteEncoder {
 
   public static final String DEEP_LINK_SCHEME = "http";
   public static final String DEEP_LINK_AUTHORITY = "pwmd.travel";
-  public static final String PATH_ROUTE = "route";
+  public static final String PATH_ROUTE = "navigate";
   public static final String PARAM_ROUTE_ID = "id";
 
   //endregion
@@ -41,20 +41,23 @@ public class NfcRouteEncoder {
 
   //region Methods
 
-  public NdefMessage encodeRoute(long routeId) {
+  public NdefMessage encodeRouteNavigation(long routeId) {
     Uri routeUri = createRouteUri(routeId);
+    Timber.d("Encoded uri=%s for routeId=%d", routeUri, routeId);
+
     NdefRecord deepLinkRecord = NdefRecord.createUri(routeUri);
     NdefRecord applicationRecord = NdefRecord.createApplicationRecord(_context.getPackageName());
 
     return new NdefMessage(deepLinkRecord, applicationRecord);
   }
 
-  public long extractRouteId(@NonNull Intent intent) {
+  public long extractNavigationRouteId(@NonNull Intent intent) {
     ArgumentCheck.notNull(intent);
 
     Uri routeUri = extractUri(intent);
+    Timber.d("Extracted NFC uri: %s", routeUri);
 
-    return extractRouteId(routeUri);
+    return extractNavigationRouteId(routeUri);
   }
 
   protected Uri createRouteUri(long routeId) {
@@ -67,7 +70,7 @@ public class NfcRouteEncoder {
     return uriBuilder.build();
   }
 
-  protected long extractRouteId(Uri routeUri) {
+  protected long extractNavigationRouteId(Uri routeUri) {
     if (routeUri == null) {
       return 0;
     }
