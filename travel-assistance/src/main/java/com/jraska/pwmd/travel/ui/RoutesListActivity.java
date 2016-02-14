@@ -173,14 +173,6 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     if (isNfcIntent(intent) && !intent.getBooleanExtra(KEY_NFC_PROCESSED, false)) {
       intent.putExtra(KEY_NFC_PROCESSED, true);
 
-      long routeId = _routeEncoder.extractNavigationRouteId(intent);
-      boolean routeExists = routeExists(routeId);
-      if (!routeExists) {
-        Timber.w("Route form NFC tag with id %d does not exist in database.", routeId);
-        showNfcRouteNotExistsMessage();
-        return; // Do nothing more
-      }
-
       Iterable<Activity> runningActivities = _app.getRunningActivities();
       // clear top
       for (Activity activity : runningActivities) {
@@ -189,17 +181,20 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
         }
       }
 
+      long routeId = _routeEncoder.extractNavigationRouteId(intent);
+      boolean routeExists = routeExists(routeId);
+      if (!routeExists) {
+        Timber.w("Route form NFC tag with id %d does not exist in database.", routeId);
+        showNfcRouteNotExistsMessage();
+        return; // Do nothing more
+      }
+
       startNavigation(routeId);
     }
   }
 
   private void showNfcRouteNotExistsMessage() {
-    Activity activity = _app.getTopActivity();
-    if (activity == null) {
-      activity = this;
-    }
-
-    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
     dialogBuilder.setTitle(R.string.route_nfc_not_found_title)
         .setMessage(R.string.route_nfc_not_found_message)
         .setIcon(android.R.drawable.ic_dialog_alert)
