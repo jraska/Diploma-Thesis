@@ -1,9 +1,9 @@
 package com.jraska.gpsbatterytest;
 
+import android.app.Application;
 import android.content.Context;
-import com.jraska.core.BaseApp;
 
-public class GpsBatteryTestApp extends BaseApp {
+public class GpsBatteryTestApp extends Application {
   //region Fields
 
   private GpsBatteryTestComponent _component;

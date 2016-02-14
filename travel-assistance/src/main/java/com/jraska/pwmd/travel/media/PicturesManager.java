@@ -2,6 +2,7 @@ package com.jraska.pwmd.travel.media;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import com.jraska.annotations.Event;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
@@ -26,7 +27,6 @@ public class PicturesManager {
   //region Fields
 
   private final File _imagesDir;
-  private final EventBus _dataBus;
 
   //endregion
 
@@ -39,9 +39,8 @@ public class PicturesManager {
     ArgumentCheck.notNull(dataBus);
 
     _imagesDir = imagesDir;
-    _dataBus = dataBus;
 
-    _dataBus.register(this);
+    dataBus.register(this);
   }
 
   //endregion
@@ -56,6 +55,7 @@ public class PicturesManager {
 
   //region Events handling
 
+  @Event
   public void onEvent(TravelDataRepository.NoteSpecDeletedEvent deletedEvent) {
     NoteSpec spec = deletedEvent._noteSpec;
     if (spec.getImageId() != null) {

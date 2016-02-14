@@ -4,6 +4,7 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.jraska.annotations.Event;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
@@ -29,7 +30,6 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
   //region Fields
 
   private final File _soundsDir;
-  private final EventBus _dataBus;
 
   private MediaRecorder _recorder;
   private MediaPlayer _mediaPlayer;
@@ -45,9 +45,8 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
     ArgumentCheck.notNull(dataBus);
 
     _soundsDir = soundsDir;
-    _dataBus = dataBus;
 
-    _dataBus.register(this);
+    dataBus.register(this);
   }
 
   //endregion
@@ -74,6 +73,7 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
 
   //region Events
 
+  @Event
   public void onEvent(TravelDataRepository.NoteSpecDeletedEvent deletedEvent) {
     NoteSpec spec = deletedEvent._noteSpec;
     if (spec.getSoundId() != null) {

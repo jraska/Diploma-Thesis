@@ -1,9 +1,10 @@
 package com.jraska.common;
 
-public abstract class ArgumentCheck {
+public final class ArgumentCheck {
   //region Constructor
 
   private ArgumentCheck() {
+    throw new AssertionError("No instances");
   }
 
   //endregion

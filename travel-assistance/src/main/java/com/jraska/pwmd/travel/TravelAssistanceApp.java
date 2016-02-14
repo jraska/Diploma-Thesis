@@ -1,9 +1,9 @@
 package com.jraska.pwmd.travel;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.support.annotation.Nullable;
-import com.jraska.core.BaseApp;
 import com.jraska.pwmd.travel.util.ActivityMonitorCallbacks;
 import com.jraska.pwmd.travel.util.TravelDebugTree;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -15,7 +15,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class TravelAssistanceApp extends BaseApp {
+public class TravelAssistanceApp extends Application {
   //region Constants
 
   public static final DateFormat USER_DETAILED_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss, dd.MM", Locale.US);
