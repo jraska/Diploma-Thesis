@@ -59,5 +59,7 @@ dependencies {
 
   apt 'com.google.dagger:dagger-compiler:2.0.2'
 
+  provided "org.projectlombok:lombok:1.16.6"
+
   testCompile 'junit:junit:4.12'
 }
