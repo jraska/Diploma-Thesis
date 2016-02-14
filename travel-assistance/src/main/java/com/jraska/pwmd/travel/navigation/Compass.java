@@ -3,7 +3,8 @@ package com.jraska.pwmd.travel.navigation;
 import android.support.annotation.NonNull;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.core.gps.Position;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -36,7 +37,8 @@ public class Compass {
 
   //region Methods
 
-  public void onEvent(Position position) {
+  @Subscribe
+  public void onNewPosition(Position position) {
     _decisionStrategy.addPoint(position.latLng);
   }
 

@@ -30,7 +30,7 @@ dependencies {
   compile 'javax.annotation:javax.annotation-api:1.2'
 
   apt 'com.google.dagger:dagger-compiler:2.0.2'
-  compile 'de.greenrobot:eventbus:2.4.0'
+  compile 'org.greenrobot:eventbus:3.0.0'
 
   provided "org.projectlombok:lombok:1.16.6"
   apt "org.projectlombok:lombok:1.16.6"

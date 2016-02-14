@@ -8,7 +8,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 

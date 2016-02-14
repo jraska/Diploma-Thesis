@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.jraska.dagger.PerApp;
 import dagger.Module;
 import dagger.Provides;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 @Module
 public class GpsBatteryTestModule {

@@ -1,7 +1,7 @@
 package com.jraska.pwmd.travel.navigation;
 
 import com.jraska.BaseTest;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

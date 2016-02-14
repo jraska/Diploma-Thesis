@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import butterknife.Bind;
-import com.jraska.annotations.Event;
+import org.greenrobot.eventbus.Subscribe;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
@@ -15,7 +15,7 @@ import com.jraska.pwmd.travel.navigation.DirectionDecisionStrategy;
 import com.jraska.pwmd.travel.navigation.Navigator;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -97,13 +97,13 @@ public class NavigationActivity extends BaseActivity {
 
   //region Event consuming
 
-  @Event
-  public void onEvent(Navigator.RequiredDirectionEvent changedEvent) {
+  @Subscribe
+  public void onDirectionChanged(Navigator.RequiredDirectionEvent changedEvent) {
     updateDesiredDirection(changedEvent._directionDegrees);
   }
 
-  @Event
-  public void onEvent(Position position) {
+  @Subscribe
+  public void onNewPosition(Position position) {
     _routeDisplayFragment.addPositionMarker(position);
     updateDesiredDirection(_navigator.getCompassDirection());
   }

@@ -4,13 +4,13 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.jraska.annotations.Event;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
-import de.greenrobot.event.EventBus;
 import lombok.SneakyThrows;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -74,8 +74,8 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
 
   //region Events
 
-  @Event
-  public void onEvent(TravelDataRepository.NoteSpecDeletedEvent deletedEvent) {
+  @Subscribe
+  public void onRouteDeleted(TravelDataRepository.NoteSpecDeletedEvent deletedEvent) {
     NoteSpec spec = deletedEvent._noteSpec;
     if (spec.getSoundId() != null) {
       deleteSound(spec.getSoundId());
@@ -147,7 +147,7 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
     if (file.exists()) {
       play(file);
     } else {
-      throw new IllegalStateException("Sound file not found");
+      Timber.e("Sound %s file not found.", soundId);
     }
   }
 

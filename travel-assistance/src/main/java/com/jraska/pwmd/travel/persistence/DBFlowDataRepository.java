@@ -7,7 +7,7 @@ import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.AsyncModel;
 import com.raizlabs.android.dbflow.structure.Model;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
 import java.util.List;

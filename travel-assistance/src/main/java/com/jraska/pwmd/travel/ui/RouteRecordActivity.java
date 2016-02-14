@@ -32,7 +32,8 @@ import com.jraska.pwmd.travel.media.SoundsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import com.jraska.pwmd.travel.transport.SimpleTransportManager;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -154,7 +155,8 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
   //region Methods
 
-  public void onEvent(Position position) {
+  @Subscribe
+  public void onNewPosition(Position position) {
     _lastPosition = position;
     centerMapToLastPosition(true);
   }

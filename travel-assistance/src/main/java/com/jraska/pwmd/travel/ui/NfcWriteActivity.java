@@ -7,12 +7,12 @@ import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.OnClick;
-import com.jraska.annotations.Event;
+import org.greenrobot.eventbus.Subscribe;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.nfc.NfcStatusChecker;
 import com.jraska.pwmd.travel.nfc.NfcWriter;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -109,13 +109,13 @@ public class NfcWriteActivity extends BaseActivity {
 
   //region Methods
 
-  @Event
-  public void onEvent(NfcStatusChecker.NfcSettingsChangedEvent event) {
+  @Subscribe
+  public void onNfcSettingsChanged(NfcStatusChecker.NfcSettingsChangedEvent event) {
     onNfcTagWriteRequested();
   }
 
-  @Event
-  public void onEvent(NfcWriter.TagWriteResultEvent event) {
+  @Subscribe
+  public void onTagWriteResult(NfcWriter.TagWriteResultEvent event) {
     if (event._routeId != _routeId) {
       return;
     }

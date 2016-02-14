@@ -5,7 +5,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import com.jraska.common.ArgumentCheck;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 public class SimpleSystemLocationService implements LocationService, LocationStatusService {
   //region Fields

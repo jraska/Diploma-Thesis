@@ -12,14 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import butterknife.Bind;
 import butterknife.OnClick;
-import com.jraska.annotations.Event;
+import org.greenrobot.eventbus.Subscribe;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.settings.SettingsManager;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -143,8 +143,8 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
 
   //region Methods
 
-  @Event
-  public void onEvent(TravelDataRepository.NewRouteEvent newRouteEvent) {
+  @Subscribe
+  public void onNewRoute(TravelDataRepository.NewRouteEvent newRouteEvent) {
     Timber.d("New route event received");
 
     _routesAdapter.add(newRouteEvent._newRoute);
@@ -152,8 +152,8 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     refreshRoutes();
   }
 
-  @Event
-  public void onEvent(TravelDataRepository.RouteDeletedEvent routeDeleted) {
+  @Subscribe
+  public void onRouteDeleted(TravelDataRepository.RouteDeletedEvent routeDeleted) {
     Timber.d("Delete route event received");
 
     _routesAdapter.remove(routeDeleted._deletedRoute);
@@ -194,8 +194,8 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
   }
 
   private void showNfcRouteNotExistsMessage() {
-    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-    dialogBuilder.setTitle(R.string.route_nfc_not_found_title)
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle(R.string.route_nfc_not_found_title)
         .setMessage(R.string.route_nfc_not_found_message)
         .setIcon(android.R.drawable.ic_dialog_alert)
         .setPositiveButton(android.R.string.cancel, null)

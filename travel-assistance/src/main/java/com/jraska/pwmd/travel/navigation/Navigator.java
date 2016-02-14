@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.maps.model.LatLng;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
 import javax.inject.Inject;

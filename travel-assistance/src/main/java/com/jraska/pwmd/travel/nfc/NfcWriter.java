@@ -14,7 +14,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
 import javax.inject.Inject;

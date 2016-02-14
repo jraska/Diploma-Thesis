@@ -5,7 +5,7 @@ import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.core.gps.LocationService;
 import dagger.Module;
 import dagger.Provides;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 @Module
 public class TrackingModule {

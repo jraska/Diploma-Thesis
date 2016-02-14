@@ -17,7 +17,8 @@ import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
 import java.util.*;
@@ -221,13 +222,15 @@ public class SimpleTrackingManager implements TrackingManager {
 
   //region Methods
 
-  public void onEvent(Position position) {
+  @Subscribe
+  public void onNewPosition(Position position) {
     if (isTracking()) {
       _pendingPositions.add(position);
     }
   }
 
-  public void onEvent(TravelDataRepository.RouteDeletedEvent event) {
+  @Subscribe
+  public void onRouteDeleted(TravelDataRepository.RouteDeletedEvent event) {
     // This happen in the case when route is recording and saved but the user
     // press delete in routes list
     if (_routeData != null && event._deletedRoute.getDeletedId() == _routeData.getId()) {

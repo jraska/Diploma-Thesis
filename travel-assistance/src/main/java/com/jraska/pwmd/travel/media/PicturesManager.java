@@ -2,12 +2,12 @@ package com.jraska.pwmd.travel.media;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import com.jraska.annotations.Event;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -34,29 +34,21 @@ public class PicturesManager {
 
   @Inject
   public PicturesManager(@Named(PICTURES_DIR) @NonNull File imagesDir,
-                         EventBus dataBus) {
+                         EventBus eventBus) {
     ArgumentCheck.notNull(imagesDir);
-    ArgumentCheck.notNull(dataBus);
+    ArgumentCheck.notNull(eventBus);
 
     _imagesDir = imagesDir;
 
-    dataBus.register(this);
-  }
-
-  //endregion
-
-  //region Properties
-
-  public File getImagesDir() {
-    return _imagesDir;
+    eventBus.register(this);
   }
 
   //endregion
 
   //region Events handling
 
-  @Event
-  public void onEvent(TravelDataRepository.NoteSpecDeletedEvent deletedEvent) {
+  @Subscribe
+  public void onNoteSpecDeleted(TravelDataRepository.NoteSpecDeletedEvent deletedEvent) {
     NoteSpec spec = deletedEvent._noteSpec;
     if (spec.getImageId() != null) {
       deleteImage(spec.getImageId());

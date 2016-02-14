@@ -16,7 +16,8 @@ import com.jraska.pwmd.core.battery.BatteryStatsReader;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
 import com.jraska.pwmd.core.gps.Position;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 import java.io.File;
@@ -91,7 +92,8 @@ public class GpsBatteryTestService extends Service {
 
   //region Methods
 
-  public void onEvent(Position position) {
+  @Subscribe
+  public void onNewPosition(Position position) {
     log(position);
   }
 

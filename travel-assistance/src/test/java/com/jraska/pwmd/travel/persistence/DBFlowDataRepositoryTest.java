@@ -8,7 +8,8 @@ import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -163,11 +164,13 @@ public class DBFlowDataRepositoryTest extends BaseTest {
       super(count);
     }
 
-    public void onEvent(TravelDataRepository.NewRouteEvent e) {
+    @Subscribe
+    public void onNewRoute(TravelDataRepository.NewRouteEvent e) {
       countDown();
     }
 
-    public void onEvent(TravelDataRepository.RouteDeletedEvent e) {
+    @Subscribe
+    public void onRouteDeleted(TravelDataRepository.RouteDeletedEvent e) {
       countDown();
     }
   }
@@ -175,7 +178,8 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   public static class TestSubscriber {
     public int _eventFired;
 
-    public void onEvent(TravelDataRepository.NewRouteEvent event) {
+    @Subscribe
+    public void onRouteDeleted(TravelDataRepository.NewRouteEvent event) {
       _eventFired++;
     }
   }
