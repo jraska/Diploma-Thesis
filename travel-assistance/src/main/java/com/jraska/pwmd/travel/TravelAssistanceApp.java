@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import com.jraska.pwmd.travel.util.ActivityMonitorCallbacks;
 import com.jraska.pwmd.travel.util.TravelDebugTree;
+import com.jraska.pwmd.travel.util.TravelReleaseTree;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.raizlabs.android.dbflow.config.FlowManager;
@@ -48,7 +49,12 @@ public class TravelAssistanceApp extends Application {
   @Override public void onCreate() {
     super.onCreate();
 
-    Timber.plant(new TravelDebugTree());
+    if (BuildConfig.DEBUG) {
+      Timber.plant(new TravelDebugTree());
+    } else {
+      Timber.plant(new TravelReleaseTree());
+    }
+
     FlowManager.init(this);
 
     _monitorCallbacks = new ActivityMonitorCallbacks();
