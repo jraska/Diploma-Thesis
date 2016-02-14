@@ -10,11 +10,12 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Console extends ScrollView {
   //region Static Fields
 
-  private static ArrayList<WeakReference<Console>> sConsoles = new ArrayList<>();
+  private static List<WeakReference<Console>> sConsoles = new ArrayList<>();
   private static Handler sHandler = new ConsoleHandler(Looper.getMainLooper()); //main looper ensures UI thread
 
   private static String sConsoleText = "";

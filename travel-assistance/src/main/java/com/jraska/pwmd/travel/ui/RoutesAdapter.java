@@ -172,14 +172,14 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
       ButterKnife.bind(this, itemView);
     }
 
-    @OnClick(R.id.route_item_container) void onItemClick(View v) {
+    @OnClick(R.id.route_item_container) void onItemClick(View view) {
       _routesAdapter.onItemClicked(getAdapterPosition(), itemView);
     }
 
-    @OnClick(R.id.route_item_more) void showMore(View v) {
+    @OnClick(R.id.route_item_more) void showMore(View view) {
       // This is fix because of parsing error fail with some theme issues
-      Context wrapper = new ContextThemeWrapper(v.getContext(), R.style.PopupMenuCompat);
-      PopupMenu popup = new PopupMenu(wrapper, v);
+      Context wrapper = new ContextThemeWrapper(view.getContext(), R.style.PopupMenuCompat);
+      PopupMenu popup = new PopupMenu(wrapper, view);
       popup.inflate(R.menu.menu_route_popup);
 
       popup.setOnMenuItemClickListener(this);

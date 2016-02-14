@@ -7,8 +7,8 @@ public class ConsoleLogger implements Logger {
   //region ILogger impl
 
   @Override
-  public void log(@NonNull Object o) {
-    Console.writeLn(o);
+  public void log(@NonNull Object object) {
+    Console.writeLn(object);
   }
 
   @Override

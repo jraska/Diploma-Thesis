@@ -116,11 +116,11 @@ public class LostMessageTextBuilder {
     return _context.getString(resId);
   }
 
-  public LostMessageTextBuilder setFromPosition(Position p) {
-    ArgumentCheck.notNull(p, "p");
+  public LostMessageTextBuilder setFromPosition(Position position) {
+    ArgumentCheck.notNull(position, "position");
 
-    return setAccuracy(p.accuracy).setLatitude(p.latLng._latitude)
-        .setLongitude(p.latLng._longitude).setTime(new Date(p.time));
+    return setAccuracy(position.accuracy).setLatitude(position.latLng._latitude)
+        .setLongitude(position.latLng._longitude).setTime(new Date(position.time));
   }
 
   public String buildGoogleMapsUrl() {

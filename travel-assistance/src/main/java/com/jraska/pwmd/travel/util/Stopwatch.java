@@ -10,9 +10,9 @@ import android.os.SystemClock;
 public final class Stopwatch {
   //region Fields
 
-  private long m_elapsedMs = 0;
-  private long m_lastMs = 0;
-  private boolean m_running = false;
+  private long _elapsedMs = 0;
+  private long _lastMs = 0;
+  private boolean _running;
 
   //endregion
 
@@ -24,7 +24,7 @@ public final class Stopwatch {
    * @return True if the StopWatch is in running state, false otherwise.
    */
   public boolean isRunning() {
-    return m_running;
+    return _running;
   }
 
   /**
@@ -33,12 +33,12 @@ public final class Stopwatch {
    * @return Time which StopWatch spent in running state.
    */
   public long getElapsedMs() {
-    if (m_running) {
+    if (_running) {
       long systemMs = SystemClock.elapsedRealtime();
-      return m_elapsedMs + (systemMs - m_lastMs);
+      return _elapsedMs + (systemMs - _lastMs);
     }
 
-    return m_elapsedMs;
+    return _elapsedMs;
   }
 
   /**
@@ -53,13 +53,13 @@ public final class Stopwatch {
       throw new IllegalArgumentException("Elapsed cannot be negative");
     }
 
-    if (m_running) {
+    if (_running) {
       //on running clear elapsed and handle everything with mLastElapsed
       long now = SystemClock.elapsedRealtime();
-      m_elapsedMs = 0;
-      m_lastMs = now - elapsed; //this causes now elapsed time to elapsed
+      _elapsedMs = 0;
+      _lastMs = now - elapsed; //this causes now elapsed time to elapsed
     } else {
-      m_elapsedMs = elapsed;
+      _elapsedMs = elapsed;
     }
   }
 
@@ -72,13 +72,13 @@ public final class Stopwatch {
    */
   public void start() {
     //do nothing if the stopwatch is already running
-    if (m_running) {
+    if (_running) {
       return;
     }
-    m_running = true;
+    _running = true;
 
     //get the time information as last part for better precision
-    m_lastMs = SystemClock.elapsedRealtime();
+    _lastMs = SystemClock.elapsedRealtime();
   }
 
   /**
@@ -89,22 +89,22 @@ public final class Stopwatch {
     long systemMs = SystemClock.elapsedRealtime();
 
     //if it was already stopped or did not even run, do nothing
-    if (!m_running) {
+    if (!_running) {
       return;
     }
 
-    m_elapsedMs += (systemMs - m_lastMs);
+    _elapsedMs += (systemMs - _lastMs);
 
-    m_running = false;
+    _running = false;
   }
 
   /**
    * Reset the StopWatch to init state with elapsed time of zero.
    */
   public void reset() {
-    m_running = false;
-    m_elapsedMs = 0;
-    m_lastMs = 0;
+    _running = false;
+    _elapsedMs = 0;
+    _lastMs = 0;
   }
 
   /**
@@ -128,7 +128,7 @@ public final class Stopwatch {
 
   @Override
   public String toString() {
-    return "Stopwatch: " + "Elapsed millis: " + getElapsedMs() + (m_running ? " Running" : " Not running");
+    return "Stopwatch: " + "Elapsed millis: " + getElapsedMs() + (_running ? " Running" : " Not running");
   }
 
   //endregion

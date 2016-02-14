@@ -1,4 +1,4 @@
-package com.jraska.common.utils;
+package com.jraska.pwmd.travel.util;
 
 public interface Filter<TObject> {
   boolean accept(TObject object);

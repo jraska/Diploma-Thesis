@@ -39,7 +39,7 @@ public class DirectionDecisionStrategy {
   }
 
   public DirectionDecisionStrategy(int bufferSize) {
-    if (bufferSize < 2) {
+    if (bufferSize <= 1) {
       String errorMessage = "Smallest size can be 2 to determine direction. Not " + bufferSize;
       throw new IllegalArgumentException(errorMessage);
     }
@@ -91,7 +91,7 @@ public class DirectionDecisionStrategy {
   }
 
   protected boolean isLatitudeAscending() {
-    if (_dataBuffer.size() < 2) {
+    if (_dataBuffer.size() <= 1) {
       return true; //just default to return something
     }
 
@@ -110,11 +110,7 @@ public class DirectionDecisionStrategy {
       previous = current;
     }
 
-    if (ascendingCount >= descendingCount) {
-      return true;
-    } else {
-      return false;
-    }
+    return ascendingCount >= descendingCount;
   }
 
   protected double computeDirectionCoefficient() {

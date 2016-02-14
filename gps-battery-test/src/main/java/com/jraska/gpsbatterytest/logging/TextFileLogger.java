@@ -9,7 +9,7 @@ public class TextFileLogger implements Logger {
   //region Fields
 
   private final File _file;
-  private boolean _fileCreated = false;
+  private boolean _fileCreated;
   private BufferedWriter _writer;
 
   private boolean _disposed;

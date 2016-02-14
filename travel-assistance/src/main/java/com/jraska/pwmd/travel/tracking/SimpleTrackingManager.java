@@ -127,7 +127,7 @@ public class SimpleTrackingManager implements TrackingManager {
     }
 
     List<LatLng> positions = filterPositions(_pendingPositions);
-    if (positions.size() == 0 && _routeData == null) {
+    if (positions.isEmpty() && _routeData == null) {
       return null;
     }
 

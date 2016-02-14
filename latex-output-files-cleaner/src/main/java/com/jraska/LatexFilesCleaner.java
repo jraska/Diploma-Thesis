@@ -23,7 +23,7 @@ public class LatexFilesCleaner {
 
   //region Main methods
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     LatexFilesCleaner latexFilesCleaner = new LatexFilesCleaner();
     latexFilesCleaner.run(args);
   }
@@ -32,7 +32,7 @@ public class LatexFilesCleaner {
 
   //region Methods
 
-  private void run(String[] args) {
+  private void run(String[] args) throws IOException {
     if (args.length != 2) {
       throw new IllegalArgumentException("Exactly two arguments are requid");
     }
@@ -47,14 +47,8 @@ public class LatexFilesCleaner {
     ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     executor.scheduleAtFixedRate(new CleanLatexCrap(targetDir, System.out), 0, seconds, TimeUnit.SECONDS);
 
-    // wait for any character to finish the program
-    try {
-      int read = System.in.read();
-      System.out.println(read);
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
+    int read = System.in.read();
+    System.out.println(read);
 
     executor.shutdownNow();
   }

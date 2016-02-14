@@ -8,7 +8,7 @@ public class LatLngConverter extends TypeConverter<String, LatLng> {
 
   @Override
   public String getDBValue(LatLng latLng) {
-    return latLng == null ? null : String.valueOf(latLng._latitude) + "," + latLng._longitude;
+    return latLng == null ? null : latLng._latitude + "," + latLng._longitude;
   }
 
   @Override

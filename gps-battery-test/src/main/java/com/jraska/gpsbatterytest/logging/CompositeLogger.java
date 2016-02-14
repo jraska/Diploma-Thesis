@@ -3,6 +3,8 @@ package com.jraska.gpsbatterytest.logging;
 import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
 
+import java.util.Arrays;
+
 public class CompositeLogger implements Logger {
   //region Fields
 
@@ -15,7 +17,7 @@ public class CompositeLogger implements Logger {
   public CompositeLogger(Logger[] loggers) {
     ArgumentCheck.notNull(loggers);
 
-    _loggers = loggers;
+    _loggers = Arrays.copyOf(loggers, loggers.length);
   }
 
   //endregion
