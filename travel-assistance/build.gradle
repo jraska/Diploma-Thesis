@@ -49,6 +49,7 @@ android {
 }
 
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.jakewharton.hugo'
 
 def dbflow_version = "3.0.0-beta3"
 

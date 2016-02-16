@@ -109,5 +109,23 @@ public class DirectionDecisionStrategyTest extends BaseTest {
     assertThat(direction).isEqualTo(TEST_DATA_DIRECTION);
   }
 
+  @Test
+  public void testTwoPointsDirection() throws Exception {
+    LatLng start = new LatLng(0, 0);
+    LatLng end = new LatLng(1, 1);
+
+    int direction = DirectionDecisionStrategy.getDirection(start, end);
+    assertThat(direction).isEqualTo(45);
+
+    direction = DirectionDecisionStrategy.getDirection(end, start);
+    assertThat(direction).isEqualTo(225);
+
+    DirectionDecisionStrategy directionDecisionStrategy = new DirectionDecisionStrategy(2);
+    directionDecisionStrategy.addPoint(start);
+    directionDecisionStrategy.addPoint(end);
+
+    assertThat(directionDecisionStrategy.getDirection()).isEqualTo(45);
+  }
+
   //endregion
 }

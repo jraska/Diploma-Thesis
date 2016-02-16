@@ -2,9 +2,10 @@ package com.jraska.pwmd.travel.navigation;
 
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.core.gps.Position;
-import com.jraska.pwmd.travel.data.RouteData;
+import hugo.weaving.DebugLog;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Class which hould determine teh closest point of the rout from current latLng
@@ -13,7 +14,7 @@ import java.util.Iterator;
 public class RouteCursor {
   //region Fields
 
-  private final RouteData _routeData;
+  private final List<LatLng> _route;
 
   private Position _lastPosition;
 
@@ -21,9 +22,9 @@ public class RouteCursor {
 
   //region Constructor
 
-  public RouteCursor(RouteData routeData) {
-    _routeData = routeData;
-    if (routeData.getPositions().isEmpty()) {
+  public RouteCursor(List<LatLng> route) {
+    _route = route;
+    if (route.isEmpty()) {
       throw new IllegalArgumentException("Route data with empty positions");
     }
   }
@@ -32,8 +33,9 @@ public class RouteCursor {
 
   //region Methods
 
-  protected LatLng findClosestPosition(LatLng position) {
-    Iterator<LatLng> iterator = _routeData.getPath().iterator();
+  @DebugLog
+  public LatLng findClosestPosition(LatLng position) {
+    Iterator<LatLng> iterator = _route.iterator();
     LatLng closest = iterator.next();
 
     double closestDistanceSquare = distanceSquare(closest, position);

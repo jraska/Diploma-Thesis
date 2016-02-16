@@ -4,10 +4,11 @@ import android.support.annotation.NonNull;
 import com.jraska.console.Console;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.travel.collection.CircularFifoQueue;
+import timber.log.Timber;
 
 import javax.inject.Inject;
-import java.util.Collection;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * Class responsible of determining direction based on coordinates obtained.
@@ -22,6 +23,7 @@ public class DirectionDecisionStrategy {
 
   public static final int DEFAULT_BUFFER_SIZE = 2;
   public static final int UNKNOWN_DIRECTION = -1;
+  public static final double MULTIPLY = 10000;
 
   //endregion
 
@@ -75,19 +77,16 @@ public class DirectionDecisionStrategy {
 
     double coefficient = computeDirectionCoefficient();
 
-    int angle = coefficientToAngle(coefficient);
-    // we need to check if the data has ascending or descending x coordinate, due to that,
-    // we determine the direction of the line
-    boolean ascending = isLatitudeAscending();
-
-    if (!ascending) {
-      angle += 180;
-    }
+    int angle = toAngle(coefficient);
 
     Console.writeLine("Computed angle: " + angle);
     Console.writeLine("--------------------");
 
     return angle;
+  }
+
+  private int toAngle(double coefficient) {
+    return toAngle(coefficient, isLatitudeAscending());
   }
 
   protected boolean isLatitudeAscending() {
@@ -114,13 +113,18 @@ public class DirectionDecisionStrategy {
   }
 
   protected double computeDirectionCoefficient() {
-    Collection<LatLng> data = _dataBuffer;
+    CircularFifoQueue<LatLng> data = _dataBuffer;
 
     int order = 1;
-    for (LatLng latLng : _dataBuffer) {
-      Console.writeLine("#" + order++ + ": " + latLng._latitude + ", " + latLng._longitude);
+    for (LatLng latLng : data) {
+      // TODO: 16/02/16 Change to timber after console tree
+      String message = String.format(Locale.UK, "#%d:%f,%f", order++, latLng._latitude, latLng._longitude);
+      Console.writeLine(message);
     }
 
+//    if (data.size() == 2) {
+//      return computeStartCoefficient(data.get(0), data.get(1));
+//    }
 
     // first pass: read in data, compute xBar and yBar
     double sumX = 0.0;
@@ -153,6 +157,45 @@ public class DirectionDecisionStrategy {
   protected static int coefficientToAngle(double coefficient) {
     return (int) Math.round(Math.toDegrees(Math.atan(coefficient)));
   }
+
+  private static int toAngle(double coefficient, boolean ascending) {
+    int angle = coefficientToAngle(coefficient);
+
+    if (!ascending) {
+      angle += 180;
+    }
+    return angle;
+  }
+
+  /**
+   * Special case for two points
+   *
+   * @return Angle for two points
+   */
+  protected static double computeStartCoefficient(LatLng start, LatLng end) {
+    // diffs are multiplied to avoid numeric errors
+    double xDiff = (start._latitude - end._latitude) * MULTIPLY;
+    double yDiff = (start._longitude - end._longitude) * MULTIPLY;
+
+    if (xDiff == 0) {
+      if (yDiff > 0) {
+        return Double.MAX_VALUE;
+      } else {
+        return Double.MIN_VALUE;
+      }
+    }
+
+    double coefficient = yDiff / xDiff;
+    return coefficient;
+  }
+
+  public static int getDirection(LatLng start, LatLng end) {
+    double coefficient = computeStartCoefficient(start, end);
+
+    boolean ascending = start._latitude < end._latitude;
+    return toAngle(coefficient, ascending);
+  }
+
 
   //endregion
 }

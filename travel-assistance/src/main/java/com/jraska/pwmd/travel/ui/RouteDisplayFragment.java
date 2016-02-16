@@ -82,6 +82,10 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     return _routeData != null;
   }
 
+  public RouteData getRouteData() {
+    return _routeData;
+  }
+
   public ImageSize getPhotoIconSize() {
     if (_photoIconSize == null) {
       int imageSize = getResources().getDimensionPixelSize(R.dimen.map_image_size_default);

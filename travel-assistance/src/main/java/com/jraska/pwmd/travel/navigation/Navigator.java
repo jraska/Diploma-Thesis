@@ -4,7 +4,10 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.maps.model.LatLng;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
+import com.jraska.pwmd.core.gps.Position;
+import com.jraska.pwmd.travel.data.RouteData;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -21,7 +24,8 @@ public class Navigator {
   private final DirectionDecisionStrategy _routeDirectionStrategy;
 
   private int _lastDirectionDegrees = UNKNOWN_DIRECTION;
-  private long _currentRouteId;
+  private RouteData _currentRoute;
+  private RouteCursor _routeCursor;
 
   //endregion
 
@@ -30,6 +34,7 @@ public class Navigator {
   @Inject
   public Navigator(EventBus eventBus, @NonNull Compass compass,
                    @NonNull DirectionDecisionStrategy routeDirectionStrategy) {
+
     ArgumentCheck.notNull(eventBus);
     ArgumentCheck.notNull(compass);
     ArgumentCheck.notNull(routeDirectionStrategy);
@@ -51,15 +56,13 @@ public class Navigator {
     return _lastDirectionDegrees;
   }
 
-  public int getCompassDirection() {
+  public int getUserDirection() {
     return _compass.getDirection();
   }
 
   //endregion
 
   //region Methods
-
-  // TODO: 20/01/16 Figure out when the direction is recomputed
 
   protected int computeDesiredDirection() {
     int realDirection = _compass.getDirection();
@@ -72,6 +75,10 @@ public class Navigator {
       return UNKNOWN_DIRECTION;
     }
 
+    return computeDesiredDirection(realDirection, routeDirection);
+  }
+
+  private int computeDesiredDirection(int realDirection, int routeDirection) {
     int userDirection = 90 + routeDirection - realDirection;
     if (userDirection < 0) {
       return userDirection + 360;
@@ -79,11 +86,31 @@ public class Navigator {
     return userDirection;
   }
 
+  protected int computeDirectionToRoute(Position currentPosition) {
+    int realDirection = _compass.getDirection();
+    if (realDirection == UNKNOWN_DIRECTION) {
+      return UNKNOWN_DIRECTION;
+    }
+
+    com.jraska.pwmd.core.gps.LatLng current = _routeCursor.findClosestPosition(currentPosition.latLng);
+
+    int requiredDirection = DirectionDecisionStrategy.getDirection(currentPosition.latLng, current);
+
+    return computeDesiredDirection(realDirection, requiredDirection);
+  }
+
   protected void onNewDirection(int degrees) {
     if (degrees != _lastDirectionDegrees) {
       _lastDirectionDegrees = degrees;
       _eventBus.post(new RequiredDirectionEvent(degrees));
     }
+  }
+
+  @Subscribe
+  protected void onNewPosition(Position position) {
+    int directionToRoute = computeDirectionToRoute(position);
+
+    onNewDirection(directionToRoute);
   }
 
   //endregion
@@ -94,15 +121,33 @@ public class Navigator {
     return new LatLng(latLng._latitude, latLng._longitude);
   }
 
-  public void startNavigation(long routeId) {
-    // TODO: 13/02/16
-    _currentRouteId = routeId;
-    Timber.i("Navigation for route %d started.", _currentRouteId);
+  public void startNavigation(RouteData routeData) {
+    ArgumentCheck.notNull(routeData);
+    if (routeData == _currentRoute) {
+      return;
+    }
+
+    Timber.i("Navigation route id=%s, title=%s started.", routeData.getId(), routeData.getTitle());
+    _currentRoute = routeData;
+
+    if (!_eventBus.isRegistered(this)) {
+      _eventBus.register(this);
+    }
+
+    _routeCursor = new RouteCursor(_currentRoute.getPath());
   }
 
   public void stopNavigation() {
-    Timber.i("Navigation for route %d ended", _currentRouteId);
-    _currentRouteId = 0;
+    if (_currentRoute == null) {
+      return;
+    }
+
+    if (_eventBus.isRegistered(this)) {
+      _eventBus.unregister(this);
+    }
+
+    Timber.i("Navigation for route %d ended", _currentRoute.getId());
+    _currentRoute = null;
   }
 
   //endregion

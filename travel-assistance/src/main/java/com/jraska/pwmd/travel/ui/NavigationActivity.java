@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import butterknife.Bind;
-import org.greenrobot.eventbus.Subscribe;
 import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
@@ -16,6 +15,7 @@ import com.jraska.pwmd.travel.navigation.Navigator;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -30,7 +30,8 @@ public class NavigationActivity extends BaseActivity {
 
   //region Fields
 
-  @Bind(R.id.arrow_view) View _arrowView;
+  @Bind(R.id.navigate_arrow_view) View _desiredDirectionView;
+  @Bind(R.id.navigate_user_direction_arrow_view) View _userDirectionView;
 
   @Inject Navigator _navigator;
   @Inject EventBus _systemBus;
@@ -71,14 +72,12 @@ public class NavigationActivity extends BaseActivity {
     _routeDisplayFragment = (RouteDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.map);
     _routeId = getIntent().getLongExtra(KEY_INTENT_ROUTE_ID, 0);
 
-    _navigator.startNavigation(_routeId);
+    startNavigation();
   }
 
   @Override
   protected void onStart() {
     super.onStart();
-
-    showRoute();
   }
 
   @Override
@@ -105,7 +104,7 @@ public class NavigationActivity extends BaseActivity {
   @Subscribe
   public void onNewPosition(Position position) {
     _routeDisplayFragment.addPositionMarker(position);
-    updateDesiredDirection(_navigator.getCompassDirection());
+    updateUserDirection(_navigator.getUserDirection());
   }
 
   //endregion
@@ -113,25 +112,36 @@ public class NavigationActivity extends BaseActivity {
   //region Methods
 
   protected void updateDesiredDirection(int degrees) {
+    updateDirection(degrees, _desiredDirectionView);
+  }
+
+  protected void updateUserDirection(int degrees) {
+    updateDirection(degrees, _userDirectionView);
+  }
+
+  protected void updateDirection(int degrees, View view) {
     if (degrees == DirectionDecisionStrategy.UNKNOWN_DIRECTION) {
-      _arrowView.setVisibility(View.GONE);
+      view.setVisibility(View.GONE);
     } else {
-      _arrowView.setVisibility(View.VISIBLE);
+      view.setVisibility(View.VISIBLE);
     }
 
     // Rotation must be counter clockwise
-    _arrowView.setRotation(-degrees);
+    view.setRotation(-degrees);
   }
 
-  public void showRoute() {
-    if (!_routeDisplayFragment.isRouteDisplayed()) {
-      RouteData routeData = loadRoute();
+  public void startNavigation() {
+    RouteData routeData = _routeDisplayFragment.getRouteData();
 
-      if (routeData != null) {
-        _routeDisplayFragment.displayRoute(routeData);
-      } else {
-        onRouteNotFound();
-      }
+    if (routeData == null) {
+      routeData = loadRoute();
+    }
+
+    if (routeData == null) {
+      onRouteNotFound();
+    } else {
+      _routeDisplayFragment.displayRoute(routeData);
+      _navigator.startNavigation(routeData);
     }
   }
 

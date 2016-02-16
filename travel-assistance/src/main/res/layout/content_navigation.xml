@@ -20,12 +20,21 @@
         tools:layout="@layout/google_map_placeholder" />
 
     <ImageView
-        android:id="@+id/arrow_view"
+        android:id="@+id/navigate_arrow_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/ic_arrow_navigate_right_black_48dp"
         android:text="@string/not_implemented"
         android:contentDescription="@string/navigation_arrow"
         android:layout_gravity="bottom|center"/>
+
+    <ImageView
+        android:id="@+id/navigate_user_direction_arrow_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_arrow_navigate_right_black_48dp"
+        android:text="@string/not_implemented"
+        android:contentDescription="@string/navigation_arrow"
+        android:layout_gravity="top|center"/>
 
 </FrameLayout>

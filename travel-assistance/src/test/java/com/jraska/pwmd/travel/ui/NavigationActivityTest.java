@@ -33,11 +33,11 @@ public class NavigationActivityTest extends ActivityBaseTest<NavigationActivity>
     NavigationActivity navigationActivity = activityController.start().resume().get();
 
     View arrowMock = mock(View.class);
-    navigationActivity._arrowView = arrowMock;
+    navigationActivity._desiredDirectionView = arrowMock;
 
     navigationActivity._navigator.getEventBus().post(new Navigator.RequiredDirectionEvent(1));
 
-    verify(navigationActivity._arrowView, times(1)).setRotation(any(float.class));
+    verify(navigationActivity._desiredDirectionView, times(1)).setRotation(any(float.class));
   }
 
   //endregion
