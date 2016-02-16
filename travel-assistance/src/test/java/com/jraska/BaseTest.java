@@ -2,6 +2,7 @@ package com.jraska;
 
 import android.app.Application;
 import com.jraska.pwmd.travel.BuildConfig;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -23,6 +24,11 @@ public abstract class BaseTest {
   public void plantTimber() {
     Timber.uprootAll();
     Timber.plant(new UnitTestTree());
+  }
+
+  @After
+  public void cleanDbFlow(){
+    FlowManager.destroy();
   }
 
   @After
