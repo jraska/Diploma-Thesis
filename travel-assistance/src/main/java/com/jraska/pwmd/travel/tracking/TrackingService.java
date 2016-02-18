@@ -89,14 +89,15 @@ public class TrackingService extends Service {
     builder.setContentTitle(appName);
     builder.setContentText(getString(R.string.tap_to_return));
     builder.setTicker(appName);
-    builder.setSmallIcon(android.R.drawable.ic_dialog_info); // TODO: 04/12/15 Icon
+    builder.setSmallIcon(R.drawable.ic_map_48dp); // TODO: 04/12/15 Icon
 //		builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
     builder.setWhen(System.currentTimeMillis());
     builder.setAutoCancel(false);
 
-    Intent runApplicationIntent = new Intent(this, RoutesListActivity.class);
-    runApplicationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, runApplicationIntent, 0);
+    final Intent notificationIntent = new Intent(this, RoutesListActivity.class);
+    notificationIntent.setAction(Intent.ACTION_MAIN);
+    notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
     builder.setContentIntent(pendingIntent);
 

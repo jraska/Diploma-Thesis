@@ -37,8 +37,7 @@
         <activity
             android:name=".ui.RoutesListActivity"
             android:label="@string/routes"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleInstance">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
