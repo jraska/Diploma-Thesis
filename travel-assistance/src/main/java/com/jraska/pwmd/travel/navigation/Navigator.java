@@ -94,8 +94,6 @@ public class Navigator {
 
     Location closesLocation = _routeCursor.findClosestLocation(currentPosition);
 
-//    int requiredDirection = DirectionDecisionStrategy.getBearing(currentPosition.latLng, current);
-
     // TODO: 17/02/16
     return 0;
 //    return computeDesiredDirection(realDirection, requiredDirection);
