@@ -1,7 +1,7 @@
 package com.jraska.pwmd.travel.tracking;
 
+import android.location.Location;
 import com.jraska.pwmd.travel.util.Filter;
-import com.jraska.pwmd.core.gps.Position;
 
-public interface LocationFilter extends Filter<Position> {
+public interface LocationFilter extends Filter<Location> {
 }

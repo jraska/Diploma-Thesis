@@ -1,9 +1,11 @@
 package com.jraska.pwmd.core.gps;
 
+import android.location.Location;
+
 public interface LocationService {
   //region Properties
 
-  Position getLastPosition();
+  Location getLastLocation();
 
   boolean isTracking();
 

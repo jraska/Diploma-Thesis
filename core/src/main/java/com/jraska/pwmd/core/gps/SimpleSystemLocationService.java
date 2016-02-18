@@ -13,7 +13,7 @@ public class SimpleSystemLocationService implements LocationService, LocationSta
   private final LocationManager _locationManager;
   private final EventBus _eventBus;
 
-  private Position _lastPosition;
+  private Location _lastLocation;
 
   private boolean _tracking;
 
@@ -59,13 +59,12 @@ public class SimpleSystemLocationService implements LocationService, LocationSta
 
   //region ILocationService impl
 
-  @Override
-  public Position getLastPosition() {
-    if (_lastPosition == null || !_tracking) {
+  public Location getLastLocation() {
+    if (_lastLocation == null || !_tracking) {
       return getLastKnownPosition();
     }
 
-    return _lastPosition;
+    return _lastLocation;
   }
 
   @Override
@@ -107,25 +106,13 @@ public class SimpleSystemLocationService implements LocationService, LocationSta
 
   //region Methods
 
-  protected Position toPosition(Location location) {
-    return new Position(new LatLng(location.getLatitude(), location.getLongitude()),
-        System.currentTimeMillis(), location.getAccuracy(), location.getProvider());
-  }
-
   protected void onNewLocation(Location l) {
     _eventBus.post(l);
 
-    // TODO: 17/02/16 Get rid of the Position object
-    onNewPosition(toPosition(l));
+    _lastLocation = l;
   }
 
-  protected final void onNewPosition(Position position) {
-    _lastPosition = position;
-
-    _eventBus.post(position);
-  }
-
-  public Position getLastKnownPosition() throws SecurityException {
+  public Location getLastKnownPosition() throws SecurityException {
     Location lastGps = _locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     Location lastNetwork = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
@@ -135,7 +122,7 @@ public class SimpleSystemLocationService implements LocationService, LocationSta
       return null;
     }
 
-    return toPosition(better);
+    return better;
   }
 
   private Location chooseBetterLocation(Location lastGps, Location lastNetwork) {

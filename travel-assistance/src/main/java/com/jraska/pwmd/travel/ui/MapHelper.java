@@ -1,6 +1,8 @@
 package com.jraska.pwmd.travel.ui;
 
+import android.location.Location;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Common util class for common map functions
@@ -14,10 +16,14 @@ public final class MapHelper {
 
   //region Methods
 
-  public static void configureMap(GoogleMap map){
+  public static void configureMap(GoogleMap map) {
     map.setMyLocationEnabled(true);
     map.getUiSettings().setCompassEnabled(true);
     map.getUiSettings().setZoomControlsEnabled(true);
+  }
+
+  public static LatLng toLatLng(Location location) {
+    return new LatLng(location.getLatitude(), location.getLongitude());
   }
 
   //endregion

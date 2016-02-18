@@ -1,9 +1,9 @@
 package com.jraska.pwmd.travel.help;
 
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
-import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 
@@ -116,11 +116,11 @@ public class LostMessageTextBuilder {
     return _context.getString(resId);
   }
 
-  public LostMessageTextBuilder setFromPosition(Position position) {
-    ArgumentCheck.notNull(position, "position");
+  public LostMessageTextBuilder setFromLocation(Location location) {
+    ArgumentCheck.notNull(location, "location");
 
-    return setAccuracy(position.accuracy).setLatitude(position.latLng._latitude)
-        .setLongitude(position.latLng._longitude).setTime(new Date(position.time));
+    return setAccuracy(location.getAccuracy()).setLatitude(location.getLatitude())
+        .setLongitude(location.getLongitude()).setTime(new Date(location.getTime()));
   }
 
   public String buildGoogleMapsUrl() {

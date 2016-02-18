@@ -4,14 +4,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.core.gps.LatLng;
-import com.jraska.pwmd.core.gps.LocationService;
-import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteDescription;
@@ -21,6 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
+import javax.inject.Provider;
 import java.util.*;
 
 public class SimpleTrackingManager implements TrackingManager {
@@ -38,8 +38,8 @@ public class SimpleTrackingManager implements TrackingManager {
   private final TrackingServiceConnection _connection = new TrackingServiceConnection();
   private final List<TransportChangeSpec> _pendingChanges = new ArrayList<>();
   private final List<NoteSpec> _pendingNoteSpecs = new ArrayList<>();
-  private final List<Position> _pendingPositions = new ArrayList<>();
-  private final LocationService _locationService;
+  private final List<Location> _pendingLocations = new ArrayList<>();
+  private final Provider<Location> _lastLocationProvider;
   private final EventBus _dataBus;
 
   private RouteData _routeData;
@@ -49,16 +49,16 @@ public class SimpleTrackingManager implements TrackingManager {
 
   //region Constructors
 
-  public SimpleTrackingManager(Context context, LocationService locationService,
+  public SimpleTrackingManager(Context context, Provider<Location> lastLocationProvider,
                                LocationFilter filter, EventBus eventBus) {
     ArgumentCheck.notNull(context);
-    ArgumentCheck.notNull(locationService);
+    ArgumentCheck.notNull(lastLocationProvider);
     ArgumentCheck.notNull(filter);
     ArgumentCheck.notNull(eventBus);
 
     _context = context;
     _filter = filter;
-    _locationService = locationService;
+    _lastLocationProvider = lastLocationProvider;
     _dataBus = eventBus;
 
     eventBus.register(this);
@@ -127,15 +127,15 @@ public class SimpleTrackingManager implements TrackingManager {
       return null;
     }
 
-    List<LatLng> positions = filterPositions(_pendingPositions);
-    if (positions.isEmpty() && _routeData == null) {
+    List<LatLng> locations = filterPositions(_pendingLocations);
+    if (locations.isEmpty() && _routeData == null) {
       return null;
     }
 
     if (_routeData == null) {
       RouteDescription routeDescription = new RouteDescription(_start, new Date(), userInput.getTitle());
 
-      _routeData = new RouteData(routeDescription, positions, _pendingChanges, _pendingNoteSpecs);
+      _routeData = new RouteData(routeDescription, locations, _pendingChanges, _pendingNoteSpecs);
     } else {
       _routeData.setTitle(userInput.getTitle());
       _routeData.setEnd(new Date());
@@ -148,14 +148,14 @@ public class SimpleTrackingManager implements TrackingManager {
         _routeData.addChange(spec);
       }
 
-      for (LatLng latLng : positions) {
+      for (LatLng latLng : locations) {
         _routeData.addLatLng(latLng);
       }
     }
 
     _pendingChanges.clear();
     _pendingNoteSpecs.clear();
-    _pendingPositions.clear();
+    _pendingLocations.clear();
 
     return _routeData;
   }
@@ -191,14 +191,14 @@ public class SimpleTrackingManager implements TrackingManager {
   public boolean addChange(int type, @NonNull String title) {
     ArgumentCheck.notNull(title);
 
-    Position lastPosition = _locationService.getLastPosition();
-    if (lastPosition == null) {
+    Location lastLocation = _lastLocationProvider.get();
+    if (lastLocation == null) {
       Timber.w("Cannot add transportation change title=%s", title);
 
       return false;
     }
 
-    _pendingChanges.add(new TransportChangeSpec(lastPosition.latLng, type, title));
+    _pendingChanges.add(new TransportChangeSpec(new LatLng(lastLocation), type, title));
 
     return true;
   }
@@ -206,14 +206,14 @@ public class SimpleTrackingManager implements TrackingManager {
   @Override
   public boolean addNote(@Nullable UUID imageIdInput, @NonNull String caption,
                          @Nullable UUID soundIdInput) {
-    Position lastPosition = _locationService.getLastPosition();
-    if (lastPosition == null) {
-      Timber.w("Cannot add picture caption=%s", caption);
+    Location lastLocation = _lastLocationProvider.get();
+    if (lastLocation == null) {
+      Timber.w("Cannot add picture without location caption=%s", caption);
 
       return false;
     }
 
-    _pendingNoteSpecs.add(new NoteSpec(lastPosition.latLng, imageIdInput, caption, soundIdInput));
+    _pendingNoteSpecs.add(new NoteSpec(new LatLng(lastLocation), imageIdInput, caption, soundIdInput));
 
     return true;
   }
@@ -223,9 +223,9 @@ public class SimpleTrackingManager implements TrackingManager {
   //region Methods
 
   @Subscribe
-  public void onNewPosition(Position position) {
+  public void onNewLocation(Location location) {
     if (isTracking()) {
-      _pendingPositions.add(position);
+      _pendingLocations.add(location);
     }
   }
 
@@ -239,13 +239,13 @@ public class SimpleTrackingManager implements TrackingManager {
     }
   }
 
-  protected List<LatLng> filterPositions(List<Position> positions) {
-    List<LatLng> filtered = new ArrayList<>(positions.size());
+  protected List<LatLng> filterPositions(List<Location> locations) {
+    List<LatLng> filtered = new ArrayList<>(locations.size());
 
     LocationFilter filter = getFilter();
-    for (Position position : positions) {
-      if (filter.accept(position)) {
-        filtered.add(position.latLng);
+    for (Location location : locations) {
+      if (filter.accept(location)) {
+        filtered.add(new LatLng(location));
       }
     }
 
@@ -274,8 +274,8 @@ public class SimpleTrackingManager implements TrackingManager {
 
   public static class GpsProviderOnlyFilter implements LocationFilter {
     @Override
-    public boolean accept(Position position) {
-      return LocationManager.GPS_PROVIDER.equals(position.provider);
+    public boolean accept(Location location) {
+      return LocationManager.GPS_PROVIDER.equals(location.getProvider());
     }
   }
 

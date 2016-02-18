@@ -32,7 +32,7 @@ public class RouteData extends BaseModel {
 
   List<TransportChangeSpec> _transportChangeSpecs;
   List<NoteSpec> _noteSpecs;
-  List<DbPosition> _positions;
+  List<DbPosition> _locations;
 
   //endregion
 
@@ -52,9 +52,9 @@ public class RouteData extends BaseModel {
     _start = description.getStart();
     _end = description.getEnd();
 
-    _positions = new ArrayList<>(route.size());
+    _locations = new ArrayList<>(route.size());
     for (LatLng latLng : route) {
-      _positions.add(new DbPosition(latLng));
+      _locations.add(new DbPosition(latLng));
     }
 
     _transportChangeSpecs = new ArrayList<>(changeSpecs);
@@ -97,31 +97,31 @@ public class RouteData extends BaseModel {
   }
 
   public List<LatLng> getPath() {
-    List<DbPosition> positions = getPositions();
-    ArrayList<LatLng> list = new ArrayList<>(positions.size());
-    for (DbPosition pos : positions) {
+    List<DbPosition> locations = getLocations();
+    ArrayList<LatLng> list = new ArrayList<>(locations.size());
+    for (DbPosition pos : locations) {
       list.add(pos.latLng);
     }
 
     return list;
   }
 
-  @OneToMany(methods = {OneToMany.Method.DELETE}, variableName = "_positions")
-  public List<DbPosition> getPositions() {
+  @OneToMany(methods = {OneToMany.Method.DELETE}, variableName = "_locations")
+  public List<DbPosition> getLocations() {
     return Collections.unmodifiableList(getPositionsInternal());
   }
 
   private List<DbPosition> getPositionsInternal() {
-    if (_positions == null) {
+    if (_locations == null) {
       if (exists()) {
-        _positions = SQLite.select().from(DbPosition.class)
+        _locations = SQLite.select().from(DbPosition.class)
             .where(DbPosition_Table._routeId.eq(_id)).queryList();
       } else {
         throw new IllegalStateException();
       }
     }
 
-    return _positions;
+    return _locations;
   }
 
   public void addLatLng(LatLng latLng) {
@@ -179,7 +179,7 @@ public class RouteData extends BaseModel {
   //region Model overrides
 
   @Override public void save() {
-    List<DbPosition> positions = getPositions();
+    List<DbPosition> locations = getLocations();
 
     super.save();
 
@@ -188,9 +188,9 @@ public class RouteData extends BaseModel {
       noteSpec.save();
     }
 
-    for (DbPosition position : positions) {
-      position._routeId = _id;
-      position.save();
+    for (DbPosition location : locations) {
+      location._routeId = _id;
+      location.save();
     }
 
     for (TransportChangeSpec pec : getTransportChangeSpecs()) {

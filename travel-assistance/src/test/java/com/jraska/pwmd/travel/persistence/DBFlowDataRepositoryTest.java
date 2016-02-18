@@ -68,7 +68,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     RouteData loadedData = _repository.select(routeDescriptions.get(0).getId());
 
     assertThat(loadedData.getNoteSpecs(), equalTo(insertedData.getNoteSpecs()));
-    assertThat(loadedData.getPositions(), equalTo(insertedData.getPositions()));
+    assertThat(loadedData.getLocations(), equalTo(insertedData.getLocations()));
     assertThat(loadedData.getTransportChangeSpecs(), equalTo(insertedData.getTransportChangeSpecs()));
   }
 
@@ -78,9 +78,9 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     RouteData routeData = createRouteData();
     _repository.insertOrUpdate(routeData);
 
-    ArrayList<LatLng> positions = new ArrayList<>(routeData.getPath());
-    positions.add(generatePosition());
-    RouteData routeData2 = new RouteData(routeData.getDescription(), positions);
+    ArrayList<LatLng> locations = new ArrayList<>(routeData.getPath());
+    locations.add(generatePosition());
+    RouteData routeData2 = new RouteData(routeData.getDescription(), locations);
 
     _repository.insertOrUpdate(routeData2);
 
@@ -120,7 +120,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
 
   @NonNull
   public static RouteData createRouteData() {
-    List<LatLng> positions = generatePositions(3);
+    List<LatLng> latLngs = generatePositions(3);
 
     //build test route
     RouteDescription routeDescription = new RouteDescription(new Date(), new Date(), "Test");
@@ -131,16 +131,16 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     ArrayList<NoteSpec> noteSpecs = new ArrayList<>();
     noteSpecs.add(new NoteSpec(generatePosition(), UUID.randomUUID(), "das"));
 
-    return new RouteData(routeDescription, positions, specs, noteSpecs);
+    return new RouteData(routeDescription, latLngs, specs, noteSpecs);
   }
 
   @NonNull
   protected static List<LatLng> generatePositions(int pointsCount) {
-    List<LatLng> positions = new ArrayList<>(pointsCount);
+    List<LatLng> locations = new ArrayList<>(pointsCount);
     for (int i = 0; i < pointsCount; i++) {
-      positions.add(generatePosition());
+      locations.add(generatePosition());
     }
-    return positions;
+    return locations;
   }
 
   public static LatLng generatePosition() {

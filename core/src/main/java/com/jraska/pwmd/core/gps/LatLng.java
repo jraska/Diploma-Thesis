@@ -18,6 +18,10 @@ public class LatLng implements Parcelable {
 
   //region Constructors
 
+  public LatLng(Location location) {
+    this(location.getLatitude(), location.getLongitude());
+  }
+
   public LatLng(double latitude, double longitude) {
     _latitude = latitude;
     _longitude = longitude;

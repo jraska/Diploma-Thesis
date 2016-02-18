@@ -1,5 +1,6 @@
 package com.jraska.pwmd.travel.ui;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
@@ -8,7 +9,6 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
-import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.help.Dialer;
@@ -34,8 +34,8 @@ public class HelpRequestSendActivity extends BaseActivity {
 
   //region Properties
 
-  protected Position getPosition() {
-    return _locationService.getLastPosition();
+  protected Location getLocation() {
+    return _locationService.getLastLocation();
   }
 
   //endregion
@@ -76,8 +76,8 @@ public class HelpRequestSendActivity extends BaseActivity {
   //region Methods
 
   @OnClick(R.id.help_btnSendSms) void sendSms() {
-    Position position = getPosition();
-    if (!checkPosition(position)) {
+    Location location = getLocation();
+    if (!checkLocation(location)) {
       return;
     }
 
@@ -90,7 +90,7 @@ public class HelpRequestSendActivity extends BaseActivity {
 
     // TODO: 06/12/15 Validation if the device can send sms
 
-    String message = getMessage(position);
+    String message = getMessage(location);
     _messageView.setText(message);
 
     boolean messageSent = _smsSender.sendSms(assistantPhone, message);
@@ -101,9 +101,9 @@ public class HelpRequestSendActivity extends BaseActivity {
     }
   }
 
-  protected String getMessage(Position position) {
+  protected String getMessage(Location location) {
     LostMessageTextBuilder builder = new LostMessageTextBuilder(this);
-    builder.setFromPosition(position);
+    builder.setFromLocation(location);
     return builder.buildSmsText();
   }
 
@@ -124,8 +124,8 @@ public class HelpRequestSendActivity extends BaseActivity {
   }
 
   @OnClick(R.id.btnSendEmail) void sendEmail() {
-    Position position = getPosition();
-    if (!checkPosition(position)) {
+    Location location = getLocation();
+    if (!checkLocation(location)) {
       return;
     }
 
@@ -134,7 +134,7 @@ public class HelpRequestSendActivity extends BaseActivity {
       assistantEmail = ""; // will launch email client without recipient
     }
 
-    String message = getMessage(position);
+    String message = getMessage(location);
 
     _messageView.setText(message);
 
@@ -154,8 +154,8 @@ public class HelpRequestSendActivity extends BaseActivity {
     Snackbar.make(_messageView, messageRes, Snackbar.LENGTH_LONG).show();
   }
 
-  protected boolean checkPosition(Position position) {
-    if (position == null) {
+  protected boolean checkLocation(Location location) {
+    if (location == null) {
       showSnackbar(R.string.no_position);
       return false;
     }

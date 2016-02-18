@@ -3,6 +3,7 @@ package com.jraska.pwmd.travel.ui;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.jraska.common.ArgumentCheck;
-import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.collection.CircularFifoQueue;
@@ -142,7 +142,6 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     return super.onCreateView(inflater, container, savedInstanceState);
   }
 
-
   //endregion
 
   //region OnMarkerClickListener impl
@@ -178,16 +177,14 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
 
   //region Methods
 
-  public void addPositionMarker(Position position) {
+  public void addLocationMarker(Location location) {
     if (_mapView == null) {
       return;
     }
 
-    com.jraska.pwmd.core.gps.LatLng latLng = position.latLng;
-
-    String title = "#" + ++_markerCounter + " " + _latLngFormat.format(latLng._latitude)
-        + ", " + _latLngFormat.format(latLng._longitude);
-    MarkerOptions markerOptions = new MarkerOptions().position(toGoogleLatLng(latLng))
+    String title = "#" + ++_markerCounter + " " + _latLngFormat.format(location.getLatitude())
+        + ", " + _latLngFormat.format(location.getLongitude());
+    MarkerOptions markerOptions = new MarkerOptions().position(toGoogleLatLng(location))
         .alpha(0.5f).title(title);
     Marker marker = _mapView.addMarker(markerOptions);
 
@@ -255,8 +252,8 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
 
     LatLng[] spLinePoints = _splineCounter.calculateSpline(points);
 
-    for (LatLng position : spLinePoints) {
-      polylineOptions.add(position);
+    for (LatLng latLng : spLinePoints) {
+      polylineOptions.add(latLng);
     }
     return polylineOptions;
   }

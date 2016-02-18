@@ -2,9 +2,7 @@ package com.jraska.pwmd.travel.navigation;
 
 import android.location.Location;
 import com.jraska.pwmd.core.gps.LatLng;
-import com.jraska.pwmd.core.gps.Position;
 import hugo.weaving.DebugLog;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Iterator;
 import java.util.List;
@@ -60,9 +58,9 @@ public class RouteCursor {
     return closest;
   }
 
-  private double distanceSquare(LatLng closest, LatLng position) {
-    double latDiff = closest._latitude - position._latitude;
-    double lonDiff = closest._longitude - position._longitude;
+  private double distanceSquare(LatLng closest, LatLng location) {
+    double latDiff = closest._latitude - location._latitude;
+    double lonDiff = closest._longitude - location._longitude;
 
     return latDiff * latDiff + lonDiff * lonDiff;
   }
@@ -72,7 +70,7 @@ public class RouteCursor {
   }
 
   public float getCurrentDirection() {
-    if(_lastLocation != null){
+    if (_lastLocation != null) {
       Location closestLocation = findClosestLocation(_lastLocation);
 
     }

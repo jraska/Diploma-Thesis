@@ -2,11 +2,10 @@ package com.jraska.pwmd.travel.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import butterknife.Bind;
-import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
@@ -36,7 +35,6 @@ public class NavigationActivity extends BaseActivity {
   @Inject Navigator _navigator;
   @Inject EventBus _systemBus;
   @Inject TrackingManager _trackingManager;
-  @Inject @Nullable Position _lastPosition;
   @Inject TravelDataRepository _travelDataRepository;
 
   private RouteDisplayFragment _routeDisplayFragment;
@@ -99,8 +97,8 @@ public class NavigationActivity extends BaseActivity {
   }
 
   @Subscribe
-  public void onNewPosition(Position position) {
-    _routeDisplayFragment.addPositionMarker(position);
+  public void onNewPosition(Location location) {
+    _routeDisplayFragment.addLocationMarker(location);
     updateUserDirection(_navigator.getUserDirection());
   }
 

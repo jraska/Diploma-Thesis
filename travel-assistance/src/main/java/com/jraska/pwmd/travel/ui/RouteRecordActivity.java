@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,7 +23,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.google.android.gms.maps.*;
-import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
@@ -37,10 +37,11 @@ import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import java.util.Date;
 import java.util.UUID;
 
-import static com.jraska.pwmd.travel.navigation.Navigator.toGoogleLatLng;
+import static com.jraska.pwmd.travel.ui.MapHelper.toLatLng;
 
 public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallback {
 
@@ -73,7 +74,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   @Inject LayoutInflater _inflater;
   @Inject SoundsManager _soundsManager;
   @Inject EventBus _eventBus;
-  @Inject @Nullable Position _lastPosition;
+  @Inject Provider<Location> _lastLocationProvider;
 
   private UUID _lastPhotoRequestId;
   private GoogleMap _map;
@@ -85,6 +86,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    Timber.v("onCreate()");
     setContentView(R.layout.activity_route_record);
 
     TravelAssistanceApp.getComponent(this).inject(this);
@@ -146,9 +148,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     CameraUpdate cameraUpdate = CameraUpdateFactory.zoomTo(MapHelper.ZOOM);
     _map.moveCamera(cameraUpdate);
 
-    if (_lastPosition != null) {
-      centerMapToLastPosition(false);
-    }
+    centerMapToLastPosition(false);
   }
 
   //endregion
@@ -156,14 +156,14 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   //region Methods
 
   @Subscribe
-  public void onNewPosition(Position position) {
-    _lastPosition = position;
+  public void onNewLocation(Location location) {
     centerMapToLastPosition(true);
   }
 
   public void centerMapToLastPosition(boolean animate) {
-    if (_lastPosition != null && _map != null) {
-      CameraUpdate center = CameraUpdateFactory.newLatLng(toGoogleLatLng(_lastPosition.latLng));
+    Location location = _lastLocationProvider.get();
+    if (location != null && _map != null) {
+      CameraUpdate center = CameraUpdateFactory.newLatLng(toLatLng(location));
       if (animate) {
         _map.animateCamera(center);
       } else {
@@ -318,7 +318,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   protected void handlePhotoTakenIntent(@Nullable Intent data) {
     final UUID imageId = _lastPhotoRequestId;
     if (!_picturesManager.imageExists(imageId)) {
-      Timber.e("Image does not exisst on successfull picture taken. Id= " + imageId);
+      Timber.e("Image does not exists on successfull picture taken. Id= " + imageId);
       return;
     }
 

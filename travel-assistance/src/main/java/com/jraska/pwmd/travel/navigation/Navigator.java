@@ -123,6 +123,10 @@ public class Navigator {
     return new LatLng(latLng._latitude, latLng._longitude);
   }
 
+  public static LatLng toGoogleLatLng(@NonNull Location location) {
+    return new LatLng(location.getLatitude(), location.getLongitude());
+  }
+
   public void startNavigation(RouteData routeData) {
     ArgumentCheck.notNull(routeData);
     if (routeData == _currentRoute) {

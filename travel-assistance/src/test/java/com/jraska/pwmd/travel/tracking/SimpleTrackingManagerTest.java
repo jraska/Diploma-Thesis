@@ -1,20 +1,20 @@
 package com.jraska.pwmd.travel.tracking;
 
 import android.content.Context;
+import android.location.Location;
 import com.jraska.BaseTest;
-import com.jraska.pwmd.core.gps.LocationService;
-import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.jraska.pwmd.travel.persistence.DBFlowDataRepositoryTest;
+import dagger.internal.InstanceFactory;
 import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.inject.Provider;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
 public class SimpleTrackingManagerTest extends BaseTest {
@@ -28,11 +28,9 @@ public class SimpleTrackingManagerTest extends BaseTest {
 
   @Before
   public void setUp() throws Exception {
-    LocationService locationService = mock(LocationService.class);
-    doReturn(generatePosition())
-        .when(locationService).getLastPosition();
+    Provider<Location> locationProvider = InstanceFactory.create(generateLocation());
 
-    _simpleTrackingManager = new SimpleTrackingManager(mock(Context.class), locationService,
+    _simpleTrackingManager = new SimpleTrackingManager(mock(Context.class), locationProvider,
         mock(LocationFilter.class), new EventBus());
   }
 
@@ -77,9 +75,8 @@ public class SimpleTrackingManagerTest extends BaseTest {
 
   //region Methods
 
-  private Position generatePosition() {
-    return new Position(DBFlowDataRepositoryTest.generatePosition(),
-        System.currentTimeMillis(), 1.0f, "asdjk");
+  private Location generateLocation() {
+    return DBFlowDataRepositoryTest.generatePosition().toLocation();
   }
 
   //endregion

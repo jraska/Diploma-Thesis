@@ -22,9 +22,9 @@ public class RouteCursorTest extends BaseTest {
 
   @Test
   public void testFindClosestDistance() throws Exception {
-    ArrayList<LatLng> positions = Lists.newArrayList(ZERO, NORTH_EAST, NORTH_WEST, SOUTH_EAST, SOUTH_WEST);
+    ArrayList<LatLng> locations = Lists.newArrayList(ZERO, NORTH_EAST, NORTH_WEST, SOUTH_EAST, SOUTH_WEST);
 
-    RouteCursor routeCursor = new RouteCursor(positions);
+    RouteCursor routeCursor = new RouteCursor(locations);
 
     LatLng closestPosition = routeCursor.findClosestPosition(pos(0.5, 0.8));
     assertThat(closestPosition).isEqualTo(NORTH_EAST);

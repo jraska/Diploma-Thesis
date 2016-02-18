@@ -1,8 +1,8 @@
 package com.jraska.pwmd.travel.help;
 
+import android.location.Location;
 import com.jraska.BaseTest;
 import com.jraska.pwmd.core.gps.LatLng;
-import com.jraska.pwmd.core.gps.Position;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,8 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class LostMessageTextBuilderTest extends BaseTest {
   //region Constants
 
-  public static final Position TEST_POSITION = new Position(new LatLng(19.22216271, 49.190901121),
-      System.currentTimeMillis(), 1.1f, "unknown");
+  public static final Location TEST_LOCATION = new LatLng(19.22216271, 49.190901121).toLocation();
 
   //endregion
 
@@ -38,7 +37,7 @@ public class LostMessageTextBuilderTest extends BaseTest {
 
   @Test
   public void testBuildGoogleMapsUrl() throws Exception {
-    _builder.setFromPosition(TEST_POSITION);
+    _builder.setFromLocation(TEST_LOCATION);
     _builder.setZoom(12);
 
     String googleMapsUrl = _builder.buildGoogleMapsUrl();
@@ -47,9 +46,9 @@ public class LostMessageTextBuilderTest extends BaseTest {
 
   @Test
   public void testBuildSmsTextLength() throws Exception {
-    Position position = TEST_POSITION;
+    Location location = TEST_LOCATION;
 
-    _builder.setFromPosition(position);
+    _builder.setFromLocation(location);
 
     String buildSmsText = _builder.buildSmsText();
     assertTrue(buildSmsText.length() <= SmsSender.MAX_SMS_LENGTH); //TODO: better assertions

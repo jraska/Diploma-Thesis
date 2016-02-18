@@ -1,6 +1,7 @@
 package com.jraska.pwmd.core.gps;
 
 import android.content.Context;
+import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.Nullable;
 import com.jraska.dagger.PerApp;
@@ -29,7 +30,7 @@ public class LocationModule {
     return svc;
   }
 
-  @Provides @Nullable Position provideLastPosition(LocationService locationService) {
-    return locationService.getLastPosition();
+  @Provides @Nullable Location provideLastLocation(LocationService locationService) {
+    return locationService.getLastLocation();
   }
 }
