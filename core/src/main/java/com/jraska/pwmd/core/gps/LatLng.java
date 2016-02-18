@@ -1,5 +1,6 @@
 package com.jraska.pwmd.core.gps;
 
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 import lombok.EqualsAndHashCode;
@@ -22,6 +23,17 @@ public class LatLng implements Parcelable {
     _longitude = longitude;
   }
 
+  //endregion
+
+  //region Mehtods
+
+  public Location toLocation() {
+    Location location = new Location("");
+    location.setLatitude(_latitude);
+    location.setLongitude(_longitude);
+
+    return location;
+  }
 
   //endregion
 

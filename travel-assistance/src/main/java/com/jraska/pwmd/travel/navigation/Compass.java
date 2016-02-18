@@ -1,8 +1,7 @@
 package com.jraska.pwmd.travel.navigation;
 
-import android.support.annotation.NonNull;
+import android.location.Location;
 import com.jraska.dagger.PerApp;
-import com.jraska.pwmd.core.gps.Position;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -10,26 +9,28 @@ import javax.inject.Inject;
 
 /**
  * Class determining current direction of the user and its device.
- * <p/>
- * Currently it uses jsut last GPS coordinates to determine direction
+ * Currently it uses just last GPS coordinates to determine direction
  */
 @PerApp
 public class Compass {
+  //region Constants
+
+  public static final float UNKNOWN_BEARING = Float.MIN_VALUE;
+
+  //endregion
+
   //region Fields
 
-  private final DirectionDecisionStrategy _decisionStrategy;
-  private final EventBus _systemBus;
+  private Location _previousLocation;
+  private Location _lastLocation;
 
   //endregion
 
   //region Constructors
 
   @Inject
-  public Compass(@NonNull DirectionDecisionStrategy decisionStrategy, EventBus systemBus) {
-    _decisionStrategy = decisionStrategy;
-    _systemBus = systemBus;
-
-    _systemBus.register(this);
+  public Compass(EventBus systemBus) {
+    systemBus.register(this);
   }
 
 
@@ -38,12 +39,17 @@ public class Compass {
   //region Methods
 
   @Subscribe
-  public void onNewPosition(Position position) {
-    _decisionStrategy.addPoint(position.latLng);
+  public void onNewLocation(Location location) {
+    _previousLocation = _lastLocation;
+    _lastLocation = location;
   }
 
-  public int getDirection() {
-    return _decisionStrategy.getDirection();
+  public float getBearing() {
+    if (_previousLocation == null || _lastLocation == null) {
+      return UNKNOWN_BEARING;
+    }
+
+    return _previousLocation.bearingTo(_lastLocation);
   }
 
   //endregion

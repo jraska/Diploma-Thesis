@@ -1,8 +1,10 @@
 package com.jraska.pwmd.travel.navigation;
 
+import android.location.Location;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.core.gps.Position;
 import hugo.weaving.DebugLog;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +18,7 @@ public class RouteCursor {
 
   private final List<LatLng> _route;
 
-  private Position _lastPosition;
+  private Location _lastLocation;
 
   //endregion
 
@@ -32,6 +34,12 @@ public class RouteCursor {
   //endregion
 
   //region Methods
+
+  public Location findClosestLocation(Location location) {
+    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+    LatLng closestPosition = findClosestPosition(latLng);
+    return closestPosition.toLocation();
+  }
 
   @DebugLog
   public LatLng findClosestPosition(LatLng position) {
@@ -59,8 +67,17 @@ public class RouteCursor {
     return latDiff * latDiff + lonDiff * lonDiff;
   }
 
-  protected void onNextPosition(Position position) {
-    _lastPosition = position;
+  protected void onNextPosition(Location location) {
+    _lastLocation = location;
+  }
+
+  public float getCurrentDirection() {
+    if(_lastLocation != null){
+      Location closestLocation = findClosestLocation(_lastLocation);
+
+    }
+
+    return Compass.UNKNOWN_BEARING; // TODO: 18/02/16 now just c.oses position of route - NOT CORRECT
   }
 
   //endregion

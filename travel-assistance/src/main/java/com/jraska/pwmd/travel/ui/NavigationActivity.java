@@ -10,7 +10,7 @@ import com.jraska.pwmd.core.gps.Position;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.navigation.DirectionDecisionStrategy;
+import com.jraska.pwmd.travel.navigation.Compass;
 import com.jraska.pwmd.travel.navigation.Navigator;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
@@ -64,9 +64,6 @@ public class NavigationActivity extends BaseActivity {
     updateDesiredDirection(_navigator.getLastRequiredDirection());
     _navigator.getEventBus().register(this);
 
-    // TODO: 18/01/16 Test code
-    updateDesiredDirection(90);
-
     _trackingManager.startTracking();
 
     _routeDisplayFragment = (RouteDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -98,7 +95,7 @@ public class NavigationActivity extends BaseActivity {
 
   @Subscribe
   public void onDirectionChanged(Navigator.RequiredDirectionEvent changedEvent) {
-    updateDesiredDirection(changedEvent._directionDegrees);
+    updateDesiredDirection(changedEvent._bearing);
   }
 
   @Subscribe
@@ -111,23 +108,23 @@ public class NavigationActivity extends BaseActivity {
 
   //region Methods
 
-  protected void updateDesiredDirection(int degrees) {
-    updateDirection(degrees, _desiredDirectionView);
+  protected void updateDesiredDirection(float bearing) {
+    updateDirection(bearing, _desiredDirectionView);
   }
 
-  protected void updateUserDirection(int degrees) {
-    updateDirection(degrees, _userDirectionView);
+  protected void updateUserDirection(float bearing) {
+    updateDirection(bearing, _userDirectionView);
   }
 
-  protected void updateDirection(int degrees, View view) {
-    if (degrees == DirectionDecisionStrategy.UNKNOWN_DIRECTION) {
+  protected void updateDirection(float bearing, View view) {
+    if (bearing == Compass.UNKNOWN_BEARING) {
       view.setVisibility(View.GONE);
     } else {
       view.setVisibility(View.VISIBLE);
     }
 
     // Rotation must be counter clockwise
-    view.setRotation(-degrees);
+    view.setRotation(bearing);
   }
 
   public void startNavigation() {

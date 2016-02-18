@@ -113,6 +113,9 @@ public class SimpleSystemLocationService implements LocationService, LocationSta
   }
 
   protected void onNewLocation(Location l) {
+    _eventBus.post(l);
+
+    // TODO: 17/02/16 Get rid of the Position object
     onNewPosition(toPosition(l));
   }
 
