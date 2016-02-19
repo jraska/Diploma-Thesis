@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:text="@string/stopTest" />
 
-    <com.jraska.common.view.console.Console
+    <com.jraska.console.Console
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
