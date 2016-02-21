@@ -168,6 +168,15 @@ public class RouteData extends BaseModel {
     return _noteSpecs;
   }
 
+  /**
+   * Separate method to allow lazy loading of subordinate data
+   */
+  public void loadFull() {
+    getPath();
+    getNoteSpecs();
+    getTransportChangeSpecs();
+  }
+
   public void addNote(NoteSpec spec) {
     ArgumentCheck.notNull(spec);
 

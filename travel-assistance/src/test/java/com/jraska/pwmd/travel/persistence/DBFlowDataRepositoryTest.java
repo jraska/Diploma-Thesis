@@ -9,23 +9,15 @@ import com.jraska.pwmd.travel.data.RouteDescription;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import timber.log.Timber;
 
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@Ignore // Not working with async saving and deleting
+//@Ignore // Not working with async saving and deleting
 public class DBFlowDataRepositoryTest extends BaseTest {
   //region Fields
 
@@ -55,26 +47,20 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   public void testInsert() throws Exception {
     RouteData insertedData = createRouteData();
 
-    CountDownLatch insertLatch = new SubscriberLatch(1);
-    _dataBus.register(insertLatch);
-
     _repository.insertOrUpdate(insertedData);
-    boolean await = insertLatch.await(1000, TimeUnit.MILLISECONDS);
-    assertTrue("Not inserted in time", await);
 
     List<RouteData> routeDescriptions = _repository.selectAll();
-    assertThat(routeDescriptions, hasSize(1));
+    assertThat(routeDescriptions).hasSize(1);
 
     RouteData loadedData = _repository.select(routeDescriptions.get(0).getId());
 
-    assertThat(loadedData.getNoteSpecs(), equalTo(insertedData.getNoteSpecs()));
-    assertThat(loadedData.getLocations(), equalTo(insertedData.getLocations()));
-    assertThat(loadedData.getTransportChangeSpecs(), equalTo(insertedData.getTransportChangeSpecs()));
+    assertThat(loadedData.getNoteSpecs()).isEqualTo(insertedData.getNoteSpecs());
+    assertThat(loadedData.getLocations()).isEqualTo(insertedData.getLocations());
+    assertThat(loadedData.getTransportChangeSpecs()).isEqualTo(insertedData.getTransportChangeSpecs());
   }
 
-  @Test @Ignore //Update not tested now
+  @Test
   public void testUpdate() {
-
     RouteData routeData = createRouteData();
     _repository.insertOrUpdate(routeData);
 
@@ -86,32 +72,19 @@ public class DBFlowDataRepositoryTest extends BaseTest {
 
     //try get all
     RouteData updatedData = _repository.select(routeData2.getId());
-    assertThat(updatedData.getPath(), equalTo(routeData2.getPath()));
+    assertThat(updatedData.getPath()).isEqualTo(routeData2.getPath());
   }
 
   @Test
   public void testDelete() throws Exception {
     RouteData routeData = createRouteData();
 
-    Timber.d("Test");
-
-    CountDownLatch insertLatch = new SubscriberLatch(1);
-    _dataBus.register(insertLatch);
-
     _repository.insertOrUpdate(routeData);
-    boolean await = insertLatch.await(1000, TimeUnit.MILLISECONDS);
-    assertTrue("Not inserted in time", await);
+    assertThat(_repository.selectAll()).hasSize(1);
 
-    assertThat(_repository.selectAll(), hasSize(1));
-
-    CountDownLatch deleteLatch = new SubscriberLatch(1);
-    _dataBus.register(deleteLatch);
     _repository.delete(routeData);
 
-    await = deleteLatch.await(1000, TimeUnit.MILLISECONDS);
-    assertTrue("Not deleted in time", await);
-
-    assertThat(_repository.selectAll(), hasSize(0));
+    assertThat(_repository.selectAll()).isEmpty();
   }
 
   //endregion
@@ -150,42 +123,6 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   public static LatLng generatePosition() {
     Random random = new Random();
     return new LatLng(random.nextDouble() * 50, random.nextDouble() * 50);
-  }
-
-  //endregion
-
-  //region Nested classes
-
-  public static class Tree extends Timber.Tree {
-    @Override protected void log(int priority, String tag, String message, Throwable t) {
-      System.out.println(message);
-    }
-  }
-
-  public static class SubscriberLatch extends CountDownLatch {
-
-    public SubscriberLatch(int count) {
-      super(count);
-    }
-
-    @Subscribe
-    public void onNewRoute(TravelDataRepository.NewRouteEvent e) {
-      countDown();
-    }
-
-    @Subscribe
-    public void onRouteDeleted(TravelDataRepository.RouteDeletedEvent e) {
-      countDown();
-    }
-  }
-
-  public static class TestSubscriber {
-    public int _eventFired;
-
-    @Subscribe
-    public void onRouteDeleted(TravelDataRepository.NewRouteEvent event) {
-      _eventFired++;
-    }
   }
 
   //endregion
