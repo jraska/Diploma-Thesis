@@ -12,6 +12,7 @@ import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.media.SoundsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 
@@ -111,9 +112,18 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
   public void showRoute() {
     if (!_routeDisplayFragment.isRouteDisplayed()) {
       RouteData routeData = loadRoute();
-
-      _routeDisplayFragment.displayRoute(routeData);
+      if (routeData == null) {
+        onRouteNotFound();
+      } else {
+        _routeDisplayFragment.displayRoute(routeData);
+      }
     }
+  }
+
+  private void onRouteNotFound() {
+    Timber.w("Route with id %s not found.", _routeId);
+
+    finish();
   }
 
   protected RouteData loadRoute() {

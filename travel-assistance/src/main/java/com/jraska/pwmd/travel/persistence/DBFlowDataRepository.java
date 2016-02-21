@@ -5,8 +5,6 @@ import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteData_Table;
 import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
-import com.raizlabs.android.dbflow.structure.AsyncModel;
-import com.raizlabs.android.dbflow.structure.Model;
 import hugo.weaving.DebugLog;
 import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
@@ -17,15 +15,6 @@ public class DBFlowDataRepository implements TravelDataRepository {
   //region Fields
 
   private final EventBus _eventBus;
-
-  private final AsyncModel.OnModelChangedListener _insertListener = new AsyncModel.OnModelChangedListener() {
-    @Override public void onModelChanged(Model model) {
-      RouteData routeData = (RouteData) model;
-      Timber.d("Posting new route event id=" + routeData.getId());
-
-      _eventBus.post(new NewRouteEvent((RouteData) model));
-    }
-  };
 
   //endregion
 
@@ -55,45 +44,31 @@ public class DBFlowDataRepository implements TravelDataRepository {
         .where(RouteData_Table._id.eq(id)).count() > 0;
   }
 
+  @DebugLog
   @Override public long delete(RouteData routeData) {
-    routeData.async().withListener(new DeletedListener(routeData.getNoteSpecs())).delete();
+    if (!routeData.exists()) {
+      Timber.w("Trying to delete not existing route data title=%s", routeData.getTitle());
+      return 0;
+    }
 
-    // COde to test delete and insert
-//    routeData.delete();
-//    _eventBus.post(new RouteDeletedEvent(routeData));
+    for (NoteSpec noteSpec : routeData.getNoteSpecs()) {
+      Timber.d("Posting deleted note spec '%s'", noteSpec.getCaption());
+      _eventBus.post(new NoteSpecDeletedEvent(noteSpec));
+    }
+
+    Timber.d("Posting deleted route event id=%d", routeData.getId());
+    _eventBus.post(new RouteDeletedEvent(routeData));
+
+    routeData.delete();
     return 1;
   }
 
+  @DebugLog
   @Override public long insertOrUpdate(final RouteData routeData) {
-    routeData.async().withListener(_insertListener).save();
-
-    // code to test deleet and insert
-//    routeData.save();
-//    _eventBus.post(new NewRouteEvent(routeData));
+    routeData.save();
+    Timber.d("Posting new route event id=%d", routeData.getId());
+    _eventBus.post(new NewRouteEvent(routeData));
     return 1;
-  }
-
-  //endregion
-
-  //region Nested classes
-
-  class DeletedListener implements AsyncModel.OnModelChangedListener {
-    private final List<NoteSpec> _noteSpecs;
-
-    public DeletedListener(List<NoteSpec> noteSpecs) {
-      _noteSpecs = noteSpecs;
-    }
-
-    @Override
-    public void onModelChanged(Model model) {
-      for (NoteSpec noteSpec : _noteSpecs) {
-        _eventBus.post(new NoteSpecDeletedEvent(noteSpec));
-      }
-
-      RouteData routeData = (RouteData) model;
-      Timber.d("Posting deleted route event id=" + routeData.getId());
-      _eventBus.post(new RouteDeletedEvent(routeData));
-    }
   }
 
   //endregion

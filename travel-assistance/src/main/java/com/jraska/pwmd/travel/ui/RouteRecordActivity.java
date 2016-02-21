@@ -320,7 +320,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   protected void handlePhotoTakenIntent(@Nullable Intent data) {
     final UUID imageId = _lastPhotoRequestId;
     if (!_picturesManager.imageExists(imageId)) {
-      Timber.e("Image does not exists on successfull picture taken. Id= " + imageId);
+      Timber.e("Image does not exists on successful picture taken. Id= " + imageId);
       return;
     }
 
