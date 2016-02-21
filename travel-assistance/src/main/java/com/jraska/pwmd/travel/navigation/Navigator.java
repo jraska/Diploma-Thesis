@@ -26,7 +26,7 @@ public class Navigator {
   private State _state = State.EMPTY;
 
   private RouteData _currentRoute;
-  private RouteCursor _routeCursor;
+  private ClosestLocationFinder _closestLocationFinder;
 
   //endregion
 
@@ -98,7 +98,7 @@ public class Navigator {
       _eventBus.register(this);
     }
 
-    _routeCursor = new RouteCursor(_currentRoute.getPath());
+    _closestLocationFinder = new ClosestLocationFinder(_currentRoute.getPath());
     _state = new ApproachingToRouteState();
   }
 
@@ -136,7 +136,7 @@ public class Navigator {
 
     @Override
     public void onNewLocation(Location location) {
-      Location closestLocation = _routeCursor.findClosestLocation(location);
+      Location closestLocation = _closestLocationFinder.findClosestLocation(location);
       float distanceTo = location.distanceTo(closestLocation);
       Timber.v("Distance to route computed: %s", distanceTo);
       if (distanceTo < RANGE_ON_ROUTE) {

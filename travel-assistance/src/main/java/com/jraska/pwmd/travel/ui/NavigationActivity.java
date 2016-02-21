@@ -71,11 +71,6 @@ public class NavigationActivity extends BaseActivity {
   }
 
   @Override
-  protected void onStart() {
-    super.onStart();
-  }
-
-  @Override
   protected void onDestroy() {
     _navigator.getEventBus().unregister(this);
 
