@@ -35,7 +35,14 @@ public class DBFlowDataRepository implements TravelDataRepository {
 
   @DebugLog
   @Override public RouteData select(long id) {
-    return SQLite.select().from(RouteData.class).where(RouteData_Table._id.eq(id)).querySingle();
+    RouteData routeData = SQLite.select().from(RouteData.class)
+        .where(RouteData_Table._id.eq(id)).querySingle();
+
+    if (routeData != null) {
+      routeData.loadFull();
+    }
+
+    return routeData;
   }
 
   @DebugLog
