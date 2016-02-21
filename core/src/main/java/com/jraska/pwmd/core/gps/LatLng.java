@@ -29,7 +29,7 @@ public class LatLng implements Parcelable {
 
   //endregion
 
-  //region Mehtods
+  //region Methods
 
   public Location toLocation() {
     Location location = new Location("");
@@ -37,6 +37,10 @@ public class LatLng implements Parcelable {
     location.setLongitude(_longitude);
 
     return location;
+  }
+
+  public static LatLng fromLocation(Location location){
+    return new LatLng(location);
   }
 
   //endregion

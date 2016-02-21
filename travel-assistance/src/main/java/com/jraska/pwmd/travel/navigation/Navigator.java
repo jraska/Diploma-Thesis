@@ -2,7 +2,6 @@ package com.jraska.pwmd.travel.navigation;
 
 import android.location.Location;
 import android.support.annotation.NonNull;
-import com.google.android.gms.maps.model.LatLng;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.data.RouteData;
@@ -19,10 +18,13 @@ public class Navigator {
   //region Fields
 
   private final EventBus _eventBus;
-
   private final Compass _compass;
 
   private float _lastBearing = Compass.UNKNOWN_BEARING;
+
+  @NonNull
+  private State _state = State.EMPTY;
+
   private RouteData _currentRoute;
   private RouteCursor _routeCursor;
 
@@ -31,7 +33,7 @@ public class Navigator {
   //region Constructors
 
   @Inject
-  public Navigator(EventBus eventBus, @NonNull Compass compass) {
+  public Navigator(@NonNull EventBus eventBus, @NonNull Compass compass) {
     ArgumentCheck.notNull(eventBus);
     ArgumentCheck.notNull(compass);
 
@@ -86,7 +88,7 @@ public class Navigator {
     return userDirection;
   }
 
-  protected int computeDirectionToRoute(Location currentPosition) {
+  protected float computeDirectionToRoute(Location currentPosition) {
     int realDirection = (int) _compass.getBearing();
     if (realDirection == Compass.UNKNOWN_BEARING) {
       return realDirection;
@@ -108,21 +110,7 @@ public class Navigator {
 
   @Subscribe
   protected void onNewLocation(Location location) {
-    int directionToRoute = computeDirectionToRoute(location);
-
-    onNewDirection(directionToRoute);
-  }
-
-  //endregion
-
-  //region Static Methods
-
-  public static LatLng toGoogleLatLng(@NonNull com.jraska.pwmd.core.gps.LatLng latLng) {
-    return new LatLng(latLng._latitude, latLng._longitude);
-  }
-
-  public static LatLng toGoogleLatLng(@NonNull Location location) {
-    return new LatLng(location.getLatitude(), location.getLongitude());
+    _state.onNewLocation(location);
   }
 
   public void startNavigation(RouteData routeData) {
@@ -139,10 +127,12 @@ public class Navigator {
     }
 
     _routeCursor = new RouteCursor(_currentRoute.getPath());
+    _state = new ApproachingToRouteState();
   }
 
   public void stopNavigation() {
     if (_currentRoute == null) {
+
       return;
     }
 
@@ -152,11 +142,32 @@ public class Navigator {
 
     Timber.i("Navigation for route %d ended", _currentRoute.getId());
     _currentRoute = null;
+    _state = State.EMPTY;
   }
 
   //endregion
 
   //region Nested classes
+
+  interface State {
+    void onNewLocation(Location location);
+
+    State EMPTY = new State() {
+      @Override public void onNewLocation(Location location) {
+      }
+    };
+  }
+
+  class ApproachingToRouteState implements State {
+    @Override
+    public void onNewLocation(Location location) {
+      Location closestLocation = _routeCursor.findClosestLocation(location);
+
+      float directionToRoute = location.bearingTo(closestLocation);
+
+      onNewDirection(directionToRoute);
+    }
+  }
 
   public static final class RequiredDirectionEvent {
     public final float _bearing;

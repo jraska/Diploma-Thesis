@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import com.jraska.console.timber.ConsoleTree;
 import com.jraska.pwmd.travel.util.ActivityMonitorCallbacks;
 import com.jraska.pwmd.travel.util.TravelDebugTree;
 import com.jraska.pwmd.travel.util.TravelReleaseTree;
@@ -51,6 +52,7 @@ public class TravelAssistanceApp extends Application {
 
     if (BuildConfig.DEBUG) {
       Timber.plant(new TravelDebugTree());
+      Timber.plant(new ConsoleTree());
     } else {
       Timber.plant(new TravelReleaseTree());
     }

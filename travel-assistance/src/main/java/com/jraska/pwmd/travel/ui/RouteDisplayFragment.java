@@ -36,8 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.jraska.pwmd.travel.navigation.Navigator.toGoogleLatLng;
 import static com.jraska.pwmd.travel.ui.MapHelper.ZOOM;
+import static com.jraska.pwmd.travel.ui.MapHelper.toGoogleLatLng;
 
 
 public class RouteDisplayFragment extends SupportMapFragment implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback {

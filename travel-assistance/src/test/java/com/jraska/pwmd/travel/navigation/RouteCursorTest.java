@@ -21,27 +21,27 @@ public class RouteCursorTest extends BaseTest {
   //endregion
 
   @Test
-  public void testFindClosestDistance() throws Exception {
+  public void testFindClosestLocation() throws Exception {
     ArrayList<LatLng> locations = Lists.newArrayList(ZERO, NORTH_EAST, NORTH_WEST, SOUTH_EAST, SOUTH_WEST);
 
     RouteCursor routeCursor = new RouteCursor(locations);
 
-    LatLng closestPosition = routeCursor.findClosestPosition(pos(0.5, 0.8));
+    LatLng closestPosition = routeCursor.findClosestLocation(pos(0.5, 0.8));
     assertThat(closestPosition).isEqualTo(NORTH_EAST);
 
-    closestPosition = routeCursor.findClosestPosition(pos(-0.5, 0.4));
+    closestPosition = routeCursor.findClosestLocation(pos(-0.5, 0.4));
     assertThat(closestPosition).isEqualTo(ZERO);
 
-    closestPosition = routeCursor.findClosestPosition(pos(-0.05, 0.7));
+    closestPosition = routeCursor.findClosestLocation(pos(-0.05, 0.7));
     assertThat(closestPosition).isEqualTo(ZERO);
 
-    closestPosition = routeCursor.findClosestPosition(pos(-0.5, 0.51));
+    closestPosition = routeCursor.findClosestLocation(pos(-0.5, 0.51));
     assertThat(closestPosition).isEqualTo(NORTH_WEST);
 
-    closestPosition = routeCursor.findClosestPosition(pos(0.7, -0.4));
+    closestPosition = routeCursor.findClosestLocation(pos(0.7, -0.4));
     assertThat(closestPosition).isEqualTo(SOUTH_EAST);
 
-    closestPosition = routeCursor.findClosestPosition(pos(-0.5, -0.6));
+    closestPosition = routeCursor.findClosestLocation(pos(-0.5, -0.6));
     assertThat(closestPosition).isEqualTo(SOUTH_WEST);
   }
 

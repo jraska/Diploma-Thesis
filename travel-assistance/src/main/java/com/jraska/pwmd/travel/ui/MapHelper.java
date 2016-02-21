@@ -1,6 +1,7 @@
 package com.jraska.pwmd.travel.ui;
 
 import android.location.Location;
+import android.support.annotation.NonNull;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -23,6 +24,14 @@ public final class MapHelper {
   }
 
   public static LatLng toLatLng(Location location) {
+    return new LatLng(location.getLatitude(), location.getLongitude());
+  }
+
+  public static LatLng toGoogleLatLng(@NonNull com.jraska.pwmd.core.gps.LatLng latLng) {
+    return new LatLng(latLng._latitude, latLng._longitude);
+  }
+
+  public static LatLng toGoogleLatLng(@NonNull Location location) {
     return new LatLng(location.getLatitude(), location.getLongitude());
   }
 

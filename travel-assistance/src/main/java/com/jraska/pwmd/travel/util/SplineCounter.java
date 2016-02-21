@@ -6,7 +6,7 @@ import com.jraska.dagger.PerApp;
 import javax.inject.Inject;
 import java.util.List;
 
-import static com.jraska.pwmd.travel.navigation.Navigator.toGoogleLatLng;
+import static com.jraska.pwmd.travel.ui.MapHelper.toGoogleLatLng;
 
 @PerApp
 public class SplineCounter {

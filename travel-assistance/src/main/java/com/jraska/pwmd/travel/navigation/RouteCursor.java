@@ -34,13 +34,12 @@ public class RouteCursor {
   //region Methods
 
   public Location findClosestLocation(Location location) {
-    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-    LatLng closestPosition = findClosestPosition(latLng);
+    LatLng closestPosition = findClosestLocation(LatLng.fromLocation(location));
     return closestPosition.toLocation();
   }
 
   @DebugLog
-  public LatLng findClosestPosition(LatLng position) {
+  public LatLng findClosestLocation(LatLng position) {
     Iterator<LatLng> iterator = _route.iterator();
     LatLng closest = iterator.next();
 
@@ -58,15 +57,11 @@ public class RouteCursor {
     return closest;
   }
 
-  private double distanceSquare(LatLng closest, LatLng location) {
-    double latDiff = closest._latitude - location._latitude;
-    double lonDiff = closest._longitude - location._longitude;
+  private double distanceSquare(LatLng first, LatLng second) {
+    double latDiff = first._latitude - second._latitude;
+    double lonDiff = first._longitude - second._longitude;
 
     return latDiff * latDiff + lonDiff * lonDiff;
-  }
-
-  protected void onNextPosition(Location location) {
-    _lastLocation = location;
   }
 
   public float getCurrentDirection() {
