@@ -7,6 +7,7 @@ import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.AsyncModel;
 import com.raizlabs.android.dbflow.structure.Model;
+import hugo.weaving.DebugLog;
 import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
@@ -38,14 +39,17 @@ public class DBFlowDataRepository implements TravelDataRepository {
 
   //region TravelDataRepository impl
 
+  @DebugLog
   @Override public List<RouteData> selectAll() {
     return SQLite.select().from(RouteData.class).queryList();
   }
 
+  @DebugLog
   @Override public RouteData select(long id) {
     return SQLite.select().from(RouteData.class).where(RouteData_Table._id.eq(id)).querySingle();
   }
 
+  @DebugLog
   @Override public boolean routeExists(long id) {
     return SQLite.select(Method.count()).from(RouteData.class)
         .where(RouteData_Table._id.eq(id)).count() > 0;
