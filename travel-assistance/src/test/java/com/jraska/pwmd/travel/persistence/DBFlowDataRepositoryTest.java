@@ -28,13 +28,13 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   //region Setup Methods
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     _dataBus = new EventBus();
     _repository = new DBFlowDataRepository(_dataBus);
   }
 
   @After
-  public void tearDown() throws Exception {
+  public void tearDown() {
     FlowManager.destroy();
   }
 
@@ -43,7 +43,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   //region Test Methods
 
   @Test
-  public void testInsert() throws Exception {
+  public void testInsert() {
     RouteData insertedData = createRouteData();
 
     _repository.insertOrUpdateSync(insertedData);
@@ -75,7 +75,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   }
 
   @Test
-  public void testDelete() throws Exception {
+  public void testDelete() {
     RouteData routeData = createRouteData();
 
     _repository.insertOrUpdateSync(routeData);
