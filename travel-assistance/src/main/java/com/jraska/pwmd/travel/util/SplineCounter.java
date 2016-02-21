@@ -1,12 +1,11 @@
 package com.jraska.pwmd.travel.util;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.jraska.dagger.PerApp;
+import com.jraska.pwmd.core.gps.LatLng;
+import timber.log.Timber;
 
 import javax.inject.Inject;
 import java.util.List;
-
-import static com.jraska.pwmd.travel.ui.MapHelper.toGoogleLatLng;
 
 @PerApp
 public class SplineCounter {
@@ -17,12 +16,21 @@ public class SplineCounter {
   public SplineCounter() {
   }
 
-  public LatLng[] calculateSpline(List<com.jraska.pwmd.core.gps.LatLng> latLngs) {
+  public LatLng[] calculateSpline(List<LatLng> latLngs) {
+    Stopwatch stopwatch = Stopwatch.started();
+    LatLng[] result = calculateSplineInternal(latLngs);
+    stopwatch.stop();
+    Timber.d("Making spline for %d points took %d ms", latLngs.size(), stopwatch.getElapsedMs());
+
+    return result;
+  }
+
+  LatLng[] calculateSplineInternal(List<LatLng> latLngs) {
     // Nonsense to do splines with just few points
     if (latLngs.size() < MIN_REQUIRED_POINTS) {
       LatLng[] toReturn = new LatLng[latLngs.size()];
       for (int i = 0; i < latLngs.size(); i++) {
-        toReturn[i] = toGoogleLatLng(latLngs.get(i));
+        toReturn[i] = latLngs.get(i);
       }
 
       return toReturn;
@@ -32,14 +40,14 @@ public class SplineCounter {
     double[] lons = new double[latLngs.size()];
 
     for (int i = 0, size = latLngs.size(); i < size; i++) {
-      com.jraska.pwmd.core.gps.LatLng latLng = latLngs.get(i);
+      LatLng latLng = latLngs.get(i);
       lats[i] = latLng._latitude;
       lons[i] = latLng._longitude;
     }
 
     double t, ax, ay, bx, by, cx, cy, dx, dy, lat, lon;
     LatLng points[] = new LatLng[lats.length - 2]; //start and end are added
-    points[0] = toGoogleLatLng(latLngs.get(0));
+    points[0] = latLngs.get(0);
 
     for (int i = 2, pointIndex = 1; i < lats.length - 2; i++, pointIndex++) {
       for (t = 0; t < 1; t += 0.2) {
@@ -57,7 +65,7 @@ public class SplineCounter {
       }
     }
 
-    points[points.length - 1] = toGoogleLatLng(latLngs.get(latLngs.size() - 1));
+    points[points.length - 1] = latLngs.get(latLngs.size() - 1);
 
     return points;
   }

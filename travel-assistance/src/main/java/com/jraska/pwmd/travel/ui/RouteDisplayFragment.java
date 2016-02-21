@@ -231,11 +231,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
 
     GoogleMap map = _mapView;
 
-    Stopwatch stopwatch = Stopwatch.started();
     PolylineOptions spLineOptions = getSPLineOptions(points);
-    stopwatch.stop();
-    Timber.d("Making spline for " + points.size() + " points took " + stopwatch.getElapsedMs() + " ms");
-
     map.addPolyline(spLineOptions);
 
     LatLng start = toGoogleLatLng(points.get(0));
@@ -250,10 +246,10 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH)
         .color(Color.BLUE).visible(true);
 
-    LatLng[] spLinePoints = _splineCounter.calculateSpline(points);
+    com.jraska.pwmd.core.gps.LatLng[] spLinePoints = _splineCounter.calculateSpline(points);
 
-    for (LatLng latLng : spLinePoints) {
-      polylineOptions.add(latLng);
+    for (com.jraska.pwmd.core.gps.LatLng latLng : spLinePoints) {
+      polylineOptions.add(toGoogleLatLng(latLng));
     }
     return polylineOptions;
   }
