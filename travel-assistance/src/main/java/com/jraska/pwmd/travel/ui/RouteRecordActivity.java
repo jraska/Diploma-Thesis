@@ -22,6 +22,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import com.google.android.gms.maps.*;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
@@ -32,6 +33,7 @@ import com.jraska.pwmd.travel.media.SoundsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import com.jraska.pwmd.travel.transport.SimpleTransportManager;
+import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
@@ -58,11 +60,11 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
   //region Fields
 
-  @Bind(R.id.record_btnStartTracking) View _startTrackingButton;
-  @Bind(R.id.record_btnStopTracking) View _stopTrackingButton;
+  @Bind(R.id.record_btnStartRecording) View _startTrackingButton;
+  @Bind(R.id.record_btnStopRecording) View _stopTrackingButton;
   @Bind(R.id.record_btnSaveRoute) View _saveRouteButton;
   @Bind(R.id.record_btnChangeTransportType) ImageView _changeTransportButton;
-  @Bind(R.id.record_btnTakePhoto) View _takePhotoButton;
+  @Bind(R.id.record_btnAddPhoto) View _takePhotoButton;
   @Bind(R.id.record_btnAddTextNote) View _addNoteButton;
   @Bind(R.id.record_btnAddVoice) View _addSoundButton;
   @Bind(R.id.record_route_title_input) EditText _titleInput;
@@ -203,13 +205,13 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     return _titleInput.getText().toString();
   }
 
-  @OnClick(R.id.record_btnStartTracking) void startTracking() {
+  @OnClick(R.id.record_btnStartRecording) void startTracking() {
     _trackingManager.startTracking();
 
     updateStartStopButtons();
   }
 
-  @OnClick(R.id.record_btnStopTracking) void stopTracking() {
+  @OnClick(R.id.record_btnStopRecording) void stopTracking() {
     _trackingManager.stopTracking();
 
     updateStartStopButtons();
@@ -277,7 +279,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     updateTransportIcon();
   }
 
-  @OnClick(R.id.record_btnTakePhoto) void takePhoto() {
+  @OnClick(R.id.record_btnAddPhoto) void takePhoto() {
     dispatchTakePictureIntent();
   }
 
@@ -330,7 +332,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     }
 
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle(getString(R.string.record_save_photo));
+    builder.setTitle(getString(R.string.record_add_photo));
 
     @SuppressLint("InflateParams") // cannot get parent
         View dialogView = _inflater.inflate(R.layout.dialog_record_photo_preview, null);
@@ -387,6 +389,13 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     startActivityForResult(voiceRecordIntent, REQUEST_VOICE_RECORD);
   }
 
+  @OnLongClick({R.id.record_btnAddTextNote, R.id.record_btnAddVoice, R.id.record_btnAddPhoto,
+      R.id.record_btnChangeTransportType, R.id.record_btnStartRecording,
+      R.id.record_btnStopRecording, R.id.record_btnSaveRoute})
+  boolean showContentDescription(View view) {
+    return ShowContentDescriptionLongClickListener.showContentDescription(view);
+  }
+
   //endregion
 
   //region Nested classes
@@ -397,6 +406,10 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
     public PhotoDialogHolder(View rootView) {
       ButterKnife.bind(this, rootView);
+    }
+
+    @OnLongClick(R.id.record_photo_preview) boolean showContentDescription(View v) {
+      return ShowContentDescriptionLongClickListener.showContentDescription(v);
     }
   }
 
@@ -429,6 +442,12 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
         R.id.btn_transport_change_select_train, R.id.btn_transport_change_select_bus})
     void dismissDialog() {
       _dialog.dismiss();
+    }
+
+    @OnLongClick({R.id.btn_transport_change_select_walking,
+        R.id.btn_transport_change_select_train, R.id.btn_transport_change_select_bus})
+    boolean showContentDescription(View view) {
+      return ShowContentDescriptionLongClickListener.showContentDescription(view);
     }
 
     void addTransportInfo(int type) {

@@ -7,9 +7,11 @@ import android.view.View;
 import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.media.SoundsManager;
+import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 
 import javax.inject.Inject;
 import java.util.UUID;
@@ -86,6 +88,11 @@ public class VoiceRecordActivity extends BaseActivity {
     }
 
     finish();
+  }
+
+  @OnLongClick({R.id.voice_record_save_recording, R.id.voice_record_stop_recording})
+  boolean showContentDescription(View view) {
+    return ShowContentDescriptionLongClickListener.showContentDescription(view);
   }
 
   //endregion

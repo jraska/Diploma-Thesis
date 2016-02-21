@@ -29,13 +29,13 @@
     <string name="cannot_get_pictures">Cannot get image</string>
     <string name="photo_preview">Photo preview</string>
     <string name="caption">Caption</string>
-    <string name="record_save_photo">Save photo</string>
-    <string name="record_save_note">Save note</string>
+    <string name="record_add_photo">Add photo</string>
     <string name="record_add_note">Add note</string>
+    <string name="record_add_voice">Add voice record</string>
     <string name="voice_record_speak_now">Speak now</string>
     <string name="voice_record_title_hint">Title</string>
     <string name="record_voice_saved">Recording saved</string>
-    <string name="navigation_arrow">Navigation arrow</string>
+    <string name="navigation_arrow_description">Desired direction</string>
     <string name="record_start_record_route">Record route</string>
     <string name="route_title">Route title</string>
     <string name="route_default_title">Route from %s</string>
@@ -64,4 +64,5 @@
     <string name="transport_walking">Walking</string>
     <string name="transport_bus">Bus</string>
     <string name="transport_tram">Tram</string>
+    <string name="navigation_arrow_user_direction_description">User direction</string>
 </resources>

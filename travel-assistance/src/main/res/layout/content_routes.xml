@@ -30,7 +30,7 @@
             style="@style/TextMain" />
 
         <ImageButton
-            android:id="@+id/routes_empty_view_btn_tracking"
+            android:id="@+id/routes_empty_view_btn_recording"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_smart_record_black_24dp"

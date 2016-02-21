@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import butterknife.Bind;
+import butterknife.OnLongClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
@@ -13,6 +14,7 @@ import com.jraska.pwmd.travel.navigation.Compass;
 import com.jraska.pwmd.travel.navigation.Navigator;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
+import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
@@ -29,7 +31,7 @@ public class NavigationActivity extends BaseActivity {
 
   //region Fields
 
-  @Bind(R.id.navigate_arrow_view) View _desiredDirectionView;
+  @Bind(R.id.navigate_desired_direction_view) View _desiredDirectionView;
   @Bind(R.id.navigate_user_direction_arrow_view) View _userDirectionView;
 
   @Inject Navigator _navigator;
@@ -100,6 +102,11 @@ public class NavigationActivity extends BaseActivity {
   //endregion
 
   //region Methods
+
+  @OnLongClick({R.id.navigate_desired_direction_view, R.id.navigate_user_direction_arrow_view})
+  boolean showContentDescription(View view) {
+    return ShowContentDescriptionLongClickListener.showContentDescription(view);
+  }
 
   protected void updateDesiredDirection(float bearing) {
     updateDirection(bearing, _desiredDirectionView);

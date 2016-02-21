@@ -14,10 +14,12 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 
 import javax.inject.Inject;
 import java.text.DateFormat;
@@ -158,10 +160,10 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
 
 
   static class RouteViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
-    @Bind(R.id.route_title) TextView _routeTitle;
+    @Bind(R.id.route_item_title) TextView _routeTitle;
     @Bind(R.id.route_date) TextView _routeDate;
-    @Bind(R.id.route_duration) TextView _routeDuration;
-    @Bind(R.id.route_icon) ImageView _routeIcon;
+    @Bind(R.id.route_item_duration) TextView _routeDuration;
+    @Bind(R.id.route_item_icon) ImageView _routeIcon;
 
     private final RoutesAdapter _routesAdapter;
 
@@ -187,11 +189,16 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
       popup.show();
     }
 
+    @OnLongClick({R.id.route_item_more, R.id.route_item_navigate})
+    boolean showContentDescription(View v){
+      return ShowContentDescriptionLongClickListener.showContentDescription(v);
+    }
+
     protected void deleteRoute() {
       _routesAdapter.onRouteDeleteClick(getAdapterPosition(), itemView);
     }
 
-    @OnClick(R.id.route_navigate) void navigateRoute() {
+    @OnClick(R.id.route_item_navigate) void navigateRoute() {
       _routesAdapter.onNavigateRouteClick(getAdapterPosition(), itemView);
     }
 

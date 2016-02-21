@@ -29,13 +29,12 @@
     <string name="title_activity_route_record">Nahrávání</string>
     <string name="photo_preview">Ukázka fotografie</string>
     <string name="caption">Popis obrázku</string>
-    <string name="record_save_photo">Uložit fotku</string>
+    <string name="record_add_photo">Uložit fotku</string>
     <string name="record_add_note">Přidat poznámku</string>
-    <string name="record_save_note">Uložit poznámku</string>
     <string name="record_voice_saved">Nahrávka uložena</string>
     <string name="voice_record_speak_now">Nyní mluvte</string>
     <string name="voice_record_title_hint">Titulek</string>
-    <string name="navigation_arrow">Navigační šipka</string>
+    <string name="navigation_arrow_description">Doporučený směr</string>
     <string name="record_start_record_route">Nahrát cestu</string>
     <string name="route_title">Název cesty</string>
     <string name="route_default_title">Cesta v %s</string>
@@ -64,4 +63,6 @@
     <string name="transport_bus">Autobus</string>
     <string name="transport_tram">Tramvaj</string>
     <string name="transport_walking">Chůze</string>
+    <string name="record_add_voice">Přidat hlasovou nahrávku</string>
+    <string name="navigation_arrow_user_direction_description">Směr uživatele</string>
 </resources>

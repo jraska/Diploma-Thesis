@@ -12,14 +12,16 @@ import android.view.MenuItem;
 import android.view.View;
 import butterknife.Bind;
 import butterknife.OnClick;
-import org.greenrobot.eventbus.Subscribe;
+import butterknife.OnLongClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.settings.SettingsManager;
+import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -276,13 +278,17 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     startActivity(new Intent(this, SettingsActivity.class));
   }
 
-  @OnClick(R.id.routes_empty_view_btn_tracking)
+  @OnClick(R.id.routes_empty_view_btn_recording)
   protected void onEmptyViewRecordButtonClick() {
     openRouteRecording();
   }
 
   protected void openRouteRecording() {
     startActivity(new Intent(this, RouteRecordActivity.class));
+  }
+
+  @OnLongClick({R.id.routes_empty_view_btn_recording}) boolean showContentDescription(View v) {
+    return ShowContentDescriptionLongClickListener.showContentDescription(v);
   }
 
   //endregion
