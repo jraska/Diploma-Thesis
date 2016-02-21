@@ -12,6 +12,8 @@ import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.media.SoundsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -111,12 +113,18 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
 
   public void showRoute() {
     if (!_routeDisplayFragment.isRouteDisplayed()) {
-      RouteData routeData = loadRoute();
-      if (routeData == null) {
-        onRouteNotFound();
-      } else {
-        _routeDisplayFragment.displayRoute(routeData);
-      }
+      _travelDataRepository.select(_routeId)
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(this::showRoute);
+    }
+  }
+
+  void showRoute(RouteData routeData) {
+    if (routeData == null) {
+      onRouteNotFound();
+    } else {
+      _routeDisplayFragment.displayRoute(routeData);
     }
   }
 
@@ -124,11 +132,6 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
     Timber.w("Route with id %s not found.", _routeId);
 
     finish();
-  }
-
-  protected RouteData loadRoute() {
-    RouteData routeData = _travelDataRepository.select(_routeId);
-    return routeData;
   }
 
   protected void startNavigation() {

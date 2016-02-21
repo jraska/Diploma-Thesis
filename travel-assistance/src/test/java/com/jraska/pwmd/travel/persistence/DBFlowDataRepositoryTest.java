@@ -51,7 +51,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     List<RouteData> routeDescriptions = _repository.selectAllSync();
     assertThat(routeDescriptions).hasSize(1);
 
-    RouteData loadedData = _repository.select(routeDescriptions.get(0).getId());
+    RouteData loadedData = _repository.selectSync(routeDescriptions.get(0).getId());
 
     assertThat(loadedData.getNoteSpecs()).isEqualTo(insertedData.getNoteSpecs());
     assertThat(loadedData.getLocations()).isEqualTo(insertedData.getLocations());
@@ -70,7 +70,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     _repository.insertOrUpdate(routeData2);
 
     //try get all
-    RouteData updatedData = _repository.select(routeData2.getId());
+    RouteData updatedData = _repository.selectSync(routeData2.getId());
     assertThat(updatedData.getPath()).isEqualTo(routeData2.getPath());
   }
 

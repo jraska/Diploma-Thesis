@@ -23,6 +23,8 @@ import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 import hugo.weaving.DebugLog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -241,10 +243,12 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     RouteDetailActivity.startNew(this, id);
   }
 
-  @DebugLog
-  void refreshRoutes() {
+  @DebugLog void refreshRoutes() {
     TravelDataRepository service = _travelDataRepository;
-    service.selectAll().subscribe(this::setRoutes);
+    service.selectAll()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::setRoutes);
   }
 
   void setRoutes(List<RouteData> routes) {

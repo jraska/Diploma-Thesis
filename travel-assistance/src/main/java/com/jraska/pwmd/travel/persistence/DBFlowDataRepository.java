@@ -38,16 +38,11 @@ public class DBFlowDataRepository implements TravelDataRepository {
     });
   }
 
-  @DebugLog
-  @Override public RouteData select(long id) {
-    RouteData routeData = SQLite.select().from(RouteData.class)
-        .where(RouteData_Table._id.eq(id)).querySingle();
-
-    if (routeData != null) {
-      routeData.loadFull();
-    }
-
-    return routeData;
+  @Override public Observable<RouteData> select(long id) {
+    return Observable.create(subscriber -> {
+      subscriber.onNext(selectSync(id));
+      subscriber.onCompleted();
+    });
   }
 
   @DebugLog
@@ -88,8 +83,20 @@ public class DBFlowDataRepository implements TravelDataRepository {
   //region Methods
 
   @DebugLog
-  public List<RouteData> selectAllSync() {
+  protected List<RouteData> selectAllSync() {
     return SQLite.select().from(RouteData.class).queryList();
+  }
+
+  @DebugLog
+  protected RouteData selectSync(long id) {
+    RouteData routeData = SQLite.select().from(RouteData.class)
+        .where(RouteData_Table._id.eq(id)).querySingle();
+
+    if (routeData != null) {
+      routeData.loadFull();
+    }
+
+    return routeData;
   }
 
   //endregion

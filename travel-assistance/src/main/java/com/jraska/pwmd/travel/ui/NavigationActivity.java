@@ -17,6 +17,8 @@ import com.jraska.pwmd.travel.tracking.TrackingManager;
 import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -131,9 +133,14 @@ public class NavigationActivity extends BaseActivity {
     RouteData routeData = _routeDisplayFragment.getRouteData();
 
     if (routeData == null) {
-      routeData = loadRoute();
+      _travelDataRepository.select(_routeId)
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(this::startNavigation);
     }
+  }
 
+  void startNavigation(RouteData routeData) {
     if (routeData == null) {
       onRouteNotFound();
     } else {
@@ -146,11 +153,6 @@ public class NavigationActivity extends BaseActivity {
     Timber.w("Route with id %s not found.", _routeId);
 
     finish();
-  }
-
-  protected RouteData loadRoute() {
-    RouteData routeData = _travelDataRepository.select(_routeId);
-    return routeData;
   }
 
   public static void startNew(Activity fromActivity, long routeId) {

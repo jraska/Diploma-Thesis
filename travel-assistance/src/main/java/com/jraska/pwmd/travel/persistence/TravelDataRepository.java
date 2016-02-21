@@ -13,7 +13,7 @@ public interface TravelDataRepository {
 
   Observable<List<RouteData>> selectAll();
 
-  RouteData select(long id);
+  Observable<RouteData> select(long id);
 
   boolean routeExists(long id);
 
