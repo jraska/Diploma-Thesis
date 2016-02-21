@@ -65,40 +65,12 @@ public class Navigator {
 
   //region Methods
 
-  protected float computeDesiredDirection() {
-    if (!isNavigating()) {
-      return UNKNOWN_BEARING;
-    }
-
-    float userBearing = (int) _compass.getBearing();
-    if (userBearing == UNKNOWN_BEARING) {
-      return UNKNOWN_BEARING;
-    }
-
-    float routeDirection = _routeCursor.getCurrentDirection();
-
-    return computeDesiredDirection(userBearing, routeDirection);
-  }
-
   protected static float computeDesiredDirection(float realDirection, float routeDirection) {
-    float userDirection = 90 + routeDirection - realDirection;
-    if (userDirection < 0) {
+    float userDirection = routeDirection - realDirection;
+    if (userDirection < -180) {
       return userDirection + 360;
     }
     return userDirection;
-  }
-
-  protected float computeDirectionToRoute(Location currentPosition) {
-    int realDirection = (int) _compass.getBearing();
-    if (realDirection == Compass.UNKNOWN_BEARING) {
-      return realDirection;
-    }
-
-    Location closesLocation = _routeCursor.findClosestLocation(currentPosition);
-
-    // TODO: 17/02/16
-    return 0;
-//    return computeDesiredDirection(realDirection, requiredDirection);
   }
 
   protected void onNewDirection(float bearing) {
@@ -109,7 +81,7 @@ public class Navigator {
   }
 
   @Subscribe
-  protected void onNewLocation(Location location) {
+  public void onNewLocation(Location location) {
     _state.onNewLocation(location);
   }
 
@@ -161,11 +133,21 @@ public class Navigator {
   class ApproachingToRouteState implements State {
     @Override
     public void onNewLocation(Location location) {
-      Location closestLocation = _routeCursor.findClosestLocation(location);
-
-      float directionToRoute = location.bearingTo(closestLocation);
+      float directionToRoute = computeDesiredDirectionToRoute(location);
 
       onNewDirection(directionToRoute);
+    }
+
+    protected float computeDesiredDirectionToRoute(Location location) {
+      int realBearing = (int) _compass.getBearing();
+      if (realBearing == Compass.UNKNOWN_BEARING) {
+        return realBearing;
+      }
+
+      Location closestLocation = _routeCursor.findClosestLocation(location);
+      float bearingToRoute = location.bearingTo(closestLocation);
+
+      return computeDesiredDirection(realBearing, bearingToRoute);
     }
   }
 

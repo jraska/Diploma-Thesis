@@ -13,10 +13,10 @@ public class NavigatorTest extends BaseTest {
   public void testComputeDesiredDirection() throws Exception {
     float[][] data = {
         // real, route, expected result
-        {15, 75, 150},
-        {240, 90, 300},
-        {90, 150, 150},
-        {150, 90, 30}};
+        {15, 75, 60},
+        {240, 90, -150},
+        {90, 150, 60},
+        {150, 90, -60}};
 
     for (float[] testCase : data) {
       float desiredDirection = Navigator.computeDesiredDirection(testCase[0], testCase[1]);
