@@ -4,12 +4,16 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
+import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.util.SplineCounter;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
 import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.jraska.pwmd.travel.navigation.Compass.UNKNOWN_BEARING;
 
@@ -25,6 +29,7 @@ public class Navigator {
 
   private final EventBus _eventBus;
   private final Compass _compass;
+  private final SplineCounter _splineCounter;
 
   private float _lastBearing = UNKNOWN_BEARING;
 
@@ -40,12 +45,14 @@ public class Navigator {
   //region Constructors
 
   @Inject
-  public Navigator(@NonNull EventBus eventBus, @NonNull Compass compass) {
+  public Navigator(EventBus eventBus, Compass compass, SplineCounter splineCounter) {
     ArgumentCheck.notNull(eventBus);
     ArgumentCheck.notNull(compass);
+    ArgumentCheck.notNull(splineCounter);
 
     _eventBus = eventBus;
     _compass = compass;
+    _splineCounter = splineCounter;
   }
 
   //endregion
@@ -109,7 +116,9 @@ public class Navigator {
       _eventBus.register(this);
     }
 
-    _closestLocationFinder = new ClosestLocationFinder(_currentRoute.getPath());
+    List<LatLng> path = _currentRoute.getPath();
+    path = Arrays.asList(_splineCounter.calculateSpline(path));
+    _closestLocationFinder = new ClosestLocationFinder(path);
     _routeCursor = new RouteCursor(_closestLocationFinder);
     _state = new ApproachingToRouteState();
   }
