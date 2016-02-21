@@ -158,7 +158,7 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
   }
 
   @Subscribe
-  public void onRouteDeleted(TravelDataRepository.RouteDeletedEvent routeDeleted) {
+  public void onRouteDeleted(TravelDataRepository.RouteDeleteEvent routeDeleted) {
     Timber.d("Delete route event received");
 
     _routesAdapter.remove(routeDeleted._deletedRoute);
@@ -270,7 +270,10 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
   }
 
   protected void deleteRoute(RouteData route) {
-    _travelDataRepository.delete(route);
+    _travelDataRepository.delete(route)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe();
   }
 
   protected void openHelpRequests() {

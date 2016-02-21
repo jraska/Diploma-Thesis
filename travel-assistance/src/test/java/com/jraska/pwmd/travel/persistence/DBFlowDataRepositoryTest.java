@@ -46,7 +46,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   public void testInsert() throws Exception {
     RouteData insertedData = createRouteData();
 
-    _repository.insertOrUpdate(insertedData);
+    _repository.insertOrUpdateSync(insertedData);
 
     List<RouteData> routeDescriptions = _repository.selectAllSync();
     assertThat(routeDescriptions).hasSize(1);
@@ -61,13 +61,13 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   @Test
   public void testUpdate() {
     RouteData routeData = createRouteData();
-    _repository.insertOrUpdate(routeData);
+    _repository.insertOrUpdateSync(routeData);
 
     ArrayList<LatLng> locations = new ArrayList<>(routeData.getPath());
     locations.add(generatePosition());
     RouteData routeData2 = new RouteData(routeData.getDescription(), locations);
 
-    _repository.insertOrUpdate(routeData2);
+    _repository.insertOrUpdateSync(routeData2);
 
     //try get all
     RouteData updatedData = _repository.selectSync(routeData2.getId());
@@ -78,10 +78,10 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   public void testDelete() throws Exception {
     RouteData routeData = createRouteData();
 
-    _repository.insertOrUpdate(routeData);
+    _repository.insertOrUpdateSync(routeData);
     assertThat(_repository.selectAllSync()).hasSize(1);
 
-    _repository.delete(routeData);
+    _repository.deleteSync(routeData);
 
     assertThat(_repository.selectAllSync()).isEmpty();
   }

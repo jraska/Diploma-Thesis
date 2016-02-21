@@ -51,31 +51,20 @@ public class DBFlowDataRepository implements TravelDataRepository {
         .where(RouteData_Table._id.eq(id)).count() > 0;
   }
 
-  @DebugLog
-  @Override public long delete(RouteData routeData) {
-    if (!routeData.exists()) {
-      Timber.w("Trying to delete not existing route data title=%s", routeData.getTitle());
-      return 0;
-    }
-
-    for (NoteSpec noteSpec : routeData.getNoteSpecs()) {
-      Timber.d("Posting deleted note spec '%s'", noteSpec.getCaption());
-      _eventBus.post(new NoteSpecDeletedEvent(noteSpec));
-    }
-
-    Timber.d("Posting deleted route event id=%d", routeData.getId());
-    _eventBus.post(new RouteDeletedEvent(routeData));
-
-    routeData.delete();
-    return 1;
+  @Override
+  public Observable<Long> delete(RouteData routeData) {
+    return Observable.create(subscriber -> {
+      subscriber.onNext(deleteSync(routeData));
+      subscriber.onCompleted();
+    });
   }
 
-  @DebugLog
-  @Override public long insertOrUpdate(final RouteData routeData) {
-    routeData.save();
-    Timber.d("Posting new route event id=%d", routeData.getId());
-    _eventBus.post(new NewRouteEvent(routeData));
-    return 1;
+  @Override
+  public Observable<Long> insertOrUpdate(RouteData routeData) {
+    return Observable.create(subscriber -> {
+      subscriber.onNext(insertOrUpdateSync(routeData));
+      subscriber.onCompleted();
+    });
   }
 
   //endregion
@@ -97,6 +86,33 @@ public class DBFlowDataRepository implements TravelDataRepository {
     }
 
     return routeData;
+  }
+
+  @DebugLog
+  public long deleteSync(RouteData routeData) {
+    if (!routeData.exists()) {
+      Timber.w("Trying to delete not existing route data title=%s", routeData.getTitle());
+      return 0;
+    }
+
+    for (NoteSpec noteSpec : routeData.getNoteSpecs()) {
+      Timber.d("Posting deleted note spec '%s'", noteSpec.getCaption());
+      _eventBus.post(new NoteSpecDeletedEvent(noteSpec));
+    }
+
+    long routeId = routeData.getId();
+    routeData.delete();
+
+    Timber.d("Posting delete route event id=%d", routeId);
+    _eventBus.post(new RouteDeleteEvent(routeData));
+    return 1;
+  }
+
+  public long insertOrUpdateSync(final RouteData routeData) {
+    routeData.save();
+    Timber.d("Posting new route event id=%d", routeData.getId());
+    _eventBus.post(new NewRouteEvent(routeData));
+    return 1;
   }
 
   //endregion
