@@ -20,7 +20,7 @@ public class Navigator {
   private final EventBus _eventBus;
   private final Compass _compass;
 
-  private float _lastBearing = Compass.UNKNOWN_BEARING;
+  private float _lastBearing = UNKNOWN_BEARING;
 
   @NonNull
   private State _state = State.EMPTY;
@@ -65,8 +65,8 @@ public class Navigator {
 
   //region Methods
 
-  protected static float computeDesiredDirection(float realDirection, float routeDirection) {
-    float userDirection = routeDirection - realDirection;
+  protected static float computeDesiredBearing(float realBearing, float routeBearing) {
+    float userDirection = routeBearing - realBearing;
     if (userDirection < -180) {
       return userDirection + 360;
     }
@@ -131,23 +131,29 @@ public class Navigator {
   }
 
   class ApproachingToRouteState implements State {
+
+    private static final int RANGE_ON_ROUTE = 30;
+
     @Override
     public void onNewLocation(Location location) {
-      float directionToRoute = computeDesiredDirectionToRoute(location);
-
-      onNewDirection(directionToRoute);
-    }
-
-    protected float computeDesiredDirectionToRoute(Location location) {
-      int realBearing = (int) _compass.getBearing();
-      if (realBearing == Compass.UNKNOWN_BEARING) {
-        return realBearing;
+      Location closestLocation = _routeCursor.findClosestLocation(location);
+      float distanceTo = location.distanceTo(closestLocation);
+      Timber.v("Distance to route computed: %s", distanceTo);
+      if (distanceTo < RANGE_ON_ROUTE) {
+        Timber.i("Location is on the route, switching to OnRouteNavigationState.");
+        // TODO: 21/02/16 Switch to navigating state
       }
 
-      Location closestLocation = _routeCursor.findClosestLocation(location);
-      float bearingToRoute = location.bearingTo(closestLocation);
+      float directionToRoute;
+      float realBearing = _compass.getBearing();
+      if (realBearing == UNKNOWN_BEARING) {
+        directionToRoute = realBearing;
+      } else {
+        float bearingToRoute = location.bearingTo(closestLocation);
+        directionToRoute = computeDesiredBearing(realBearing, bearingToRoute);
+      }
 
-      return computeDesiredDirection(realBearing, bearingToRoute);
+      onNewDirection(directionToRoute);
     }
   }
 

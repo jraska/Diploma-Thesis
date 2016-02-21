@@ -8,15 +8,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Class which hould determine teh closest point of the rout from current latLng
+ * Class which should determine the closest point of the route from current latLng
  * and which point is supposed to be next.
  */
 public class RouteCursor {
   //region Fields
 
   private final List<LatLng> _route;
-
-  private Location _lastLocation;
 
   //endregion
 
@@ -62,15 +60,6 @@ public class RouteCursor {
     double lonDiff = first._longitude - second._longitude;
 
     return latDiff * latDiff + lonDiff * lonDiff;
-  }
-
-  public float getCurrentDirection() {
-    if (_lastLocation != null) {
-      Location closestLocation = findClosestLocation(_lastLocation);
-
-    }
-
-    return Compass.UNKNOWN_BEARING; // TODO: 18/02/16 now just c.oses position of route - NOT CORRECT
   }
 
   //endregion
