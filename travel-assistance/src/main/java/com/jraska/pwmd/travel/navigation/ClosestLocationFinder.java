@@ -4,23 +4,42 @@ import android.location.Location;
 import com.jraska.pwmd.core.gps.LatLng;
 import hugo.weaving.DebugLog;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.RandomAccess;
 
 public class ClosestLocationFinder {
   //region Fields
 
-  private final List<LatLng> _route;
+  private final List<LatLng> _pathReadOnly;
 
   //endregion
 
   //region Constructor
 
-  public ClosestLocationFinder(List<LatLng> route) {
-    _route = route;
-    if (route.isEmpty()) {
+  public ClosestLocationFinder(List<LatLng> path) {
+    if (path.isEmpty()) {
       throw new IllegalArgumentException("Route data with empty positions");
     }
+
+    _pathReadOnly = fastRandomAccessReadOnly(path);
+  }
+
+  private static List<LatLng> fastRandomAccessReadOnly(List<LatLng> route) {
+    if (route instanceof RandomAccess) {
+      return Collections.unmodifiableList(route);
+    } else {
+      return Collections.unmodifiableList(new ArrayList<>(route));
+    }
+  }
+
+  //endregion
+
+  //region Properties
+
+  List<LatLng> getPath() {
+    return _pathReadOnly;
   }
 
   //endregion
@@ -33,22 +52,25 @@ public class ClosestLocationFinder {
   }
 
   @DebugLog
-  public LatLng findClosestLocation(LatLng position) {
-    Iterator<LatLng> iterator = _route.iterator();
-    LatLng closest = iterator.next();
+  public LatLng findClosestLocation(LatLng location) {
+    int closestIndex = findClosestLocationIndex(location);
+    return _pathReadOnly.get(closestIndex);
+  }
 
-    double closestDistanceSquare = distanceSquare(closest, position);
+  public int findClosestLocationIndex(LatLng location) {
+    int closestIndex = 0;
 
-    while (iterator.hasNext()) {
-      LatLng next = iterator.next();
-      double nextDistance = distanceSquare(next, position);
+    double closestDistanceSquare = distanceSquare(_pathReadOnly.get(0), location);
+    for (int i = 1, size = _pathReadOnly.size(); i < size; i++) {
+      LatLng next = _pathReadOnly.get(i);
+      double nextDistance = distanceSquare(next, location);
       if (nextDistance < closestDistanceSquare) {
         closestDistanceSquare = nextDistance;
-        closest = next;
+        closestIndex = i;
       }
     }
 
-    return closest;
+    return closestIndex;
   }
 
   private double distanceSquare(LatLng first, LatLng second) {

@@ -1,65 +1,74 @@
 package com.jraska.pwmd.travel.navigation;
 
 import android.location.Location;
+import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.core.gps.LatLng;
-import hugo.weaving.DebugLog;
 
-import java.util.Iterator;
 import java.util.List;
 
-/**
- * Class which should determine the closest point of the route from current latLng
- * and which point is supposed to be next.
- */
 public class RouteCursor {
   //region Fields
 
-  private final List<LatLng> _route;
+  private final ClosestLocationFinder _closestLocationFinder;
 
   //endregion
 
-  //region Constructor
+  //region Constructors
 
-  public RouteCursor(List<LatLng> route) {
-    _route = route;
-    if (route.isEmpty()) {
-      throw new IllegalArgumentException("Route data with empty positions");
+  public RouteCursor(ClosestLocationFinder closestLocationFinder) {
+    ArgumentCheck.notNull(closestLocationFinder);
+
+    if (closestLocationFinder.getPath().size() <= 1) {
+      throw new IllegalArgumentException("Need to have at least two points to compute direction.");
     }
+
+    _closestLocationFinder = closestLocationFinder;
   }
 
   //endregion
 
   //region Methods
 
-  public Location findClosestLocation(Location location) {
-    LatLng closestPosition = findClosestLocation(LatLng.fromLocation(location));
-    return closestPosition.toLocation();
-  }
+  public Direction getRouteDirection(Location location) {
+    int closestLocationIndex = _closestLocationFinder.findClosestLocationIndex(LatLng.fromLocation(location));
 
-  @DebugLog
-  public LatLng findClosestLocation(LatLng position) {
-    Iterator<LatLng> iterator = _route.iterator();
-    LatLng closest = iterator.next();
+    List<LatLng> path = _closestLocationFinder.getPath();
+    LatLng closest = path.get(closestLocationIndex);
 
-    double closestDistanceSquare = distanceSquare(closest, position);
+    LatLng firstLocation;
+    LatLng secondLocation;
 
-    while (iterator.hasNext()) {
-      LatLng next = iterator.next();
-      double nextDistance = distanceSquare(next, position);
-      if (nextDistance < closestDistanceSquare) {
-        closestDistanceSquare = nextDistance;
-        closest = next;
-      }
+    // In case we are at the end
+    if (closestLocationIndex == path.size() - 1) {
+      firstLocation = path.get(closestLocationIndex - 1);
+      secondLocation = path.get(closestLocationIndex);
+    } else {
+      firstLocation = path.get(closestLocationIndex);
+      secondLocation = path.get(closestLocationIndex + 1);
     }
 
-    return closest;
+
+    float direction = firstLocation.bearingTo(secondLocation);
+    float distance = closest.distanceTo(location);
+
+    return new Direction(direction, distance);
   }
 
-  private double distanceSquare(LatLng first, LatLng second) {
-    double latDiff = first._latitude - second._latitude;
-    double lonDiff = first._longitude - second._longitude;
+  //endregion
 
-    return latDiff * latDiff + lonDiff * lonDiff;
+  //region Nested classes
+
+  /**
+   * Modifiable holder for more then one result
+   */
+  static class Direction {
+    final float _routeBearing;
+    final float _distanceToRoute;
+
+    private Direction(float routeBearing, float distanceToRoute) {
+      _routeBearing = routeBearing;
+      _distanceToRoute = distanceToRoute;
+    }
   }
 
   //endregion

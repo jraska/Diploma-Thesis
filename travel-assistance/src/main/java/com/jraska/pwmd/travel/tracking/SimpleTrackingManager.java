@@ -128,7 +128,7 @@ public class SimpleTrackingManager implements TrackingManager {
     }
 
     List<LatLng> locations = filterPositions(_pendingLocations);
-    if (locations.isEmpty() && _routeData == null) {
+    if (isNotEnoughLocationsToSaveRoute(locations)) {
       return null;
     }
 
@@ -158,6 +158,10 @@ public class SimpleTrackingManager implements TrackingManager {
     _pendingLocations.clear();
 
     return _routeData;
+  }
+
+  private boolean isNotEnoughLocationsToSaveRoute(List<LatLng> locations) {
+    return locations.size() <= 1 && _routeData == null;
   }
 
   @Override

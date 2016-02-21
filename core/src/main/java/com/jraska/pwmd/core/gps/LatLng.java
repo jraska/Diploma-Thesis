@@ -31,6 +31,22 @@ public class LatLng implements Parcelable {
 
   //region Methods
 
+  public float bearingTo(Location location) {
+    return this.toLocation().bearingTo(location);
+  }
+
+  public float bearingTo(LatLng latLng) {
+    return bearingTo(latLng.toLocation());
+  }
+
+  public float distanceTo(Location location) {
+    return this.toLocation().distanceTo(location);
+  }
+
+  public float distanceTo(LatLng latLng) {
+    return distanceTo(latLng.toLocation());
+  }
+
   public Location toLocation() {
     Location location = new Location("");
     location.setLatitude(_latitude);
@@ -39,7 +55,7 @@ public class LatLng implements Parcelable {
     return location;
   }
 
-  public static LatLng fromLocation(Location location){
+  public static LatLng fromLocation(Location location) {
     return new LatLng(location);
   }
 

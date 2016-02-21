@@ -45,7 +45,7 @@ public class ClosestLocationFinderTest extends BaseTest {
     assertThat(closestPosition).isEqualTo(SOUTH_WEST);
   }
 
-  private static LatLng pos(double lat, double lon) {
+  public static LatLng pos(double lat, double lon) {
     return new LatLng(lat, lon);
   }
 }

@@ -122,6 +122,10 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   public static RouteData createRouteData() {
     List<LatLng> latLngs = generatePositions(3);
 
+    return createRouteData(latLngs);
+  }
+
+  public static RouteData createRouteData(List<LatLng> latLngs) {
     //build test route
     RouteDescription routeDescription = new RouteDescription(new Date(), new Date(), "Test");
     ArrayList<TransportChangeSpec> specs = new ArrayList<>();

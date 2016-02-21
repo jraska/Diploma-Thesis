@@ -15,6 +15,12 @@ import static com.jraska.pwmd.travel.navigation.Compass.UNKNOWN_BEARING;
 
 @PerApp
 public class Navigator {
+  //region Constants
+
+  private static final int RANGE_ON_ROUTE = 30;
+
+  //endregion
+
   //region Fields
 
   private final EventBus _eventBus;
@@ -27,6 +33,7 @@ public class Navigator {
 
   private RouteData _currentRoute;
   private ClosestLocationFinder _closestLocationFinder;
+  private RouteCursor _routeCursor;
 
   //endregion
 
@@ -61,6 +68,10 @@ public class Navigator {
     return _currentRoute != null;
   }
 
+  @NonNull State getState() {
+    return _state;
+  }
+
   //endregion
 
   //region Methods
@@ -91,7 +102,7 @@ public class Navigator {
       return;
     }
 
-    Timber.i("Navigation route id=%s, title=%s started.", routeData.getId(), routeData.getTitle());
+    Timber.i("Navigation route id=%d, title='%s' started.", routeData.getId(), routeData.getTitle());
     _currentRoute = routeData;
 
     if (!_eventBus.isRegistered(this)) {
@@ -99,6 +110,7 @@ public class Navigator {
     }
 
     _closestLocationFinder = new ClosestLocationFinder(_currentRoute.getPath());
+    _routeCursor = new RouteCursor(_closestLocationFinder);
     _state = new ApproachingToRouteState();
   }
 
@@ -112,9 +124,22 @@ public class Navigator {
       _eventBus.unregister(this);
     }
 
-    Timber.i("Navigation for route %d ended", _currentRoute.getId());
+    Timber.i("Navigation for route id=%d title='%s' ended",
+        _currentRoute.getId(), _currentRoute.getTitle());
     _currentRoute = null;
     _state = State.EMPTY;
+  }
+
+  protected void onNewBearing(float bearing) {
+    float desiredBearing;
+    float realBearing = _compass.getBearing();
+    if (realBearing != UNKNOWN_BEARING) {
+      desiredBearing = computeDesiredBearing(realBearing, bearing);
+    } else {
+      desiredBearing = UNKNOWN_BEARING;
+    }
+
+    onNewDirection(desiredBearing);
   }
 
   //endregion
@@ -132,28 +157,36 @@ public class Navigator {
 
   class ApproachingToRouteState implements State {
 
-    private static final int RANGE_ON_ROUTE = 30;
-
     @Override
     public void onNewLocation(Location location) {
       Location closestLocation = _closestLocationFinder.findClosestLocation(location);
       float distanceTo = location.distanceTo(closestLocation);
-      Timber.v("Distance to route computed: %s", distanceTo);
+      Timber.v("Computed distance to route: %s", distanceTo);
       if (distanceTo < RANGE_ON_ROUTE) {
         Timber.i("Location is on the route, switching to OnRouteNavigationState.");
-        // TODO: 21/02/16 Switch to navigating state
+        _state = new OnRouteState();
+        _state.onNewLocation(location);
+        return;
       }
 
-      float directionToRoute;
-      float realBearing = _compass.getBearing();
-      if (realBearing == UNKNOWN_BEARING) {
-        directionToRoute = realBearing;
+      float bearingToRoute = location.bearingTo(closestLocation);
+      onNewBearing(bearingToRoute);
+    }
+  }
+
+  class OnRouteState implements State {
+    @Override
+    public void onNewLocation(Location location) {
+      RouteCursor.Direction routeDirection = _routeCursor.getRouteDirection(location);
+      Timber.v("Distance to closest computed: %s", routeDirection._distanceToRoute);
+
+      if (routeDirection._distanceToRoute > RANGE_ON_ROUTE) {
+        Timber.i("Location is too far away from route, switching to Approaching state.");
+        _state = new ApproachingToRouteState();
+        _state.onNewLocation(location);
       } else {
-        float bearingToRoute = location.bearingTo(closestLocation);
-        directionToRoute = computeDesiredBearing(realBearing, bearingToRoute);
+        onNewBearing(routeDirection._routeBearing);
       }
-
-      onNewDirection(directionToRoute);
     }
   }
 
