@@ -20,6 +20,7 @@ import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.settings.SettingsManager;
 import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
+import hugo.weaving.DebugLog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
@@ -222,11 +223,7 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     _routesRecycler.setAdapter(_routesAdapter);
     _routesRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-    _routesAdapter.setItemClickListener(new RoutesAdapter.OnItemClickListener() {
-      @Override public void onItemClick(int position, View itemView) {
-        showRoute(position);
-      }
-    });
+    _routesAdapter.setItemClickListener((position, itemView) -> showRoute(position));
     _routesAdapter.setItemDeleteClickListener(this);
   }
 
@@ -244,13 +241,15 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     RouteDetailActivity.startNew(this, id);
   }
 
+  @DebugLog
   void refreshRoutes() {
     TravelDataRepository service = _travelDataRepository;
-    List<RouteData> routeDescriptions = service.selectAll();
+    service.selectAll().subscribe(this::setRoutes);
+  }
 
+  void setRoutes(List<RouteData> routes) {
     _routesAdapter.clear();
-
-    _routesAdapter.addAll(routeDescriptions);
+    _routesAdapter.addAll(routes);
     _routesAdapter.notifyDataSetChanged();
 
     updateEmptyView();

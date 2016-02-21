@@ -4,13 +4,14 @@ import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
+import rx.Observable;
 
 import java.util.List;
 
 public interface TravelDataRepository {
   //region Methods
 
-  List<RouteData> selectAll();
+  Observable<List<RouteData>> selectAll();
 
   RouteData select(long id);
 

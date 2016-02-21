@@ -7,6 +7,7 @@ import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import hugo.weaving.DebugLog;
 import org.greenrobot.eventbus.EventBus;
+import rx.Observable;
 import timber.log.Timber;
 
 import java.util.List;
@@ -28,9 +29,13 @@ public class DBFlowDataRepository implements TravelDataRepository {
 
   //region TravelDataRepository impl
 
-  @DebugLog
-  @Override public List<RouteData> selectAll() {
-    return SQLite.select().from(RouteData.class).queryList();
+  @Override
+  public Observable<List<RouteData>> selectAll() {
+    return Observable.create(subscriber -> {
+      List<RouteData> routes = selectAllSync();
+      subscriber.onNext(routes);
+      subscriber.onCompleted();
+    });
   }
 
   @DebugLog
@@ -76,6 +81,15 @@ public class DBFlowDataRepository implements TravelDataRepository {
     Timber.d("Posting new route event id=%d", routeData.getId());
     _eventBus.post(new NewRouteEvent(routeData));
     return 1;
+  }
+
+  //endregion
+
+  //region Methods
+
+  @DebugLog
+  public List<RouteData> selectAllSync() {
+    return SQLite.select().from(RouteData.class).queryList();
   }
 
   //endregion

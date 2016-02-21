@@ -17,12 +17,11 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//@Ignore // Not working with async saving and deleting
 public class DBFlowDataRepositoryTest extends BaseTest {
   //region Fields
 
   private EventBus _dataBus;
-  protected TravelDataRepository _repository;
+  protected DBFlowDataRepository _repository;
 
   //endregion
 
@@ -49,7 +48,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
 
     _repository.insertOrUpdate(insertedData);
 
-    List<RouteData> routeDescriptions = _repository.selectAll();
+    List<RouteData> routeDescriptions = _repository.selectAllSync();
     assertThat(routeDescriptions).hasSize(1);
 
     RouteData loadedData = _repository.select(routeDescriptions.get(0).getId());
@@ -80,11 +79,11 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     RouteData routeData = createRouteData();
 
     _repository.insertOrUpdate(routeData);
-    assertThat(_repository.selectAll()).hasSize(1);
+    assertThat(_repository.selectAllSync()).hasSize(1);
 
     _repository.delete(routeData);
 
-    assertThat(_repository.selectAll()).isEmpty();
+    assertThat(_repository.selectAllSync()).isEmpty();
   }
 
   //endregion
@@ -99,7 +98,6 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   }
 
   public static RouteData createRouteData(List<LatLng> latLngs) {
-    //build test route
     RouteDescription routeDescription = new RouteDescription(new Date(), new Date(), "Test");
     ArrayList<TransportChangeSpec> specs = new ArrayList<>();
     specs.add(new TransportChangeSpec(generatePosition(), TransportChangeSpec.TRANSPORT_TYPE_TRAIN, "ds"));
