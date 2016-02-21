@@ -6,9 +6,7 @@ import com.jraska.pwmd.core.gps.LatLng;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.endsWith;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LostMessageTextBuilderTest extends BaseTest {
   //region Constants
@@ -41,7 +39,7 @@ public class LostMessageTextBuilderTest extends BaseTest {
     _builder.setZoom(12);
 
     String googleMapsUrl = _builder.buildGoogleMapsUrl();
-    assertThat(googleMapsUrl, endsWith("?&z=12&q=19.222163+49.190901"));
+    assertThat(googleMapsUrl).endsWith("?&z=12&q=19.222163+49.190901");
   }
 
   @Test
@@ -51,7 +49,7 @@ public class LostMessageTextBuilderTest extends BaseTest {
     _builder.setFromLocation(location);
 
     String buildSmsText = _builder.buildSmsText();
-    assertTrue(buildSmsText.length() <= SmsSender.MAX_SMS_LENGTH); //TODO: better assertions
+    assertThat(buildSmsText.length()).isLessThanOrEqualTo(SmsSender.MAX_SMS_LENGTH);
   }
 
   //endregion
