@@ -20,8 +20,11 @@ import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.settings.SettingsManager;
 import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
+import hugo.weaving.DebugLog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -155,7 +158,7 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
   }
 
   @Subscribe
-  public void onRouteDeleted(TravelDataRepository.RouteDeletedEvent routeDeleted) {
+  public void onRouteDeleted(TravelDataRepository.RouteDeleteEvent routeDeleted) {
     Timber.d("Delete route event received");
 
     _routesAdapter.remove(routeDeleted._deletedRoute);
@@ -222,11 +225,7 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     _routesRecycler.setAdapter(_routesAdapter);
     _routesRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-    _routesAdapter.setItemClickListener(new RoutesAdapter.OnItemClickListener() {
-      @Override public void onItemClick(int position, View itemView) {
-        showRoute(position);
-      }
-    });
+    _routesAdapter.setItemClickListener((position, itemView) -> showRoute(position));
     _routesAdapter.setItemDeleteClickListener(this);
   }
 
@@ -244,13 +243,17 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     RouteDetailActivity.startNew(this, id);
   }
 
-  void refreshRoutes() {
+  @DebugLog void refreshRoutes() {
     TravelDataRepository service = _travelDataRepository;
-    List<RouteData> routeDescriptions = service.selectAll();
+    service.selectAll()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::setRoutes);
+  }
 
+  void setRoutes(List<RouteData> routes) {
     _routesAdapter.clear();
-
-    _routesAdapter.addAll(routeDescriptions);
+    _routesAdapter.addAll(routes);
     _routesAdapter.notifyDataSetChanged();
 
     updateEmptyView();
@@ -267,7 +270,10 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
   }
 
   protected void deleteRoute(RouteData route) {
-    _travelDataRepository.delete(route);
+    _travelDataRepository.delete(route)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe();
   }
 
   protected void openHelpRequests() {

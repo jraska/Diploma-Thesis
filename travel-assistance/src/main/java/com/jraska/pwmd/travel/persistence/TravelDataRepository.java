@@ -4,30 +4,31 @@ import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
+import rx.Observable;
 
 import java.util.List;
 
 public interface TravelDataRepository {
   //region Methods
 
-  List<RouteData> selectAll();
+  Observable<List<RouteData>> selectAll();
 
-  RouteData select(long id);
+  Observable<RouteData> select(long id);
 
   boolean routeExists(long id);
 
-  long delete(RouteData routeData);
+  Observable<Long> delete(RouteData routeData);
 
-  long insertOrUpdate(RouteData routeData);
+  Observable<Long> insertOrUpdate(RouteData routeData);
 
   //endregion
 
   //region Nested classes
 
-  class RouteDeletedEvent {
+  class RouteDeleteEvent {
     public final RouteData _deletedRoute;
 
-    public RouteDeletedEvent(RouteData deletedRoute) {
+    public RouteDeleteEvent(RouteData deletedRoute) {
       ArgumentCheck.notNull(deletedRoute);
 
       _deletedRoute = deletedRoute;

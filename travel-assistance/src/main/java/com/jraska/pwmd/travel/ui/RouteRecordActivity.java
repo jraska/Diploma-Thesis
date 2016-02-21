@@ -36,6 +36,8 @@ import com.jraska.pwmd.travel.transport.SimpleTransportManager;
 import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -243,8 +245,13 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
       return;
     }
 
-    _travelDataRepository.insertOrUpdate(routeData);
+    _travelDataRepository.insertOrUpdate(routeData)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::onSaved);
+  }
 
+  void onSaved(long savedCount) {
     Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
   }
 
@@ -343,21 +350,13 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
       photoDialogHolder._imagePreview.setImageBitmap(imageBitmap);
     }
 
-    builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-      @Override public void onCancel(DialogInterface dialog) {
-        _picturesManager.deleteImage(imageId);
-      }
+    builder.setOnCancelListener(dialog -> _picturesManager.deleteImage(imageId));
+    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+      _picturesManager.deleteImage(imageId);
     });
-    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-      @Override public void onClick(DialogInterface dialog, int which) {
-        _picturesManager.deleteImage(imageId);
-      }
-    });
-    builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-      @Override public void onClick(DialogInterface dialog, int which) {
-        String caption = photoDialogHolder._captionInput.getText().toString();
-        _trackingManager.addNote(imageId, caption, null);
-      }
+    builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+      String caption = photoDialogHolder._captionInput.getText().toString();
+      _trackingManager.addNote(imageId, caption, null);
     });
 
     builder.show();
@@ -374,11 +373,9 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     final EditText noteInput = ButterKnife.findById(dialogView, R.id.record_note_caption_input);
 
     builder.setNegativeButton(android.R.string.cancel, null);
-    builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-      @Override public void onClick(DialogInterface dialog, int which) {
-        String caption = noteInput.getText().toString();
-        _trackingManager.addNote(null, caption, null);
-      }
+    builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+      String caption = noteInput.getText().toString();
+      _trackingManager.addNote(null, caption, null);
     });
 
     builder.show();

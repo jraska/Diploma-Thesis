@@ -7,6 +7,7 @@ import com.raizlabs.android.dbflow.sql.language.Method;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import hugo.weaving.DebugLog;
 import org.greenrobot.eventbus.EventBus;
+import rx.Observable;
 import timber.log.Timber;
 
 import java.util.List;
@@ -28,13 +29,55 @@ public class DBFlowDataRepository implements TravelDataRepository {
 
   //region TravelDataRepository impl
 
+  @Override
+  public Observable<List<RouteData>> selectAll() {
+    return Observable.create(subscriber -> {
+      List<RouteData> routes = selectAllSync();
+      subscriber.onNext(routes);
+      subscriber.onCompleted();
+    });
+  }
+
+  @Override public Observable<RouteData> select(long id) {
+    return Observable.create(subscriber -> {
+      subscriber.onNext(selectSync(id));
+      subscriber.onCompleted();
+    });
+  }
+
   @DebugLog
-  @Override public List<RouteData> selectAll() {
+  @Override public boolean routeExists(long id) {
+    return SQLite.select(Method.count()).from(RouteData.class)
+        .where(RouteData_Table._id.eq(id)).count() > 0;
+  }
+
+  @Override
+  public Observable<Long> delete(RouteData routeData) {
+    return Observable.create(subscriber -> {
+      subscriber.onNext(deleteSync(routeData));
+      subscriber.onCompleted();
+    });
+  }
+
+  @Override
+  public Observable<Long> insertOrUpdate(RouteData routeData) {
+    return Observable.create(subscriber -> {
+      subscriber.onNext(insertOrUpdateSync(routeData));
+      subscriber.onCompleted();
+    });
+  }
+
+  //endregion
+
+  //region Methods
+
+  @DebugLog
+  protected List<RouteData> selectAllSync() {
     return SQLite.select().from(RouteData.class).queryList();
   }
 
   @DebugLog
-  @Override public RouteData select(long id) {
+  protected RouteData selectSync(long id) {
     RouteData routeData = SQLite.select().from(RouteData.class)
         .where(RouteData_Table._id.eq(id)).querySingle();
 
@@ -46,13 +89,7 @@ public class DBFlowDataRepository implements TravelDataRepository {
   }
 
   @DebugLog
-  @Override public boolean routeExists(long id) {
-    return SQLite.select(Method.count()).from(RouteData.class)
-        .where(RouteData_Table._id.eq(id)).count() > 0;
-  }
-
-  @DebugLog
-  @Override public long delete(RouteData routeData) {
+  public long deleteSync(RouteData routeData) {
     if (!routeData.exists()) {
       Timber.w("Trying to delete not existing route data title=%s", routeData.getTitle());
       return 0;
@@ -63,15 +100,15 @@ public class DBFlowDataRepository implements TravelDataRepository {
       _eventBus.post(new NoteSpecDeletedEvent(noteSpec));
     }
 
-    Timber.d("Posting deleted route event id=%d", routeData.getId());
-    _eventBus.post(new RouteDeletedEvent(routeData));
-
+    long routeId = routeData.getId();
     routeData.delete();
+
+    Timber.d("Posting delete route event id=%d", routeId);
+    _eventBus.post(new RouteDeleteEvent(routeData));
     return 1;
   }
 
-  @DebugLog
-  @Override public long insertOrUpdate(final RouteData routeData) {
+  public long insertOrUpdateSync(final RouteData routeData) {
     routeData.save();
     Timber.d("Posting new route event id=%d", routeData.getId());
     _eventBus.post(new NewRouteEvent(routeData));

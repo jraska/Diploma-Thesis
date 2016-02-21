@@ -234,7 +234,7 @@ public class SimpleTrackingManager implements TrackingManager {
   }
 
   @Subscribe
-  public void onRouteDeleted(TravelDataRepository.RouteDeletedEvent event) {
+  public void onRouteDeleted(TravelDataRepository.RouteDeleteEvent event) {
     // This happen in the case when route is recording and saved but the user
     // press delete in routes list
     if (_routeData != null && event._deletedRoute.getDeletedId() == _routeData.getId()) {
