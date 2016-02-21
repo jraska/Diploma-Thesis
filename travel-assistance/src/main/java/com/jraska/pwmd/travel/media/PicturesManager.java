@@ -59,6 +59,10 @@ public class PicturesManager {
   //region Methods
 
   public boolean imageExists(UUID id) {
+    if (id == null) {
+      return false;
+    }
+
     return getImageFile(id).exists();
   }
 
