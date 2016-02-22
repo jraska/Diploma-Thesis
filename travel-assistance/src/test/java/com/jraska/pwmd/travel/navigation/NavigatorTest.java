@@ -37,7 +37,6 @@ public class NavigatorTest extends BaseTest {
   private Navigator _navigator;
   private Compass _compass;
   private EventBus _eventBus;
-  private RouteData _routeData;
 
   //endregion
 
@@ -48,9 +47,9 @@ public class NavigatorTest extends BaseTest {
     _eventBus = new EventBus();
     _compass = mock(Compass.class);
     _navigator = new Navigator(_eventBus, _compass, new SplineCounter());
-    _routeData = DBFlowDataRepositoryTest.createRouteData(TEST_PATH);
+    RouteData routeData = DBFlowDataRepositoryTest.createRouteData(TEST_PATH);
 
-    _navigator.startNavigation(_routeData);
+    _navigator.startNavigation(routeData);
   }
 
   @After
@@ -122,7 +121,6 @@ public class NavigatorTest extends BaseTest {
     StoreRequiredDirectionSubscriber testSubscriber = new StoreRequiredDirectionSubscriber();
     _eventBus.register(testSubscriber);
     _eventBus.post(POINT_CLOSE.toLocation());
-    LatLng closest = new ClosestLocationFinder(TEST_PATH).findClosestLocation(POINT_FAR_AWAY);
     float routeBearing = SECOND.bearingTo(THIRD);
     float expectedDesiredBearing = Navigator.computeDesiredBearing(testBearing, routeBearing);
 

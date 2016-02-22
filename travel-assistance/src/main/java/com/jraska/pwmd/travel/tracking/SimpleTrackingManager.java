@@ -40,7 +40,7 @@ public class SimpleTrackingManager implements TrackingManager {
   private final List<NoteSpec> _pendingNoteSpecs = new ArrayList<>();
   private final List<Location> _pendingLocations = new ArrayList<>();
   private final Provider<Location> _lastLocationProvider;
-  private final EventBus _dataBus;
+  private final EventBus _eventBus;
 
   private RouteData _routeData;
   private UserInput _lastUserInput;
@@ -59,7 +59,7 @@ public class SimpleTrackingManager implements TrackingManager {
     _context = context;
     _filter = filter;
     _lastLocationProvider = lastLocationProvider;
-    _dataBus = eventBus;
+    _eventBus = eventBus;
 
     eventBus.register(this);
   }
@@ -176,7 +176,7 @@ public class SimpleTrackingManager implements TrackingManager {
 
     for (NoteSpec spec : _pendingNoteSpecs) {
       if (!spec.exists()) {
-        _dataBus.post(new TravelDataRepository.NoteSpecDeletedEvent(spec));
+        _eventBus.post(new TravelDataRepository.NoteSpecDeletedEvent(spec));
       }
     }
 
@@ -208,8 +208,8 @@ public class SimpleTrackingManager implements TrackingManager {
   }
 
   @Override
-  public boolean addNote(@Nullable UUID imageIdInput, @NonNull String caption,
-                         @Nullable UUID soundIdInput) {
+  public boolean addNote(@Nullable UUID imageId, @NonNull String caption,
+                         @Nullable UUID soundId) {
     Location lastLocation = _lastLocationProvider.get();
     if (lastLocation == null) {
       Timber.w("Cannot add picture without location caption=%s", caption);
@@ -217,7 +217,7 @@ public class SimpleTrackingManager implements TrackingManager {
       return false;
     }
 
-    _pendingNoteSpecs.add(new NoteSpec(new LatLng(lastLocation), imageIdInput, caption, soundIdInput));
+    _pendingNoteSpecs.add(new NoteSpec(new LatLng(lastLocation), imageId, caption, soundId));
 
     return true;
   }

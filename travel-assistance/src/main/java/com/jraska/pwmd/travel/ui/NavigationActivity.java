@@ -37,7 +37,7 @@ public class NavigationActivity extends BaseActivity {
   @Bind(R.id.navigate_user_direction_arrow_view) View _userDirectionView;
 
   @Inject Navigator _navigator;
-  @Inject EventBus _systemBus;
+  @Inject EventBus _eventBus;
   @Inject TrackingManager _trackingManager;
   @Inject TravelDataRepository _travelDataRepository;
 
