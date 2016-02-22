@@ -47,6 +47,10 @@ public class DBFlowDataRepository implements TravelDataRepository {
 
   @DebugLog
   @Override public boolean routeExists(long id) {
+    if (id <= 0) {
+      return false;
+    }
+
     return SQLite.select(Method.count()).from(RouteData.class)
         .where(RouteData_Table._id.eq(id)).count() > 0;
   }
@@ -109,9 +113,16 @@ public class DBFlowDataRepository implements TravelDataRepository {
   }
 
   public long insertOrUpdateSync(final RouteData routeData) {
+    Object event;
+    if (routeExists(routeData.getId())) {
+      event = new UpdatedRouteEvent(routeData);
+    } else {
+      event = new NewRouteEvent(routeData);
+    }
+
     routeData.save();
-    Timber.d("Posting new route event id=%d", routeData.getId());
-    _eventBus.post(new NewRouteEvent(routeData));
+    Timber.d("Posting %s id=%d", event.getClass().getSimpleName(), routeData.getId());
+    _eventBus.post(event);
     return 1;
   }
 

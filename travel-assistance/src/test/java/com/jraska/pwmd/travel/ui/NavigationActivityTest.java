@@ -9,6 +9,7 @@ import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import org.junit.Test;
 import org.robolectric.Robolectric;
 import org.robolectric.util.ActivityController;
+import rx.Observable;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -23,7 +24,7 @@ public class NavigationActivityTest extends ActivityBaseTest<NavigationActivity>
     RouteData routeData = DBFlowDataRepositoryTest.createRouteData();
 
     TravelDataRepository mockDataRepository = mock(TravelDataRepository.class);
-    doReturn(routeData).when(mockDataRepository).select(any(long.class));
+    doReturn(Observable.from(new RouteData[]{routeData})).when(mockDataRepository).select(any(long.class));
 
     ActivityController<NavigationActivity> activityController =
         Robolectric.buildActivity(NavigationActivity.class);

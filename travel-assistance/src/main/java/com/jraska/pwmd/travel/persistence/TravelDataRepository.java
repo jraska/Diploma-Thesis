@@ -28,7 +28,7 @@ public interface TravelDataRepository {
   class RouteDeleteEvent {
     public final RouteData _deletedRoute;
 
-    public RouteDeleteEvent(RouteData deletedRoute) {
+    protected RouteDeleteEvent(RouteData deletedRoute) {
       ArgumentCheck.notNull(deletedRoute);
 
       _deletedRoute = deletedRoute;
@@ -42,6 +42,16 @@ public interface TravelDataRepository {
       ArgumentCheck.notNull(newRoute);
 
       _newRoute = newRoute;
+    }
+  }
+
+  class UpdatedRouteEvent {
+    public final RouteData _routeData;
+
+    protected UpdatedRouteEvent(RouteData routeData) {
+      ArgumentCheck.notNull(routeData);
+
+      _routeData = routeData;
     }
   }
 

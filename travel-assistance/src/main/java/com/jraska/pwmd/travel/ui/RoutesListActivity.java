@@ -153,8 +153,14 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     Timber.d("New route event received");
 
     _routesAdapter.add(newRouteEvent._newRoute);
+    _routesAdapter.notifyDataSetChanged();
+  }
 
-    refreshRoutes();
+  @Subscribe
+  public void onRouteUpdated(TravelDataRepository.UpdatedRouteEvent newRouteEvent) {
+    Timber.d("Update route event received");
+
+    _routesAdapter.notifyDataSetChanged();
   }
 
   @Subscribe

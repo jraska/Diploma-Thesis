@@ -9,6 +9,7 @@ import com.jraska.pwmd.travel.data.RouteDescription;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DBFlowDataRepositoryTest extends BaseTest {
   //region Fields
 
-  private EventBus _dataBus;
+  private EventBus _eventBus;
   protected DBFlowDataRepository _repository;
 
   //endregion
@@ -29,8 +30,8 @@ public class DBFlowDataRepositoryTest extends BaseTest {
 
   @Before
   public void setUp() {
-    _dataBus = new EventBus();
-    _repository = new DBFlowDataRepository(_dataBus);
+    _eventBus = new EventBus();
+    _repository = new DBFlowDataRepository(_eventBus);
   }
 
   @After
@@ -86,6 +87,35 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     assertThat(_repository.selectAllSync()).isEmpty();
   }
 
+  @Test
+  public void whenRouteInserted_inserteRouteDataEventFired() {
+    RouteData routeData = createRouteData();
+
+    NewRouteEventSubscriber newRouteEventSubscriber = new NewRouteEventSubscriber();
+    _eventBus.register(newRouteEventSubscriber);
+
+    UpdateRouteEventSubscriber updateRouteEventSubscriber = new UpdateRouteEventSubscriber();
+    _eventBus.register(updateRouteEventSubscriber);
+
+    _repository.insertOrUpdateSync(routeData);
+
+    assertThat(newRouteEventSubscriber._events).hasSize(1);
+    assertThat(updateRouteEventSubscriber._events).isEmpty();
+  }
+
+  @Test
+  public void whenRouteUpdated_updateRouteDataEventFired() {
+    RouteData routeData = createRouteData();
+
+    UpdateRouteEventSubscriber updateRouteEventSubscriber = new UpdateRouteEventSubscriber();
+    _eventBus.register(updateRouteEventSubscriber);
+
+    _repository.insertOrUpdateSync(routeData);
+    _repository.insertOrUpdateSync(routeData);
+
+    assertThat(updateRouteEventSubscriber._events).hasSize(1);
+  }
+
   //endregion
 
   //region Methods
@@ -121,6 +151,28 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   public static LatLng generatePosition() {
     Random random = new Random();
     return new LatLng(random.nextDouble() * 50, random.nextDouble() * 50);
+  }
+
+  //endregion
+
+  //region Nested classes
+
+  public static class NewRouteEventSubscriber {
+    private final List<TravelDataRepository.NewRouteEvent> _events = new ArrayList<>();
+
+    @Subscribe
+    public void onNewRoute(TravelDataRepository.NewRouteEvent e) {
+      _events.add(e);
+    }
+  }
+
+  public static class UpdateRouteEventSubscriber {
+    private final List<TravelDataRepository.UpdatedRouteEvent> _events = new ArrayList<>();
+
+    @Subscribe
+    public void onNewRoute(TravelDataRepository.UpdatedRouteEvent e) {
+      _events.add(e);
+    }
   }
 
   //endregion
