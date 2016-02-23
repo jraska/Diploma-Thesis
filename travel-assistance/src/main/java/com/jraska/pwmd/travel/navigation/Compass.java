@@ -7,10 +7,6 @@ import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
-/**
- * Class determining current direction of the user and its device.
- * Currently it uses just last GPS coordinates to determine direction
- */
 @PerApp
 public class Compass {
   //region Constants
@@ -21,7 +17,6 @@ public class Compass {
 
   //region Fields
 
-  private Location _previousLocation;
   private Location _lastLocation;
 
   //endregion
@@ -29,10 +24,9 @@ public class Compass {
   //region Constructors
 
   @Inject
-  public Compass(EventBus systemBus) {
-    systemBus.register(this);
+  public Compass(EventBus eventBus) {
+    eventBus.register(this);
   }
-
 
   //endregion
 
@@ -40,16 +34,15 @@ public class Compass {
 
   @Subscribe
   public void onNewLocation(Location location) {
-    _previousLocation = _lastLocation;
     _lastLocation = location;
   }
 
   public float getBearing() {
-    if (_previousLocation == null || _lastLocation == null) {
-      return UNKNOWN_BEARING;
+    if (_lastLocation != null && _lastLocation.hasBearing()) {
+      return _lastLocation.getBearing();
     }
 
-    return _previousLocation.bearingTo(_lastLocation);
+    return UNKNOWN_BEARING;
   }
 
   //endregion
