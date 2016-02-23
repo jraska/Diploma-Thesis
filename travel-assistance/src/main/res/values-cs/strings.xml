@@ -65,4 +65,6 @@
     <string name="transport_walking">Chůze</string>
     <string name="record_add_voice">Přidat hlasovou nahrávku</string>
     <string name="navigation_arrow_user_direction_description">Směr uživatele</string>
+    <string name="google_services_error_title">Problém s Google účtem</string>
+    <string name="google_services_error_default_message">Nebylo možné využívat služby Googlu. \nDůvod: \'%s\'</string>
 </resources>

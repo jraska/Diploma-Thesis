@@ -65,4 +65,6 @@
     <string name="transport_bus">Bus</string>
     <string name="transport_tram">Tram</string>
     <string name="navigation_arrow_user_direction_description">User direction</string>
+    <string name="google_services_error_title">Google Account Error</string>
+    <string name="google_services_error_default_message">Error during connection to Google Account Services\nError=\'%s\'</string>
 </resources>
