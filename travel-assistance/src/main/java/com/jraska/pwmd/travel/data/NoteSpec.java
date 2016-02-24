@@ -59,6 +59,10 @@ public class NoteSpec extends BaseModel {
 
   //region Properties
 
+  public long getId() {
+    return _id;
+  }
+
   public long getRouteId() {
     return _routeId;
   }

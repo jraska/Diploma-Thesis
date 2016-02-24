@@ -12,6 +12,7 @@ import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.navigation.Compass;
 import com.jraska.pwmd.travel.navigation.Navigator;
+import com.jraska.pwmd.travel.navigation.RouteEventsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
@@ -40,6 +41,7 @@ public class NavigationActivity extends BaseActivity {
   @Inject EventBus _eventBus;
   @Inject TrackingManager _trackingManager;
   @Inject TravelDataRepository _travelDataRepository;
+  @Inject RouteEventsManager _routeEventsManager;
 
   private RouteDisplayFragment _routeDisplayFragment;
   private long _routeId;
@@ -79,8 +81,7 @@ public class NavigationActivity extends BaseActivity {
     _navigator.getEventBus().unregister(this);
 
     if (!isChangingConfigurations()) {
-      _trackingManager.stopTracking();
-      _navigator.stopNavigation();
+      stopNavigation();
     }
 
     super.onDestroy();
@@ -129,7 +130,7 @@ public class NavigationActivity extends BaseActivity {
     view.setRotation(bearing);
   }
 
-  public void startNavigation() {
+  protected void startNavigation() {
     RouteData routeData = _routeDisplayFragment.getRouteData();
 
     if (routeData == null) {
@@ -146,7 +147,29 @@ public class NavigationActivity extends BaseActivity {
     } else {
       _routeDisplayFragment.displayRoute(routeData);
       _navigator.startNavigation(routeData);
+      _routeEventsManager.setupEvents(routeData)
+          .subscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+          .subscribe(this::onEventsSetUp);
     }
+  }
+
+  protected void stopNavigation() {
+    _trackingManager.stopTracking();
+    _navigator.stopNavigation();
+
+    _routeEventsManager.clearEvents()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::onEventsRemoved);
+  }
+
+  void onEventsRemoved(int result) {
+    Timber.i("Events removed.");
+  }
+
+  void onEventsSetUp(int result) {
+    Timber.i("%d events set up", result);
   }
 
   private void onRouteNotFound() {
