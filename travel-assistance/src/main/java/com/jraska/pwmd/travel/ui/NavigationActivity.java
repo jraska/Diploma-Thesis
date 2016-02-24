@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import butterknife.Bind;
 import butterknife.OnLongClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
+import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.jraska.pwmd.travel.navigation.Compass;
 import com.jraska.pwmd.travel.navigation.Navigator;
 import com.jraska.pwmd.travel.navigation.RouteEventsManager;
@@ -66,7 +69,7 @@ public class NavigationActivity extends BaseActivity {
     TravelAssistanceApp.getComponent(this).inject(this);
 
     updateDesiredDirection(_navigator.getLastRequiredDirection());
-    _navigator.getEventBus().register(this);
+    _eventBus.register(this);
 
     _trackingManager.startTracking();
 
@@ -78,7 +81,7 @@ public class NavigationActivity extends BaseActivity {
 
   @Override
   protected void onDestroy() {
-    _navigator.getEventBus().unregister(this);
+    _eventBus.unregister(this);
 
     if (!isChangingConfigurations()) {
       stopNavigation();
@@ -102,9 +105,23 @@ public class NavigationActivity extends BaseActivity {
     updateUserDirection(_navigator.getUserDirection());
   }
 
+  @Subscribe
+  public void onNoteApproached(NoteSpec noteSpec) {
+    showSimpleSnackbar(noteSpec.toString());
+  }
+
+  @Subscribe
+  public void onTransportationChangeApproached(TransportChangeSpec changeSpec) {
+    showSimpleSnackbar(changeSpec.toString());
+  }
+
   //endregion
 
   //region Methods
+
+  private void showSimpleSnackbar(String message) {
+    Snackbar.make(_userDirectionView, message, Snackbar.LENGTH_INDEFINITE).show();
+  }
 
   @OnLongClick({R.id.navigate_desired_direction_view, R.id.navigate_user_direction_arrow_view})
   boolean showContentDescription(View view) {
