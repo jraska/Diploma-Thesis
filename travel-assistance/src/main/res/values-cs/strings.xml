@@ -67,4 +67,8 @@
     <string name="navigation_arrow_user_direction_description">Směr uživatele</string>
     <string name="google_services_error_title">Problém s Google účtem</string>
     <string name="google_services_error_default_message">Nebylo možné využívat služby Googlu. \nDůvod: \'%s\'</string>
+    <string name="record_prompt_button_continue">Pokračovat</string>
+    <string name="record_prompt_button_finish">Ukončit</string>
+    <string name="record_prompt_message">Stále ještě nahráváte cestu. Chete pokračovat v nahrávání nebo jej chcete ukončit a vrátit se na seznam cest?</string>
+    <string name="record_prompt_title">Nahrává se</string>
 </resources>

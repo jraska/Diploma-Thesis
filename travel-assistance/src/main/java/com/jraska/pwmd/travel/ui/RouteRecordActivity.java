@@ -137,7 +137,23 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   protected void onDestroy() {
     _eventBus.unregister(this);
 
+    if (isFinishing()) {
+      stopTracking();
+    }
+
     super.onDestroy();
+  }
+
+  @Override
+  public void onBackPressed() {
+    promptFinish();
+  }
+
+  @Override
+  protected boolean onNavigationIconClicked() {
+    promptFinish();
+
+    return true;
   }
 
   //endregion
@@ -157,6 +173,16 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   //endregion
 
   //region Methods
+
+  void promptFinish() {
+    if (!_trackingManager.isTracking()) {
+      finish();
+      return;
+    }
+
+    RecordingPromptDialog promptDialog = new RecordingPromptDialog();
+    promptDialog.show(getSupportFragmentManager(), RecordingPromptDialog.DIALOG_TAG);
+  }
 
   @Subscribe
   public void onNewLocation(Location location) {

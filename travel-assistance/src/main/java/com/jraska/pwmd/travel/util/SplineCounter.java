@@ -2,7 +2,6 @@ package com.jraska.pwmd.travel.util;
 
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.core.gps.LatLng;
-import timber.log.Timber;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -17,15 +16,6 @@ public class SplineCounter {
   }
 
   public LatLng[] calculateSpline(List<LatLng> latLngs) {
-    Stopwatch stopwatch = Stopwatch.started();
-    LatLng[] result = calculateSplineInternal(latLngs);
-    stopwatch.stop();
-    Timber.d("Making spline for %d points took %d ms", latLngs.size(), stopwatch.getElapsedMs());
-
-    return result;
-  }
-
-  LatLng[] calculateSplineInternal(List<LatLng> latLngs) {
     // Nonsense to do splines with just few points
     if (latLngs.size() < MIN_REQUIRED_POINTS) {
       LatLng[] toReturn = new LatLng[latLngs.size()];
