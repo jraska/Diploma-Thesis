@@ -147,8 +147,8 @@ public class RouteEventsManagerTest extends BaseTest {
   //region Nested classes
 
   public static class EventsCaptor {
-    private List<NoteSpec> _noteSpecs = new ArrayList<>();
-    private List<TransportChangeSpec> _changeSpecs = new ArrayList<>();
+    private final List<NoteSpec> _noteSpecs = new ArrayList<>();
+    private final List<TransportChangeSpec> _changeSpecs = new ArrayList<>();
 
     @Subscribe
     public void onNote(NoteSpec noteSpec) {
