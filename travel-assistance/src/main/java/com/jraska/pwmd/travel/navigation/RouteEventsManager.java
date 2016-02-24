@@ -30,7 +30,8 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.android.gms.location.Geofence.*;
+import static com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_ENTER;
+import static com.google.android.gms.location.Geofence.NEVER_EXPIRE;
 
 @PerApp
 public class RouteEventsManager {
@@ -172,8 +173,7 @@ public class RouteEventsManager {
             THRESHOLD_METERS
         )
         .setExpirationDuration(NEVER_EXPIRE)
-        .setTransitionTypes(GEOFENCE_TRANSITION_ENTER |
-            GEOFENCE_TRANSITION_EXIT)
+        .setTransitionTypes(GEOFENCE_TRANSITION_ENTER)
         .build();
   }
 
