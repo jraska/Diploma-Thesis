@@ -4,7 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.jraska.dagger.PerApp;
+import com.jraska.pwmd.travel.gms.GoogleApiClientProvider;
 import com.jraska.pwmd.travel.tracking.LocationFilter;
 import com.jraska.pwmd.travel.tracking.SimpleTrackingManager;
 import dagger.Module;
@@ -38,6 +40,11 @@ public class TravelAssistanceModule {
   @Provides @PerApp LayoutInflater provideInflater(Context context) {
     return LayoutInflater.from(context);
   }
+
+  @Provides GoogleApiClient provideGoogleApiClient(GoogleApiClientProvider apiClientProvider) {
+    return apiClientProvider.get();
+  }
+
 
   @Provides @PerApp EventBus provideDefaultBus() {
     return EventBus.getDefault();
