@@ -19,6 +19,7 @@ import com.jraska.pwmd.travel.navigation.RouteEventsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
+import hugo.weaving.DebugLog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import rx.android.schedulers.AndroidSchedulers;
@@ -158,6 +159,7 @@ public class NavigationActivity extends BaseActivity {
     }
   }
 
+  @DebugLog
   void startNavigation(RouteData routeData) {
     if (routeData == null) {
       onRouteNotFound();
@@ -171,6 +173,7 @@ public class NavigationActivity extends BaseActivity {
     }
   }
 
+  @DebugLog
   protected void stopNavigation() {
     _trackingManager.stopTracking();
     _navigator.stopNavigation();

@@ -84,19 +84,11 @@ public class RouteEventsManager {
   //region Methods
 
   public Observable<Integer> setupEvents(RouteData routeData) {
-    return Observable.create(subscriber -> {
-      int eventsCount = setupEventsSync(routeData);
-      subscriber.onNext(eventsCount);
-      subscriber.onCompleted();
-    });
+    return Observable.fromCallable(() -> setupEventsSync(routeData));
   }
 
   public Observable<Integer> clearEvents() {
-    return Observable.create(subscriber -> {
-      int result = clearEventsSync();
-      subscriber.onNext(result);
-      subscriber.onCompleted();
-    });
+    return Observable.fromCallable(this::clearEventsSync);
   }
 
   @DebugLog
@@ -111,11 +103,8 @@ public class RouteEventsManager {
     _context.registerReceiver(_geofencingReceiver, GeofencingReceiver.FILTER);
 
     GeofencingRequest geofencingRequest = createGeofencingRequest(geofencesList);
-    _geofencingApi.addGeofences(
-        _googleApiClient,
-        geofencingRequest,
-        getGeofencePendingIntent()
-    ).setResultCallback(new LoggingCallbacks("Adding Geofences"));
+    _geofencingApi.addGeofences(_googleApiClient, geofencingRequest, getGeofencePendingIntent())
+        .setResultCallback(new LoggingCallbacks("Adding Geofences"));
 
     disconnectSync();
     return _keyCache.size();
@@ -131,10 +120,8 @@ public class RouteEventsManager {
 
     connectSync();
 
-    _geofencingApi.removeGeofences(
-        _googleApiClient,
-        getGeofencePendingIntent()
-    ).setResultCallback(new LoggingCallbacks("Removing Geofences"));
+    _geofencingApi.removeGeofences(_googleApiClient, getGeofencePendingIntent())
+        .setResultCallback(new LoggingCallbacks("Removing Geofences"));
 
     disconnectSync();
     _keyCache.clear();
@@ -167,11 +154,7 @@ public class RouteEventsManager {
   private Geofence createGeofence(String key, LatLng latLng) {
     return new Geofence.Builder()
         .setRequestId(key)
-        .setCircularRegion(
-            latLng._latitude,
-            latLng._longitude,
-            THRESHOLD_METERS
-        )
+        .setCircularRegion(latLng._latitude, latLng._longitude, THRESHOLD_METERS)
         .setExpirationDuration(NEVER_EXPIRE)
         .setTransitionTypes(GEOFENCE_TRANSITION_ENTER)
         .build();
@@ -189,7 +172,6 @@ public class RouteEventsManager {
   }
 
   private PendingIntent getGeofencePendingIntent() {
-    // Reuse the PendingIntent if we already have it.
     if (_geoFencePendingIntent == null) {
       Intent intent = createBroadcastIntent();
       _geoFencePendingIntent = PendingIntent.getBroadcast(_context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -223,7 +205,7 @@ public class RouteEventsManager {
       return;
     }
 
-    // correct subscribers will be determined
+    // correct subscribers will be determined by type of model
     Timber.d("Posting %s event", baseModel);
     _eventBus.post(baseModel);
   }

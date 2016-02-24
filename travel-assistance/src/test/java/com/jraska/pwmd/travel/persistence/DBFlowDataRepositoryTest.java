@@ -47,12 +47,12 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   public void testInsert() {
     RouteData insertedData = createRouteData();
 
-    _repository.insertOrUpdateSync(insertedData);
+    _repository.insertOrUpdate(insertedData).toBlocking().first();
 
-    List<RouteData> routeDescriptions = _repository.selectAllSync();
+    List<RouteData> routeDescriptions = _repository.selectAll().toBlocking().first();
     assertThat(routeDescriptions).hasSize(1);
 
-    RouteData loadedData = _repository.selectSync(routeDescriptions.get(0).getId());
+    RouteData loadedData = _repository.select(routeDescriptions.get(0).getId()).toBlocking().first();
 
     assertThat(loadedData.getNoteSpecs()).isEqualTo(insertedData.getNoteSpecs());
     assertThat(loadedData.getLocations()).isEqualTo(insertedData.getLocations());
@@ -62,16 +62,16 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   @Test
   public void testUpdate() {
     RouteData routeData = createRouteData();
-    _repository.insertOrUpdateSync(routeData);
+    _repository.insertOrUpdate(routeData).toBlocking().first();
 
     ArrayList<LatLng> locations = new ArrayList<>(routeData.getPath());
     locations.add(generatePosition());
     RouteData routeData2 = new RouteData(routeData.getDescription(), locations);
 
-    _repository.insertOrUpdateSync(routeData2);
+    _repository.insertOrUpdate(routeData2).toBlocking().first();
 
     //try get all
-    RouteData updatedData = _repository.selectSync(routeData2.getId());
+    RouteData updatedData = _repository.select(routeData2.getId()).toBlocking().first();
     assertThat(updatedData.getPath()).isEqualTo(routeData2.getPath());
   }
 
@@ -79,12 +79,12 @@ public class DBFlowDataRepositoryTest extends BaseTest {
   public void testDelete() {
     RouteData routeData = createRouteData();
 
-    _repository.insertOrUpdateSync(routeData);
-    assertThat(_repository.selectAllSync()).hasSize(1);
+    _repository.insertOrUpdate(routeData).toBlocking().first();
+    assertThat(_repository.selectAll().toBlocking().first()).hasSize(1);
 
-    _repository.deleteSync(routeData);
+    _repository.delete(routeData).toBlocking().first();
 
-    assertThat(_repository.selectAllSync()).isEmpty();
+    assertThat(_repository.selectAll().toBlocking().first()).isEmpty();
   }
 
   @Test
@@ -97,7 +97,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     UpdateRouteEventSubscriber updateRouteEventSubscriber = new UpdateRouteEventSubscriber();
     _eventBus.register(updateRouteEventSubscriber);
 
-    _repository.insertOrUpdateSync(routeData);
+    _repository.insertOrUpdate(routeData).toBlocking().first();
 
     assertThat(newRouteEventSubscriber._events).hasSize(1);
     assertThat(updateRouteEventSubscriber._events).isEmpty();
@@ -110,8 +110,8 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     UpdateRouteEventSubscriber updateRouteEventSubscriber = new UpdateRouteEventSubscriber();
     _eventBus.register(updateRouteEventSubscriber);
 
-    _repository.insertOrUpdateSync(routeData);
-    _repository.insertOrUpdateSync(routeData);
+    _repository.insertOrUpdate(routeData).toBlocking().first();
+    _repository.insertOrUpdate(routeData).toBlocking().first();
 
     assertThat(updateRouteEventSubscriber._events).hasSize(1);
   }

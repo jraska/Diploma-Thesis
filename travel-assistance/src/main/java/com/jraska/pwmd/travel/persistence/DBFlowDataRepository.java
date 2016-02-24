@@ -31,18 +31,11 @@ public class DBFlowDataRepository implements TravelDataRepository {
 
   @Override
   public Observable<List<RouteData>> selectAll() {
-    return Observable.create(subscriber -> {
-      List<RouteData> routes = selectAllSync();
-      subscriber.onNext(routes);
-      subscriber.onCompleted();
-    });
+    return Observable.fromCallable(this::selectAllSync);
   }
 
   @Override public Observable<RouteData> select(long id) {
-    return Observable.create(subscriber -> {
-      subscriber.onNext(selectSync(id));
-      subscriber.onCompleted();
-    });
+    return Observable.fromCallable(() -> selectSync(id));
   }
 
   @DebugLog
@@ -57,18 +50,12 @@ public class DBFlowDataRepository implements TravelDataRepository {
 
   @Override
   public Observable<Long> delete(RouteData routeData) {
-    return Observable.create(subscriber -> {
-      subscriber.onNext(deleteSync(routeData));
-      subscriber.onCompleted();
-    });
+    return Observable.fromCallable(() -> deleteSync(routeData));
   }
 
   @Override
   public Observable<Long> insertOrUpdate(RouteData routeData) {
-    return Observable.create(subscriber -> {
-      subscriber.onNext(insertOrUpdateSync(routeData));
-      subscriber.onCompleted();
-    });
+    return Observable.fromCallable(() -> insertOrUpdateSync(routeData));
   }
 
   //endregion
@@ -76,12 +63,12 @@ public class DBFlowDataRepository implements TravelDataRepository {
   //region Methods
 
   @DebugLog
-  protected List<RouteData> selectAllSync() {
+  private List<RouteData> selectAllSync() {
     return SQLite.select().from(RouteData.class).queryList();
   }
 
   @DebugLog
-  protected RouteData selectSync(long id) {
+  private RouteData selectSync(long id) {
     RouteData routeData = SQLite.select().from(RouteData.class)
         .where(RouteData_Table._id.eq(id)).querySingle();
 
@@ -93,7 +80,7 @@ public class DBFlowDataRepository implements TravelDataRepository {
   }
 
   @DebugLog
-  public long deleteSync(RouteData routeData) {
+  private long deleteSync(RouteData routeData) {
     if (!routeData.exists()) {
       Timber.w("Trying to delete not existing route data title=%s", routeData.getTitle());
       return 0;
@@ -112,7 +99,7 @@ public class DBFlowDataRepository implements TravelDataRepository {
     return 1;
   }
 
-  public long insertOrUpdateSync(final RouteData routeData) {
+  private long insertOrUpdateSync(final RouteData routeData) {
     Object event;
     if (routeExists(routeData.getId())) {
       event = new UpdatedRouteEvent(routeData);
