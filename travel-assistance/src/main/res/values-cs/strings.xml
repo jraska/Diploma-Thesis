@@ -69,6 +69,13 @@
     <string name="google_services_error_default_message">Nebylo možné využívat služby Googlu. \nDůvod: \'%s\'</string>
     <string name="record_prompt_button_continue">Pokračovat</string>
     <string name="record_prompt_button_finish">Ukončit</string>
-    <string name="record_prompt_message">Stále ještě nahráváte cestu. Chete pokračovat v nahrávání nebo jej chcete ukončit a vrátit se na seznam cest?</string>
+    <string name="record_prompt_message">Stále ještě nahráváte cestu. Chcete pokračovat v nahrávání nebo jej chcete ukončit a vrátit se na seznam cest?</string>
     <string name="record_prompt_title">Nahrává se</string>
+    <string name="feedback_body_hint">Řekněte nám co si myslíte…</string>
+    <string name="feedback_description">Prosím napište nám Vaše dojmy a požadavky, co by bylo třeba v aplikaci zlepšit a přidat. Děkujeme.</string>
+    <string name="feedback_error_send_error">Chyba v odesílání zprávy, omlouváme se.</string>
+    <string name="feedback_error_empty_title">Předmět musí být vyplněn.</string>
+    <string name="feedback_title">Napište nám</string>
+    <string name="feedback_title_hint">Předmět *</string>
+    <string name="thank_you_for_feedback">Děkujeme za zprávu</string>
 </resources>

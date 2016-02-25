@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
@@ -30,7 +31,8 @@ import timber.log.Timber;
 import javax.inject.Inject;
 import java.util.List;
 
-public class RoutesListActivity extends BaseActivity implements RoutesAdapter.OnItemMenuListener {
+public class RoutesListActivity extends BaseActivity
+    implements RoutesAdapter.OnItemMenuListener, AboutDialog.FeedbackRequestCallback {
   //region Constants
 
   public static final String KEY_NFC_PROCESSED = "ForwardIntent";
@@ -114,6 +116,15 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
     checkNfcIntent(intent);
   }
 
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (requestCode == FeedbackActivity.REQUEST_FEEDBACK && resultCode == RESULT_OK) {
+      Toast.makeText(this, R.string.thank_you_for_feedback, Toast.LENGTH_LONG).show();
+    }
+  }
+
   //endregion
 
   //region BaseActivity overrides
@@ -125,8 +136,9 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
 
   @Override
   protected boolean onNavigationIconClicked() {
-    // TODO: 24/01/16 Show about dialog
-    return false;
+    AboutDialog aboutDialog = new AboutDialog();
+    aboutDialog.show(getSupportFragmentManager(), AboutDialog.DIALOG_TAG);
+    return true;
   }
 
   //endregion
@@ -142,6 +154,15 @@ public class RoutesListActivity extends BaseActivity implements RoutesAdapter.On
   @Override
   public void onItemDeleteClick(int position, View itemView) {
     deleteRoute(_routesAdapter.getItem(position));
+  }
+
+  //endregion
+
+  //region FeedbackRequestCallback impl
+
+  @Override public void onFeedbackRequested() {
+    Intent intent = new Intent(this, FeedbackActivity.class);
+    startActivityForResult(intent, FeedbackActivity.REQUEST_FEEDBACK);
   }
 
   //endregion

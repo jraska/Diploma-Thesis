@@ -10,7 +10,7 @@ import com.jraska.pwmd.travel.R;
 public final class RecordingPromptDialog extends DialogFragment {
   //region Constants
 
-  public static final String DIALOG_TAG = "RecordingPromptDialog";
+  public static final String DIALOG_TAG = RecordingPromptDialog.class.getSimpleName();
 
   //endregion
 

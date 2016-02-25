@@ -72,4 +72,13 @@
     <string name="record_prompt_message">You are recording route, do you want to continue recording or you really want to finish?</string>
     <string name="record_prompt_button_continue">Continue</string>
     <string name="record_prompt_button_finish">Finish</string>
+    <string name="about">Application should help the people with mental disabilities to better learn their usual daily routes.</string>
+    <string name="about_feedback">Feedback</string>
+    <string name="feedback_title">Feedback</string>
+    <string name="feedback_description">Please tell us what you think.\nIf you want to be contacted to discuss details include any type of contact.</string>
+    <string name="feedback_title_hint">Feedback title *</string>
+    <string name="feedback_body_hint">What do you think…</string>
+    <string name="feedback_error_empty_title">Please fill the title</string>
+    <string name="feedback_error_send_error">There was some issue sending feedback, sorry.</string>
+    <string name="thank_you_for_feedback">Thank you very much for feedback.</string>
 </resources>
