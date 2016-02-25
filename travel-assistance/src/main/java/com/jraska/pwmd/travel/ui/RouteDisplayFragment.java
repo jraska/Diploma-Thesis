@@ -31,13 +31,13 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import timber.log.Timber;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.jraska.pwmd.travel.ui.MapHelper.ZOOM;
-import static com.jraska.pwmd.travel.ui.MapHelper.toGoogleLatLng;
+import static com.jraska.pwmd.travel.ui.MapHelper.*;
 
 
 public class RouteDisplayFragment extends SupportMapFragment implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
@@ -176,6 +176,13 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   //endregion
 
   //region Methods
+
+  public void centerMapTo(Location location) {
+    if (_mapView != null) {
+      CameraUpdate center = CameraUpdateFactory.newLatLng(toLatLng(location));
+      _mapView.animateCamera(center);
+    }
+  }
 
   public void addLocationMarker(Location location) {
     if (_mapView == null) {

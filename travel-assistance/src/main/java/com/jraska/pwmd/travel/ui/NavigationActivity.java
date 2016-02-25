@@ -102,7 +102,7 @@ public class NavigationActivity extends BaseActivity {
 
   @Subscribe
   public void onNewPosition(Location location) {
-    _routeDisplayFragment.addLocationMarker(location);
+    _routeDisplayFragment.centerMapTo(location);
     updateUserDirection(_navigator.getUserDirection());
   }
 
@@ -159,8 +159,7 @@ public class NavigationActivity extends BaseActivity {
     }
   }
 
-  @DebugLog
-  void startNavigation(RouteData routeData) {
+  @DebugLog void startNavigation(RouteData routeData) {
     if (routeData == null) {
       onRouteNotFound();
     } else {
