@@ -2,6 +2,7 @@ package com.jraska.pwmd.travel;
 
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.core.gps.LocationModule;
+import com.jraska.pwmd.travel.feedback.FeedbackModule;
 import com.jraska.pwmd.travel.media.MediaModule;
 import com.jraska.pwmd.travel.navigation.NavigationModule;
 import com.jraska.pwmd.travel.persistence.DataModule;
@@ -20,6 +21,7 @@ import dagger.Component;
         TrackingModule.class,
         MediaModule.class,
         NavigationModule.class,
+        FeedbackModule.class,
         TravelAssistanceModule.class
     }
 )
@@ -44,4 +46,6 @@ public interface TravelAssistanceComponent {
   void inject(RouteDisplayFragment routeDisplayFragment);
 
   void inject(NfcWriteActivity nfcWriteActivity);
+
+  void inject(FeedbackActivity feedbackActivity);
 }

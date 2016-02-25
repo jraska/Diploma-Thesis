@@ -10,7 +10,7 @@ android {
     //noinspection OldTargetApi
     targetSdkVersion 22 //TODO: Permissions implementation
     versionCode 1
-    versionName "1.0"
+    versionName "0.1.0"
   }
 
   buildTypes {
@@ -51,6 +51,10 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
+
+  packagingOptions{
+    exclude 'META-INF/LICENSE.txt'
+  }
 }
 
 apply plugin: 'com.neenbedankt.android-apt'
@@ -73,6 +77,12 @@ dependencies {
   compile 'com.jraska:console:0.3.1'
   compile 'com.jraska:console-timber-tree:0.3.1'
   compile 'io.reactivex:rxandroid:1.1.0'
+
+  compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+  compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+  compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+  compile 'com.google.code.gson:gson:2.6.1'
+
 
   apt 'com.google.dagger:dagger-compiler:2.0.2'
 

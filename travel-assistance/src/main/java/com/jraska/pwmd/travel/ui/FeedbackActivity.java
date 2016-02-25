@@ -1,16 +1,23 @@
 package com.jraska.pwmd.travel.ui;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
+import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.feedback.Feedback;
+import com.jraska.pwmd.travel.feedback.FeedbackSendResult;
+import com.jraska.pwmd.travel.feedback.FeedbackService;
 import com.jraska.pwmd.travel.help.EmailSender;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
+
+import javax.inject.Inject;
 
 public class FeedbackActivity extends BaseActivity {
 
@@ -21,6 +28,8 @@ public class FeedbackActivity extends BaseActivity {
   //endregion
 
   //region Fields
+
+  @Inject FeedbackService _feedbackService;
 
   @Bind(R.id.feedback_fab_send) FloatingActionButton _sendView;
   @Bind(R.id.feedback_title) TextView _titleTextView;
@@ -34,6 +43,8 @@ public class FeedbackActivity extends BaseActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_feedback);
+
+    TravelAssistanceApp.getComponent(this).inject(this);
   }
 
   //endregion
@@ -47,16 +58,11 @@ public class FeedbackActivity extends BaseActivity {
 
     Feedback feedback = collectFeedback();
     _sendView.hide();
-    EmailSender emailSender = new EmailSender(this);
 
-    emailSender.sendEmail(getEmail(), feedback.getTitle(), feedback.getBody());
-
-    finish();
-  }
-
-  @NonNull private String getEmail() {
-    byte[] decode = Base64.decode(Base64.decode("Y21Gek1EQXlPVUIyYzJJdVkzbz0=", 0), 0);
-    return new String(decode);
+    _feedbackService.sendFeedback(feedback)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::onFeedbackResult);
   }
 
   private Feedback collectFeedback() {
@@ -73,6 +79,22 @@ public class FeedbackActivity extends BaseActivity {
     }
 
     return true;
+  }
+
+  void onFeedbackResult(FeedbackSendResult result) {
+    Timber.i("Received feedback result %s", result);
+    if (result.isSuccess()) {
+      // TODO: 24/02/16 show dialog with link and allow user to check Github issue
+      setResult(RESULT_OK);
+      finish();
+    } else {
+      onErrorResult();
+    }
+  }
+
+  private void onErrorResult() {
+    _sendView.show();
+    Toast.makeText(this, R.string.feedback_error_send_error, Toast.LENGTH_LONG).show();
   }
 
   //endregion
