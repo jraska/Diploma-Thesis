@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import butterknife.OnLongClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.help.EmailSender;
 import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.settings.SettingsManager;
@@ -161,8 +163,13 @@ public class RoutesListActivity extends BaseActivity
   //region FeedbackRequestCallback impl
 
   @Override public void onFeedbackRequested() {
-    Intent intent = new Intent(this, FeedbackActivity.class);
-    startActivityForResult(intent, FeedbackActivity.REQUEST_FEEDBACK);
+    EmailSender emailSender = new EmailSender(this);
+    emailSender.sendEmail(getEmail(), AboutDialog.getAppInfoTitle(this), "");
+  }
+
+  private String getEmail() {
+    byte[] decode = Base64.decode(Base64.decode("Y21Gek1EQXlPVUIyYzJJdVkzbz0=", 0), 0);
+    return new String(decode);
   }
 
   //endregion

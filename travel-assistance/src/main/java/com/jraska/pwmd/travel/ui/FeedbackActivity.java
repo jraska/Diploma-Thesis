@@ -46,18 +46,18 @@ public class FeedbackActivity extends BaseActivity {
     }
 
     Feedback feedback = collectFeedback();
-    _sendView.hide();
-    EmailSender emailSender = new EmailSender(this);
+    sendFeedback(feedback);
 
-    emailSender.sendEmail(getEmail(), feedback.getTitle(), feedback.getBody());
+    _sendView.hide();
+
 
     finish();
   }
 
-  @NonNull private String getEmail() {
-    byte[] decode = Base64.decode(Base64.decode("Y21Gek1EQXlPVUIyYzJJdVkzbz0=", 0), 0);
-    return new String(decode);
+  private void sendFeedback(Feedback feedback) {
+    // TODO: 25/02/16 Not implemented
   }
+
 
   private Feedback collectFeedback() {
     Feedback feedback = new Feedback(_titleTextView.getText().toString(),

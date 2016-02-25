@@ -25,7 +25,7 @@ public class AboutDialog extends DialogFragment {
     AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
     AlertDialog alertDialog = builder.setIcon(R.drawable.ic_logo)
-        .setTitle(getTitle())
+        .setTitle(getAppInfoTitle(getContext()))
         .setMessage(R.string.about)
         .setCancelable(true)
         .setPositiveButton(android.R.string.ok, null)
@@ -47,8 +47,8 @@ public class AboutDialog extends DialogFragment {
 
   //region Methods
 
-  String getTitle() {
-    return getContext().getString(R.string.app_name) + " v" + BuildConfig.VERSION_NAME;
+  public static String getAppInfoTitle(Context context) {
+    return context.getString(R.string.app_name) + " v" + BuildConfig.VERSION_NAME;
   }
 
   //endregion
