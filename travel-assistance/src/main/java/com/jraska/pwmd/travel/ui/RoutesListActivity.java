@@ -180,7 +180,11 @@ public class RoutesListActivity extends BaseActivity
   public void onNewRoute(TravelDataRepository.NewRouteEvent newRouteEvent) {
     Timber.d("New route event received");
 
-    _routesAdapter.add(newRouteEvent._newRoute);
+    runOnUiThread(() -> addRoute(newRouteEvent._newRoute));
+  }
+
+  private void addRoute(RouteData newRoute) {
+    _routesAdapter.add(newRoute);
     _routesAdapter.notifyDataSetChanged();
   }
 
@@ -188,16 +192,19 @@ public class RoutesListActivity extends BaseActivity
   public void onRouteUpdated(TravelDataRepository.UpdatedRouteEvent newRouteEvent) {
     Timber.d("Update route event received");
 
-    _routesAdapter.notifyDataSetChanged();
+    runOnUiThread(() -> _routesAdapter.notifyDataSetChanged());
   }
 
   @Subscribe
   public void onRouteDeleted(TravelDataRepository.RouteDeleteEvent routeDeleted) {
     Timber.d("Delete route event received");
 
-    _routesAdapter.remove(routeDeleted._deletedRoute);
+    runOnUiThread(() -> removeRoute(routeDeleted));
+  }
 
-    refreshRoutes();
+  private void removeRoute(TravelDataRepository.RouteDeleteEvent routeDeleted) {
+    _routesAdapter.remove(routeDeleted._deletedRoute);
+    _routesAdapter.notifyDataSetChanged();
   }
 
   private void checkNfcUsed(Intent intent) {
