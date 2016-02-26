@@ -44,4 +44,6 @@ public interface TravelAssistanceComponent {
   void inject(RouteDisplayFragment routeDisplayFragment);
 
   void inject(NfcWriteActivity nfcWriteActivity);
+
+  void inject(ImageDialog imageDisplayDialog);
 }

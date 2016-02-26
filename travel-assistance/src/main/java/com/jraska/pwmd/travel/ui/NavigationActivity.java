@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import butterknife.Bind;
@@ -13,6 +14,7 @@ import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import com.jraska.pwmd.travel.media.SoundsManager;
 import com.jraska.pwmd.travel.navigation.Compass;
 import com.jraska.pwmd.travel.navigation.Navigator;
 import com.jraska.pwmd.travel.navigation.RouteEventsManager;
@@ -46,6 +48,8 @@ public class NavigationActivity extends BaseActivity {
   @Inject TrackingManager _trackingManager;
   @Inject TravelDataRepository _travelDataRepository;
   @Inject RouteEventsManager _routeEventsManager;
+  @Inject Vibrator _vibrator;
+  @Inject SoundsManager _soundsManager;
 
   private RouteDisplayFragment _routeDisplayFragment;
   private long _routeId;
@@ -108,11 +112,21 @@ public class NavigationActivity extends BaseActivity {
 
   @Subscribe
   public void onNoteApproached(NoteSpec noteSpec) {
-    showSimpleSnackbar(noteSpec.toString());
+    _vibrator.vibrate(200);
+    if (noteSpec.getSoundId() != null) {
+      _soundsManager.play(noteSpec.getSoundId());
+      showSimpleSnackbar(noteSpec.getCaption());
+    } else if (noteSpec.getImageId() != null) {
+      ImageDialog imageDialog = ImageDialog.newInstance(noteSpec.getImageId(), noteSpec.getCaption(), 5_000);
+      imageDialog.show(getSupportFragmentManager(), ImageDialog.DIALOG_TAG);
+    } else {
+      showSimpleSnackbar(noteSpec.getCaption());
+    }
   }
 
   @Subscribe
   public void onTransportationChangeApproached(TransportChangeSpec changeSpec) {
+    _vibrator.vibrate(400);
     showSimpleSnackbar(changeSpec.toString());
   }
 
@@ -166,7 +180,7 @@ public class NavigationActivity extends BaseActivity {
       _routeDisplayFragment.displayRoute(routeData);
       _navigator.startNavigation(routeData);
       _routeEventsManager.setupEvents(routeData)
-          .subscribeOn(Schedulers.io())
+          .subscribeOn(Schedulers.computation())
           .observeOn(AndroidSchedulers.mainThread())
           .subscribe(this::onEventsSetUp);
     }
@@ -178,7 +192,7 @@ public class NavigationActivity extends BaseActivity {
     _navigator.stopNavigation();
 
     _routeEventsManager.clearEvents()
-        .subscribeOn(Schedulers.io())
+        .subscribeOn(Schedulers.computation())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(this::onEventsRemoved);
   }

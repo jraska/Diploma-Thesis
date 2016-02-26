@@ -2,6 +2,7 @@ package com.jraska.pwmd.travel;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -48,5 +49,9 @@ public class TravelAssistanceModule {
 
   @Provides @PerApp EventBus provideDefaultBus() {
     return EventBus.getDefault();
+  }
+
+  @Provides @PerApp Vibrator provideVibrator(Context context) {
+    return (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
   }
 }

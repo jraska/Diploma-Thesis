@@ -78,4 +78,6 @@
     <string name="feedback_title">Napište nám</string>
     <string name="feedback_title_hint">Předmět *</string>
     <string name="thank_you_for_feedback">Děkujeme za zprávu</string>
+    <string name="about_feedback">Napište nám</string>
+    <string name="about">Aplikace má pomáhat lidem s mentálním postižem lépe zvládat své každodenní cesty.</string>
 </resources>
