@@ -127,7 +127,11 @@ public class NavigationActivity extends BaseActivity {
   @Subscribe
   public void onTransportationChangeApproached(TransportChangeSpec changeSpec) {
     _vibrator.vibrate(400);
-    showSimpleSnackbar(changeSpec.toString());
+
+    TransportChangeDialog dialog = TransportChangeDialog.newInstance(changeSpec.getTitle(),
+        changeSpec.getHardIconRes());
+
+    dialog.show(getSupportFragmentManager(), TransportChangeDialog.DIALOG_TAG);
   }
 
   //endregion
