@@ -122,6 +122,8 @@ public class NavigationActivity extends BaseActivity {
     } else {
       showSimpleSnackbar(noteSpec.getCaption());
     }
+
+    Timber.i("Note approached: %s", noteSpec);
   }
 
   @Subscribe
@@ -132,6 +134,7 @@ public class NavigationActivity extends BaseActivity {
         changeSpec.getHardIconRes());
 
     dialog.show(getSupportFragmentManager(), TransportChangeDialog.DIALOG_TAG);
+    Timber.i("Transportation change approached: %s", changeSpec);
   }
 
   //endregion

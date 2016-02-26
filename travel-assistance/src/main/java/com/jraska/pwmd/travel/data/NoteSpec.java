@@ -13,9 +13,6 @@ import lombok.ToString;
 
 import java.util.UUID;
 
-/**
- * Note spec can also contain images or text
- */
 @Table(database = TravelDatabase.class)
 @EqualsAndHashCode(callSuper = false)
 @ToString

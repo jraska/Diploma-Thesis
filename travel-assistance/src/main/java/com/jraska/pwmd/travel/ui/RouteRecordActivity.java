@@ -182,6 +182,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
     RecordingPromptDialog promptDialog = new RecordingPromptDialog();
     promptDialog.show(getSupportFragmentManager(), RecordingPromptDialog.DIALOG_TAG);
+    Timber.i("Prompt dialog is showing to the user");
   }
 
   @Subscribe
@@ -235,11 +236,15 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   @OnClick(R.id.record_btnStartRecording) void startTracking() {
     _trackingManager.startTracking();
 
+    Timber.i("User started recording");
+
     updateStartStopButtons();
   }
 
   @OnClick(R.id.record_btnStopRecording) void stopTracking() {
     _trackingManager.stopTracking();
+
+    Timber.i("User stopped tracking");
 
     updateStartStopButtons();
   }
@@ -269,6 +274,8 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
       Toast.makeText(this, getString(R.string.noRouteToSave), Toast.LENGTH_SHORT).show();
       return;
     }
+
+    Timber.i("Saving route title=%s", routeData.getTitle());
 
     _travelDataRepository.insertOrUpdate(routeData)
         .subscribeOn(Schedulers.io())
