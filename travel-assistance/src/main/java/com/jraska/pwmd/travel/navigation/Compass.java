@@ -2,6 +2,7 @@ package com.jraska.pwmd.travel.navigation;
 
 import android.location.Location;
 import com.jraska.dagger.PerApp;
+import com.jraska.pwmd.travel.collection.CircularFifoQueue;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -17,7 +18,7 @@ public class Compass {
 
   //region Fields
 
-  private Location _lastLocation;
+  private CircularFifoQueue<Location> _locations = new CircularFifoQueue<>(4);
 
   //endregion
 
@@ -34,12 +35,20 @@ public class Compass {
 
   @Subscribe
   public void onNewLocation(Location location) {
-    _lastLocation = location;
+    _locations.add(location);
   }
 
   public float getBearing() {
-    if (_lastLocation != null && _lastLocation.hasBearing()) {
-      return _lastLocation.getBearing();
+    int size = _locations.size();
+    if (size == 0) {
+      return UNKNOWN_BEARING;
+    }
+
+    for (int i = size - 1; i <= 0; i--) {
+      Location location = _locations.get(i);
+      if (location.hasBearing()) {
+        return location.getBearing();
+      }
     }
 
     return UNKNOWN_BEARING;
