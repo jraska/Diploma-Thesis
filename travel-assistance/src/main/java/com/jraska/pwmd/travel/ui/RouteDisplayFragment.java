@@ -65,6 +65,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   private final CircularFifoQueue<Marker> _markers = new CircularFifoQueue<>(2);
   private final DecimalFormat _latLngFormat = new DecimalFormat("#.#######");
   private int _markerCounter;
+  private boolean _centered;
 
   //endregion
 
@@ -178,6 +179,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   //region Methods
 
   public void centerMapTo(Location location) {
+    _centered = true;
     if (_mapView != null) {
       CameraUpdate center = CameraUpdateFactory.newLatLng(toLatLng(location));
       _mapView.animateCamera(center);
@@ -241,10 +243,10 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     PolylineOptions spLineOptions = getSPLineOptions(points);
     map.addPolyline(spLineOptions);
 
+    if(!_centered){
     LatLng start = toGoogleLatLng(points.get(0));
-
     CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(start, ZOOM);
-    map.moveCamera(cameraUpdate);
+    map.moveCamera(cameraUpdate);}
 
     map.setOnMarkerClickListener(this);
   }

@@ -107,7 +107,7 @@ public class NavigationActivity extends BaseActivity {
   @Subscribe
   public void onNewPosition(Location location) {
     _routeDisplayFragment.centerMapTo(location);
-    updateUserDirection(_navigator.getUserDirection());
+//    updateUserDirection(_navigator.getUserDirection());
   }
 
   @Subscribe
