@@ -44,7 +44,7 @@ public class Compass {
       return UNKNOWN_BEARING;
     }
 
-    for (int i = size - 1; i <= 0; i--) {
+    for (int i = size - 1; i >= 0; i--) {
       Location location = _locations.get(i);
       if (location.hasBearing()) {
         return location.getBearing();
