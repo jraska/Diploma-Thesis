@@ -180,26 +180,21 @@ public class RoutesListActivity extends BaseActivity
   public void onNewRoute(TravelDataRepository.NewRouteEvent newRouteEvent) {
     Timber.d("New route event received");
 
-    runOnUiThread(() -> addRoute(newRouteEvent._newRoute));
-  }
-
-  private void addRoute(RouteData newRoute) {
-    _routesAdapter.add(newRoute);
-    _routesAdapter.notifyDataSetChanged();
+    runOnUiThread(this::refreshRoutes);
   }
 
   @Subscribe
   public void onRouteUpdated(TravelDataRepository.UpdatedRouteEvent newRouteEvent) {
     Timber.d("Update route event received");
 
-    runOnUiThread(() -> _routesAdapter.notifyDataSetChanged());
+    runOnUiThread(this::refreshRoutes);
   }
 
   @Subscribe
   public void onRouteDeleted(TravelDataRepository.RouteDeleteEvent routeDeleted) {
     Timber.d("Delete route event received");
 
-    runOnUiThread(() -> removeRoute(routeDeleted));
+    runOnUiThread(this::refreshRoutes);
   }
 
   private void removeRoute(TravelDataRepository.RouteDeleteEvent routeDeleted) {
