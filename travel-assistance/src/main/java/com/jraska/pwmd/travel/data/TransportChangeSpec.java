@@ -2,6 +2,7 @@ package com.jraska.pwmd.travel.data;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.travel.R;
@@ -11,6 +12,8 @@ import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
+import java.util.UUID;
 
 @Table(database = TravelDatabase.class)
 @EqualsAndHashCode(callSuper = false)
@@ -31,6 +34,8 @@ public class TransportChangeSpec extends BaseModel {
   @Column LatLng latLng;
   @Column int transportType;
   @Column String title;
+  @Column @Nullable UUID imageId;
+  @Column @Nullable UUID soundId;
 
   //endregion
 
