@@ -24,7 +24,7 @@ public class AboutDialog extends DialogFragment {
     Context context = getContext();
     AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-    AlertDialog alertDialog = builder.setIcon(R.drawable.ic_logo)
+    AlertDialog alertDialog = builder.setIcon(R.drawable.ic_logo_no_padding)
         .setTitle(getAppInfoTitle(getContext()))
         .setMessage(R.string.about)
         .setCancelable(true)
