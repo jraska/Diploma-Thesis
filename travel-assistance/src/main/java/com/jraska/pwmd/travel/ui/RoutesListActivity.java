@@ -81,7 +81,7 @@ public class RoutesListActivity extends BaseActivity
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.action_routes_help:
-        openHelpRequests();
+        openHelpRequest();
         return true;
 
       case R.id.action_routes_settings:
@@ -312,8 +312,8 @@ public class RoutesListActivity extends BaseActivity
         .subscribe();
   }
 
-  protected void openHelpRequests() {
-    startActivity(new Intent(RoutesListActivity.this, HelpRequestSendActivity.class));
+  protected void openHelpRequest() {
+    startActivity(new Intent(this, HelpRequestSendActivity.class));
   }
 
   protected void openSettings() {

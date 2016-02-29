@@ -9,6 +9,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
+import com.jraska.pwmd.travel.BuildConfig;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.help.Dialer;
@@ -91,7 +92,9 @@ public class HelpRequestSendActivity extends BaseActivity {
     // TODO: 06/12/15 Validation if the device can send sms
 
     String message = getMessage(location);
-    _messageView.setText(message);
+    if (BuildConfig.DEBUG) {
+      _messageView.setText(message);
+    }
 
     boolean messageSent = _smsSender.sendSms(assistantPhone, message);
     if (messageSent) {
@@ -136,7 +139,9 @@ public class HelpRequestSendActivity extends BaseActivity {
 
     String message = getMessage(location);
 
-    _messageView.setText(message);
+    if (BuildConfig.DEBUG) {
+      _messageView.setText(message);
+    }
 
     EmailSender emailSender = new EmailSender(this); // No DI because we need Activity context here
     boolean emailSent = emailSender.sendEmail(assistantEmail, getString(R.string.i_am_lost), message);

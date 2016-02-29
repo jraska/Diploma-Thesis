@@ -6,6 +6,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import butterknife.Bind;
 import butterknife.OnLongClick;
@@ -85,6 +87,25 @@ public class NavigationActivity extends BaseActivity {
   }
 
   @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_route_navigation, menu);
+
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_routes_help:
+        openHelpRequested();
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
+
+  @Override
   protected void onDestroy() {
     _eventBus.unregister(this);
 
@@ -140,6 +161,10 @@ public class NavigationActivity extends BaseActivity {
   //endregion
 
   //region Methods
+
+  protected void openHelpRequested() {
+    startActivity(new Intent(this, HelpRequestSendActivity.class));
+  }
 
   private void showSimpleSnackbar(String message) {
     Snackbar.make(_userDirectionView, message, Snackbar.LENGTH_INDEFINITE).show();
