@@ -10,7 +10,7 @@ android {
     //noinspection OldTargetApi
     targetSdkVersion 22 //TODO: Permissions implementation
     versionCode 4
-    versionName "0.2.0-alpha"
+    versionName "0.1.2-alpha"
   }
 
   buildTypes {
