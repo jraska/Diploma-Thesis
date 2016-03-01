@@ -19,7 +19,7 @@ android {
       signingConfig signingConfigs.debug
 
       // There is problem with Robolectric with dev id suffix
-//      applicationIdSuffix '.dev'
+      applicationIdSuffix '.dev'
       versionNameSuffix '-dev'
     }
     release {

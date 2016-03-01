@@ -16,7 +16,7 @@ import timber.log.Timber;
  * automatically for all of them.
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21, packageName = "com.jraska.pwmd.travel")
 public abstract class BaseTest {
   //region Setup Methods
 
