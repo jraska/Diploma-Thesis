@@ -279,7 +279,11 @@ public class SimpleTrackingManager implements TrackingManager {
   public static class GpsProviderOnlyFilter implements LocationFilter {
     @Override
     public boolean accept(Location location) {
-      return LocationManager.GPS_PROVIDER.equals(location.getProvider());
+      if (LocationManager.GPS_PROVIDER.equals(location.getProvider())) {
+        return location.getAccuracy() < 50f;
+      } else {
+        return location.getAccuracy() < 30f;
+      }
     }
   }
 
