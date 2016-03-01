@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -27,6 +29,7 @@ import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import com.jraska.pwmd.travel.feedback.Feedback;
 import com.jraska.pwmd.travel.media.PicturesManager;
 import com.jraska.pwmd.travel.media.SoundsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
@@ -357,6 +360,24 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   }
 
   protected void handlePhotoTakenIntent(@Nullable Intent data) {
+    try {
+      handlePhotoTakeUnchecked(data);
+    }
+    catch (Exception ex) {
+      handlePhotoException(ex);
+    }
+  }
+
+  protected void handlePhotoException(Exception ex) {
+    Timber.e(ex, "Unexpected error on photo received.");
+    String message = Log.getStackTraceString(ex);
+    Snackbar snackbar = Snackbar.make(_addNoteButton, R.string.route_record_picure_error_message,
+        Snackbar.LENGTH_INDEFINITE);
+    snackbar.setAction(R.string.route_record_error_send, v -> Feedback.startFeedback(this, message));
+    snackbar.show();
+  }
+
+  protected void handlePhotoTakeUnchecked(@Nullable Intent data) {
     final UUID imageId = _lastPhotoRequestId;
     if (!_picturesManager.imageExists(imageId)) {
       Timber.e("Image does not exists on successful picture taken. Id= " + imageId);

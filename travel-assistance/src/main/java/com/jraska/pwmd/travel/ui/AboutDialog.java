@@ -29,13 +29,13 @@ public class AboutDialog extends DialogFragment {
         .setMessage(R.string.about)
         .setCancelable(true)
         .setPositiveButton(android.R.string.ok, null)
-        .setNeutralButton(R.string.about_feedback, (dialog, which) -> startFeedbackActivity())
+        .setNeutralButton(R.string.about_feedback, (dialog, which) -> onFeedbackRequested())
         .create();
 
     return alertDialog;
   }
 
-  private void startFeedbackActivity() {
+  private void onFeedbackRequested() {
     if (getActivity() instanceof FeedbackRequestCallback) {
       ((FeedbackRequestCallback) getActivity()).onFeedbackRequested();
     } else {

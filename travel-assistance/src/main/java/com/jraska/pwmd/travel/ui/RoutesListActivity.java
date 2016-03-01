@@ -18,6 +18,7 @@ import butterknife.OnLongClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.feedback.Feedback;
 import com.jraska.pwmd.travel.help.EmailSender;
 import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
@@ -163,13 +164,7 @@ public class RoutesListActivity extends BaseActivity
   //region FeedbackRequestCallback impl
 
   @Override public void onFeedbackRequested() {
-    EmailSender emailSender = new EmailSender(this);
-    emailSender.sendEmail(getEmail(), AboutDialog.getAppInfoTitle(this), "");
-  }
-
-  private String getEmail() {
-    byte[] decode = Base64.decode(Base64.decode("Y21Gek1EQXlPVUIyYzJJdVkzbz0=", 0), 0);
-    return new String(decode);
+    Feedback.startFeedback(this, "");
   }
 
   //endregion

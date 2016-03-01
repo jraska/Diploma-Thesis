@@ -81,4 +81,6 @@
     <string name="about_feedback">Napište nám</string>
     <string name="about">Aplikace má pomáhat lidem s mentálním postižem lépe zvládat své každodenní cesty.</string>
     <string name="photo">Fotka</string>
+    <string name="route_record_error_send">Odeslat</string>
+    <string name="route_record_picure_error_message">Neočekávaná chyba</string>
 </resources>
