@@ -7,8 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,10 +48,12 @@ public class BackupPackagerTest extends BaseTest {
     createFile(_soundsDir, "sound1");
     createFile(_soundsDir, "sound2");
     assertThat(_databaseFile.exists()).isTrue();
-    assertThat(_soundsDir.exists()).isTrue();
-    assertThat(_picsDir.exists()).isTrue();
+    File[] expectedSounds = _soundsDir.listFiles();
+    File[] expectedPics = _picsDir.listFiles();
+    assertThat(expectedSounds).hasSize(2);
+    assertThat(expectedPics).hasSize(3);
 
-    File backupFile = _backupPackager.createBackupFile();
+    InputStream backup = _backupPackager.createBackup();
 
     deleteRecursive(_picsDir);
     deleteRecursive(_soundsDir);
@@ -61,11 +63,11 @@ public class BackupPackagerTest extends BaseTest {
     assertThat(_soundsDir.exists()).isFalse();
     assertThat(_picsDir.exists()).isFalse();
 
-    _backupPackager.restoreBackup(new FileInputStream(backupFile));
+    _backupPackager.restoreBackup(backup);
 
     assertThat(_databaseFile.exists()).isTrue();
-    assertThat(_soundsDir.listFiles()).hasSize(2);
-    assertThat(_picsDir.listFiles()).hasSize(3);
+    assertThat(_soundsDir.listFiles()).isEqualTo(expectedSounds);
+    assertThat(_picsDir.listFiles()).isEqualTo(expectedPics);
   }
 
   static File createFile(File dir, String name) {

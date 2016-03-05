@@ -18,7 +18,7 @@ import java.io.*;
 import java.util.List;
 import java.util.UUID;
 
-public class BackupPackager {
+class BackupPackager {
   //region Constants
 
   private static final String BACKUP_SUFFIX = "backup.zip";
@@ -64,7 +64,7 @@ public class BackupPackager {
   }
 
   @SneakyThrows // TODO: 05/03/16 handle exceptions
-  public File createBackupFile() {
+  public InputStream createBackup() {
     if (!_cacheDir.exists() && !_cacheDir.mkdirs()) {
       throw new IOException("Cannot find or create directory %s" + _cacheDir);
     }
@@ -84,7 +84,7 @@ public class BackupPackager {
 
     Timber.d("Backup to %s finished", backupFile.getAbsolutePath());
 
-    return backupFile;
+    return new FileInputStream(backupFile);
   }
 
   private void writePictures(ZipWriter zipWriter) throws IOException {
