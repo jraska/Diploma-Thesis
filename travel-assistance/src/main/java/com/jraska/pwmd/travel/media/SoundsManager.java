@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
+import com.jraska.pwmd.travel.io.SoundsDir;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import lombok.SneakyThrows;
 import org.greenrobot.eventbus.EventBus;
@@ -23,7 +24,6 @@ import java.util.UUID;
 public class SoundsManager implements MediaPlayer.OnCompletionListener {
   //region Constants
 
-  public static final String SOUND_DIR = "Sounds";
   public static final String GPP_EXTENSION = ".3gp";
 
   //endregion
@@ -41,7 +41,7 @@ public class SoundsManager implements MediaPlayer.OnCompletionListener {
   //region Constructors
 
   @Inject
-  public SoundsManager(@Named(SOUND_DIR) @NonNull File soundsDir, EventBus dataBus) {
+  public SoundsManager(@SoundsDir @NonNull File soundsDir, EventBus dataBus) {
     ArgumentCheck.notNull(soundsDir);
     ArgumentCheck.notNull(dataBus);
 

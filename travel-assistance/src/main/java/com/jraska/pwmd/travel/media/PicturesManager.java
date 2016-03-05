@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
+import com.jraska.pwmd.travel.io.PicturesDir;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -19,7 +20,6 @@ import java.util.UUID;
 public class PicturesManager {
   //region Constants
 
-  public static final String PICTURES_DIR = "pictures";
   public static final String JPG_EXTENSION = ".jpg";
 
   //endregion
@@ -33,7 +33,7 @@ public class PicturesManager {
   //region Constructors
 
   @Inject
-  public PicturesManager(@Named(PICTURES_DIR) @NonNull File imagesDir,
+  public PicturesManager(@PicturesDir @NonNull File imagesDir,
                          EventBus eventBus) {
     ArgumentCheck.notNull(imagesDir);
     ArgumentCheck.notNull(eventBus);

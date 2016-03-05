@@ -2,7 +2,7 @@ package com.jraska.pwmd.travel;
 
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.core.gps.LocationModule;
-import com.jraska.pwmd.travel.media.MediaModule;
+import com.jraska.pwmd.travel.io.IOModule;
 import com.jraska.pwmd.travel.navigation.NavigationModule;
 import com.jraska.pwmd.travel.persistence.DataModule;
 import com.jraska.pwmd.travel.settings.SettingsModule;
@@ -18,8 +18,8 @@ import dagger.Component;
         SettingsModule.class,
         DataModule.class,
         TrackingModule.class,
-        MediaModule.class,
         NavigationModule.class,
+        IOModule.class,
         TravelAssistanceModule.class
     }
 )
