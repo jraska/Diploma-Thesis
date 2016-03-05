@@ -11,7 +11,7 @@ import okio.Okio;
 import timber.log.Timber;
 
 import javax.inject.Inject;
-import java.io.File;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -55,7 +55,6 @@ public class DriveBackupManager {
     _packager = packager;
   }
 
-
   //endregion
 
   //region Methods
@@ -74,7 +73,7 @@ public class DriveBackupManager {
     return _driveApi.getAppFolder(_client);
   }
 
-  private MetadataChangeSet creteBackupChangeSet() {
+  private MetadataChangeSet createBackupChangeSet() {
     return new MetadataChangeSet.Builder()
         .setTitle(createNewBackupFileName())
         .setMimeType(BACKUP_MIME_TYPE)
@@ -83,28 +82,38 @@ public class DriveBackupManager {
 
   @SneakyThrows
   public boolean makeBackup() {
-    File backup = _packager.createBackupFile();
+    InputStream backupStream = _packager.createBackup();
 
     DriveFolder appFolder = getAppFolder();
 
-    MetadataChangeSet backupFileSet = creteBackupChangeSet();
-    DriveFile driveBackupFile = appFolder.createFile(_client, backupFileSet, null).await().getDriveFile();
+    MetadataChangeSet backupFileSet = createBackupChangeSet();
+    DriveFile newBackupFile = appFolder.createFile(_client, backupFileSet, null).await().getDriveFile();
 
-    DriveContents driveContents = driveBackupFile.open(_client, MODE_WRITE_ONLY, null).await().getDriveContents();
+    DriveContents driveContents = newBackupFile.open(_client, MODE_WRITE_ONLY, null).await().getDriveContents();
     OutputStream outputStream = driveContents.getOutputStream();
 
-    try (BufferedSource inputSink = Okio.buffer(Okio.source(backup));
-         BufferedSink outputSink = Okio.buffer(Okio.sink(outputStream))) {
-      outputSink.writeAll(inputSink);
+    BufferedSource inputSource = Okio.buffer(Okio.source(backupStream));
+    BufferedSink outputSink = Okio.buffer(Okio.sink(outputStream));
+
+    try {
+      outputSink.writeAll(inputSource);
+    }
+    finally {
+      inputSource.close();
+      outputSink.close();
     }
 
-    Metadata metadata = driveBackupFile.getMetadata(_client).await().getMetadata();
+    Status status = driveContents.commit(_client, null).await();
+    if (!status.isSuccess()) {
+      return false;
+    }
+
+    _packager.cleanTempData();
+    Metadata metadata = newBackupFile.getMetadata(_client).await().getMetadata();
     deleteOldBackups(metadata);
 
-    Status status = driveContents.commit(_client, null).await();
-    return status.isSuccess();
+    return true;
   }
-
 
   private Metadata getLastBackupMetadata() {
     DriveFolder appFolder = getAppFolder();
@@ -132,9 +141,13 @@ public class DriveBackupManager {
   private void deleteOldBackups(Metadata onlyKeepBackupMetadata) {
     DriveFolder appFolder = getAppFolder();
 
+    String keepTitle = onlyKeepBackupMetadata.getTitle();
+
     for (Metadata metadata : appFolder.listChildren(_client).await().getMetadataBuffer()) {
-      if (BACKUP_MIME_TYPE.equals(metadata.getMimeType())) {
+      if (!keepTitle.equals(metadata.getTitle()) && BACKUP_MIME_TYPE.equals(metadata.getMimeType())) {
+
         Status deleteStatus = metadata.getDriveId().asDriveFile().delete(_client).await();
+
         if (deleteStatus.isSuccess()) {
           Timber.v("Backup %s deleted", metadata.getTitle());
         } else {
@@ -144,6 +157,7 @@ public class DriveBackupManager {
     }
   }
 
+  @SneakyThrows
   public boolean restoreFromBackup() {
     Metadata foundMetadata = getLastBackupMetadata();
     if (foundMetadata == null) {

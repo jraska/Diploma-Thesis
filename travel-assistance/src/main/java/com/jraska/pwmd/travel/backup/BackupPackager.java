@@ -7,7 +7,6 @@ import com.jraska.pwmd.travel.io.PicturesDir;
 import com.jraska.pwmd.travel.io.SoundsDir;
 import com.jraska.pwmd.travel.persistence.DatabaseFile;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import lombok.SneakyThrows;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
@@ -63,8 +62,7 @@ class BackupPackager {
     return UUID.randomUUID().toString();
   }
 
-  @SneakyThrows // TODO: 05/03/16 handle exceptions
-  public InputStream createBackup() {
+  public InputStream createBackup() throws IOException {
     if (!_cacheDir.exists() && !_cacheDir.mkdirs()) {
       throw new IOException("Cannot find or create directory %s" + _cacheDir);
     }
@@ -115,7 +113,7 @@ class BackupPackager {
     }
   }
 
-  @SneakyThrows public void restoreBackup(InputStream backupInputStream) {
+  public void restoreBackup(InputStream backupInputStream) throws IOException {
     Timber.d("Starting restore from backup");
     File tempBackupFile = File.createTempFile(newFileName(), BACKUP_SUFFIX, _cacheDir);
 
