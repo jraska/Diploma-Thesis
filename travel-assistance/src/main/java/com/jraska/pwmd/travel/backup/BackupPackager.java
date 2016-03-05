@@ -1,17 +1,21 @@
 package com.jraska.pwmd.travel.backup;
 
+import android.content.Context;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.travel.io.CacheDir;
 import com.jraska.pwmd.travel.io.PicturesDir;
 import com.jraska.pwmd.travel.io.SoundsDir;
 import com.jraska.pwmd.travel.persistence.DatabaseFile;
+import com.raizlabs.android.dbflow.config.FlowManager;
 import lombok.SneakyThrows;
+import okio.BufferedSink;
+import okio.BufferedSource;
+import okio.Okio;
 import timber.log.Timber;
 
 import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.util.List;
 import java.util.UUID;
 
 public class BackupPackager {
@@ -21,6 +25,8 @@ public class BackupPackager {
   private static final String DATABASE_KEY = "database.db";
   private static final String PICTURE_PREFIX = "pic/";
   private static final String SOUNDS_PREFIX = "sound/";
+
+  private static final FileFilter TEMP_BACKUP_FILES_FILTER = pathname -> pathname.getName().endsWith(BACKUP_SUFFIX);
 
   //endregion
 
@@ -59,6 +65,10 @@ public class BackupPackager {
 
   @SneakyThrows // TODO: 05/03/16 handle exceptions
   public File createBackupFile() {
+    if (!_cacheDir.exists() && !_cacheDir.mkdirs()) {
+      throw new IOException("Cannot find or create directory %s" + _cacheDir);
+    }
+
     File backupFile = File.createTempFile(newFileName(), BACKUP_SUFFIX, _cacheDir);
 
     Timber.v("Starting backup to %s", backupFile.getAbsolutePath());
@@ -105,8 +115,83 @@ public class BackupPackager {
     }
   }
 
-  void restoreBackup(InputStream backupInputStream) {
+  @SneakyThrows public void restoreBackup(InputStream backupInputStream) {
+    Timber.d("Starting restore from backup");
+    File tempBackupFile = File.createTempFile(newFileName(), BACKUP_SUFFIX, _cacheDir);
 
+    Timber.v("Copying backup stream to temp file %s", tempBackupFile);
+    BufferedSource backupSource = Okio.buffer(Okio.source(backupInputStream));
+    BufferedSink sink = Okio.buffer(Okio.sink(tempBackupFile));
+
+    try {
+      sink.writeAll(backupSource);
+    }
+    finally {
+      sink.close();
+      backupSource.close();
+    }
+
+    Timber.v("Temp file %s, created, starting restore.", tempBackupFile);
+    restoreFromFile(tempBackupFile);
+
+    Timber.d("Backup successful");
+    cleanTempData();
+    Timber.v("Cleanup successful");
+  }
+
+  private void restoreFromFile(File tempBackupFile) throws IOException {
+    Timber.v("Restoring backup from temp file %s", tempBackupFile);
+
+    ZipReader zipReader = new ZipReader(tempBackupFile);
+
+    // need to reinitialize db manager because underlying file changed
+    Context context = FlowManager.getContext();
+    FlowManager.destroy();
+    zipReader.readToFile(DATABASE_KEY, _databaseFile);
+    FlowManager.init(context);
+
+    readSounds(zipReader);
+    readPictures(zipReader);
+
+    zipReader.close();
+
+    Timber.v("Backup restored from file %s", tempBackupFile);
+  }
+
+  private void readSounds(ZipReader zipReader) throws IOException {
+    readDir(zipReader, _soundsDir, SOUNDS_PREFIX);
+  }
+
+  private void readPictures(ZipReader zipReader) throws IOException {
+    readDir(zipReader, _picturesDir, PICTURE_PREFIX);
+  }
+
+  private void readDir(ZipReader zipReader, File toDir, String prefix) throws IOException {
+    if (!toDir.exists() && !toDir.mkdirs()) {
+      throw new FileNotFoundException("COuld not found or create %s" + toDir);
+    }
+
+    List<String> entries = zipReader.getKeysWithPrefix(prefix);
+    Timber.v("Restoring %d entries to %s", entries.size(), toDir.getName());
+    for (String entryKey : entries) {
+      String fileName = entryKey.substring(prefix.length() - 1);
+      File intoFile = new File(toDir, fileName);
+
+      Timber.v("File %s into %s", fileName, intoFile.getPath());
+      zipReader.readToFile(entryKey, intoFile);
+    }
+  }
+
+  public void cleanTempData() {
+    File[] files = _cacheDir.listFiles(TEMP_BACKUP_FILES_FILTER);
+
+    if (files != null && files.length > 0) {
+      for (File file : files) {
+        Timber.v("Deleting temp file %s", file.getName());
+      }
+    }
+
+    Timber.d("Temp backup data cleaned.");
   }
 
   //endregion
