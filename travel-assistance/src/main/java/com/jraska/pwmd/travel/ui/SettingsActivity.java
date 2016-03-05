@@ -6,8 +6,8 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
+import com.jraska.pwmd.travel.backup.BackupAvailabilityResolveActivity;
 import com.jraska.pwmd.travel.settings.SettingsManager;
-import lombok.SneakyThrows;
 
 import javax.inject.Inject;
 
@@ -47,15 +47,8 @@ public class SettingsActivity extends BaseActivity {
 
   //region Methods
 
-
   @OnClick(R.id.settings_make_backup) void makeBackup() {
-
-  }
-
-  @SneakyThrows
-  @OnClick(R.id.settings_restore_backup) void restoreBackup() {
-
-
+    BackupAvailabilityResolveActivity.start(this);
   }
 
   //endregion
