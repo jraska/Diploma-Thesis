@@ -66,6 +66,7 @@ dependencies {
   compile 'com.android.support:design:23.2.0'
   compile 'com.google.android.gms:play-services-maps:8.4.0'
   compile 'com.google.android.gms:play-services-location:8.4.0'
+  compile 'com.google.android.gms:play-services-drive:8.4.0'
   compile 'com.jakewharton:butterknife:7.0.1'
   compile 'de.hdodenhof:circleimageview:2.0.0'
   compile 'com.jakewharton.timber:timber:4.1.1'
@@ -73,6 +74,7 @@ dependencies {
   compile 'com.jraska:console:0.4.1'
   compile 'com.jraska:console-timber-tree:0.4.1'
   compile 'io.reactivex:rxandroid:1.1.0'
+  compile 'com.squareup.okio:okio:1.6.0'
 
   apt 'com.google.dagger:dagger-compiler:2.0.2'
 

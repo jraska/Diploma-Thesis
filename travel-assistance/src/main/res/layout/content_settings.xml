@@ -39,4 +39,10 @@
             style="@style/TextInputMain" />
     </android.support.design.widget.TextInputLayout>
 
+    <Button
+        android:id="@+id/settings_make_backup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_backup"/>
+
 </LinearLayout>
