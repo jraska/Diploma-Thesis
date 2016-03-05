@@ -3,17 +3,14 @@ package com.jraska.pwmd.travel.io;
 import android.content.Context;
 import android.os.Environment;
 import com.jraska.dagger.PerApp;
-import com.jraska.pwmd.travel.media.PicturesManager;
-import com.jraska.pwmd.travel.media.SoundsManager;
 import dagger.Module;
 import dagger.Provides;
 
-import javax.inject.Named;
 import java.io.File;
 
 @Module
 public class IOModule {
-  @Provides @PerApp @CacheDir File cacheDir(Context context){
+  @Provides @PerApp @CacheDir File cacheDir(Context context) {
     return context.getExternalCacheDir();
   }
 
