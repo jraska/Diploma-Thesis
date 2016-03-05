@@ -81,6 +81,26 @@ public class DriveBackupManager {
   }
 
   @SneakyThrows
+  public boolean restoreFromBackup() {
+    Metadata foundMetadata = getLastBackupMetadata();
+    if (foundMetadata == null) {
+      return false;
+    }
+
+    deleteOldBackups(foundMetadata);
+
+    DriveFile driveFile = foundMetadata.getDriveId().asDriveFile();
+    DriveContents lastBackupContents = driveFile.open(_client, MODE_READ_ONLY, null).await().getDriveContents();
+
+    if (lastBackupContents == null) {
+      return false;
+    }
+
+    _packager.restoreBackup(lastBackupContents.getInputStream());
+    return true;
+  }
+
+  @SneakyThrows
   public boolean makeBackup() {
     InputStream backupStream = _packager.createBackup();
 
@@ -108,7 +128,7 @@ public class DriveBackupManager {
       return false;
     }
 
-    _packager.cleanTempData();
+    _packager.clearTempData();
     Metadata metadata = newBackupFile.getMetadata(_client).await().getMetadata();
     deleteOldBackups(metadata);
 
@@ -157,25 +177,6 @@ public class DriveBackupManager {
     }
   }
 
-  @SneakyThrows
-  public boolean restoreFromBackup() {
-    Metadata foundMetadata = getLastBackupMetadata();
-    if (foundMetadata == null) {
-      return false;
-    }
-
-    deleteOldBackups(foundMetadata);
-
-    DriveFile driveFile = foundMetadata.getDriveId().asDriveFile();
-    DriveContents lastBackupContents = driveFile.open(_client, MODE_READ_ONLY, null).await().getDriveContents();
-
-    if (lastBackupContents == null) {
-      return false;
-    }
-
-    _packager.restoreBackup(lastBackupContents.getInputStream());
-    return true;
-  }
 
   //endregion
 }

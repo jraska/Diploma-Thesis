@@ -70,6 +70,27 @@ public class BackupPackagerTest extends BaseTest {
     assertThat(_picsDir.listFiles()).isEqualTo(expectedPics);
   }
 
+  @Test
+  public void whenDeleteTempDataCalled_thenCacheDataCleared() throws Exception {
+    assertThat(_cacheDir).doesNotExist();
+    InputStream backup = _backupPackager.createBackup();
+    assertThat(_cacheDir.listFiles()).isNotEmpty();
+
+    backup.close();
+    _backupPackager.clearTempData();
+    assertThat(_cacheDir.listFiles()).isEmpty();
+  }
+
+  @Test
+  public void whenRestoredFromBackup_thenCacheDataCleared() throws Exception {
+    assertThat(_cacheDir).doesNotExist();
+    InputStream backup = _backupPackager.createBackup();
+    assertThat(_cacheDir.listFiles()).isNotEmpty();
+
+    _backupPackager.restoreBackup(backup);
+    assertThat(_cacheDir.listFiles()).isEmpty();
+  }
+
   static File createFile(File dir, String name) {
     return createFile(dir, name, 1024);
   }

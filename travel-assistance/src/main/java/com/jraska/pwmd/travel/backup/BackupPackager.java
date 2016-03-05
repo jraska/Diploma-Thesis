@@ -133,8 +133,8 @@ class BackupPackager {
     restoreFromFile(tempBackupFile);
 
     Timber.d("Backup successful");
-    cleanTempData();
-    Timber.v("Cleanup successful");
+
+    clearTempData();
   }
 
   private void restoreFromFile(File tempBackupFile) throws IOException {
@@ -180,12 +180,15 @@ class BackupPackager {
     }
   }
 
-  public void cleanTempData() {
+  public void clearTempData() {
     File[] files = _cacheDir.listFiles(TEMP_BACKUP_FILES_FILTER);
 
     if (files != null && files.length > 0) {
       for (File file : files) {
         Timber.v("Deleting temp file %s", file.getName());
+        if (!file.delete()) {
+          Timber.e("Could not delete temp file %s", file);
+        }
       }
     }
 
