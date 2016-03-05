@@ -11,7 +11,7 @@ import javax.inject.Provider;
 
 
 @PerApp
-public class GoogleApiClientProvider implements Provider<GoogleApiClient> {
+public class GoogleLocationApiClientProvider implements Provider<GoogleApiClient> {
   //region Fields
 
   private final Context _context;
@@ -23,8 +23,8 @@ public class GoogleApiClientProvider implements Provider<GoogleApiClient> {
   //region Constructors
 
   @Inject
-  public GoogleApiClientProvider(Context context, DefaultConnectionCallbacks connectionCallbacks,
-                                 DefaultConnectionFailedListener connectionFailedListener) {
+  public GoogleLocationApiClientProvider(Context context, DefaultConnectionCallbacks connectionCallbacks,
+                                         DefaultConnectionFailedListener connectionFailedListener) {
     ArgumentCheck.notNull(context);
     ArgumentCheck.notNull(connectionCallbacks);
     ArgumentCheck.notNull(connectionFailedListener);
