@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.Bind;
+import butterknife.BindString;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
@@ -38,6 +39,7 @@ public class BackupFragment extends Fragment {
 
   @Bind(R.id.settings_make_backup) View _backupView;
   @Bind(R.id.settings_make_restore_time) TextView _restoreTime;
+  @BindString(R.string.settings_last_backup_time) String _backupTimeTextTemplete;
 
   @Inject BackupChecker _backupChecker;
   @Inject SettingsManager _settingsManager;
@@ -125,7 +127,7 @@ public class BackupFragment extends Fragment {
       _restoreTime.setVisibility(View.GONE);
     } else {
       _restoreTime.setVisibility(View.VISIBLE);
-      String backupText = getString(R.string.settings_last_backup_time, format(backupTime));
+      String backupText = String.format(_backupTimeTextTemplete, format(backupTime));
       _restoreTime.setText(backupText);
     }
   }
