@@ -45,4 +45,10 @@
         android:layout_height="wrap_content"
         android:text="@string/settings_backup"/>
 
+    <Button
+        android:id="@+id/settings_make_restore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Restore"/>
+
 </LinearLayout>

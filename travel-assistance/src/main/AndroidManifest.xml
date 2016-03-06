@@ -112,8 +112,10 @@
             android:name=".ui.FeedbackActivity"
             android:label="@string/feedback_title"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".backup.BackupAvailabilityResolveActivity"
-            android:theme="@style/Theme.AppCompat.Translucent"/>
+        <activity
+            android:name=".backup.BackupResolveActivity"
+            android:theme="@style/Theme.AppCompat.Translucent"
+            android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

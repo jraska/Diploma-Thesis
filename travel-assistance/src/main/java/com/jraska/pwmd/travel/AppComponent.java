@@ -2,6 +2,7 @@ package com.jraska.pwmd.travel;
 
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.core.gps.LocationModule;
+import com.jraska.pwmd.travel.backup.BackupResolveActivity;
 import com.jraska.pwmd.travel.io.IOModule;
 import com.jraska.pwmd.travel.navigation.NavigationModule;
 import com.jraska.pwmd.travel.persistence.DataModule;
@@ -20,11 +21,11 @@ import dagger.Component;
         TrackingModule.class,
         NavigationModule.class,
         IOModule.class,
-        TravelAssistanceModule.class
+        AppModule.class
     }
 )
 
-public interface TravelAssistanceComponent {
+public interface AppComponent {
   void inject(HelpRequestSendActivity helpRequestSendActivity);
 
   void inject(RouteDetailActivity routeDetailActivity);
@@ -46,4 +47,6 @@ public interface TravelAssistanceComponent {
   void inject(NfcWriteActivity nfcWriteActivity);
 
   void inject(ImageDialog imageDisplayDialog);
+
+  void inject(BackupResolveActivity backupResolveActivity);
 }

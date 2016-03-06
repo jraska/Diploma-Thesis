@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.gms.GoogleLocationApiClientProvider;
-import com.jraska.pwmd.travel.gms.drive.Drive;
-import com.jraska.pwmd.travel.gms.drive.GoogleDriveApiClientProvider;
 import com.jraska.pwmd.travel.tracking.LocationFilter;
 import com.jraska.pwmd.travel.tracking.SimpleTrackingManager;
 import dagger.Module;
@@ -17,10 +15,10 @@ import dagger.Provides;
 import org.greenrobot.eventbus.EventBus;
 
 @Module
-public class TravelAssistanceModule {
+public class AppModule {
   private final TravelAssistanceApp _app;
 
-  public TravelAssistanceModule(@NonNull TravelAssistanceApp app) {
+  public AppModule(@NonNull TravelAssistanceApp app) {
     _app = app;
   }
 
@@ -47,10 +45,6 @@ public class TravelAssistanceModule {
   @Provides
   GoogleApiClient provideGoogleApiClient(GoogleLocationApiClientProvider apiClientProvider) {
     return apiClientProvider.get();
-  }
-
-  @Provides @Drive GoogleApiClient provideDriveClient(GoogleDriveApiClientProvider provider) {
-    return provider.get();
   }
 
   @Provides @PerApp EventBus provideDefaultBus() {

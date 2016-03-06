@@ -27,7 +27,7 @@ public class TravelAssistanceApp extends Application {
 
   //region Fields
 
-  private TravelAssistanceComponent _component;
+  private AppComponent _component;
   private ActivityMonitorCallbacks _monitorCallbacks;
 
   //endregion
@@ -62,8 +62,8 @@ public class TravelAssistanceApp extends Application {
     _monitorCallbacks = new ActivityMonitorCallbacks();
     registerActivityLifecycleCallbacks(_monitorCallbacks);
 
-    _component = DaggerTravelAssistanceComponent.builder()
-        .travelAssistanceModule(new TravelAssistanceModule(this)).build();
+    _component = DaggerAppComponent.builder()
+        .appModule(new AppModule(this)).build();
 
     ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
     ImageLoader.getInstance().init(config);
@@ -73,7 +73,7 @@ public class TravelAssistanceApp extends Application {
 
   //region Methods
 
-  public static TravelAssistanceComponent getComponent(Context context) {
+  public static AppComponent getComponent(Context context) {
     return ((TravelAssistanceApp) context.getApplicationContext())._component;
   }
 
