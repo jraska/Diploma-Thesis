@@ -2,7 +2,9 @@ package com.jraska.pwmd.travel.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
@@ -15,6 +17,7 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
+import java.text.DateFormat;
 import java.util.Date;
 
 import static com.jraska.pwmd.travel.backup.BackupResolveActivity.REQUEST_CODE_BACKUP;
@@ -22,10 +25,19 @@ import static com.jraska.pwmd.travel.backup.BackupResolveActivity.REQUEST_CODE_R
 
 public class SettingsActivity extends BaseActivity {
 
+  //region Constants
+
+  public static final DateFormat USER_FORMAT = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM);
+
+  //endregion
+
   //region Fields
 
   @Bind(R.id.settings_assistant_email) EditText _assistantEmailText;
   @Bind(R.id.settings_assistant_phone) EditText _assistantPhoneText;
+  @Bind(R.id.settings_make_backup) View _backupView;
+  @Bind(R.id.settings_make_restore_time) TextView _restoreTime;
+  @Bind(R.id.setting_restore_container) View _restoreContainer;
 
   @Inject SettingsManager _settingsManager;
   @Inject BackupChecker _backupChecker;
@@ -64,6 +76,7 @@ public class SettingsActivity extends BaseActivity {
 
     if (requestCode == REQUEST_CODE_BACKUP) {
       handleBackupRequestResult(resultCode);
+      _settingsManager.setLastBackupTime(new Date());
     } else if (requestCode == REQUEST_CODE_RESTORE) {
       handleBackupRequestResult(resultCode);
     }
@@ -80,13 +93,15 @@ public class SettingsActivity extends BaseActivity {
         .subscribe(this::onNewLastBackupDate);
   }
 
-  private void onNewLastBackupDate(Date date) {
-    Timber.i("New last backup date: %s", date);
+  private void onNewLastBackupDate(Date backupTime) {
+    Timber.i("New last backup time: %s", backupTime);
 
-    if (date == null) {
-
+    if (backupTime == null) {
+      _restoreContainer.setVisibility(View.GONE);
     } else {
-
+      _restoreContainer.setVisibility(View.VISIBLE);
+      String backupText = getString(R.string.settings_last_backup_time, format(backupTime));
+      _restoreTime.setText(backupText);
     }
   }
 
@@ -113,6 +128,12 @@ public class SettingsActivity extends BaseActivity {
 
       default:
         Timber.w("Unknown backup request result: %d", resultCode);
+    }
+  }
+
+  private static String format(Date date) {
+    synchronized (USER_FORMAT) {
+      return USER_FORMAT.format(date);
     }
   }
 

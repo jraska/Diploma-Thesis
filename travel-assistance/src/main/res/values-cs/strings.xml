@@ -85,4 +85,6 @@
     <string name="route_record_picure_error_message">Neočekávaná chyba</string>
 
     <string name="settings_backup">Záloha</string>
+    <string name="settings_restore">Obnovit ze zálohy</string>
+    <string name="settings_last_backup_time">Záloha z %1$s</string>
 </resources>

@@ -85,4 +85,7 @@
     <string name="route_record_picure_error_message">Unexpected error</string>
     <string name="route_record_error_send">Send</string>
     <string name="settings_backup">Backup</string>
+    <string name="settings_restore">Restore</string>
+    <string name="settings_last_backup_time">Backup from %1$s</string>
+
 </resources>

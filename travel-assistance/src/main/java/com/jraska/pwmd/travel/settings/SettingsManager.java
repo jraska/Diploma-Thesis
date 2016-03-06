@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.Date;
+
 /**
  * Provides fast access to all available preferences of application
  */
@@ -12,6 +14,7 @@ public class SettingsManager {
 
   private static final String ASSIST_EMAIL = "237a802asd";
   private static final String ASSIST_PHONE = "wn32k11l1k2j";
+  private static final String LAST_BACKUP = "8236ba5bo";
 
   //endregion
 
@@ -53,6 +56,20 @@ public class SettingsManager {
 
   public void setAssistantPhone(@Nullable String assistantPhone) {
     setPreferenceValue(ASSIST_PHONE, assistantPhone);
+  }
+
+  @Nullable
+  public Date getLastBackupTime() {
+    long time = _preferences.getLong(LAST_BACKUP, -1);
+    if (time == -1) {
+      return null;
+    }
+
+    return new Date(time);
+  }
+
+  public void setLastBackupTime(Date lastBackupTime) {
+    _preferences.edit().putLong(LAST_BACKUP, lastBackupTime.getTime()).apply();
   }
 
   //endregion
