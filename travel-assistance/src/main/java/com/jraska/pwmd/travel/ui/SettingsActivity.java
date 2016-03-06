@@ -7,11 +7,15 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
+import com.jraska.pwmd.travel.backup.BackupChecker;
 import com.jraska.pwmd.travel.backup.BackupResolveActivity;
 import com.jraska.pwmd.travel.settings.SettingsManager;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
+import java.util.Date;
 
 import static com.jraska.pwmd.travel.backup.BackupResolveActivity.REQUEST_CODE_BACKUP;
 import static com.jraska.pwmd.travel.backup.BackupResolveActivity.REQUEST_CODE_RESTORE;
@@ -24,6 +28,7 @@ public class SettingsActivity extends BaseActivity {
   @Bind(R.id.settings_assistant_phone) EditText _assistantPhoneText;
 
   @Inject SettingsManager _settingsManager;
+  @Inject BackupChecker _backupChecker;
 
   //endregion
 
@@ -38,6 +43,12 @@ public class SettingsActivity extends BaseActivity {
 
     _assistantEmailText.setText(_settingsManager.getAssistantEmail());
     _assistantPhoneText.setText(_settingsManager.getAssistantPhone());
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+
+    refreshLastBackupTime();
   }
 
   @Override
@@ -61,6 +72,23 @@ public class SettingsActivity extends BaseActivity {
   //endregion
 
   //region Methods
+
+  protected void refreshLastBackupTime() {
+    _backupChecker.getLastBackupDate()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::onNewLastBackupDate);
+  }
+
+  private void onNewLastBackupDate(Date date) {
+    Timber.i("New last backup date: %s", date);
+
+    if (date == null) {
+
+    } else {
+
+    }
+  }
 
   @OnClick(R.id.settings_make_backup) void makeBackup() {
     BackupResolveActivity.startForBackup(this, REQUEST_CODE_BACKUP);

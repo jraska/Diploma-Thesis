@@ -62,15 +62,28 @@ public class DriveBackupManager {
   //region Methods
 
   public Observable<Boolean> createBackup(GoogleApiClient client) {
-    return Observable.fromCallable(() -> makeBackup(client));
+    return Observable.fromCallable(() -> createBackupSync(client));
   }
 
   public Observable<Boolean> restoreFromBackup(GoogleApiClient client) {
-    return Observable.fromCallable(() -> restoreBackup(client));
+    return Observable.fromCallable(() -> restoreFromBackupSync(client));
+  }
+
+  public Observable<Date> getLastBackupTime(GoogleApiClient client) {
+    return Observable.fromCallable(() -> getLastBackupTimeSync(client));
+  }
+
+  private Date getLastBackupTimeSync(GoogleApiClient client) {
+    Metadata backupMetadata = getLastBackupMetadata(client);
+    if (backupMetadata == null) {
+      return null;
+    } else {
+      return backupMetadata.getCreatedDate();
+    }
   }
 
   @SneakyThrows
-  private boolean restoreBackup(GoogleApiClient client) {
+  private boolean restoreFromBackupSync(GoogleApiClient client) {
     Metadata foundMetadata = getLastBackupMetadata(client);
     if (foundMetadata == null) {
       return false;
@@ -91,7 +104,7 @@ public class DriveBackupManager {
   }
 
   @SneakyThrows
-  private boolean makeBackup(GoogleApiClient client) {
+  private boolean createBackupSync(GoogleApiClient client) {
     InputStream backupStream = _packager.createBackup();
 
     DriveFolder appFolder = _driveApi.getAppFolder(client);
@@ -138,7 +151,6 @@ public class DriveBackupManager {
       return BACKUP_DATE_FORMAT.format(new Date());
     }
   }
-
 
   private MetadataChangeSet createBackupChangeSet() {
     return new MetadataChangeSet.Builder()
