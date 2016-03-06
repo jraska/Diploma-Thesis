@@ -4,6 +4,7 @@ import android.content.Context;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jraska.common.ArgumentCheck;
+import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import rx.Observable;
 import timber.log.Timber;
 
@@ -15,18 +16,22 @@ public class BackupChecker {
 
   private final Context _context;
   private final DriveBackupManager _driveBackupManager;
+  private final TravelDataRepository _travelDataRepository;
 
   //endregion
 
   //region Constructors
 
   @Inject
-  public BackupChecker(Context context, DriveBackupManager driveBackupManager) {
+  public BackupChecker(Context context, DriveBackupManager driveBackupManager,
+                       TravelDataRepository travelDataRepository) {
     ArgumentCheck.notNull(context);
     ArgumentCheck.notNull(driveBackupManager);
+    ArgumentCheck.notNull(travelDataRepository);
 
     _context = context;
     _driveBackupManager = driveBackupManager;
+    _travelDataRepository = travelDataRepository;
   }
 
   //endregion
@@ -35,6 +40,10 @@ public class BackupChecker {
 
   public Observable<Date> getLastBackupDate() {
     return Observable.fromCallable(this::getDateSync);
+  }
+
+  public Observable<Boolean> isAnythingToBackup() {
+    return Observable.fromCallable(this::isAnythingToBackupSync);
   }
 
   private Date getDateSync() {
@@ -56,6 +65,10 @@ public class BackupChecker {
 
     client.disconnect();
     return result;
+  }
+
+  private boolean isAnythingToBackupSync() {
+    return !_travelDataRepository.selectAll().toBlocking().first().isEmpty();
   }
 
   private GoogleApiClient createClient() {

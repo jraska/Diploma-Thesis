@@ -54,6 +54,8 @@ public class SettingsActivity extends BaseActivity {
 
     _assistantEmailText.setText(_settingsManager.getAssistantEmail());
     _assistantPhoneText.setText(_settingsManager.getAssistantPhone());
+
+    refreshBackupViewVisibility();
   }
 
   @Override protected void onResume() {
@@ -84,6 +86,22 @@ public class SettingsActivity extends BaseActivity {
   //endregion
 
   //region Methods
+
+  private void refreshBackupViewVisibility() {
+    _backupChecker.isAnythingToBackup()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::onAnythingToBackup);
+  }
+
+  private void onAnythingToBackup(boolean anythingToBackup) {
+    Timber.d("Anything to backup = %s", anythingToBackup);
+    if (anythingToBackup) {
+      _backupView.setVisibility(View.VISIBLE);
+    } else {
+      _backupView.setVisibility(View.GONE);
+    }
+  }
 
   protected void refreshLastBackupTime() {
     _backupChecker.getLastBackupDate()
