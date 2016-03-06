@@ -86,6 +86,7 @@ public class DriveBackupManager {
   private boolean restoreFromBackupSync(GoogleApiClient client) {
     Metadata foundMetadata = getLastBackupMetadata(client);
     if (foundMetadata == null) {
+      Timber.d("No backup found for restore");
       return false;
     }
 
@@ -164,7 +165,8 @@ public class DriveBackupManager {
 
     Metadata foundMetadata = null;
     Date lastBackupDate = new Date(0);
-    for (Metadata metadata : appFolder.listChildren(client).await().getMetadataBuffer()) {
+    MetadataBuffer metadataBuffer = appFolder.listChildren(client).await().getMetadataBuffer();
+    for (Metadata metadata : metadataBuffer) {
       if (!BACKUP_MIME_TYPE.equals(metadata.getMimeType())) {
         continue;
       }
