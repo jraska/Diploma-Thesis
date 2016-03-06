@@ -39,25 +39,12 @@
             style="@style/TextInputMain" />
     </android.support.design.widget.TextInputLayout>
 
-    <Button
-        android:id="@+id/settings_make_backup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:text="@string/settings_backup" />
 
-    <Button
-        android:id="@+id/settings_make_restore"
+    <fragment
+        android:name="com.jraska.pwmd.travel.backup.BackupFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/settings_restore" />
-
-    <TextView
-        android:id="@+id/settings_make_restore_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        style="@style/TextMain" />
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_backup"
+        tools:layout="@layout/fragment_backup" />
 
 </LinearLayout>

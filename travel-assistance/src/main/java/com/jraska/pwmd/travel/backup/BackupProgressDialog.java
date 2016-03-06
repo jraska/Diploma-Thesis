@@ -58,6 +58,5 @@ public class BackupProgressDialog extends DialogFragment {
     return progressDialog;
   }
 
-
   //endregion
 }

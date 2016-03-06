@@ -2,6 +2,7 @@ package com.jraska.pwmd.travel;
 
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.core.gps.LocationModule;
+import com.jraska.pwmd.travel.backup.BackupFragment;
 import com.jraska.pwmd.travel.backup.BackupResolveActivity;
 import com.jraska.pwmd.travel.io.IOModule;
 import com.jraska.pwmd.travel.navigation.NavigationModule;
@@ -51,4 +52,6 @@ public interface AppComponent {
   void inject(ImageDialog imageDisplayDialog);
 
   void inject(BackupResolveActivity backupResolveActivity);
+
+  void inject(BackupFragment backupFragment);
 }
