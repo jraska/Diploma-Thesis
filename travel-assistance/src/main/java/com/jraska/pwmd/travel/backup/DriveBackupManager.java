@@ -165,7 +165,11 @@ public class DriveBackupManager {
 
     Metadata foundMetadata = null;
     Date lastBackupDate = new Date(0);
-    MetadataBuffer metadataBuffer = appFolder.listChildren(client).await().getMetadataBuffer();
+
+    DriveApi.MetadataBufferResult childrenResult = appFolder.listChildren(client).await();
+    Timber.v("Result of listing appFolder children %s", childrenResult.getStatus());
+
+    MetadataBuffer metadataBuffer = childrenResult.getMetadataBuffer();
     for (Metadata metadata : metadataBuffer) {
       if (!BACKUP_MIME_TYPE.equals(metadata.getMimeType())) {
         continue;

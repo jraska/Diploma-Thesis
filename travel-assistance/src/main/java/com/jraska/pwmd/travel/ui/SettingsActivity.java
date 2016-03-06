@@ -37,7 +37,6 @@ public class SettingsActivity extends BaseActivity {
   @Bind(R.id.settings_assistant_phone) EditText _assistantPhoneText;
   @Bind(R.id.settings_make_backup) View _backupView;
   @Bind(R.id.settings_make_restore_time) TextView _restoreTime;
-  @Bind(R.id.setting_restore_container) View _restoreContainer;
 
   @Inject SettingsManager _settingsManager;
   @Inject BackupChecker _backupChecker;
@@ -97,9 +96,9 @@ public class SettingsActivity extends BaseActivity {
     Timber.i("New last backup time: %s", backupTime);
 
     if (backupTime == null) {
-      _restoreContainer.setVisibility(View.GONE);
+      _restoreTime.setVisibility(View.GONE);
     } else {
-      _restoreContainer.setVisibility(View.VISIBLE);
+      _restoreTime.setVisibility(View.VISIBLE);
       String backupText = getString(R.string.settings_last_backup_time, format(backupTime));
       _restoreTime.setText(backupText);
     }

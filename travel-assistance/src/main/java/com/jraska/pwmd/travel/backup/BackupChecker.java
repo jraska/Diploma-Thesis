@@ -41,6 +41,7 @@ public class BackupChecker {
     GoogleApiClient client = createClient();
     ConnectionResult connectionResult = client.blockingConnect();
     if (!connectionResult.isSuccess()) {
+      Timber.v("Could not connect to google play services %s", connectionResult);
       return null;
     }
 

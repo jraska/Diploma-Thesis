@@ -183,7 +183,7 @@ public class BackupResolveActivity extends BaseActivity implements GoogleApiClie
       Timber.i("Backup action completed");
       setResult(RESULT_BACKUP_SUCCESS);
     } else {
-      Timber.e("Unknown eror during backup resolving ");
+      Timber.w("Resolving backup was unsuccessful");
       setResult(RESULT_UNKNOWN_ERROR);
     }
     finish();

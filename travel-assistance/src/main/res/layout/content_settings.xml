@@ -45,25 +45,17 @@
         android:layout_height="wrap_content"
         android:text="@string/settings_backup" />
 
-    <LinearLayout
-        android:id="@+id/setting_restore_container"
+    <Button
+        android:id="@+id/settings_make_restore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:text="@string/settings_restore" />
+
+    <TextView
+        android:id="@+id/settings_make_restore_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:visibility="gone"
-        tools:visibility="visible">
-
-        <Button
-            android:id="@+id/settings_make_restore"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings_restore" />
-
-        <TextView
-            android:id="@+id/settings_make_restore_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/TextMain" />
-    </LinearLayout>
+        style="@style/TextMain" />
 
 </LinearLayout>
