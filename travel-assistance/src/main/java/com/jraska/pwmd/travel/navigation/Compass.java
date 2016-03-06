@@ -18,7 +18,7 @@ public class Compass {
 
   //region Fields
 
-  private CircularFifoQueue<Location> _locations = new CircularFifoQueue<>(4);
+  private final CircularFifoQueue<Location> _locations = new CircularFifoQueue<>(4);
 
   //endregion
 

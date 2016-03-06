@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import com.jraska.console.timber.ConsoleTree;
+import com.jraska.pwmd.travel.media.MediaCleaner;
 import com.jraska.pwmd.travel.util.ActivityMonitorCallbacks;
 import com.jraska.pwmd.travel.util.TravelDebugTree;
 import com.jraska.pwmd.travel.util.TravelReleaseTree;
@@ -13,6 +14,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import timber.log.Timber;
 
+import javax.inject.Inject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -27,12 +29,18 @@ public class TravelAssistanceApp extends Application {
 
   //region Fields
 
-  private TravelAssistanceComponent _component;
+  private AppComponent _component;
   private ActivityMonitorCallbacks _monitorCallbacks;
+
+  @Inject MediaCleaner _mediaCleaner;
 
   //endregion
 
   //region Properties
+
+  public AppComponent getComponent() {
+    return _component;
+  }
 
   public Iterable<Activity> getRunningActivities() {
     return _monitorCallbacks.getActivities();
@@ -62,8 +70,10 @@ public class TravelAssistanceApp extends Application {
     _monitorCallbacks = new ActivityMonitorCallbacks();
     registerActivityLifecycleCallbacks(_monitorCallbacks);
 
-    _component = DaggerTravelAssistanceComponent.builder()
-        .travelAssistanceModule(new TravelAssistanceModule(this)).build();
+    _component = DaggerAppComponent.builder()
+        .appModule(new AppModule(this)).build();
+
+    getComponent().inject(this);
 
     ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
     ImageLoader.getInstance().init(config);
@@ -73,8 +83,8 @@ public class TravelAssistanceApp extends Application {
 
   //region Methods
 
-  public static TravelAssistanceComponent getComponent(Context context) {
-    return ((TravelAssistanceApp) context.getApplicationContext())._component;
+  public static AppComponent getComponent(Context context) {
+    return ((TravelAssistanceApp) context.getApplicationContext()).getComponent();
   }
 
   //endregion

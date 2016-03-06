@@ -83,4 +83,21 @@
     <string name="photo">Fotka</string>
     <string name="route_record_error_send">Odeslat</string>
     <string name="route_record_picure_error_message">Neočekávaná chyba</string>
+
+    <string name="settings_backup_title">Zálohování dat</string>
+    <string name="settings_backup">Zálohovat</string>
+    <string name="settings_restore">Obnovit ze zálohy</string>
+    <string name="settings_last_backup_time">Záloha z %1$s</string>
+    <string name="backup_dialog_progress_message">Vytváři se záloha…</string>
+    <string name="restore_dialog_progress_message">Obnovují se data…\nStrpení, může to chvíli trvat.</string>
+    <string name="backup_dialog_progress_title">Zálohuje se</string>
+    <string name="restore_dialog_progress_title">Obnovení</string>
+
+    <string name="backup_success_message">Úspěšně zálohováno</string>
+    <string name="restore_success_message">Úspěšně obnoveno</string>
+    <string name="backup_error_drive_authorization">Problém s povolením Google Drive</string>
+    <string name="backup_error_drive_authorization_offline">Google Drive nelze povolit bez internetu</string>
+    <string name="backup_error_generic">Nepodařilo se vytvořit zálohu </string>
+    <string name="backup_resolve_error_generic">Zálohu se nepodařilo obnovit</string>
+    <string name="backup_restore_snackbar_action">Ukázat</string>
 </resources>

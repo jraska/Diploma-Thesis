@@ -1,5 +1,6 @@
 package com.jraska.pwmd.travel.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import butterknife.Bind;
@@ -10,7 +11,6 @@ import com.jraska.pwmd.travel.settings.SettingsManager;
 import javax.inject.Inject;
 
 public class SettingsActivity extends BaseActivity {
-
   //region Fields
 
   @Bind(R.id.settings_assistant_email) EditText _assistantEmailText;
@@ -39,6 +39,10 @@ public class SettingsActivity extends BaseActivity {
     _settingsManager.setAssistantPhone(_assistantPhoneText.getText().toString());
 
     super.onDestroy();
+  }
+
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   //endregion

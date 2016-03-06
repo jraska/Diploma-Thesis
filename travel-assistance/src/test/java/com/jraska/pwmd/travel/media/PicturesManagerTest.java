@@ -47,32 +47,12 @@ public class PicturesManagerTest extends BaseTest {
   public void testGetIdForUri() throws Exception {
     UUID testId = UUID.randomUUID();
 
-    PicturesManager picturesManager = new PicturesManager(_picsDir, new EventBus());
+    PicturesManager picturesManager = new PicturesManager(_picsDir);
     Uri pictureUri = picturesManager.createPictureUri(testId);
 
     UUID idForUri = picturesManager.getIdForUri(pictureUri);
 
     assertThat(idForUri).isEqualTo(testId);
-  }
-
-  @Test
-  public void testImageDeletedOnNoteSpecDelete() throws Exception {
-    UUID testId = UUID.randomUUID();
-    EventBus eventBus = new EventBus();
-
-    PicturesManager picturesManager = new PicturesManager(_picsDir, eventBus);
-    File imageFile = picturesManager.getImageFile(testId);
-    if (imageFile.exists()) {
-      assertThat(imageFile.delete()).isTrue();
-    }
-    assertThat(imageFile.createNewFile()).isTrue();
-
-    NoteSpec noteSpec = mock(NoteSpec.class);
-    when(noteSpec.getImageId()).thenReturn(testId);
-
-    eventBus.post(new TravelDataRepository.NoteSpecDeletedEvent(noteSpec));
-
-    assertThat(imageFile.exists()).isFalse();
   }
 
   //endregion

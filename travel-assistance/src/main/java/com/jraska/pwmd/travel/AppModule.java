@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jraska.dagger.PerApp;
-import com.jraska.pwmd.travel.gms.GoogleApiClientProvider;
+import com.jraska.pwmd.travel.gms.GoogleLocationApiClientProvider;
 import com.jraska.pwmd.travel.tracking.LocationFilter;
 import com.jraska.pwmd.travel.tracking.SimpleTrackingManager;
 import dagger.Module;
@@ -15,10 +15,10 @@ import dagger.Provides;
 import org.greenrobot.eventbus.EventBus;
 
 @Module
-public class TravelAssistanceModule {
+public class AppModule {
   private final TravelAssistanceApp _app;
 
-  public TravelAssistanceModule(@NonNull TravelAssistanceApp app) {
+  public AppModule(@NonNull TravelAssistanceApp app) {
     _app = app;
   }
 
@@ -38,20 +38,12 @@ public class TravelAssistanceModule {
     return new SimpleTrackingManager.GpsProviderOnlyFilter();
   }
 
-  @Provides @PerApp LayoutInflater provideInflater(Context context) {
-    return LayoutInflater.from(context);
-  }
-
-  @Provides GoogleApiClient provideGoogleApiClient(GoogleApiClientProvider apiClientProvider) {
+  @Provides
+  GoogleApiClient provideGoogleApiClient(GoogleLocationApiClientProvider apiClientProvider) {
     return apiClientProvider.get();
   }
 
-
   @Provides @PerApp EventBus provideDefaultBus() {
     return EventBus.getDefault();
-  }
-
-  @Provides @PerApp Vibrator provideVibrator(Context context) {
-    return (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
   }
 }

@@ -21,3 +21,8 @@ Read
 * On list of routes - attach tag - should show navigation above list, no double lists
 * on other screen, attach tag, closes everything else except list, starst navigation
 * On non existing route in tag, error snackbar
+
+Google Drive API
+----------
+* New device without approved drive API - dialog with permission should appear, backup should be created after approving
+* Device with multiple accounts - account dialog shows, the backup
