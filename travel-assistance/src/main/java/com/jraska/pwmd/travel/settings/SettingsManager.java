@@ -3,12 +3,15 @@ package com.jraska.pwmd.travel.settings;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.jraska.dagger.PerApp;
 
+import javax.inject.Inject;
 import java.util.Date;
 
 /**
  * Provides fast access to all available preferences of application
  */
+@PerApp
 public class SettingsManager {
   //region Constants
 
@@ -27,6 +30,7 @@ public class SettingsManager {
 
   //region Constructors
 
+  @Inject
   public SettingsManager(@NonNull SharedPreferences preferences) {
     _preferences = preferences;
   }

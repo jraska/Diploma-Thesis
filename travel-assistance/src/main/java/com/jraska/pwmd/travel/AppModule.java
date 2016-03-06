@@ -2,10 +2,9 @@ package com.jraska.pwmd.travel;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Vibrator;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.gms.GoogleLocationApiClientProvider;
 import com.jraska.pwmd.travel.tracking.LocationFilter;
@@ -19,6 +18,7 @@ public class AppModule {
   private final TravelAssistanceApp _app;
 
   public AppModule(@NonNull TravelAssistanceApp app) {
+    ArgumentCheck.notNull(app);
     _app = app;
   }
 
