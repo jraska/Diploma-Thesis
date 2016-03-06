@@ -1,6 +1,5 @@
 package com.jraska.pwmd.travel.backup;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.IntentSender;

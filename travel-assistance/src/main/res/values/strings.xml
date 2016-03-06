@@ -98,5 +98,6 @@
     <string name="backup_error_generic">Some problem creating backup</string>
     <string name="backup_resolve_error_generic">Problem resolving backup</string>
     <string name="backup_restore_snackbar_action">View</string>
+    <string name="settings_backup_title">Data backup</string>
 
 </resources>
