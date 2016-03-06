@@ -59,6 +59,7 @@ public class BackupResolveActivity extends BaseActivity implements GoogleApiClie
 
     _driveClient = createClient();
     _driveClient.connect();
+    onActionStarted();
   }
 
   @Override
@@ -152,7 +153,6 @@ public class BackupResolveActivity extends BaseActivity implements GoogleApiClie
   }
 
   private void doRestore() {
-    onActionStarted("Restore");
     _backupManager.restoreFromBackup(_driveClient)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -160,19 +160,28 @@ public class BackupResolveActivity extends BaseActivity implements GoogleApiClie
   }
 
   private void doBackup() {
-    onActionStarted("Backup");
     _backupManager.createBackup(_driveClient)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(new ActionSubscriber());
   }
 
-  private void onActionStarted(String action) {
-    showProgressDialog(action);
+  private void onActionStarted() {
+    showProgressDialog();
   }
 
-  private void showProgressDialog(String action) {
-    BackupProgressDialog progressDialog = BackupProgressDialog.newInstance(action, "Message");
+  private void showProgressDialog() {
+    String title;
+    String message;
+    if (startedForBackup()) {
+      title = getString(R.string.backup_dialog_progress_title);
+      message = getString(R.string.backup_dialog_progress_message);
+    } else {
+      title = getString(R.string.restore_dialog_progress_title);
+      message = getString(R.string.restore_dialog_progress_message);
+    }
+
+    BackupProgressDialog progressDialog = BackupProgressDialog.newInstance(title, message);
     progressDialog.show(getSupportFragmentManager(), BackupProgressDialog.DIALOG_TAG);
   }
 

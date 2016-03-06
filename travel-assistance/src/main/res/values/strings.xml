@@ -87,5 +87,9 @@
     <string name="settings_backup">Backup</string>
     <string name="settings_restore">Restore</string>
     <string name="settings_last_backup_time">Backup from %1$s</string>
+    <string name="backup_dialog_progress_message">Creating backup…</string>
+    <string name="restore_dialog_progress_message">Restoring data…\nIt can take fsome time</string>
+    <string name="restore_dialog_progress_title">Restoring data</string>
+    <string name="backup_dialog_progress_title">Backing up</string>
 
 </resources>

@@ -87,4 +87,8 @@
     <string name="settings_backup">Záloha</string>
     <string name="settings_restore">Obnovit ze zálohy</string>
     <string name="settings_last_backup_time">Záloha z %1$s</string>
+    <string name="backup_dialog_progress_message">Vytváři se záloha…</string>
+    <string name="restore_dialog_progress_message">Obnovují se data…\nStrpení, může to chvíli trvat.</string>
+    <string name="backup_dialog_progress_title">Zálohuje se</string>
+    <string name="restore_dialog_progress_title">Obnovení</string>
 </resources>
