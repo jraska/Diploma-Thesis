@@ -33,27 +33,12 @@ public class PicturesManager {
   //region Constructors
 
   @Inject
-  public PicturesManager(@PicturesDir @NonNull File imagesDir,
-                         EventBus eventBus) {
+  public PicturesManager(@PicturesDir @NonNull File imagesDir) {
     ArgumentCheck.notNull(imagesDir);
-    ArgumentCheck.notNull(eventBus);
 
     _imagesDir = imagesDir;
-
-    eventBus.register(this);
   }
 
-  //endregion
-
-  //region Events handling
-
-  @Subscribe
-  public void onNoteSpecDeleted(TravelDataRepository.NoteSpecDeletedEvent deletedEvent) {
-    NoteSpec spec = deletedEvent._noteSpec;
-    if (spec.getImageId() != null) {
-      deleteImage(spec.getImageId());
-    }
-  }
   //endregion
 
   //region Methods

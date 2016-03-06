@@ -26,6 +26,8 @@ import dagger.Component;
 )
 
 public interface AppComponent {
+  void inject(TravelAssistanceApp travelAssistanceApp);
+
   void inject(HelpRequestSendActivity helpRequestSendActivity);
 
   void inject(RouteDetailActivity routeDetailActivity);
