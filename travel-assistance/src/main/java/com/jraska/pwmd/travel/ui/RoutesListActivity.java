@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.feedback.Feedback;
-import com.jraska.pwmd.travel.help.EmailSender;
 import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import com.jraska.pwmd.travel.settings.SettingsManager;
@@ -65,8 +63,7 @@ public class RoutesListActivity extends BaseActivity
 
     TravelAssistanceApp.getComponent(this).inject(this);
 
-    setupRoutes();
-    refreshRoutes();
+    setupViews();
 
     _eventBus.register(this);
   }
@@ -100,6 +97,7 @@ public class RoutesListActivity extends BaseActivity
 
   @Override protected void onResume() {
     super.onResume();
+    refreshRoutes();
 
     Intent intent = getIntent();
     checkNfcUsed(intent);
@@ -172,20 +170,6 @@ public class RoutesListActivity extends BaseActivity
   //region Methods
 
   @Subscribe
-  public void onNewRoute(TravelDataRepository.NewRouteEvent newRouteEvent) {
-    Timber.d("New route event received");
-
-    runOnUiThread(this::refreshRoutes);
-  }
-
-  @Subscribe
-  public void onRouteUpdated(TravelDataRepository.UpdatedRouteEvent newRouteEvent) {
-    Timber.d("Update route event received");
-
-    runOnUiThread(this::refreshRoutes);
-  }
-
-  @Subscribe
   public void onRouteDeleted(TravelDataRepository.RouteDeleteEvent routeDeleted) {
     Timber.d("Delete route event received");
 
@@ -252,7 +236,7 @@ public class RoutesListActivity extends BaseActivity
     NavigationActivity.startNew(this, id);
   }
 
-  protected void setupRoutes() {
+  protected void setupViews() {
     _routesRecycler.setAdapter(_routesAdapter);
     _routesRecycler.setLayoutManager(new LinearLayoutManager(this));
 
