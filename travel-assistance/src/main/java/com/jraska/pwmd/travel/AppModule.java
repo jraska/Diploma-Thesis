@@ -38,10 +38,6 @@ public class AppModule {
     return new SimpleTrackingManager.GpsProviderOnlyFilter();
   }
 
-  @Provides @PerApp LayoutInflater provideInflater(Context context) {
-    return LayoutInflater.from(context);
-  }
-
   @Provides
   GoogleApiClient provideGoogleApiClient(GoogleLocationApiClientProvider apiClientProvider) {
     return apiClientProvider.get();
@@ -49,9 +45,5 @@ public class AppModule {
 
   @Provides @PerApp EventBus provideDefaultBus() {
     return EventBus.getDefault();
-  }
-
-  @Provides @PerApp Vibrator provideVibrator(Context context) {
-    return (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
   }
 }

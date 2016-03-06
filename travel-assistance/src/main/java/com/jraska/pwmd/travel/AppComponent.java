@@ -22,6 +22,7 @@ import dagger.Component;
         TrackingModule.class,
         NavigationModule.class,
         IOModule.class,
+        SystemServicesModule.class,
         AppModule.class
     }
 )

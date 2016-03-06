@@ -28,8 +28,8 @@ public class BackupResolveActivity extends BaseActivity implements GoogleApiClie
 
   private static final String EXTRA_REQUEST_CODE = "requestCode";
 
-  public static final int REQUEST_CODE_BACKUP = 12538;
-  public static final int REQUEST_CODE_RESTORE = 4567;
+  public static final int REQUEST_CODE_BACKUP = 311;
+  public static final int REQUEST_CODE_RESTORE = 23123;
 
   private static final int REQUEST_CODE_RESOLUTION = 1213;
 
@@ -205,18 +205,18 @@ public class BackupResolveActivity extends BaseActivity implements GoogleApiClie
     }
   }
 
-  public static void startForRestore(Activity fromActivity, int requestCode) {
-    start(fromActivity, requestCode);
+  public static void startForRestore(Fragment fromFragment, int requestCode) {
+    start(fromFragment, requestCode);
   }
 
-  public static void startForBackup(Activity fromActivity, int requestCode) {
-    start(fromActivity, requestCode);
+  public static void startForBackup(Fragment fromFragment, int requestCode) {
+    start(fromFragment, requestCode);
   }
 
-  private static void start(Activity fromActivity, int requestCode) {
-    Intent intent = new Intent(fromActivity, BackupResolveActivity.class);
+  private static void start(Fragment fromFragment, int requestCode) {
+    Intent intent = new Intent(fromFragment.getContext(), BackupResolveActivity.class);
     intent.putExtra(EXTRA_REQUEST_CODE, requestCode);
-    fromActivity.startActivityForResult(intent, requestCode);
+    fromFragment.startActivityForResult(intent, requestCode);
   }
 
   //endregion

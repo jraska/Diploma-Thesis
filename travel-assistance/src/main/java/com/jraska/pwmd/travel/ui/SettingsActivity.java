@@ -2,27 +2,13 @@ package com.jraska.pwmd.travel.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.Bind;
-import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
-import com.jraska.pwmd.travel.backup.BackupChecker;
-import com.jraska.pwmd.travel.backup.BackupResolveActivity;
 import com.jraska.pwmd.travel.settings.SettingsManager;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import timber.log.Timber;
 
 import javax.inject.Inject;
-import java.text.DateFormat;
-import java.util.Date;
-
-import static com.jraska.pwmd.travel.backup.BackupResolveActivity.REQUEST_CODE_BACKUP;
-import static com.jraska.pwmd.travel.backup.BackupResolveActivity.REQUEST_CODE_RESTORE;
 
 public class SettingsActivity extends BaseActivity {
   //region Fields
@@ -53,6 +39,10 @@ public class SettingsActivity extends BaseActivity {
     _settingsManager.setAssistantPhone(_assistantPhoneText.getText().toString());
 
     super.onDestroy();
+  }
+
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
   }
 
   //endregion

@@ -91,5 +91,12 @@
     <string name="restore_dialog_progress_message">Restoring data…\nIt can take fsome time</string>
     <string name="restore_dialog_progress_title">Restoring data</string>
     <string name="backup_dialog_progress_title">Backing up</string>
+    <string name="backup_success_message">Backup successful</string>
+    <string name="restore_success_message">Backup restore successful</string>
+    <string name="backup_error_drive_authorization">Error authorizing Google Drive</string>
+    <string name="backup_error_drive_authorization_offline">Cannot authorize Google Drive offline</string>
+    <string name="backup_error_generic">Some problem creating backup</string>
+    <string name="backup_resolve_error_generic">Problem resolving backup</string>
+    <string name="backup_restore_snackbar_action">View</string>
 
 </resources>
