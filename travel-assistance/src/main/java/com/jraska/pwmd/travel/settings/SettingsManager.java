@@ -15,6 +15,7 @@ public class SettingsManager {
   private static final String ASSIST_EMAIL = "237a802asd";
   private static final String ASSIST_PHONE = "wn32k11l1k2j";
   private static final String LAST_BACKUP = "8236ba5bo";
+  private static final String LAST_DRIVE_SYNC_REQUEST = "566372bi72";
 
   //endregion
 
@@ -60,16 +61,19 @@ public class SettingsManager {
 
   @Nullable
   public Date getLastBackupTime() {
-    long time = _preferences.getLong(LAST_BACKUP, -1);
-    if (time == -1) {
-      return null;
-    }
-
-    return new Date(time);
+    return getPreferenceDateValue(LAST_BACKUP);
   }
 
   public void setLastBackupTime(Date lastBackupTime) {
-    _preferences.edit().putLong(LAST_BACKUP, lastBackupTime.getTime()).apply();
+    setPreferenceValue(LAST_BACKUP, lastBackupTime);
+  }
+
+  public Date getLastDriveRequestSync() {
+    return getPreferenceDateValue(LAST_DRIVE_SYNC_REQUEST);
+  }
+
+  public void setLastDriveSyncRequest(@NonNull Date time) {
+    setPreferenceValue(LAST_DRIVE_SYNC_REQUEST, time);
   }
 
   //endregion
@@ -78,6 +82,21 @@ public class SettingsManager {
 
   private void setPreferenceValue(String key, String value) {
     _preferences.edit().putString(key, value).apply();
+  }
+
+  @Nullable
+  private Date getPreferenceDateValue(String key) {
+    long time = _preferences.getLong(key, -1);
+    if (time == -1) {
+      return null;
+    }
+
+    return new Date(time);
+  }
+
+
+  private void setPreferenceValue(String key, Date date) {
+    _preferences.edit().putLong(key, date.getTime()).apply();
   }
 
   //endregion

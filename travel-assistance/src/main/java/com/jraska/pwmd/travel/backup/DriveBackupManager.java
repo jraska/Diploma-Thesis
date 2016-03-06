@@ -4,6 +4,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.drive.*;
 import com.jraska.common.ArgumentCheck;
+import com.jraska.pwmd.travel.settings.SettingsManager;
 import lombok.SneakyThrows;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -37,24 +38,27 @@ public class DriveBackupManager {
 
   //region Fields
 
-  private DriveApi _driveApi;
-  private BackupPackager _packager;
+  private final DriveApi _driveApi;
+  private final BackupPackager _packager;
+  private final SettingsManager _settingsManager;
 
   //endregion
 
   //region Constructors
 
   @Inject
-  public DriveBackupManager(BackupPackager packager) {
-    this(Drive.DriveApi, packager);
+  public DriveBackupManager(BackupPackager packager, SettingsManager settings) {
+    this(Drive.DriveApi, packager, settings);
   }
 
-  public DriveBackupManager(DriveApi driveApi, BackupPackager packager) {
+  public DriveBackupManager(DriveApi driveApi, BackupPackager packager, SettingsManager settings) {
     ArgumentCheck.notNull(driveApi);
     ArgumentCheck.notNull(packager);
+    ArgumentCheck.notNull(settings);
 
     _driveApi = driveApi;
     _packager = packager;
+    _settingsManager = settings;
   }
 
   //endregion
@@ -171,14 +175,9 @@ public class DriveBackupManager {
 
     MetadataBuffer metadataBuffer = childrenResult.getMetadataBuffer();
     if (metadataBuffer.getCount() == 0) {
-      // http://stackoverflow.com/questions/23840846/android-google-drive-app-data-folder-return-empty-when-i-use-querychildren
-      Timber.v("Nothing found on listing, trying again to try fix Uninstall GooglePlayServices bug");
-      Status status = _driveApi.requestSync(client).await();
-      if (!status.isSuccess()) {
-        Timber.v("Sync unsuccessful status %s", status);
-        return null;
-      }
+      tryRefreshDrive(client);
 
+      // check again after refresh
       metadataBuffer = appFolder.listChildren(client).await().getMetadataBuffer();
     }
 
@@ -188,6 +187,36 @@ public class DriveBackupManager {
       return null;
     }
     return foundMetadata;
+  }
+
+  private void tryRefreshDrive(GoogleApiClient client) {
+    // http://stackoverflow.com/questions/23840846/android-google-drive-app-data-folder-return-empty-when-i-use-querychildren
+    Timber.v("Nothing found on listing, trying refresh to fix Uninstall GooglePlayServices bug");
+
+    if (isTooManySyncRequests(client)) {
+      Timber.v("Too many drive sync requests, not force syncing");
+      return;
+    }
+
+    Timber.v("Force sync Drive");
+    Status status = _driveApi.requestSync(client).await();
+    if (!status.isSuccess()) {
+      Timber.v("Sync unsuccessful status %s", status);
+    }
+  }
+
+  private boolean isTooManySyncRequests(GoogleApiClient client) {
+    Date lastSync = _settingsManager.getLastDriveRequestSync();
+    if (lastSync != null && wasLessThenMinuteAgo(lastSync)) {
+      return true;
+    }
+
+    _settingsManager.setLastDriveSyncRequest(new Date());
+    return false;
+  }
+
+  private boolean wasLessThenMinuteAgo(Date lastSync) {
+    return System.currentTimeMillis() - lastSync.getTime() < 1000 * 60;
   }
 
   private Metadata findLatestMetadata(MetadataBuffer metadataBuffer) {
