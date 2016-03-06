@@ -371,7 +371,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   protected void handlePhotoException(Exception ex) {
     Timber.e(ex, "Unexpected error on photo received.");
     String message = Log.getStackTraceString(ex);
-    Snackbar snackbar = Snackbar.make(_addNoteButton, R.string.route_record_picure_error_message,
+    Snackbar snackbar = Snackbar.make(_addNoteButton, R.string.route_record_picture_error_message,
         Snackbar.LENGTH_INDEFINITE);
     snackbar.setAction(R.string.route_record_error_send, v -> Feedback.startFeedback(this, message));
     snackbar.show();

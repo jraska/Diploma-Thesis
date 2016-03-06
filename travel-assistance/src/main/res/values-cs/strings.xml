@@ -79,10 +79,10 @@
     <string name="feedback_title_hint">Předmět *</string>
     <string name="thank_you_for_feedback">Děkujeme za zprávu</string>
     <string name="about_feedback">Napište nám</string>
-    <string name="about">Aplikace má pomáhat lidem s mentálním postižem lépe zvládat své každodenní cesty.</string>
+    <string name="about">Aplikace má pomáhat lidem s mentálním postižením lépe zvládat své každodenní cesty.</string>
     <string name="photo">Fotka</string>
     <string name="route_record_error_send">Odeslat</string>
-    <string name="route_record_picure_error_message">Neočekávaná chyba</string>
+    <string name="route_record_picture_error_message">Neočekávaná chyba</string>
 
     <string name="settings_backup_title">Zálohování dat</string>
     <string name="settings_backup">Zálohovat</string>

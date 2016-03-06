@@ -48,7 +48,7 @@
     <string name="title_activity_write_nfc">NFC tag write</string>
 
     <string name="nfc_write_description">Move NFC tag next the device</string>
-    <string name="nfc_write_success">Route successfuly written</string>
+    <string name="nfc_write_success">Route successfully written</string>
     <string name="route_icon">Route icon</string>
     <string name="help_call">Call</string>
     <string name="help_no_app_for_email">No app for email</string>
@@ -82,13 +82,13 @@
     <string name="feedback_error_send_error">There was some issue sending feedback, sorry.</string>
     <string name="thank_you_for_feedback">Thank you very much for feedback.</string>
     <string name="photo">Photo</string>
-    <string name="route_record_picure_error_message">Unexpected error</string>
+    <string name="route_record_picture_error_message">Unexpected error</string>
     <string name="route_record_error_send">Send</string>
     <string name="settings_backup">Backup</string>
     <string name="settings_restore">Restore</string>
     <string name="settings_last_backup_time">Backup from %1$s</string>
     <string name="backup_dialog_progress_message">Creating backup…</string>
-    <string name="restore_dialog_progress_message">Restoring data…\nIt can take fsome time</string>
+    <string name="restore_dialog_progress_message">Restoring data…\nIt can take some time</string>
     <string name="restore_dialog_progress_title">Restoring data</string>
     <string name="backup_dialog_progress_title">Backing up</string>
     <string name="backup_success_message">Backup successful</string>
