@@ -93,8 +93,10 @@ public class BackupResolveActivity extends BaseActivity implements GoogleApiClie
     }
 
     if (startedForBackup()) {
+      Timber.i("Starting data backup");
       doBackup();
     } else {
+      Timber.i("Starting data restore");
       doRestore();
     }
   }
@@ -178,11 +180,12 @@ public class BackupResolveActivity extends BaseActivity implements GoogleApiClie
     hideProgressDialog();
 
     if (success) {
+      Timber.i("Backup action completed");
       setResult(RESULT_BACKUP_SUCCESS);
     } else {
+      Timber.e("Unknown eror during backup resolving ");
       setResult(RESULT_UNKNOWN_ERROR);
     }
-
     finish();
   }
 
