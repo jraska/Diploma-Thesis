@@ -163,13 +163,36 @@ public class DriveBackupManager {
   private Metadata getLastBackupMetadata(GoogleApiClient client) {
     DriveFolder appFolder = _driveApi.getAppFolder(client);
 
-    Metadata foundMetadata = null;
-    Date lastBackupDate = new Date(0);
-
     DriveApi.MetadataBufferResult childrenResult = appFolder.listChildren(client).await();
-    Timber.v("Result of listing appFolder children %s", childrenResult.getStatus());
+    if (!childrenResult.getStatus().isSuccess()) {
+      Timber.v("Unsuccessful listing appFolder children %s", childrenResult.getStatus());
+      return null;
+    }
 
     MetadataBuffer metadataBuffer = childrenResult.getMetadataBuffer();
+    if (metadataBuffer.getCount() == 0) {
+      // http://stackoverflow.com/questions/23840846/android-google-drive-app-data-folder-return-empty-when-i-use-querychildren
+      Timber.v("Nothing found on listing, trying again to try fix Uninstall GooglePlayServices bug");
+      Status status = _driveApi.requestSync(client).await();
+      if (!status.isSuccess()) {
+        Timber.v("Sync unsuccessful status %s", status);
+        return null;
+      }
+
+      metadataBuffer = appFolder.listChildren(client).await().getMetadataBuffer();
+    }
+
+    Metadata foundMetadata = findLatestMetadata(metadataBuffer);
+
+    if (foundMetadata == null) {
+      return null;
+    }
+    return foundMetadata;
+  }
+
+  private Metadata findLatestMetadata(MetadataBuffer metadataBuffer) {
+    Metadata foundMetadata = null;
+    Date lastBackupDate = new Date(0);
     for (Metadata metadata : metadataBuffer) {
       if (!BACKUP_MIME_TYPE.equals(metadata.getMimeType())) {
         continue;
@@ -180,10 +203,6 @@ public class DriveBackupManager {
         lastBackupDate = createdDate;
         foundMetadata = metadata;
       }
-    }
-
-    if (foundMetadata == null) {
-      return null;
     }
     return foundMetadata;
   }
