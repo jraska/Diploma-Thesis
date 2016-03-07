@@ -587,7 +587,7 @@ nebo za měsíc. Uživatel vybere jednu z možností a podle výběru se naplán
 
 \vspace{0.1cm}
 \noindent
-\textbf{Prekondice:} Uživatel má na zařízení uložen nastaven účet umožňující zálohování.
+\textbf{Prekondice:} Uživatel má na zařízení nastaven účet umožňující zálohování.
 
 \vspace{0.1cm}
 \noindent
@@ -970,11 +970,82 @@ Nástroj byl použit pro vytváření use case diagramů a třídních diagramů
 %\subsection{Podnadpis\footnote{Inspirace v \cite{saad}}}
 
 
+\section{Implementace}
+\subsection{Architektura}
+IoC, DI, RxJava, Robolectric Unit Testy
+
+\subsection{Ukládaní dat}
+Vzor repository
+
+\subsection{Zálohování dat}
+Jelikož asistent může strávit poměrně dost času sběrem dat a jejich přípravou pro klienta, je žádoucí chránit data před ztrátou,
+poškozením nebo pouze nechtěným smazáním či smazáním odinstalací aplikace. Aplikace tudíž obsahuje mechanismus pro zálohu všech
+dat a to nahraných cests poznámkami, upozorněními na změnu cesty, fotkami a nahrávkami.
+
+Pro fungující zálohování je nutné přiřadit uživateli identitu a tu rozpoznávat a ověřovat pro přiřazení případná zálohy,
+mít k dizpozici webové úložiště, komunikovat s ním a porovnávat informace z něj získané s aktuálními daty,
+což je poměrně komplexní úkol a vlastní implementace by
+vyžadovala vlastní server, hosting a zejména registraci uživatel, což by v případě mentálně postižených klientů
+přineslo další složitost do aplikace a nutilo by klienta pamatovat si další uživatelské jméno a heslo.
+
+Tento problém byl vyřešel využitím OAuth2\footnote{Více o OAuth2 se můžeme dozvědět v \cite{oauth2}}
+autorizace přes připojený Google účet na zařízení a API Google Drive nebo česky Disk,
+ které je součástí Google Play Services a na zařízení uživatele, který si naši aplikací stáhnul z obchodu Play,
+ jsou tato API k dispozici.
+V Google vývojářské konzoli je napřed nutné aktivovat využití Google Drive API pomocí jména balíčku aplikace a SHA-1 hashe
+certifikátu, kterým je podepsáno APK aplikace. Na stejném místě lze také nastavit popis, který se pro aplikaci
+uživateli zobrazí, když si prohlíží, které aplikace má ke svému Disku připojeny.
+Díky API Google Drive je odpovědnost synchronizace dat přesunuta na služby Googlu a pomocí
+OAuth2 se využívá existující účet, čímž se odstraňuje nutnost uživatele zakládat a pamatovat
+ další identitu a nám zcela eliminuje nutnost starat se o synchronizaci mezi zařízeními a správu jakýchkoliv účtů.
+ Uživatel musí při prvním vytvoření zálohy potvrdit, že souhlasí, aby naše aplikace používala jeho Disk.
+ API s tímto počítá a při pokusu o vytváření souborů při nutnosti autorizace sám nabídne ke zobrazení
+ dialog pro uživatele a následně vrátí výsledek, zda uživatel službu povolil.
+
+ Data záloh jsou ukládána do tzv. appfolderu\cite{driveappfolder}, což je privátní úložiště aplikace
+ a uživatel poté v nastavení svého Disku vidí,
+  která aplikace tuto službu využívá a kolik dat zabírá, nevidí však konkrétní data.
+  Uživatelův pohled po připojení aplikace a zálohování dat můžeme vidět na obrázku~\ref{fig:connecteddrive}.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.3]{img/connectedDrive.png}
+        \caption{Uložená data aplikace na Google Drive}
+        \label{fig:connecteddrive}
+        \centering Zdroj: \url{https://drive.google.com/drive/my-drive}
+\end{figure}
+
+\subsubsection{Záloha}
+Pro vytvoření zálohy bylo za účelem minimalizce závislosti na Google Drive API zvoleno vytvoření jediného
+dočasného ZIP souboru s databází a soubroy, který se následně uloží na Disk uživatele. Dočasný soubor se po
+vytvoření zálohy smaže a stejně tak předchozí zálohy na disku, pro omezení využívání příliš mnoha místa duplicitami,
+jelikož díky fotkám může být zálohový soubor poměrně velký. Diagram vytváření zálohy můžeme vidět na obrázku~\ref{fig:backup}.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.25]{img/backup.png}
+        \caption{Diagram vytváření zálohy}
+        \label{fig:backup}
+\end{figure}
+
+\subsubsection{Obnovení ze zálohy}
+Pokud uživatel požádá o obnovení ze zálohy, vyhledá se pomocí Drive API poslední ZIP soubor zálohy,
+rozbalí se do dočasného úložiště, soubory se přesunou do příslušných složek, uzavře se existující
+databázové připojení aplikace, nahradí se databázový soubor souborem ze zálohy a přípojení se znovu otevře.
+Uživatel může následně začít využívat obnovená data.
 
 \section{Závěr}
 
 
 \begin{thebibliography}{99}
+
+\bibitem{oauth2}{D. HARDT, ED.}
+\textit{The OAuth 2.0 Authorization Framework}. {Microsoft, 2012
+\newline(Dostupné na \url{https://tools.ietf.org/html/rfc6749})}
+
+\bibitem{driveappfolder}{GOOGLE}.
+\textit{Drive API for Android}. {Prosinec 2015,
+\newline(Dostupné na \url{https://developers.google.com/drive/android/appfolder})}
 
 \end{thebibliography}
 
