@@ -967,15 +967,17 @@ Nástroj byl použit pro vytváření use case diagramů a třídních diagramů
         \centering Zdroj: \url{http://www.draw.io}
 \end{figure}
 
-%\subsection{Podnadpis\footnote{Inspirace v \cite{saad}}}
 
 
 \section{Implementace}
 \subsection{Architektura}
-IoC, DI, RxJava, Robolectric Unit Testy
+TODO: IoC, DI, RxJava
+
+\subsection{Knihovny}
+TODO: Lombok, RetroLambda, Support Design, Google Play Services, butterkife, Timber, UniversalImageLoader, Okio
 
 \subsection{Ukládaní dat}
-Vzor repository
+Vzor repository, SQLite , DBFlow
 
 \subsection{Zálohování dat}
 Jelikož asistent může strávit poměrně dost času sběrem dat a jejich přípravou pro klienta, je žádoucí chránit data před ztrátou,
@@ -988,7 +990,7 @@ což je poměrně komplexní úkol a vlastní implementace by
 vyžadovala vlastní server, hosting a zejména registraci uživatel, což by v případě mentálně postižených klientů
 přineslo další složitost do aplikace a nutilo by klienta pamatovat si další uživatelské jméno a heslo.
 
-Tento problém byl vyřešel využitím OAuth2\footnote{Více o OAuth2 se můžeme dozvědět v \cite{oauth2}}
+Tento problém byl vyřešel využitím OAuth2\footnote{Více o OAuth2 se můžeme dozvědět v \cite{oauth2}.}
 autorizace přes připojený Google účet na zařízení a API Google Drive nebo česky Disk,
  které je součástí Google Play Services a na zařízení uživatele, který si naši aplikací stáhnul z obchodu Play,
  jsou tato API k dispozici.
@@ -1034,6 +1036,59 @@ rozbalí se do dočasného úložiště, soubory se přesunou do příslušných
 databázové připojení aplikace, nahradí se databázový soubor souborem ze zálohy a přípojení se znovu otevře.
 Uživatel může následně začít využívat obnovená data.
 
+\subsection{NFC (\textit{Near Field Communication})}
+NFC je bezdrátová technolgoie umožňující komunikaci dvou zařízení na velmi krátké vzdálenosti do 4 cm
+rychlostí do 424 kb/s.\cite{nfcforum}  Výměna dat může být aktivována pouhým přiblížením dvou zařízení k sobě
+a technologie podporuej zabezpečený přenos dat. Technologii spravuje organizace NFC Forum jejíž logo lze vidět
+na obrázku \ref{fig:nfcforumlogo} a její specifikaci lze nalézt v \cite{nfciso}.
+NFC dále implementuje specifikaci ISO/IEC 14443 A a B\cite{nfcforum}, což je standard používaný
+současnými platebními kartami a jinými čipy, jehož definici můžeme najít v \cite{rfidiso} a díky této
+implementaci je plně kompatibilní se současnými platebními termínály a systémy, což nabízí možnost využití zařízení
+podporujících NFC jako platebních čipů jelikoz oproti klasickým čipům může NFC zařízení uchovávat více informací
+a umožňuje například sloučení více platebních karet a bezpečnostních čipů dohromady do jednoho zařízení,
+v našem případě mobilního telefonu.
+
+Během posledních pár let se NFC stalo součástí výbavy mnoha chytrých telefonů a velká většina modelů
+už nyní tuto funkčnost podporuje a Android nabící ve svém API podporu pro NFC už od verze 2.3
+vydané v roce 2010 a vývojář je tedy odstíněn od všech nízkoúrovňových komunikačních protokolů.
+V naší aplikaci využijeme tzv. NFC tagů, což je malý vestavěný čip schopný pomocí NFC uchovat malé množství dat a
+následně touto technologií tyto data přečíst. Tagy se dají v současnosti koupit na internetu za desítky
+korun a mohodu být různých tvarů a barev.
+
+V aplikaci Asistenci Cestování bylo implementováno uložení URL s informací o nahrané cestě. Funkce
+pracující s s NFC jsou v aplikaci označeny jednotnou ikonou na obrázku \ref{fig:nfcicon},
+která je nejčastěji používána Android aplikacemi.
+ Pokud uživatel klepne na ikonu NFC při prohlížení detailu cesty, zobrazí se mu obrazovka s instrukcemi a po přiložení
+zapisoatelného NFC tagu je toto URL uložno do tagu spolu s informací, že právě naše aplikace umí toto URL
+rozpoznat. V Android Manifestu je následně definována aktivita s intent filtrem na akci \textit{NDEF\_DISCOVERED},
+což systému říká, že při objevení NFC tagu má zařadit naši aplikaci na seznam aplikací, které dokážou
+rozpoznat NFC tagy a spolu s námi zapsanou informací do tagu je to právě naše aplikace, která při přiložení
+tagu zprávu obdrží, dekóduje URL a podle jeho obsahu spustí navigaci nalezené cesty.
+
+Výsledkem je, že uživateli se při přiložení konkrétního tagu zobrazí připravená navigace pro danou
+cestu bez jakékoliv další akce, což značně zjednodušuje používání aplikace, jelikož jinak by pro spuštění navigace
+uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonku navigace. Nápadem
+ využití je přípevnění několika NFC tagů rozlišených barvami vedle dveří bytu klienta a při odchodu na
+ cestu uživatel spustí asistenci k cestě přiložením telefonu k požadované barvě.
+
+\begin{figure}[H]
+\begin{minipage}{.5\textwidth}
+\centering
+                \includegraphics[scale=0.4]{img/nfc-forum-logo.png}
+        \caption{Logo organizace NFC Forum}
+        \label{fig:nfcforumlogo}
+        \centering Zdroj: \url{http://nfc-forum.org/}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+\centering
+                \includegraphics[scale=0.07]{img/nfc-icon.png}
+        \caption{Ikona NFC}
+        \centering Zdroj: \url{https://materialdesignicons.com/}
+        \label{fig:nfcicon}
+    \end{minipage}
+\end{figure}
+
+
 \section{Závěr}
 
 
@@ -1046,6 +1101,20 @@ Uživatel může následně začít využívat obnovená data.
 \bibitem{driveappfolder}{GOOGLE}.
 \textit{Drive API for Android}. {Prosinec 2015,
 \newline(Dostupné na \url{https://developers.google.com/drive/android/appfolder})}
+
+\bibitem{nfcforum}{NFC FORUM}.
+\textit{About the Technology}. {2016,
+\newline(Dostupné na \url{http://nfc-forum.org/what-is-nfc/about-the-technology/})}
+
+\bibitem{nfciso}{ISO/IEC}.
+\textit{ISO/IEC 18092}. {2013,
+\newline(Dostupné na \url{https://www.iso.org/obp/ui/#iso:std:56692:en})}
+
+
+
+\bibitem{rfidiso}{OPEN PCD}.
+\textit{ISO14443}. {
+\newline(Dostupné na \url{http://www.openpcd.org/ISO14443/})}
 
 \end{thebibliography}
 
