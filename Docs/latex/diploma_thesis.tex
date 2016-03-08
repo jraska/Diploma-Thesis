@@ -970,10 +970,32 @@ Nástroj byl použit pro vytváření use case diagramů a třídních diagramů
 
 
 \section{Implementace}
+
+\subsection{Nástroje pro Vývoj}
+Android je v současné době nejpoužívanější mobilní operační systém a programuje pro něj obrovské
+množství vývojářů, kteří pro stále vyšší nároky na aplikace potřebují pracovat efektivně a Android SDK
+pro ně poskytuje celou řadu nástrojů, které jim mají usnadnit práci a zefektivnit vývoj.
+
+\subsubsection{Vývojové prostředí}
+Přesto, že první verze Andorid vyšla již před 10 lety, získal Android své vlastní vývojové prostředí, Android Studio,
+až v roce 2013 a na verzi 1.0 si vývojáři počkali až do konce roku 2014. Dříve býl vývoj řešen pluginy ve známých
+vývojovoých prostředích jako Eclipse, NetBeans a pozdějí IntelliJ IDEA od JetBrains. Právě poslední jmenované
+se časem stalo jedničkou a díky tomu, že existuje open source verze, posloužila IntelliJ jako základ pro Android Studio
+a dodnes se změny pro IntelliJ dostávají postupně do Android Studia a naopak, takže se vzájemně stále obohacují.
+
+S příchodem vlastního vývojového prostředí se vývoj značně zjednodušil a tým Andorid Studia neustále vylepšuje integraci s SDK,
+nástroji pro sestavení, neboli build projektu a pluginy, kterých je celá řada a ten hlavní je Android Gradle Plugin
+nad open source build systémem Gradle, umožňujícímu definici buildu v Groovy skriptech s možností využití Javy,
+ pomocí něhož se celý projekt sestavuje a vytváří se aplikace se všemi dílčími kroky, které jsou pro to potřeba.
+Pomocí Gradle pluginu se do procesu sestavení tyto kroky vloží, umožní se jejich konfigurace pomocí Gradle skriptů
+a Android Studio slouží pouze jako obálka nad běžícím Gradle buildem, kdy vývojové prostředí řeší pouze nápovědy vývojáři,
+napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však samotný build, který přenechává Gradlu.
+
+
 \subsection{Architektura}
 TODO: IoC, DI, RxJava
 
-\subsection{Knihovny}
+
 TODO: Lombok, RetroLambda, Support Design, Google Play Services, butterkife, Timber, UniversalImageLoader, Okio
 
 \subsection{Ukládaní dat}
