@@ -20,6 +20,7 @@
  \usepackage{nameref}
  \usepackage{caption}
  \usepackage{subcaption}
+ \usepackage{listings}
 
 
 
@@ -971,10 +972,10 @@ Nástroj byl použit pro vytváření use case diagramů a třídních diagramů
 
 \section{Implementace}
 
-\subsection{Nástroje pro Vývoj}
+\subsection{Použité nástroje pro vývoj}
 Android je v současné době nejpoužívanější mobilní operační systém a programuje pro něj obrovské
-množství vývojářů, kteří pro stále vyšší nároky na aplikace potřebují pracovat efektivně a Android SDK
-pro ně poskytuje celou řadu nástrojů, které jim mají usnadnit práci a zefektivnit vývoj.
+množství vývojářů, kteří pro stále vyšší nároky na aplikace potřebují pracovat efektivně a Android samotný
+a spoustu dalších společností pro ně poskytuje celou řadu nástrojů, které jim mají usnadnit práci a zefektivnit vývoj.
 
 \subsubsection{Vývojové prostředí}
 Přesto, že první verze Andorid vyšla již před 10 lety, získal Android své vlastní vývojové prostředí, Android Studio,
@@ -989,8 +990,89 @@ nad open source build systémem Gradle, umožňujícímu definici buildu v Groov
  pomocí něhož se celý projekt sestavuje a vytváří se aplikace se všemi dílčími kroky, které jsou pro to potřeba.
 Pomocí Gradle pluginu se do procesu sestavení tyto kroky vloží, umožní se jejich konfigurace pomocí Gradle skriptů
 a Android Studio slouží pouze jako obálka nad běžícím Gradle buildem, kdy vývojové prostředí řeší pouze nápovědy vývojáři,
-napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však samotný build, který přenechává Gradlu.
+napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však samotný build, který přenechává Gradlu a spuštění buildu
+ z příkazové řádky je naprosto ekvivalentní buildu ve vývojovém prostředí, což znamená velkou výhodu při sestavování aplikace
+ v cizích prostředích, například build serveru.
+ Gradle také poskytuje velice užitečný mechanismus jménem Gradle Wrapper, což je spustitelný Java jar archiv,
+ který je spolu s několika skripty uložen spolu s projektem a při spouštění buildu přes tyto skripty stáhne v rámci
+ buildu nakonfigurovanou distribuci Gradlu na spouštějící stanici. Při distribuci kódu tedy stačí pouze spustit
+ skript a vývojář se nemusí starta o jakoukoliv komplikovanou instalaci build systému.
 
+ \subsubsection{Verzování kódu}
+ Jako systém verzování byl použit Git, který je jeden z nejrozšířenějších verzovacích systémů a služba GitHub\url{https://github.com}.
+ podporuje zdarma hostování open source repozitářů s nabídkou mnoha služeb okolo, mimo jiné snadnou intergaci se službou
+ Travis CI, která byla použita pro průběžnou integraci projektu. Díky službě GitHub je zajištěno zálohování kódu
+ během vývoje a díky Gitu je vyřešeno verzování se všemi výhodami, které to s sebou přináší, jaok možnst vráti se
+ ke konkrétní verzi projektu, porovnávat a sledovat změny, případně vyvíjet několik funkcionalit nezávisle na sobě.
+ Dále bylo pomocí těchto nástorjů řešeno uzavírání verzí publikováno na Google Play, kdy byl pro každou verzi vytvořen
+ release, takže v případě, že se objeví problém u uživatele, jsme vždy schopní snadno dostat kód do stavu
+ ve kterém je u uživatele a snáze tak najít a vyřešit problém. Stránku projektu na GitHubu lze nalézt na
+ \url{https://github.com/jraska/Diploma-Thesis}.
+
+ \subsubsection{Průběžná intergace}
+ Díky hostování projektu na GitHubu bylo možné snadné využití službu Travis CI(\url{https://travis-ci.org}),
+ která se zaregistruje pro repozitář
+ a při každé změně spustí build celého projektu v uzavřeném prostředí, díky čemuž dokážeme okamžitě
+ odhalit jakékoliv problémy, které se na naší stanici nemusí projevit, nicméně mimo naše prostředí ano.
+ Služba stáhne veškerý kód z repozitáře, nakonfiguruje uzavřený virtuální kontejner, nainstaluje Javu, Android SDK,
+ případně další komponenty a spustí build projektu, v rámci něhož se spouští i unit testy. Služba se konfiguruje pomocí
+ soubor \texttt{travis.yml} v kořenovém adresáři repozitáře, v němž je specifikováno, že se projekt má sestavit jako Android projekt,
+ jaký software se do prostředí má před každým během nainstalovat a co se má stát v případě chyby. Travis CI po stažení
+ repozitáře tento soubor vyhledá a na základě jeho obsahu provede požadované akce.
+ Službu a historii buildů pro aplikaci Asistence cestování si můžeme prohléednou na \url{https://travis-ci.org/jraska/Diploma-Thesis}.
+
+ \subsubsection{Statická analýza kódu}
+
+\noindent
+ \textbf{Lint}
+
+
+ Pro analýzu kódu a odhalování potencionálních chyb, problémů a nepoužívaných souborů je používán Lint,
+  což je nástroj, který na projektu kontroluje dodržení sady poskytnutých pravidel a který
+  je již součástí build procesu Androidu. Během buildu se vytváří Lint Report
+  se všemi varováními a chybami, které byly v projektu nalezeny. Nástroj je konfigurovatelný pomocí
+  Gradle skirptů projektu, případně pomocí souboru \texttt{lint.xml}, pomocí něhož lze některé chyby
+  vynechat, případně změnit jejich prioritu například z chyby na varování.
+  Lint dokáže odhalit spoustu chyb jako třeba zapomenutí potvrzení při editaci nastavení uživatele,
+  nezavření databázového kurzoru, přítomnost nepoužitých obrázků v projektu a podobně.
+  Jeho další velkou výhodou je rozšiřitelnost, kde si každý může napsat vlastní Lint pravidla pro to, na co chce být upozorněn
+  a v případě knihoven začne Android Studio jejich pravidla automaticky používat a zvýrazňovat problémy uživateli
+  přímo v editoru.
+  Příkladem může být knihovna pro logování Timber, o které je řeč v sekci \ref{todo} a která pomocí Lint pravidel
+  kontroluje, zda je použita správně a dokáže tak předejít chybám za běhu.
+
+\noindent
+\textbf{Codacy}
+
+
+Dalším použitám nástrojem je služba Codacy(\url{https://www.codacy.com/}), což je ve své podstatě
+automatizována analýza kódu vyhledávající potenciální chyby a problémy, která se spustí po každé změně v kódu
+díky opět snadné integraci s GitHubem. Služba odhaluje problémy jako nepoužívaný kód, příliš složité
+třídy nebo metody, známé programátorské chyby či bezpečnostní rizika. Po analýze projekt oznámkuje podle
+množství nalezených problémů v poměru k množství analyzovaného kódu. Aktuální analýzu projektu si můžeme ptohlédnout
+na \url{https://www.codacy.com/app/josef-raska/Diploma-Thesis/dashboard}.
+
+\subsection{Použité knihovny}
+Jak již bylo zmíněno, Andorid používá velé množství vývojářů a pr jejich potřebu vzniklo velké množství
+z drivé většiny open source knihoven, které se snaží vyřešit a zjednodušit společný problém mnoha vývojářů
+a zesnadnit programování pro Android. Knihovny jsou díky tomu, že si může napsat knihovnu prakticky kdokoliv
+různých kvalit a je proto nutné si každou napřed prohlédnout před jejím použitím, nicméně díky jejich
+otevřenému kódu a hodnocením dalších uživatelů lze již nyní poměrně snadno najít spolehlivou knihovnu na téměř každý
+typický problém, který při vývoji aplikací nastává a pročtěním jejího kódu se ujisti, případně inspirovat,
+jak dělat danou věc správně.
+
+U některých knihoven je také zdůvodněno, proč jsou používýny a proč by používány být měly,
+neboť mnohé řeší velice časté problémy vývoje, příčiny nekvalitního kódu a je na nich založena
+architektura aplikace.
+
+\subsubsection{Android Support}
+Jedná se o základní knihovnu poskytovanou jako součást SDK, která řeší problémy komptibility aplikace
+mezi různými verzemi a sjednocuje jejich vzhled. Poskytuje také množství rozšiřujících komponent uživatelského rozhraní,
+pomocné třídy například pro notifikace, média a spoustu dalších. V současné době by měla být součástí každě
+aplikace a při vytáření nového projektu je k projektu již automaticky přidána.
+
+\subsubsection{Dagger 2}
+Knihovna
 
 \subsection{Architektura}
 TODO: IoC, DI, RxJava
