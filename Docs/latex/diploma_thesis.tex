@@ -48,6 +48,40 @@
 
 %\EnglishKeywords{Android, development}
 
+\renewcommand{\lstlistingname}{Ukázka kódu}
+\renewcommand{\lstlistlistingname}{List of ukázek kódu s}
+
+\usepackage{inconsolata}
+\lstset{ %
+%  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+%  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+%  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+%  commentstyle=\color{mygreen},    % comment style
+%  deletekeywords={...},            % if you want to delete keywords from the given language
+%  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+%  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Java,                 % the language of the code
+%  otherkeywords={*,...},           % if you want to add more keywords to the set
+ inputencoding=utf8,
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+%  numbersep=5pt,                   % how far the line-numbers are from the code
+%  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+%  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+%  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+%  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+%  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  literate={á}{{\'a}}1 {é}{{\'e}}1  {č}{{\'c}}1 {ý}{{\'y}}1 {í}{{\'i}}1 {ú}{{\'u}}1,
+%  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
 \title{Diplomová práce}
 \author{Josef Raška \(ras0029\)}
 \newtheorem{priklad}{Příklad}[section]
@@ -1120,6 +1154,48 @@ díky čemuž minimalizuje možné pády aplikace v případě nesprávného pou
 Dokumentaci a popis knihovny můžeme nalézt na \url{http://google.github.io/dagger/}.
 
 \subsubsection{RxAndroid}
+Jedná se o Android rozšíření známé knihovny RxJava, která implementuje reaktivní rozšíření
+mnohých programovacích jazyků sdružené pod projekt ReactiveX(\url{http://reactivex.io/}).
+Knihovna k Java implementaci pouze přidává vlastnosti specifické pro platformu Android a to konkrétně
+řešení spouštění metod v hlavním vlákně uživatelského rozhraní. Knihovna je založena na návrhovém
+vzoru Pozorovatel(Observer) a její záměr je implementovat reakce na události bez vědomí, kdy přesně
+událost nastane, ale s vědomím, že v tuto chvíly bude registrovaný pozorovatel na tuto událost
+upozorněn a zareaguje na ni. Knihovna nabízí spoustu metod, jak na události reagovat, shlukovat je do
+skupin, mapovat objekty výsledku na jiné, řeší příliš mnoho požadavků v jednom čase a spostu dalších vlastností.
+Jedná se o poměrně mocný nástroj, který nicméně vyžaduje nemálo času na nastudování, pochopení a v případě
+Android platformy platí, že s velkou sílou přichází velká zodpovědnost, jelikož při registrace pozorovatele
+se často v rámci registrace drží reference na aktivitu, což může v případě například rotace způsobit únik paměti,
+případně i pád aplikace v důsledku pokusu o aktualizaci uivatelského rozhraní, které v té době už nemusí být dostupné.
+
+RxAndroid navíc řeší další, pro Andorid velmi významný problém a tím je výběr vlákna, ve kterém se
+operace spouští. Jako hlavní vlákno totiž slouží vlákno uživatelského rozhraní, které by
+nemělo provádět žádné, byť je trochu náročné operace, neboť by se vše mělo stihnot během 16ms.\cite{perf}
+V aplikacích i knihovnách toto vede k obrovskému množství asynchronních zpětných volání, které mají různá jména,
+každá knihovna si je řeší po svém, není nad nimi kontrola a výsledkem je nepřehledný asynchronní kód,
+ve kterém se lze jen složitě orientovat. Díky RxAndroid a jejich implementaci plánovačů, lze rozhodnutí,
+na jakých vláknech bude operace spuštěna a na kterém vlákně bude doručen výsledek nechat na klientovi třídy
+a tím pádem například řetězit synchronní volání, pokud jsme již v asynchronním vlákně a zejména zajistit,
+že výsledek obržíme ve vlákně uživatelského rozhraní. Typická ukázka využití této vlastnosi
+lze vidět na ukázce kódu \ref{rxmainthreaddeliver}, kde se získá seznam cest, operace pro jeho získání,
+které jsou časově náročné se spustí v jiném vlákně a výsledek bude doručen na hlavní vlákno,
+kde spustí poskytnutou metodu.
+
+
+\begin{lstlisting}[label=rxmainthreaddeliver,caption=Reakce na událost v UI vlákně pomocí RxAndorid]
+    ...
+    routesRepository.selectAll()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::setRoutes);
+  }
+
+  void setRoutes(List<RouteData> routes) {...}
+\end{lstlisting}
+
+Výhody reaktivního porgramování můžeme ocenit i při testování, které je typicky s asynchronním
+rozhraním testované třídy problematické, nicméně díky RxAndroid volání \texttt{toBlocking()} vynutíme
+synchronní spuštění požadované operace, což nám výrazně zjednoduší testování.
+
 Knihovnu můžeme nalézt na \url{https://github.com/ReactiveX/RxAndroid}.
 
 \subsection{Architektura}
@@ -1246,6 +1322,12 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
 
 \begin{thebibliography}{99}
 
+
+
+\bibitem{perf}{SILLARS, DOUG}
+\textit{High Performance Android Apps}. {O'Reilly Media, Inc., 2015}
+\newline(Dostupné na \url{https://www.safaribooksonline.com/library/view/high-performance-android/9781491913994/)}
+
 \bibitem{oauth2}{D. HARDT, ED.}
 \textit{The OAuth 2.0 Authorization Framework}. {Microsoft, 2012
 \newline(Dostupné na \url{https://tools.ietf.org/html/rfc6749})}
@@ -1261,7 +1343,6 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
 \bibitem{nfciso}{ISO/IEC}.
 \textit{ISO/IEC 18092}. {2013,
 \newline(Dostupné na \url{https://www.iso.org/obp/ui/#iso:std:56692:en})}
-
 
 
 \bibitem{rfidiso}{OPEN PCD}.
