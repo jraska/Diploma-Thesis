@@ -259,8 +259,8 @@ public class RoutesListActivity extends BaseActivity
   }
 
   @DebugLog void refreshRoutes() {
-    TravelDataRepository service = _travelDataRepository;
-    service.selectAll()
+    TravelDataRepository routesRepository = _travelDataRepository;
+    routesRepository.selectAll()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(this::setRoutes);
