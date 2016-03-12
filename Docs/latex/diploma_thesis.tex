@@ -1092,7 +1092,7 @@ z drivé většiny open source knihoven, které se snaží vyřešit a zjednodu�
 a zesnadnit programování pro Android. Knihovny jsou díky tomu, že si může napsat knihovnu prakticky kdokoliv
 různých kvalit a je proto nutné si každou napřed prohlédnout před jejím použitím, nicméně díky jejich
 otevřenému kódu a hodnocením dalších uživatelů lze již nyní poměrně snadno najít spolehlivou knihovnu na téměř každý
-typický problém, který při vývoji aplikací nastává a pročtěním jejího kódu se ujisti, případně inspirovat,
+typický problém, který při vývoji aplikací nastává a pročtěním jejího kódu se ujistit, případně inspirovat,
 jak dělat danou věc správně.
 
 U některých knihoven je také zdůvodněno, proč jsou používány,
@@ -1237,6 +1237,37 @@ Ukázku odstranění anonymní třídy můžeme vidě na ukázce kódu \ref{user
 Knihovnu můžeme nalézt na \url{https://github.com/orfjackal/retrolambda}.
 
 \subsubsection{Lombok}
+Lombok je další z nástrojů který rozšiřuje jazyk Java, respektive se nás snaží ušetřit obvyklých
+ceremonií jako implemetace metod \texttt{equals, hashCode, toString}, implementaci přístupových
+metod k datům třídy a podobně. Moderní vývojová prostředí včetně Android Studia toto všeu umí
+vygenerovat, nicméně při každé úpravě třídy se musí myslet an to, že je třeba příslušné metody
+přegenerovat, aby zůstaly aktuální, což může vést k chybám.
+
+Lombok pomocí anotací u příslušné třídy vygeneruje během kompilace obvyklých metod a díky Lombok
+pluginu do Android Studia nám vývojové prostředí tyto generované metody automaticky nabízí a díky tomu,
+že se metody generují během každé kompilace, generované metody zůstanou vždy aktuální. Jednoduchá datová
+třída se dvěmi vlastnostmi z ukázky kódu \ref{lombokshowcase} se všemi korektně napsanými implementacemi
+metod objektu \texttt{equals, hashCode, toString} a přístupových metod má délku kolem 50 řádků, nicméně
+díky tomuto nástroji lze totožnou funkcionalitu napsat na řádky 4, jak vidíme na ukázce \ref{lombokshowcase},
+navíc s benefitem, že pro přidání další vlastnosti do všech metod stačí přidat pouze řádek vlastnosti
+a promítne se korektně do všech dříve zmíněných metod.
+
+\begin{lstlisting}[label=lombokshowcase,caption=Datová třída používající Lombok]
+   @lombok.Data
+   public class Position {
+     private double latitude;
+     private double longitude;
+   }
+\end{lstlisting}
+
+Nástroj navíc poskytuje další užitečné anotace, například \texttt{@Value} pro generování neměnitelných objektů
+bez přístupových metod, \texttt{@Builder} pro generování stavitelů objektů pro eliminaci konstruktorů s velkým
+počtem parametrů, případně \texttt{@SneakyThrows}, který nás zbavuje nutnosti obalovat kontrolované výjimky
+\texttt{try-catch} blokem případně výjímku propagovat do signatury metody a mnohé další.
+
+Stránky Lomboku můžeme nalézt na \url{https://projectlombok.org/}.
+
+
 
 \subsubsection{Google Play Services}
 
