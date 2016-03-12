@@ -986,6 +986,9 @@ klienta v době odeslání emailu.
 
 
 \subsection{Použité nástroje}
+\subsubsection{Trello}
+%TODO
+
 \subsubsection{draw.io (http://www.draw.io)}
 Online nástroj pro tvorbu grafů, všech různých typů diagramů, myšlenkových map a dalších.
 Celý editor běží pouze v prohlížeči a synchronizuje vytvářené grafy s připojeným úložištěm
@@ -1296,6 +1299,29 @@ používána v aplikaci, můžemi vidět na ukázce \ref{butterknife}.
 Knihovnu můžeme najít na \url{http://jakewharton.github.io/butterknife/}
 
 \subsubsection{DBFlow}
+Jedné se o knihovnu pro objektově relační mapování objektů pro databáze SQLite, které se v
+ Anoroidu používají jako výchozí. Práce s touto databází pomocí API Andoridu není
+ složitá, nicméně kód je poměrně zdlouhavý a pro přečtení nebo uložení objektu je potřeba
+ mnoho řádek kódu. Pro objektově relační mapování existuje mnoho knihoven, najít mezi nimi takovou,
+ která by vyhvěla všem požadavkům, je velice obtížné. Velká většina těchto knihoven využívá reflexi,
+ která svou časovou náročností může překonat i operace zápisu a čtení z databáze.
+ DBFlow se snaží tento problém řešit generací kódu pro čtení a zápis dat pomocí anotací nad objekty
+ a jejich vlastnostmi, následně jejich ukládání řeší pomocí adaptérů vygenerovaných pro každou anotovanou
+ třídu a SQL dotazy se píší pomocí generovaných metod a metod knihovny. DBFlow není také ideální
+  a nutí vývojáře používat jejich bázovou třídu pro mapované objekty, případně implementovat vlastní
+  adaptér a některé dtabázové vazby se pomocí anotací nedefinují nejlépe, nicméně pro nás projekt
+  knihovna zcela vyhovuje a vygenerovaný kód práce s databází se velice podobá tomu, který by vývojář
+  sám musel psát. Ukázka sestavování SQL dotazů pomocí DBFlow můžeme vidět na ukázce \ref{dbflowquery}.
+
+\begin{lstlisting}[label=dbflowquery,caption=Sestavování SQL dotazů s DBFlow]
+  RouteData select(long id){
+    return SQLite.select().from(RouteData.class)
+            .where(RouteData_Table._id.eq(id)).querySingle();
+  }
+\end{lstlisting}
+
+  Knihovnu můžeme najít na \url{https://github.com/Raizlabs/DBFlow}
+
 
 \subsubsection{Robolectric}
 
@@ -1314,9 +1340,6 @@ Knihovnu můžeme najít na \url{http://jakewharton.github.io/butterknife/}
 \end{itemize}
 
 \subsection{Architektura}
-
-
-TODO: Lombok, RetroLambda, Support Design, Google Play Services, butterkife, Timber, UniversalImageLoader, Okio
 
 \subsection{Ukládaní dat}
 Vzor repository, SQLite , DBFlow
@@ -1437,6 +1460,9 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
 \begin{thebibliography}{99}
 
 
+\bibitem{repository}{LALANDA, PHILLIPE}
+\textit{Shared repository pattern}. {Pattern Languages of Programs'98, 1998}
+\newline(Dostupné na \url{http://www.hillside.net/plop/plop98/final_submissions/P24.pdf)}
 
 \bibitem{perf}{SILLARS, DOUG}
 \textit{High Performance Android Apps}. {O'Reilly Media, Inc., 2015}
