@@ -70,7 +70,6 @@ dependencies {
   compile 'com.google.android.gms:play-services-location:8.4.0'
   compile 'com.google.android.gms:play-services-drive:8.4.0'
   compile 'com.jakewharton:butterknife:7.0.1'
-  compile 'de.hdodenhof:circleimageview:2.0.0'
   compile 'com.jakewharton.timber:timber:4.1.1'
   compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
   compile 'com.jraska:console:0.4.1'
