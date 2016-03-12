@@ -78,7 +78,7 @@
 %  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
 %  stringstyle=\color{mymauve},     % string literal style
   tabsize=2,	                   % sets default tabsize to 2 spaces
-  literate={á}{{\'a}}1 {é}{{\'e}}1  {č}{{\'c}}1 {ý}{{\'y}}1 {í}{{\'i}}1 {ú}{{\'u}}1,
+  literate={á}{{\'a}}1 {é}{{\'e}}1  {č}{{\'c}}1 {ý}{{\'y}}1 {í}{{\'i}}1 {ú}{{\'u}}1 {▼}{$\downarrow{}$}{1},
 %  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
@@ -1197,6 +1197,44 @@ rozhraním testované třídy problematické, nicméně díky RxAndroid volání
 synchronní spuštění požadované operace, což nám výrazně zjednoduší testování.
 
 Knihovnu můžeme nalézt na \url{https://github.com/ReactiveX/RxAndroid}.
+
+\subsubsection{Retrolambda}
+Lambda výrazy jsou mocným nástrojem a příjemnou pomůckou každého jazyka, který je podporuje a redukují
+často dlouhé bloky kódu do kratších, přehlednější funkcí. Jelikož Andorid kvůli zpětné
+kompatibilité podporuje pouze Javu 7
+\footnote{Vyjma \texttt{try-with-resources, které je podporováno až od verze Androidu 5.0.})}
+a lambda výrazy byly do Javy přidány až ve verzi 8, nemůže tyto funkce vývojář využívat,
+což vede často k velkému množství anonymních tříd pro zpětné volání mnoha metod, jako typicky klepnutí,
+vrácení načtených asynchronních dat nebo při registraci posluchače u výše zmíněné knihovny RxAndroid.
+Tyto anonymní třídy značně znempřehledňují kód a velmi často vedou také k únikům paměti,
+neboť anonymní třída drží implicitně referenci na instanci třídy, ve které je vytvářena, což je často
+aktivita nebo jiný objekt, který by měl být z paměti jinak odstraněn.
+
+Retrolambda umožňuje lambda funkce využít i v rámci kódu podporujícího pouze Javu 7,
+čímž Android vývojáří umožňuje zbavit se anonymních tříd a využít potenciálu lambda funkcí
+ve své aplikaci při zachování zpětné kompatibility s bytekódem Javy 7. Pro její využití je třeba
+nastavit kompilaci projektu na verzi Javy 8 a do Gradle skriptů přidat plugin knihovny. Použité
+lambda výrazy se během Java 8 kompilace přeloží do bytekódu, vyžadující její běhové prostředí,
+nicméně tento nástroj transformuje bytekód do instrukcí, které jsou dostupné v běhovém prostředí
+Javy 7 a pokud je to možné, provede další optimalizace pro ušetření vytváření instance objektu
+pro každé volání.
+
+Ukázku odstranění anonymní třídy můžeme vidě na ukázce kódu \ref{useretrolambda}.
+
+\begin{lstlisting}[label=useretrolambda,caption=Odstrnění kódu anonymní třídy pomocí knihovny Retrolambda]
+   saveButton.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+           save();
+         }
+       });
+
+            ▼                ▼
+
+  saveButton.setOnClickListener(v -> save());
+\end{lstlisting}
+
+Knihovnu můžeme nalézt na \url{https://github.com/orfjackal/retrolambda}.
 
 \subsection{Architektura}
 TODO: IoC, DI, RxJava
