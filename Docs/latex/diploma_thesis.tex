@@ -1280,6 +1280,20 @@ kompatibility, jako u vlastního SDK. \cite{gms}
 Přehled všech rozhraní lze nalézt na \url{https://developers.google.com/android/guides/overview}.
 
 \subsubsection{Butter Knife}
+Jedná se o knihovnu, která nás zbavuje dalších ceremonií Androidu nastavování posluchačů
+na události objektů uživatelského rozhraní, jako klepnutí, změnu textu a podobně. Knihovna pomocí
+anotací nad požadovanými metodami tyto posluchače a jejich nastavování generuje a my těmito anotacemi
+poze specifikujeme, co se má během dané události stát. Ukázku zobrazování nápovědu u obrázků, která je
+používána v aplikaci, můžemi vidět na ukázce \ref{butterknife}.
+
+\begin{lstlisting}[label=butterknife,caption=Použití knihovny Butter Knife]
+  @OnLongClick(R.id.navigate) boolean showContentDescription(View v){
+    return ViewUtils.showContentDescription(v);
+  }
+
+\end{lstlisting}
+
+Knihovnu můžeme najít na \url{http://jakewharton.github.io/butterknife/}
 
 \subsubsection{DBFlow}
 
