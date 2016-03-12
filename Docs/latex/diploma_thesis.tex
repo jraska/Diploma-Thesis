@@ -1065,7 +1065,7 @@ napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však
   což je nástroj, který v projektu kontroluje dodržení sady poskytnutých pravidel a který
   je již součástí build procesu Androidu. Během buildu se vytváří Lint Report
   se všemi varováními a chybami, které byly v projektu nalezeny. Nástroj je konfigurovatelný pomocí
-  Gradle skirptů projektu, případně pomocí souboru \texttt{lint.xml}, pomocí něhož lze některé chyby
+  Gradle skriptů projektu, případně souborem \texttt{lint.xml}, pomocí něhož lze některé chyby
   vynechat, případně změnit jejich prioritu například z chyby na varování.
   Lint dokáže odhalit spoustu chyb jako třeba zapomenutí potvrzení při editaci nastavení uživatele,
   nezavření databázového kurzoru, přítomnost nepoužitých obrázků v projektu a podobně.
@@ -1202,7 +1202,7 @@ Knihovnu můžeme nalézt na \url{https://github.com/ReactiveX/RxAndroid}.
 Lambda výrazy jsou mocným nástrojem a příjemnou pomůckou každého jazyka, který je podporuje a redukují
 často dlouhé bloky kódu do kratších, přehlednější funkcí. Jelikož Andorid kvůli zpětné
 kompatibilité podporuje pouze Javu 7
-\footnote{Vyjma \texttt{try-with-resources, které je podporováno až od verze Androidu 5.0.})}
+\footnote{Vyjma \texttt{try-with-resources}, které je podporováno až od verze Androidu 5.0.}
 a lambda výrazy byly do Javy přidány až ve verzi 8, nemůže tyto funkce vývojář využívat,
 což vede často k velkému množství anonymních tříd pro zpětné volání mnoha metod, jako typicky klepnutí,
 vrácení načtených asynchronních dat nebo při registraci posluchače u výše zmíněné knihovny RxAndroid.
@@ -1239,7 +1239,7 @@ Knihovnu můžeme nalézt na \url{https://github.com/orfjackal/retrolambda}.
 \subsubsection{Lombok}
 Lombok je další z nástrojů který rozšiřuje jazyk Java, respektive se nás snaží ušetřit obvyklých
 ceremonií jako implemetace metod \texttt{equals, hashCode, toString}, implementaci přístupových
-metod k datům třídy a podobně. Moderní vývojová prostředí včetně Android Studia toto všeu umí
+metod k datům třídy a podobně. Moderní vývojová prostředí včetně Android Studia toto vše umí
 vygenerovat, nicméně při každé úpravě třídy se musí myslet an to, že je třeba příslušné metody
 přegenerovat, aby zůstaly aktuální, což může vést k chybám.
 
@@ -1248,7 +1248,7 @@ pluginu do Android Studia nám vývojové prostředí tyto generované metody au
 že se metody generují během každé kompilace, generované metody zůstanou vždy aktuální. Jednoduchá datová
 třída se dvěmi vlastnostmi z ukázky kódu \ref{lombokshowcase} se všemi korektně napsanými implementacemi
 metod objektu \texttt{equals, hashCode, toString} a přístupových metod má délku kolem 50 řádků, nicméně
-díky tomuto nástroji lze totožnou funkcionalitu napsat na řádky 4, jak vidíme na ukázce \ref{lombokshowcase},
+díky tomuto nástroji lze totožnou funkcionalitu napsat jen na 5 řádků, jak vidíme na ukázce \ref{lombokshowcase},
 navíc s benefitem, že pro přidání další vlastnosti do všech metod stačí přidat pouze řádek vlastnosti
 a promítne se korektně do všech dříve zmíněných metod.
 
@@ -1267,9 +1267,17 @@ počtem parametrů, případně \texttt{@SneakyThrows}, který nás zbavuje nutn
 
 Stránky Lomboku můžeme nalézt na \url{https://projectlombok.org/}.
 
-
-
 \subsubsection{Google Play Services}
+Soubor knihoven od Googlu, které se snaží vývojáři řozšířit možnosti implementace všemi různými způsoby.
+Obsahuje například knihovny pro rozpoznávání obličeje a nálady, plánování úloh, podporu monetizace aplikace,
+mnohé další a také námi používané rozhraní na upozornění přiblížení se k určitému místu a také Google Drive API.
+
+Jedná se v podstatě o rozšiřující API celého frameworku, které by mělo být dostupné na každém zařízení, které
+obsahuje aplikaci obchodu Google Play a tudíž na všech zařízeních, kde je možné naší aplikaci stáhnout.
+Knihovna je zároveň přes aplikaci obchodu aktualizovaná a tudíž u ní nemusíme řešit problémy
+kompatibility, jako u vlastního SDK. \cite{gms}
+
+Přehled všech rozhraní lze nalézt na \url{https://developers.google.com/android/guides/overview}.
 
 \subsubsection{Butter Knife}
 
@@ -1423,6 +1431,11 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
 \bibitem{oauth2}{D. HARDT, ED.}
 \textit{The OAuth 2.0 Authorization Framework}. {Microsoft, 2012
 \newline(Dostupné na \url{https://tools.ietf.org/html/rfc6749})}
+
+\bibitem{gms}{GOOGLE}
+\textit{Overview of Google Play Services}. {Google, 2016
+\newline(Dostupné na \url{https://developers.google.com/android/guides/overview})}
+
 
 \bibitem{driveappfolder}{GOOGLE}.
 \textit{Drive API for Android}. {Prosinec 2015,
