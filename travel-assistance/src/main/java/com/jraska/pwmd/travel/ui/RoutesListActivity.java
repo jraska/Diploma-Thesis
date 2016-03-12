@@ -176,11 +176,6 @@ public class RoutesListActivity extends BaseActivity
     runOnUiThread(this::refreshRoutes);
   }
 
-  private void removeRoute(TravelDataRepository.RouteDeleteEvent routeDeleted) {
-    _routesAdapter.remove(routeDeleted._deletedRoute);
-    _routesAdapter.notifyDataSetChanged();
-  }
-
   private void checkNfcUsed(Intent intent) {
     checkNfcIntent(intent);
   }

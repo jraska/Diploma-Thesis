@@ -140,7 +140,7 @@ class BackupPackager {
   private void restoreFromFile(File tempBackupFile) throws IOException {
     Timber.v("Restoring backup from temp file %s", tempBackupFile);
 
-    ZipReader zipReader = new ZipReader(tempBackupFile);
+    ZipReader zipReader = ZipReader.create(tempBackupFile);
 
     // need to reinitialize db manager because underlying file changed
     Context context = FlowManager.getContext();

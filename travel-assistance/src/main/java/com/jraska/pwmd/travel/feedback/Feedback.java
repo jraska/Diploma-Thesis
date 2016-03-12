@@ -25,10 +25,10 @@ public class Feedback {
     _title = title;
 
     if (body == null) {
-      body = "";
+      _body = "";
+    } else {
+      _body = body;
     }
-
-    _body = body;
   }
 
   //endregion

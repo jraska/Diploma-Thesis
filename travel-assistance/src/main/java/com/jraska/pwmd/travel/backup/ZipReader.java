@@ -4,6 +4,7 @@ import okio.BufferedSink;
 import okio.BufferedSource;
 import timber.log.Timber;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,11 +19,11 @@ import static okio.Okio.*;
 /**
  * One shot helper object reader
  */
-class ZipReader {
+final class ZipReader implements Closeable{
   private final ZipFile _zipFile;
   private final List<? extends ZipEntry> _entries;
 
-  ZipReader(File file) throws IOException {
+  private ZipReader(File file) throws IOException {
     _zipFile = new ZipFile(file);
 
     _entries = Collections.list(_zipFile.entries());
@@ -40,8 +41,6 @@ class ZipReader {
   }
 
   void readToFile(String key, File intoFile) throws IOException {
-    InputStream inputStream = _zipFile.getInputStream(_zipFile.getEntry(key));
-
     if (intoFile.exists()) {
       Timber.v("File %s already exists, overwriting", intoFile.getName());
       if(!intoFile.delete()){
@@ -52,6 +51,8 @@ class ZipReader {
     if(!intoFile.createNewFile()){
       throw new IOException("Cannot create file " + intoFile);
     }
+
+    InputStream inputStream = _zipFile.getInputStream(_zipFile.getEntry(key));
 
     BufferedSource source = buffer(source(inputStream));
     BufferedSink sink = buffer(sink(intoFile));
@@ -67,7 +68,12 @@ class ZipReader {
     Timber.v("File %s wrote", intoFile.getName());
   }
 
-  void close() throws IOException {
+  @Override
+  public void close() throws IOException {
     _zipFile.close();
+  }
+
+  static ZipReader create(File tempBackupFile) throws IOException {
+    return new ZipReader(tempBackupFile);
   }
 }

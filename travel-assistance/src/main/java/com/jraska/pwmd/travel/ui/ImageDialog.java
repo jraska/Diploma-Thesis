@@ -48,7 +48,7 @@ public class ImageDialog extends DialogFragment {
   @Bind(R.id.dialog_image_img) ImageView _imageView;
   @Bind(R.id.dialog_image_caption) TextView _caption;
 
-  private ImageLoadingListener _imageLoadedListener = new ImageLoadingListener() {
+  private final ImageLoadingListener _imageLoadedListener = new ImageLoadingListener() {
     @Override public void onLoadingStarted(String imageUri, View view) {
     }
 

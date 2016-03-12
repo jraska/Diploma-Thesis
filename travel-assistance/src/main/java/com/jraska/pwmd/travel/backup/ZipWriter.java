@@ -8,9 +8,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * One show object for creating zip archives
+ * One shot object for creating zip archives
  */
-class ZipWriter implements Closeable {
+final class ZipWriter implements Closeable {
   private final ZipOutputStream _zipOutputStream;
   private final BufferedSink _zipSink;
 

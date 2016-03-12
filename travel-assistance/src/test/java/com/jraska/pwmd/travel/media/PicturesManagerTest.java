@@ -2,9 +2,6 @@ package com.jraska.pwmd.travel.media;
 
 import android.net.Uri;
 import com.jraska.BaseTest;
-import com.jraska.pwmd.travel.data.NoteSpec;
-import com.jraska.pwmd.travel.persistence.TravelDataRepository;
-import org.greenrobot.eventbus.EventBus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +10,6 @@ import java.io.File;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class PicturesManagerTest extends BaseTest {
 

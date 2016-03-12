@@ -31,7 +31,6 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import timber.log.Timber;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -168,7 +167,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   @Override
   public void onMapReady(GoogleMap googleMap) {
     _mapView = googleMap;
-    MapHelper.configureMap(googleMap);
+    configureMap(googleMap);
     if (_routeData != null) {
       displayRoute(_routeData);
     }
@@ -243,10 +242,11 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     PolylineOptions spLineOptions = getSPLineOptions(points);
     map.addPolyline(spLineOptions);
 
-    if(!_centered){
-    LatLng start = toGoogleLatLng(points.get(0));
-    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(start, ZOOM);
-    map.moveCamera(cameraUpdate);}
+    if (!_centered) {
+      LatLng start = toGoogleLatLng(points.get(0));
+      CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(start, ZOOM);
+      map.moveCamera(cameraUpdate);
+    }
 
     map.setOnMarkerClickListener(this);
   }

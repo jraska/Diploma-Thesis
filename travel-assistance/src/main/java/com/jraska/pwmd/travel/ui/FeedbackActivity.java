@@ -1,16 +1,13 @@
 package com.jraska.pwmd.travel.ui;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.feedback.Feedback;
-import com.jraska.pwmd.travel.help.EmailSender;
 
 public class FeedbackActivity extends BaseActivity {
 
