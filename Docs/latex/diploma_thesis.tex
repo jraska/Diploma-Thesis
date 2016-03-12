@@ -1324,6 +1324,21 @@ Jedné se o knihovnu pro objektově relační mapování objektů pro databáze 
 
 
 \subsubsection{Robolectric}
+Jednotkové testy využívající kód Androidu je poměrně zdlouhavé spouštět, neboť kód běží na
+zařízení a pro každé spuštění testu se musí sestavit nové testovací APK, nahrát na zařízení
+a až poté spustit testy. Pokud se programátor pokusí spustit testy na svém počítači s využitím
+SDK Androidu, obdrží při prvním použití výjimku, neboť SDK obsahuje pouze deklarace metod
+bez implementací a skutečné implementace jsou pouze na zařízení.
+
+Robolectric se snaží toto řešit pomocí emulace SDK Androidu na počítači a umožnit tak vývojáři
+testovat svůj kód bez nahrávání na zařízení a výrazně tak zrychlit testování. Robolectric
+používá tzv. stínové objekty pro všechny třídy SDK a pomocí nich lze emulovat systémové události,
+získavat systémové objekty a případně nahrazovat některé vlastní implementací pro simulaci
+určitých podmínek. Knihovna se vyvíjí už mnoho let a díky záměru simulovat celý framework je velmi
+rozsáhlá a zatím stále ne zcela dokonalá, nicméně se stala standardem pro testování Android kódu
+přímo na pracovní stanici.
+
+Knihovnu lze nalézt na \url{http://robolectric.org/}.
 
 \subsubsection{Další použité knihovny}
 \begin{itemize}
@@ -1334,9 +1349,6 @@ Jedné se o knihovnu pro objektově relační mapování objektů pro databáze 
   \item \textbf{JUnit 4} - Známý framewrok pro Java jednotkové testy. (\url{http://junit.org/})
   \item \textbf{AssertJ Android} - Pomocné aserce pro jednotkové testy. (\url{http://square.github.io/assertj-android/})
   \item \textbf{Mockito} - Mockovací knihovna pro jednotkové testy. (\url{http://mockito.org/})
-
-
-
 \end{itemize}
 
 \subsection{Architektura}
