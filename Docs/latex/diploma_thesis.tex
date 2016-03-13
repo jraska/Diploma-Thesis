@@ -1298,7 +1298,7 @@ používána v aplikaci, můžemi vidět na ukázce \ref{butterknife}.
 
 Knihovnu můžeme najít na \url{http://jakewharton.github.io/butterknife/}
 
-\subsubsection{DBFlow}
+\subsubsection{DBFlow}\label{dbflow}
 Jedné se o knihovnu pro objektově relační mapování objektů pro databáze SQLite, které se v
  Anoroidu používají jako výchozí. Práce s touto databází pomocí API Andoridu není
  složitá, nicméně kód je poměrně zdlouhavý a pro přečtení nebo uložení objektu je potřeba
@@ -1319,6 +1319,16 @@ Jedné se o knihovnu pro objektově relační mapování objektů pro databáze 
             .where(RouteData_Table._id.eq(id)).querySingle();
   }
 \end{lstlisting}
+
+  DBFlow nám také umožňuje přidávat adaptéry pro vlastní datové typu a tím nám umožnit uložit
+  typ do jednoho sloupce, kde by si bez adaptéru knihovna neuměla poradit. V aplikaci
+  tohoto využívámé pro uložení identifikátorů \texttt{UUID} a také objektů \texttt{LatLng},
+  které obsahují GPS souřadnice a adaptér je ukládá jako text oddělený čárkou.
+  Knihovna obsahuje také některé vestavěné adaptéry pro často potřebné objekty, například námi
+  také využívaný objekt \texttt{Date}.
+
+  Další podporovanou funkcí jsou migrace, kde se opět pouze anotacemi dá definovat třída,
+  která má migraci databáze na novou verzi převést.
 
   Knihovnu můžeme najít na \url{https://github.com/Raizlabs/DBFlow}
 
@@ -1354,7 +1364,56 @@ Knihovnu lze nalézt na \url{http://robolectric.org/}.
 \subsection{Architektura}
 
 \subsection{Ukládaní dat}
-Vzor repository, SQLite , DBFlow
+V naší aplikaci je potřeba ukládat zaznamenané souřadnice cesty, poznámky, fotky, změny dopravního
+prostředku, zvukové nahrávky a další pomoná data, jako názvy fotek a časy nahrání cesty. Pro tyto
+účely byla zvolena SQLite databáze, pro kterou Andorid poskytuje API, v kombinací se souborovými úložišti
+pro zvukové nahrávky a fotografie. Do databáze se uloží hlavní záznam nahrané cesty do tabulky \texttt{RouteData}
+s časy nahrání a názvem cesty, tabulka \texttt{DbPosition} obsahuje nahrané GPS souřadnice s vazbou
+na hlavní záznam cesty, tabulka \texttt{NoteSpec} poznámky ke konkrétnímu místu s případnými identifikátory
+souborů fotek nebo nahrávek a tabulka \texttt{TransportChangeSpec} informae o změně dopravního prostředku.
+ER diagram databázového schématu můžeme vidět na obrázku \ref{fig:db_er}. SQLite používá místo typických datových typů koncept afinit
+\cite{sqlitetypes}, kterých je 5 a to \texttt{INTEGER}, \texttt{TEXT}, \texttt{BLOB}, \texttt{REAL} a \texttt{NUMERIC}.
+Pro naše účely bylo potřeba pouze využít prvních dvou, neboť typ \texttt{INTEGER} může podle potřeby
+mít až 8 bytů\cite{sqlitetypes}, což nám bez problému umožňuje do něj uložit beze ztráty hodnoty typu
+\texttt{long} jazyka Java, kterou používáme pro naše hodnoty id.
+
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.2]{img/db_er.png}
+        \caption{ER diagram databázového schéma}
+        \label{fig:db_er}
+\end{figure}
+
+\subsubsection{Přístup k databázovým datům}
+Pro práci s databází byla využita knihovna DBFlow, popsaná v sekci \ref{dbflow}, díky které jsme pro vytvoření
+požadované databázové struktury pouze vytvořili třídy pro mapování, které jsme oanotovali příslušnými
+anotacemi knihovny. Ukládání dat pak probíhá přes tyto objekty a k nim vygenerované adaptéry.
+Pro přístup k datům byl použit vzor Repozitář\cite{repository}, díky kterému
+jsou všechny operace s daty prováděny přes jednu vrstvu a oddělují tak kód práce s daty od zbytku aplikace
+jedním rozhraním, za kterým se může nacházet námi implementovaná databázová vrstva, ale také lze toto
+pak snadno zaměnit za webovou službu, případně pouze čtení ze souboru.
+Bylo vytvořeno rozhraní \texttt{TravelDataRepository}, které můžeme vidět na obrázku \ref{fig:traveldatarepo},
+pro které existuje implementace pomocí DBFlow a objekt této implementace je pomocí vkládání závislostí vložen
+kdekoliv do aplikace, kde si o to některé třída zažádá, jelikož potřebuje přístup k datům.
+Rozhraní vrací všechny hodnoty jako \texttt{Observabe} a tím nechává na klientovi, aby se rozhodl, zda
+chce data načíst synchronně, asynchronně, případně umožňuje provést další operace.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.2]{img/repo.png}
+        \caption{Rozhraní pro přístup k datům aplikace}
+        \label{fig:traveldatarepo}
+\end{figure}
+
+\subsubsection{Přístup k souborovým datům}
+Jelikož aplikace vytváří i souborová data, je potřeba tato dat ukládat a provázat je s daty v databázi.
+Pro naše dva případny fotek a zvukových nahrávek u poznámek bylo použito vygenerování náhodného
+objektu \texttt{UUID} při vytváření souboru, soubor se následně v příslušném adresáři pro tento typ
+dat podle tohoto identifikátoru pojmenuje a hodnota identifikátoru se uloží do asociovaného sloupce
+v databázi. Při načítání dat se tak aplikace například pro obrázky pouze podívá, zda záznam obsahuje
+identifikátor obrázku a pomocí získaného identifikátoru získá z manažera obrázků přístup ke konkrétnímu
+souboru, který poté může zobrazit uživateli.
 
 \subsection{Zálohování dat}
 Jelikož asistent může strávit poměrně dost času sběrem dat a jejich přípravou pro klienta, je žádoucí chránit data před ztrátou,
@@ -1487,6 +1546,11 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
 \bibitem{gms}{GOOGLE}
 \textit{Overview of Google Play Services}. {Google, 2016
 \newline(Dostupné na \url{https://developers.google.com/android/guides/overview})}
+
+\bibitem{sqlitetypes}{SQLITE}
+\textit{Datatypes In SQLite Version 3}. {SQLite
+\newline(Dostupné na \url{https://www.sqlite.org/datatype3.html})}
+
 
 
 \bibitem{driveappfolder}{GOOGLE}.
