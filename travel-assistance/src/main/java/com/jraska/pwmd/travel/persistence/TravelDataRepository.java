@@ -15,7 +15,7 @@ public interface TravelDataRepository {
 
   Observable<RouteData> select(long id);
 
-  boolean routeExists(long id);
+  Observable<Boolean> routeExists(long id);
 
   Observable<Long> delete(RouteData routeData);
 

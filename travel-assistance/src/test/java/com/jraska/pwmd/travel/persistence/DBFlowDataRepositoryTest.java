@@ -116,6 +116,35 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     assertThat(updateRouteEventSubscriber._events).hasSize(1);
   }
 
+  @Test
+  public void whenExistsCalledOnNoRoute_thenReturnsFalse() throws Exception {
+    boolean exists = _repository.routeExists(1).toBlocking().first();
+    assertThat(exists).isFalse();
+  }
+
+  @Test
+  public void whenExistsCalledOnInsertedRoute_thenReturnsTrue() throws Exception {
+    RouteData routeData = createRouteData();
+
+    _repository.insertOrUpdate(routeData).toBlocking().first();
+    long id = routeData.getId();
+
+    boolean exists = _repository.routeExists(id).toBlocking().first();
+    assertThat(exists).isTrue();
+  }
+
+  @Test
+  public void whenExistsCalledOnDeletedRoute_thenReturnsFalse() throws Exception {
+    RouteData routeData = createRouteData();
+
+    _repository.insertOrUpdate(routeData).toBlocking().first();
+    long id = routeData.getId();
+    _repository.delete(routeData).toBlocking().first();
+
+    boolean exists = _repository.routeExists(id).toBlocking().first();
+    assertThat(exists).isFalse();
+  }
+
   //endregion
 
   //region Methods

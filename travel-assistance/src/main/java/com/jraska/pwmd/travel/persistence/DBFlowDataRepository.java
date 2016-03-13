@@ -38,14 +38,8 @@ public class DBFlowDataRepository implements TravelDataRepository {
     return Observable.fromCallable(() -> selectSync(id));
   }
 
-  @DebugLog
-  @Override public boolean routeExists(long id) {
-    if (id <= 0) {
-      return false;
-    }
-
-    return SQLite.select(Method.count()).from(RouteData.class)
-        .where(RouteData_Table._id.eq(id)).count() > 0;
+  @Override public Observable<Boolean> routeExists(long id) {
+    return Observable.fromCallable(() -> routeExistsSync(id));
   }
 
   @Override
@@ -80,6 +74,16 @@ public class DBFlowDataRepository implements TravelDataRepository {
   }
 
   @DebugLog
+  private boolean routeExistsSync(long id) {
+    if (id <= 0) {
+      return false;
+    }
+
+    return SQLite.select(Method.count()).from(RouteData.class)
+        .where(RouteData_Table._id.eq(id)).count() > 0;
+  }
+
+  @DebugLog
   private long deleteSync(RouteData routeData) {
     if (!routeData.exists()) {
       Timber.w("Trying to delete not existing route data title=%s", routeData.getTitle());
@@ -101,7 +105,7 @@ public class DBFlowDataRepository implements TravelDataRepository {
 
   private long insertOrUpdateSync(final RouteData routeData) {
     Object event;
-    if (routeExists(routeData.getId())) {
+    if (routeExistsSync(routeData.getId())) {
       event = new UpdatedRouteEvent(routeData);
     } else {
       event = new NewRouteEvent(routeData);

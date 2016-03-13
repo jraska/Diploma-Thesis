@@ -224,7 +224,7 @@ public class RoutesListActivity extends BaseActivity
       }
     }
 
-    return _travelDataRepository.routeExists(routeId);
+    return _travelDataRepository.routeExists(routeId).toBlocking().first();
   }
 
   private void startNavigation(long id) {
