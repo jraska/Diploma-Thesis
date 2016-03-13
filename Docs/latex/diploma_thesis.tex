@@ -1415,6 +1415,11 @@ v databázi. Při načítání dat se tak aplikace například pro obrázky pouz
 identifikátor obrázku a pomocí získaného identifikátoru získá z manažera obrázků přístup ke konkrétnímu
 souboru, který poté může zobrazit uživateli.
 
+\subsubsection{Ukládání nastavení}
+Pro uživatelská nastavení, jako například číslo asistenta nebo jeho email, je použit mechanismus Androidu
+\texttt{SharedPreferences}, který v našem případě pouze obalujeme naším objektem s přístupovými
+metodami pro konkrétní, námi používaná nastavení.
+
 \subsection{Zálohování dat}
 Jelikož asistent může strávit poměrně dost času sběrem dat a jejich přípravou pro klienta, je žádoucí chránit data před ztrátou,
 poškozením nebo pouze nechtěným smazáním či smazáním odinstalací aplikace. Aplikace tudíž obsahuje mechanismus pro zálohu všech
