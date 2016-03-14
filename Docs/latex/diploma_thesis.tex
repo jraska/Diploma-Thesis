@@ -106,6 +106,33 @@
 \section{Úvod}
 
 \section{Návrh aplikace}
+\subsection{Platforma Android}
+Systém Android byl poprvé vypuštěn do světa v roce 2008 v útrobách prvního zařízení T-Mobile~G1\cite{androidcentral}
+a díky své dostupnosti a otevřenému kódu rychle rozšířil a v současné době je to zcela jasně nejvíce využívaný mobilní
+operační systém, který se stále bouřlivě vyvíjí. Jeho otevřenost je zároveň pro vývojáře i jedním z jeho problémů,
+neboť výrobci si systém rádi upravují, v důsledku čehož se může aplikace na některých zařízeních chovat
+neočekávaně a často se lze setkat se situací, že určitá funkce aplikace nefunguj správně právě na
+jednom konkrétním typu zařízení.
+
+Díky své rozšířenosti a dostupnosti se platorma Android nabízí jako dobrá možnost pro implementaci
+aplikace na podporu cestování, neboť bude pro klienty snadno dostupná na zařízeních všech cenových
+kategorií, kam si je mohou stáhnout přes obchod Google Play, kde může být naše aplikace publikována.
+Systém nabízí podporu pro velké množství různých senzorů, které dnešní mobilní zařízení obsahují
+a tak je čtení dat z Akcelerometru nebo zaznamenávání GPS řešeno pouze voláním příslušných metod
+rozhraní frameworku. Během doby existence systému se objevilo také mnoho rozšiřujících knihoven
+pro zjednosušení práce programátora umožnění vývoj aplikace efektivněji. Naše aplikace se
+za pomoci těchto nástrojů pokusí zjednodušit mentálně postiženým klientům cestování po svých
+obvyklých cestách.
+
+\subsubsection{Základní komponenty aplikace}
+\textbf{AndroidManifest.xml} - Jedná se v o výpis všech veřejných informací, které potřebuje systém
+a také uživatel o aplikaci vědět. Android manifest obsahuje identifikátor aplikace, deklaruje všechny
+požadovaná povolení a podporované velikosti obrazovek zařízení, vyžadované funkce jako například přítomnost
+fotoaparátu, dále deklaruje podporované verze systému a v neposlední řadě také všechny hlavní komponenty
+aplikace, jako například aktivity a služby a tím definuje všechny vstupní body aplikace a podmínky
+jejich spuštění, které se v systému Andorid realizují záměry(\texttt{Intent}).
+
+
 \subsection{Popis aktérů}
 \begin{figure}[H]
         \centering
@@ -1535,6 +1562,10 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
 
 \begin{thebibliography}{99}
 
+
+\bibitem{androidcentral}{MOBILE NATIONS}
+\textit{Android History}. {Android Central, 2016}
+\newline(Dostupné na \url{http://www.androidcentral.com/android-history)}
 
 \bibitem{repository}{LALANDA, PHILLIPE}
 \textit{Shared repository pattern}. {Pattern Languages of Programs'98, 1998}
