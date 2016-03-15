@@ -124,14 +124,94 @@ pro zjednosušení práce programátora umožnění vývoj aplikace efektivněji
 za pomoci těchto nástrojů pokusí zjednodušit mentálně postiženým klientům cestování po svých
 obvyklých cestách.
 
-\subsubsection{Základní komponenty aplikace}
-\textbf{AndroidManifest.xml} - Jedná se v o výpis všech veřejných informací, které potřebuje systém
-a také uživatel o aplikaci vědět. Android manifest obsahuje identifikátor aplikace, deklaruje všechny
-požadovaná povolení a podporované velikosti obrazovek zařízení, vyžadované funkce jako například přítomnost
-fotoaparátu, dále deklaruje podporované verze systému a v neposlední řadě také všechny hlavní komponenty
-aplikace, jako například aktivity a služby a tím definuje všechny vstupní body aplikace a podmínky
-jejich spuštění, které se v systému Andorid realizují záměry(\texttt{Intent}).
+Systém Android poskytuje vývojáři několik základních komponent, z nichž námi používané detailněji popíšeme.
 
+\subsubsection{Záměr(\texttt{Intent})}
+Platforma Android byla vymýšlena tak, aby vývojář místo explicitního spouštění konkretní aplikace pro danou činniost
+raději popsal záměr, co by chtěl udělat a systém sám vyhodnotí, která aplikace se pro tento záměr nejlépe
+hodí. Touto cestou se systém snaží vytvořit prostředí mnoha aplikací, které spolu navzájem komunikují,
+aniž by jedna o druhé přimo věděly a pomocí záměrů tak snižujé vazby mezi komponentami. Záměr může mít
+textově popsanou obecnou akci, blíže specifikovanou kategorii, typ, mnoho dalších parametrů až po konkrétní
+jméno komponenty, která má záměr obdržet, Pomocí těchto nastavení systém vyhodnotí nejlepší komponentu,
+která má pro uživatele záměr vykonat. Při vyhodnocování záměrů systém využívá pro správný výběr
+ tzv. filtry záměrů(\texttt{IntentFilter}).
+
+Pokud chceme například odeslat email, nespouštíme emailovou aplikaci, ale vytvoříme záměr odeslat email
+s příslušnými parametry a tento záměr předáme systému, který ze seznamu nainstalovaných aplikací vybere
+ty, které dokážou náš email odelat a v případ více výsledků nechá uživatele vybrat, která z aplikací
+má záměr obdržet. Parametry záměru by v tomto případě byly předmět, adresát emailu a tak dále.
+
+Naopak pokud chceme v aplikaci spustit některou z našich aktivit, dáváme aplikaci pomocí třídy
+aktivity přesné jméno komponenty, kterou má spustit, nicméně samotnou aktivitu s jejím životním
+cyklem vytvoří systém, nikoliv vývojář sám.
+
+Pomocí záměru se předávají všemožné informace a může kromě zmíněných případu sloužit k vyvolání
+vzdálené akce, informace o systémové události nebo pouze pro přenos dat, které musí být vždy
+serializovatelné, neboť je tím umožněno systému záměr uchovat i v případě ukončení spouštěcího
+procesu a předávání záměrů mezi procesy.
+
+\subsubsection{AndroidManifest.xml}
+Jedná se v o výpis všech veřejných informací aplikace ve formátu XML, které systém
+a také uživatel potřebují o aplikaci vědět. Android manifest obsahuje identifikátor aplikace, deklaruje všechny
+požadovaná povolení, podporované velikosti obrazovek zařízení nebo vyžadované funkce jako například přítomnost
+fotoaparátu. Dále deklaruje podporované verze systému a v neposlední řadě také všechny hlavní komponenty
+aplikace, jako například aktivity a služby a tím definuje všechny vstupní body aplikace a podmínky
+jejich spuštění pomocí záměrů. Při publikování aplikace
+parsuje Google Play tento soubor pro zobrazení informací pro záznam v obchodě a podobně instalační služba
+systému Android, pro zobrazení ikony v seznamu aplikací a teké vytvoření uživatele podle identifikátoru
+aplikace a přiřazení přístupových práv pro konkrétní deklarovaná povolení.
+
+\subsubsection{Aktivity}
+Aktivita je komponenta aplikace, která obsahuje uživatelské rozhraní viditelné pro uživatele. Každá
+ používaná aktivita aplikace musí být definována v Android manifestu se svými podmínkami pro své
+ spuštění, neboli filtry záměrů(\texttt{IntentFilter}) a tím deklarovat vstupní místa do aplikace.
+ Nejčastěji je v aplikaci jedna aktivita figurující jako spouštěč(akce záměru \texttt{MAIN},
+ kategorie \texttt{LAUNCHER}), která se při
+  instalaci vyhledá a vytvoří se pro ní spouštěcí ikona v seznamu nainstalovaných aplikací, další
+  aktivity pak mohou mít explicitně definované vlastní filtry záměrů, případně nedefinovat žádný
+  a tedy mít implicitně definovaný filtr na jméno třídy aktivity v kontextu balíčku aplikace.
+
+ Třída aktivity, dědící ze systémové třídy \texttt{Activity},
+ poskytuje vývojáři API se svým životním cyklem, skrz který by mělo být reagováno na to, v jakém
+stavu se uživatelské rozhraní právě nachází. Pro akce při vytváření aktivity je používaná metoda
+\texttt{onCreate}, která se volá pro každou instanci aktivity právě jednou a mělo by se v ní připravit
+uživatelské rozhraní, získat přislušné služby a podobně. Aktivita je zobrazena uživateli po zavolání metody
+\texttt{onResume} a v této chvíli může uživatel intereagovat s uživatelským rozhraním. Pokud uživatel
+přechází do jiné aktivity, přepíná aplikace, zamyká obrazovka nebo jiným způsobem uživatel opouští uživatelské
+rozhraní, volá se metoda \texttt{onPause}. Pokud se zcela ukončuje používání konkrétní aktivity,
+volá se metoda \texttt{onDestroy}, kde by se měly uvolnit všechny zdroje.
+Celý životní cyklus aktivity můžeme vidět na obrázku \ref{fig:activitylyfecycle} a jedná se
+často o první diagram, který vývojář pro platformu Android vidí.
+Velmi častým problémem při vývoji je držení dat a podobných věci přimo v aktivitách,
+neboť ta může být kdykoliv zničena systémem, například
+pokud uživatel pouze otočí obrazovku a vyžaduje se v tu chvíli nové uživatelské rozhraní. Pokud v takové chvíle
+někdo drží stále na aktivitu referenci, zničená instance aktivity neí uvolněna z paměti a vzniká únik paměti.
+Tento problém se stal ve světě vývojářů Androidu tak častý, že přímo pro jeho prevenci byla vytvořena knihovna
+LeakCanary(\url{https://github.com/square/leakcanary}).
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.4]{img/basic-lifecycle.png}
+        \caption{Životní cyklus aktivity}
+        \label{fig:activitylyfecycle}
+        \centering Zdroj: \url{ http://developer.android.com/training/basics/activity-lifecycle/starting.html}
+\end{figure}
+
+\subsubsection{Služby}
+Služby jsou určeny pro operace, které nejsou viditelné uživateli, případně asynchronní operace, které se mají
+provést bez vazby na rozhraní. Služby mají také svůj životní cyklus, nicméně odlišný a jednodušší,
+než aktivity. Instance služeb ,dědících ze systémvé třídy \texttt{Service}, opět vytváří
+systém a spravuje je po dobu jejich existence,
+přičemž vývojář spouští služby záměry a pomocí nich jim předává také napřiklad data ke zpracování.
+Služby se stejně jako aktivity musí registrovat v Android manifestu a mohou být součástí veřejného
+rozhraní pro jiné aplikace. Pomocí deklarace v manifestu můžeme také definovat nový proces pro službu
+a ještě více tak oddělit její spuštění od naší aplikace.
+
+\subsubsection{Aplikace}
+Při spuštení aplikace se vytvoří právě jeden aplikační objekt, kde může vývojář inicializovat
+komponenty potřebné v celé aplikaci. Aplikace se opět deklaruje v manifestu jménem své třídy, která
+dědí ze systémové třídy \texttt{Application}.
+
+\subsection{Grafický návrh}
 
 \subsection{Popis aktérů}
 \begin{figure}[H]
@@ -1036,7 +1116,7 @@ Nástroj byl použit pro vytváření use case diagramů a třídních diagramů
 
 \section{Implementace}
 
-\subsection{Použité nástroje pro vývoj}
+\subsection{Nástroje použité pro vývoj}
 Android je v současné době nejpoužívanější mobilní operační systém a programuje pro něj obrovské
 množství vývojářů, kteří pro stále vyšší nároky na aplikace potřebují pracovat efektivně a Android samotný
 a spoustu dalších společností pro ně poskytuje celou řadu nástrojů, které jim mají usnadnit práci a zefektivnit vývoj.
