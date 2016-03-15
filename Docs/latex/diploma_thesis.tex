@@ -1470,6 +1470,31 @@ Knihovnu lze nalézt na \url{http://robolectric.org/}.
 
 \subsection{Architektura}
 
+\subsection{Volání o pomoc}
+Během cestování se klient může dostat do různých situací a naše aplikace by mu měla umožnit rychle se
+spojit se svým asistentem pro vyřešení problému, případně mu poslat zprávu. Asistent může v aplikaci nastavit své kontaktní
+údaje a aplikace může následně tyto údaje využít k rychlému kontaktování. Klepnutím ikony kontaktovat
+asistenta se klientovi zobrazí tlačítka s možnostmi.
+
+\subsubsection{Volání asistentovi}
+Pokud má uživatel v aplikaci uloženo číslo asistenta, po klepnutí na možnost volat se automaticky
+vytočí jeho číslo a spustí se vytáčení. Hovor je v tuto chvíli zpoplatněn jako jakýkoliv jiný hovor
+z telefonu uživatele.
+
+\subsubsection{Odeslání SMS}
+Pokud klient zvolí tuto možnost, vytvoří se SMS zpráva s textem, obsahující odkaz na Google mapy
+se zakódovaným ukazatelem na místo, kde se klient nacházel v odesílání zprávy. Asistent si tak po obdržení
+SMS zprávy může snadno zobrazit, kde se uživatel, který má problémy nachází. při vytváření a posílání zprávy
+dbá aplikace na t, aby zpráva neobsahovala více než 160 znaků a klient tak zaplatil pouze za jednu SMS.
+
+\subsubsection{Poslání emailu}
+Podobně jako při odesílání SMS je připravena zpráva s odkazem na Google mapy, která opět asistentovi
+umožní rychlý přístup k aktuální pozici uživatele. Vytvoří se záměr pro odeslání emailu s předvyplněnou
+adresou asistenta, pokud je tato adresa v nastavení a spustí se emailová aplikace na zařízení pro odeslání
+emailu z klientova emailového účtu. Spouštění emailové aplikace na zařízení nám umožňuje nepožadovat
+od uživatele jeho zabezpečovací údaje k emailové schránce, což by bylo pro uživatele velmi nepříjemné.
+
+
 \subsection{Ukládaní dat}
 V naší aplikaci je potřeba ukládat zaznamenané souřadnice cesty, poznámky, fotky, změny dopravního
 prostředku, zvukové nahrávky a další pomoná data, jako názvy fotek a časy nahrání cesty. Pro tyto
