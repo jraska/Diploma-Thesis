@@ -1232,7 +1232,7 @@ aplikace a při vytáření nového projektu je k projektu již automaticky při
 
 Dokumentaci knihovny můžeme najít na \url{http://developer.android.com/tools/support-library/index.html}.
 
-\subsubsection{Dagger 2 a vkládání závislostí}
+\subsubsection{Dagger 2 a vkládání závislostí}\label{dagger2}
 Poměrně nová knihovna spravovaná Googlem a uvolněná poprvé v srpnu 2015, která pro nás řeší tzv. vkládání
 závislostí(anglicky Dependecy Injection) do objektů,
 které tyto závislosti chtějí používat. Knihovna je použita za účelem zkvalitnění kódu a zlepšení testovatelnosti, jelikož
@@ -1278,7 +1278,7 @@ díky čemuž minimalizuje možné pády aplikace v případě nesprávného pou
 
 Dokumentaci a popis knihovny můžeme nalézt na \url{http://google.github.io/dagger/}.
 
-\subsubsection{RxAndroid}
+\subsubsection{RxAndroid}\label{rxandroid}
 Jedná se o Android rozšíření známé knihovny RxJava, která implementuje reaktivní rozšíření
 mnohých programovacích jazyků sdružené pod projekt ReactiveX(\url{http://reactivex.io/}).
 Knihovna k Java implementaci pouze přidává vlastnosti specifické pro platformu Android a to konkrétně
@@ -1455,7 +1455,7 @@ Jedné se o knihovnu pro objektově relační mapování objektů pro databáze 
   Knihovnu můžeme najít na \url{https://github.com/Raizlabs/DBFlow}
 
 
-\subsubsection{Robolectric}
+\subsubsection{Robolectric}\label{robolectric}
 Jednotkové testy využívající kód Androidu je poměrně zdlouhavé spouštět, neboť kód běží na
 zařízení a pro každé spuštění testu se musí sestavit nové testovací APK, nahrát na zařízení
 a až poté spustit testy. Pokud se programátor pokusí spustit testy na svém počítači s využitím
@@ -1484,6 +1484,37 @@ Knihovnu lze nalézt na \url{http://robolectric.org/}.
 \end{itemize}
 
 \subsection{Architektura}
+Android samotný se snaží uživateli nabízet implementaci Architektury MVC(Model-view-controller), kde
+každá akce rozhraní view směřuje na controller, který provede příslušou logiku, případnou komunikaci
+s modelem - vrstvou poskytující
+kde se dá aktivita považovat jako controller, třídy dědicí ze systémové třídy \texttt{View} která
+se umí vykreslovat na obrazovku jako view a jako model nabízí systém mechanizmus poskytovatel obsahu
+(\texttt{ContentProvider}), který umožňuje vytvořit v podstatě REST API nad SQLite databází.
+Zejména pro část modelu se však tato část často implementuje zcela jinak, neboť uživatel nemá tímto způsobem
+přímy přístup k databázi a poskytovatelé obsahu jsou tak často vhodní více pro komunikaci mezi aplikacemi,
+kterou přístup k datům založený na URL poskytovatele obsahu umožňuje. Ohledně rozdělení na View a Controller je opět
+v platformě několik nejasností z důvodu nekonzistence API mezi verzemi, kdy ve verzi Androidu 3.0 přibyly
+jako části aktivity fragmenty a u mnoha vestavěných tříd systému pro View vrstvu(například ListAdapter)
+provádí i sám systém logiku patřící mimo View vrstvu a tento vzor není tedy striktně dodžováno.
+Aktivita by navíc podle dokumentace měla sloužit více jako view, než controller, nicméně logika načítání
+modelu musí být velice často provázána s životním cyklem aktivity a toto úplné oddělení tedy není možné.
+
+Díky specifikům platformy existuje mnoho odlišných přístupů, které se snaží přizpůsobit
+tradiční architektury jako již popsaný Model-view-controller, případně podobný Model-view-viewmodel
+nebo Model-view-presenter a existuje mnoho projektů, která se snaží ukázat adaptaci těchto modelů
+pro Android.
+
+Architektura projektu byla tedy volena s přikloněním k MVC, vzhledem k menšímu rozsahu aplikace
+se však kladl větší důraz na následévání zámých principů SOLID, popsaných
+například v \cite{solid} a IoC(Inversion of Control), popsaných v \cite{ioc} spolu s vkládáním
+závislostí pomocí knihovny Dagger 2, kterou jsme blíže popisovali v sekci \ref{dagger2}.
+V projektu je na mnoha místech použito jednotkové testování pro podporu menší chybovosti v kódu
+za pomocí nástroje Robolectric popsaného v sekci \ref{robolectric}. Přístup k datům a tedy
+vrstva modelu je realizována s pomocí RxAndroid(sekce \ref{rxandroid}), kde se posytuje přístup
+controllerům k těmto datům pomocí popisovaných objektů \ref{Observable}. Controller, tedy aktivita
+pak publikuje tato data do vrstvy view, kde objekty view zobrazí příslušná data. Fragment v našem
+případě reprezentuje část view aktivity a je určen například k zobrazení nahrané cesty a všech informací,
+které k ní byly přidány.
 
 \subsection{Volání o pomoc}
 Během cestování se klient může dostat do různých situací a naše aplikace by mu měla umožnit rychle se
@@ -1686,6 +1717,16 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
 \bibitem{androidcentral}{MOBILE NATIONS}
 \textit{Android History}. {Android Central, 2016}
 \newline(Dostupné na \url{http://www.androidcentral.com/android-history)}
+
+
+\bibitem{ioc}{FOWLER, MARTIN}
+\textit{Inversion of Control Containers and the Dependency Injection pattern}. {Martin Fowler, 2004}
+\newline(Dostupné na \url{http://www.martinfowler.com/articles/injection.html)}
+
+
+\bibitem{solid}{OLORUNTOBA, SAMUEL}
+\textit{S.O.L.I.D: The First 5 Principles of Object Oriented Design}. {Scotch.io, 2015}
+\newline(Dostupné na \url{https://scotch.io/bar-talk/s-o-l-i-d-the-first-five-principles-of-object-oriented-design)}
 
 \bibitem{repository}{LALANDA, PHILLIPE}
 \textit{Shared repository pattern}. {Pattern Languages of Programs'98, 1998}
