@@ -212,6 +212,109 @@ komponenty potřebné v celé aplikaci. Aplikace se opět deklaruje v manifestu 
 dědí ze systémové třídy \texttt{Application}.
 
 \subsection{Grafický návrh}
+Cílem návrhu bylo používat v aplikaci konzistentní rozhraní a také jednoduchost všech uživatelských
+prvků pro snadné pochopení pro uživatele se specifickými nároky. Většina uživatelských prvků je tak
+realizována jako velká tlačítka, která při podržení prstu na prvku zobrazí jeho textový popis.
+Jako hlavní směr návrhu uživatelského rozhraní byl zvolen Material Design, neboť se jedná o aktuální
+doporučení pro mobilní aplikace a je v něm kladen velký důrazna jednoduchost a konzistenci,
+tedy naše požadavky. Velkou část této specifikace za nás řeí námi používaná knihovna Android Support,
+popsaná v sekci \ref{androidsupport}.
+
+\subsubsection{Material Design}
+Úplnou specifikaci Material designu, vydanou poprvé v roce 2015 lze nalézt v \cite{materialdesign}.
+Jedná se o detailní popis všech
+grafických prvků uživatelského rozhraní, které by měl vývojář používat, jejich chování, vzhled i vzájemnou
+ interakci. Jako hlavní cíl si klade vytvořit vizuální jazyk, spojující klasické principy dobrého designu
+  a nových možností moderních technologií a vyvinout systém spojující zkušenost uživatele na různých
+  platformách a velikostech obrazovek\cite{materialdesign}. Uživatelské rozhraní v duchu Material designu
+  by mělo uživateli lépe napovídat, co který prvek dělá, pomocí animací a směru efektů přibližovat
+  význam grafických komponent, případně pomocí stínů různých délek vytvářet iluzi uložení prvků
+  v prostoru a jejich seřazení podle důležitosti.
+
+  Material design používá ke specifikaci rozměrů
+  stejně jako systém Android jednotku \texttt{dp}, což znamená značí v angličtině "Device independent
+  pixel" a jedná se o jednotku, která je relativní vůči skutečnému rozlišení zařízení a jejím účelem
+  je zobrazení prvků uživatelského rozhraní v přibližně stejné reálné velikosti bez ohledu na skutečnou
+  hustotu pixelů obrazovky, které se zařazují do tříd hustoty a podle této třídy se rozhoduje,
+  kolik skutečných pixelů bude ve výsleku prvek zabírat. Tyto třídy jsou v současnosti
+  \texttt{ldpi}, \texttt{hdpi}, \texttt{tvdpi}, \texttt{hdpi}, \texttt{xhdpi}, \texttt{xxhdpi} a \texttt{xxxhdpi}.
+  Obdelník o šířce 100dp bude pak například v třídě rozlišení \texttt{ldpi} zabírat 75 pixelů(1dp = 0.75px),
+  nicméně na zařízení ve třídě \texttt{xxxhdpi} bude mít rozměr 400 pixelů(1dp = 4px).
+
+  Specifikace zavádí jako jednu ze svých hlavních prvků zavedení prostorové osy \textit{z} do
+  definice uživatelského rozhraní a nazývá tuto vlastnost uživatelských prvků vyvýšení(elevation)\cite{materialdesign}.
+  Tato vlastnost ovlivňuje nejvíce velikost stínu uživatelského prvku. Nejvyší vyvýšení(24dp)
+  mají modální dialogy, poté postranní menu(16dp) následují další komponenty, mezi nimiž jsou námi využivané
+  menu(8dp), vyjíždějící upozornění "Snackbar"(6dp), případně lišta menu rychlých akcí "App bar"(4dp)\cite{materialdesign}.
+  Specifikace přesně určuje chování pro každou komponentu a precizně tak vývojáře vede ke správné
+  implementaci uživatelských prvků.
+
+
+\subsubsection{Barvy}
+  Material design také poskytuje barvy, které by měly být v naší aplikaci použity jako dominatní v hlavních
+  uživatelských prvcích. Paletu barev můžeme nalézt na \url{https://www.google.com/design/spec/style/color.html}.
+  Pro naší aplikaci byla vybrána jako hlavní barvy odstíny barvy indiga, zdůrazňující barvou byla zvolena zelená.
+  Jako barvy textu byla vybrána čistě bíla pro nadpisy na hlavních barvách, lehce průhledná černá pro
+  primární text a šedá pro sekundární text. Jako barva pozadí těla byla ponechána výchozí lehce ztmavená bílá
+  barva. Popsané barvy s ukázkou můžeme vidět na obrázku \ref{fig:colorpalette}.
+
+  \begin{figure}[H]
+          \centering
+                  \includegraphics[scale=0.3]{img/colorpalette.png}
+          \caption{Hlavní barvy použité v aplikaci}
+          \label{fig:colorpalette}
+  \end{figure}
+
+\subsubsection{Ikony}
+Pro akce aplikace jsou používány ikony ve stylu Material designu, které jsou vždy ploché
+a snaží se co nejvýstižněji popsat akci, kterou provádí. Existuje již obrovské množství
+ikon a lze je nalézt například na \url{https://materialdesignicons.com/}, případně lze ikony
+importovat přímo v Android Studiu ze oficiálních zdrojů Material designu.
+
+V obou případech těchto ikon je licence použití Creative Common Attribution 4.0 International License (CC-BY 4.0)
+\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/4.0/}}, což znamená,
+že můžeme bez problému ikony zdarma použít, musíme pouze někde v aplikaci uvést, že tyto ikony
+používáme a v případě, že bychom si je upravili toto také uvést.
+Příklady používaných ikon můžeme vidět na obrázcích \ref{fig:record}, \ref{fig:camera} a \ref{fig:recordsound}.
+
+\begin{figure}[H]
+\minipage{0.32\textwidth}
+  \centering
+  \includegraphics[scale=0.2]{img/record.png}
+  \caption{Nahrávání cesty}\label{fig:record}
+\endminipage\hfill
+\minipage{0.32\textwidth}
+  \centering
+  \includegraphics[scale=0.2]{img/camera.png}
+  \caption{Fotoaparát}\label{fig:camera}
+\endminipage\hfill
+\minipage{0.32\textwidth}%
+  \centering
+  \includegraphics[scale=0.2]{img/recordsound.png}
+  \caption{Nahrávání zvuku}\label{fig:recordsound}
+\endminipage
+\end{figure}
+
+Obrázky je od verze Androidu 5 možné specifikovat ve vektorovém formátu a odpoadá tak dříve
+nutné vytváření mnoha verzí stejného obrázku pro každou třídu rozlišení.
+Z důvodu zpětné kompatibility pro verze nižší než 5 je přesto nutné tyto rastorvé verze obrázků
+vytvořit, nicméně vývojové nástorje již tento scénář předpokládají a tyto astrové verze jsou
+pro nižší verze systémy vygenerovány během kompilace, což značně zjednosdušuje údržbu obrázků.
+
+
+
+Pro další ikony loga aplikace a podobně byly použity zdroje ze služby
+Iconfinder\footnote{\url{https://www.iconfinder.com/}}, kde je licence pro použití také zdarma. V tomto
+případě se jedná a Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/3.0/}}, což je starší verze
+licence popsané výše a v praxi jsou pak podmínky použití ikon stejné.
+
+
+
+
+%  Rozměry
+
+%  Kliknutí
 
 \subsection{Popis aktérů}
 \begin{figure}[H]
@@ -1127,6 +1230,7 @@ Nástroj byl použit pro vytváření use case diagramů a třídních diagramů
     \end{minipage}
 \end{figure}
 
+\subsubsection{GIMP (https://www.gimp.org/)}
 
 
 \section{Implementace}
@@ -1224,7 +1328,7 @@ U některých knihoven je také zdůvodněno, proč jsou používány,
 neboť mnohé řeší velice časté problémy vývoje, příčiny problematického kódu a je na nich založena
 architektura aplikace.
 
-\subsubsection{Android Support}
+\subsubsection{Android Support}\label{androidsupport}
 Jedná se o základní knihovnu poskytovanou jako součást SDK, která řeší problémy komptibility aplikace
 mezi různými verzemi a sjednocuje jejich vzhled. Poskytuje také množství rozšiřujících komponent uživatelského rozhraní,
 pomocné třídy například pro notifikace, média a spoustu dalších. V současné době by měla být součástí každé
@@ -1716,6 +1820,10 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
 \bibitem{perf}{SILLARS, DOUG}
 \textit{High Performance Android Apps}. {O'Reilly Media, Inc., 2015}
 \newline(Dostupné na \url{https://www.safaribooksonline.com/library/view/high-performance-android/9781491913994/)}
+
+\bibitem{materialdesign}{GOOGLE}
+\textit{https://www.google.com/design/spec/material-design/}. {Google., 2015}
+\newline(Dostupné na \url{https://www.google.com/design/spec/material-design/)}
 
 \bibitem{androidcentral}{MOBILE NATIONS}
 \textit{Android History}. {Android Central, 2016}
