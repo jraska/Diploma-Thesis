@@ -1859,9 +1859,6 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
  využití je připevnění několika NFC tagů rozlišených barvami vedle dveří bytu klienta a při odchodu na
  cestu uživatel spustí asistenci k cestě přiložením telefonu k požadované barvě.
 
-
-\subsection{Publikování aplikace}
-
 \begin{figure}[H]
 \begin{minipage}{.5\textwidth}
 \centering
@@ -1877,6 +1874,44 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
         \centering Zdroj: \url{https://materialdesignicons.com/}
         \label{fig:nfcicon}
     \end{minipage}
+\end{figure}
+
+\subsection{Publikování aplikace}
+Pro publikování aplikace byl zvolen obchpd Google Play provozovaný Googlem, což je standardní způsob
+publikování Android aplikací. Google Play poskytuje bohaté rozhraní pro správu aplikací, statistiky
+instalovaných zařízení, verzí systému používajících naší aplikaci, reporting chyb a další. Posytuje také
+nástroje pro propagaci aplikace a v neposlední řadě správu verzí aplikace, grafiky a popisů
+vztahujících se k aplikaci. Naše aplikace je v tomto obchodě samořejmé přístupná zdarma, nicméně
+je možné publikovat placené aplikace, kde Google Play řeší distribuci do všech vybraných států a za služby
+prodeje si strhává provizi 30\%.
+
+Od nedávna obchod podporuje také otevřené alfa a beta testování, pro které lze uživatele zvát anonymně
+pouza za pomoci odkazu. Dříve bylo nutné zakládat vývojářské skupiny a přidávata do nich jmenovitě
+lidi, což bylo zdlouhavé a pracné. Po odeslání testovacího odkazu se obchod uživatele pouze zeptá,
+zda se chce stát testerem a může si následně stáhnout aplikaci, která je jinak pro veřejnost nepřístupná
+Pro původní testování aplikace je využit alfa kanál pouze pro úzký okruh uživatelů, následně následuje beta
+kanál pro širší testování a odhalení chyb, které stále nejsou mezi všemi uživateli, nicméně uživatelů je
+dost na to, aby se chyby projevily. Po tomto kroku následuje povýšení aplikace do produkce, kde je již
+veřejně přístupná a může si ji stáhnout i náhodný uživatel, který aplikaci v obchodě objeví. Ukázku
+vhledu publikování aplikace pro obchod Play můžeme vidět na obrázku \ref{fig:playconsole}.
+
+Existují také alternativní obchody, ze kterých si lze stáhnout aplikace, z nichž největší je obchod Amazonu,
+nicméně podíl těchto obchodů je minoritní a poku uživatel chce tyto alternativní obchody používat,
+musí na zařízení v nastavení povolit instalaci aplikací z neznámých zdrojů, což je značné bezpečnostní
+riziko. Dříve často diskutovaná chabá bezpečnost systému byla často zapříčiněna uživateli využívající
+tyto alternativní obchody, kde neexistovala verifikace uživatele nebo obsahu a mohl na ně prakicky
+kdokoliv nahrát škodlivou aplikaci zdarma tvářící se jako některá z populárních placených aplikací.
+
+Pro publikování na Google Play je nutné aplikaci podepsat produkčním certifikátem, který byl
+vygenerován s platností na 50 let a je uložen mimo systém správy verzí, jelikož se jedná o esenciální
+bezpečnostní prvek, neboť při jeho zcizení by nabyvatel mohl publikovat aplikaci se stejným podpisem
+jako naše aplikace a distribuovat tak škodlivý kód pod naším jménem.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.5]{img/playconsole.png}
+        \caption{Rozhraní publikování aplikace na Google Play}
+        \label{fig:playconsole}
 \end{figure}
 
 
