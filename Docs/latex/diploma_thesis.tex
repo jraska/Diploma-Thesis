@@ -286,19 +286,19 @@ Příklady používaných ikon můžeme vidět na obrázcích \ref{fig:record}, 
 \minipage{0.32\textwidth}
   \centering
   \includegraphics[scale=0.2]{img/camera.png}
-  \caption{Fotoaparát}\label{fig:camera}
+  \caption{Přídání fotky}\label{fig:camera}
 \endminipage\hfill
 \minipage{0.32\textwidth}%
   \centering
   \includegraphics[scale=0.2]{img/recordsound.png}
-  \caption{Nahrávání zvuku}\label{fig:recordsound}
+  \caption{Nahrání zvuku}\label{fig:recordsound}
 \endminipage
 \end{figure}
 
 Obrázky je od verze Androidu 5 možné specifikovat ve vektorovém formátu a odpoadá tak dříve
 nutné vytváření mnoha verzí stejného obrázku pro každou třídu rozlišení.
 Z důvodu zpětné kompatibility pro verze nižší než 5 je přesto nutné tyto rastorvé verze obrázků
-vytvořit, nicméně vývojové nástorje již tento scénář předpokládají a tyto astrové verze jsou
+vytvořit, nicméně vývojové nástroje již tento scénář předpokládají a tyto rastrové verze jsou
 pro nižší verze systémy vygenerovány během kompilace, což značně zjednosdušuje údržbu obrázků.
 
 
@@ -1645,6 +1645,71 @@ emailu z klientova emailového účtu. Spouštění emailové aplikace na zaří
 od uživatele jeho zabezpečovací údaje k emailové schránce, což by bylo pro uživatele velmi nepříjemné.
 
 
+
+\subsection{Nahrávání cesty}
+Během nahrávání cesty se sbírají GPS souřadnice bodů, kterými uživatel se zařízením prochází,
+k nim se přidávají další data jako fotografie, zvukové nahrávky poznámky,
+případně informace o změně dopravního prostředku. Tyto data mají vždy přiřazenou zaznamenanou
+GPS pozici, která později určí, kdy bude klient na tato data upozorněn.
+
+Při spuštění nahrávání se spustí služba pro nahrávání pozice, která zaregistruje
+posluchače na systémovou službu poskytující GPS souřadnice a při obdržení těchto souřadnic
+vyšle po aplikační sběrnici událostí událost o nové pozici. Na této sběrnici jsou v tuto chvíli
+registrvání všichni, kteří tuto informaci potřebují znát, což je v tuto chvíli uživatelské rozhraní
+zobrazující mapu a služba ukládající GPS souřadnice do seznamu, který je v případě, že se uživatel
+rozhodne cestu uložit uložen do databáze. Jako systémová sběrnice se používá knihovna EventBus a pro
+možnost registrovat posluchače na poskytovatele GPS souřadnic potřebuju naše aplikace povolení
+získávat lokaci zařízení.
+
+\subsubsection{Pořizování fotek}
+Během nahrávání cesty může uživatel pořizovat svým telefonem fotky, které by klientovi při asistenci
+cestování měly pomoci v orientaci a připomenout mu důležité body cesty. Při kliknutí na ikonku přidat
+fotografii se vytvoří záměr pořídit fotogtafii s místem požadovaného uložení, spustí se
+výchozí aplikace fotoaparátu na zařízení a o pořízení aplikace se nestará naše
+aplikace, nýbřž aplikace, na kterou je uživatel zvyklý. Pokud uživatel pořídí fotku a rozhodne se jí
+uložit, naše aplikace o tom obdrží zprávu, zobrazí se dialog, kde může uživatel fotografii pojmenovat,
+vytvoří se unikátní identifikátor fotografie a příslušný záznam asociovaný s nahrávanou cestou,
+přiřadí se mu aktuální pozice a v případě uložení cesty se tento záznam uloží spolu s cestou.
+
+Jelikož fotografie mohou zabírat poměrně velké množství paměti, vysílá se v případě mazání cesty po
+systémové sběrnici událost o mazání cesty na kterou čeká objekt promazávající všechny fotografie
+a zvukové nahrávky, asociované s touto cestou.
+
+\subsubsection{Pořizování zvukových nahrávek}
+Při nahrávání může uživatel pomocí mikrofonu svého zařízení pořídit zvukovou nahrávku, které se bude
+vztahovat k aktuálnímu místu, kde byla nahrávka pořízena a může klientovi poskytnout zvukovou
+informaci hlasem, který je mu známý a sdělit mu obsáhlejší informace, které by bylo zdlouhavé číst.
+Pokud uživatel klepne na tlačítko nahrávaní zvuku, spustí se obrazovka ukazující probíhající nahrávání
+a začne se zaznamenávat zvuk, dokud uživatel neklepne na tlačítko zastavit nebo nezmáčkne tlačítko zpět.
+V okamžiku otevření aplikace se vytvoří soubor, do kterého systémová služba pro nahrávání
+zvuku začne zapisovat zvuk ve formátu 3GP.
+Pokud uživatel ukončí nahrávání, může nahrávku pojmenovat a uložit. Té se následně přiřadí unikátní
+identifikátor asociovaný s uloženým souborem a nahrávané cestě se přiřadí záznam přiřazující tuto
+nahrávku dané cestě. V případě, že uživatel zvolí neukládat nahrávku, nahraný soubor se smaže.
+Podobně jako v případě fotek jsou při smazání cesty vyčištěny i nahrávky pro zamezení plýtvání místem
+na úložišti.
+
+\subsubsection{Přidávání poznámek}
+Kdykoliv během nahrávání může uživatel přidat textovou poznámku spojenou s aktuální polohou.
+ Poznámka se zadává do ialogového okna a je poté uložena s pozicí, ve které byla napsána.
+
+\subsubsection{Změna dopravního prostředku}
+Zvláště se dá uložit změna způsobu transportu uživatele a to klepnutím na tlačítko zobrazující
+aktuální dopravní prostředek. Pokud například uživatel jde na zastávku, má zobrazenou ikonu chodce,
+pokud nastoupí do tramvaje a klepne na ikonu chodce, zobrazí se mu nabídka pro změnu dopravního
+prostředku a klepnutím na ikonu tramvaje se tato změna uloží opět s vazbou an aktuální GPS polohu.
+Uživatel může k této informaci přidat také textový popis například s číslem tramvaje nebo jiné instukce.
+
+Změna dopravního prostředku je také místo pro budoucí vylepšení, neboť je možné pomocí akcelerometru
+zařízení a rozpoznávání statistických vlastností hodnot zaznamenaných akcelerometrem určit tuto informaci
+automaticky bez účasti uživatele. Knihovna Google Play Services také podporuje API, které se pokouší
+poskytnout uživateli tuto informaci.
+
+
+\subsection{Zobrazení cesty}
+
+Spline
+
 \subsection{Ukládaní dat}
 V naší aplikaci je potřeba ukládat zaznamenané souřadnice cesty, poznámky, fotky, změny dopravního
 prostředku, zvukové nahrávky a další pomocná data, jako názvy fotek a časy nahrání cesty. Pro tyto
@@ -1793,6 +1858,9 @@ cestu bez jakékoliv další akce, což značně zjednodušuje používání apl
 uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonku navigace. Nápadem
  využití je připevnění několika NFC tagů rozlišených barvami vedle dveří bytu klienta a při odchodu na
  cestu uživatel spustí asistenci k cestě přiložením telefonu k požadované barvě.
+
+
+\subsection{Publikování aplikace}
 
 \begin{figure}[H]
 \begin{minipage}{.5\textwidth}
