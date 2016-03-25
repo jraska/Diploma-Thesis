@@ -21,7 +21,7 @@ import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.jraska.pwmd.travel.media.PicturesManager;
 import com.jraska.pwmd.travel.util.CircleImageProcessor;
-import com.jraska.pwmd.travel.util.SplineCounter;
+import com.jraska.pwmd.travel.util.PathSmoother;
 import com.jraska.pwmd.travel.util.Stopwatch;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -49,7 +49,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   //region Fields
 
   @Inject PicturesManager _picturesManager;
-  @Inject SplineCounter _splineCounter;
+  @Inject PathSmoother _pathSmoother;
 
   private RouteData _routeData;
   private GoogleMap _mapView;
@@ -255,7 +255,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH)
         .color(Color.BLUE).visible(true);
 
-    com.jraska.pwmd.core.gps.LatLng[] spLinePoints = _splineCounter.calculateSpline(points);
+    com.jraska.pwmd.core.gps.LatLng[] spLinePoints = _pathSmoother.smoothPath(points);
 
     for (com.jraska.pwmd.core.gps.LatLng latLng : spLinePoints) {
       polylineOptions.add(toGoogleLatLng(latLng));

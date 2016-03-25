@@ -4,7 +4,7 @@ import com.jraska.BaseTest;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.persistence.DBFlowDataRepositoryTest;
-import com.jraska.pwmd.travel.util.SplineCounter;
+import com.jraska.pwmd.travel.util.PathSmoother;
 import org.assertj.core.util.Lists;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,7 +46,7 @@ public class NavigatorTest extends BaseTest {
   public void setUp() {
     _eventBus = new EventBus();
     _compass = mock(Compass.class);
-    _navigator = new Navigator(_eventBus, _compass, new SplineCounter());
+    _navigator = new Navigator(_eventBus, _compass, new PathSmoother());
     RouteData routeData = DBFlowDataRepositoryTest.createRouteData(TEST_PATH);
 
     _navigator.startNavigation(routeData);

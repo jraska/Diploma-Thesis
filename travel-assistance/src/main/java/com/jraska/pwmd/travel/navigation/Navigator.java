@@ -6,7 +6,7 @@ import com.jraska.common.ArgumentCheck;
 import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.core.gps.LatLng;
 import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.util.SplineCounter;
+import com.jraska.pwmd.travel.util.PathSmoother;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
@@ -29,7 +29,7 @@ public class Navigator {
 
   private final EventBus _eventBus;
   private final Compass _compass;
-  private final SplineCounter _splineCounter;
+  private final PathSmoother _pathSmoother;
 
   private float _lastBearing = UNKNOWN_BEARING;
 
@@ -45,14 +45,14 @@ public class Navigator {
   //region Constructors
 
   @Inject
-  public Navigator(EventBus eventBus, Compass compass, SplineCounter splineCounter) {
+  public Navigator(EventBus eventBus, Compass compass, PathSmoother pathSmoother) {
     ArgumentCheck.notNull(eventBus);
     ArgumentCheck.notNull(compass);
-    ArgumentCheck.notNull(splineCounter);
+    ArgumentCheck.notNull(pathSmoother);
 
     _eventBus = eventBus;
     _compass = compass;
-    _splineCounter = splineCounter;
+    _pathSmoother = pathSmoother;
   }
 
   //endregion
@@ -117,7 +117,7 @@ public class Navigator {
     }
 
     List<LatLng> path = _currentRoute.getPath();
-    path = Arrays.asList(_splineCounter.calculateSpline(path));
+    path = Arrays.asList(_pathSmoother.smoothPath(path));
     _closestLocationFinder = new ClosestLocationFinder(path);
     _routeCursor = new RouteCursor(_closestLocationFinder);
     _state = new ApproachingToRouteState();
@@ -158,9 +158,7 @@ public class Navigator {
   interface State {
     void onNewLocation(Location location);
 
-    State EMPTY = new State() {
-      @Override public void onNewLocation(Location location) {
-      }
+    State EMPTY = location -> {
     };
   }
 

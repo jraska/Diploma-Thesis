@@ -7,16 +7,16 @@ import javax.inject.Inject;
 import java.util.List;
 
 @PerApp
-public class SplineCounter {
+public class PathSmoother {
 
   private static final int MIN_REQUIRED_POINTS = 5;
 
   @Inject
-  public SplineCounter() {
+  public PathSmoother() {
   }
 
-  public LatLng[] calculateSpline(List<LatLng> latLngs) {
-    // Nonsense to do splines with just few points
+  public LatLng[] smoothPath(List<LatLng> latLngs) {
+    // Nonsense to do smallest squares with just few points
     if (latLngs.size() < MIN_REQUIRED_POINTS) {
       LatLng[] toReturn = new LatLng[latLngs.size()];
       for (int i = 0; i < latLngs.size(); i++) {
