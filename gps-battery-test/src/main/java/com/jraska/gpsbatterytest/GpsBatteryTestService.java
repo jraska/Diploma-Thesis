@@ -98,7 +98,7 @@ public class GpsBatteryTestService extends Service {
   }
 
   private void startBatteryLogging() {
-    _executor.scheduleAtFixedRate(new CheckBatteryRunnable(), 1, 5 * 60, TimeUnit.SECONDS);
+    _executor.scheduleAtFixedRate(new CheckBatteryRunnable(), 0, 5, TimeUnit.MINUTES);
   }
 
   private void stopBatteryLogging() {
