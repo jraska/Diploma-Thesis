@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,8 @@ public class ImageDialog extends DialogFragment {
   //region Constants
 
   public static final String DIALOG_TAG = ImageDialog.class.getSimpleName();
+  public static final long DURATION_INFINITE = Long.MAX_VALUE;
+
   private static final String ARG_IMAGE_ID = "imageId";
   private static final String ARG_CAPTION = "message";
   private static final String ARG_DURATION = "duration";
@@ -67,6 +70,10 @@ public class ImageDialog extends DialogFragment {
   //endregion
 
   //region Constructors
+
+  public static ImageDialog newInstance(UUID imageId, String message) {
+    return newInstance(imageId, message, DURATION_INFINITE);
+  }
 
   public static ImageDialog newInstance(UUID imageId, String message, long displayDuration) {
     ArgumentCheck.notNull(imageId);
@@ -157,6 +164,10 @@ public class ImageDialog extends DialogFragment {
     int height = size.y;
     imageView.setMaxWidth((width * 3) / 4);
     imageView.setMaxHeight((height * 4) / 5);
+  }
+
+  void show(AppCompatActivity appCompatActivity) {
+    show(appCompatActivity.getSupportFragmentManager(), DIALOG_TAG);
   }
 
   //endregion

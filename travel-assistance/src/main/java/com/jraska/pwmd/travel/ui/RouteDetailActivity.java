@@ -91,6 +91,11 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
       _soundsManager.play(noteSpec.getSoundId());
     }
 
+    if (noteSpec.getImageId() != null) {
+      ImageDialog dialog = ImageDialog.newInstance(noteSpec.getImageId(), noteSpec.getCaption());
+      dialog.show(this);
+    }
+
     return false;
   }
 

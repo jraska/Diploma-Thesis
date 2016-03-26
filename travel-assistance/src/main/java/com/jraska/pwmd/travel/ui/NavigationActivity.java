@@ -139,7 +139,7 @@ public class NavigationActivity extends BaseActivity {
       showSimpleSnackbar(noteSpec.getCaption());
     } else if (noteSpec.getImageId() != null) {
       ImageDialog imageDialog = ImageDialog.newInstance(noteSpec.getImageId(), noteSpec.getCaption(), 5_000);
-      imageDialog.show(getSupportFragmentManager(), ImageDialog.DIALOG_TAG);
+      imageDialog.show(this);
     } else {
       showSimpleSnackbar(noteSpec.getCaption());
     }
