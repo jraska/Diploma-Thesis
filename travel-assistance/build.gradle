@@ -9,8 +9,8 @@ android {
     minSdkVersion 16
     //noinspection OldTargetApi
     targetSdkVersion 22 //TODO: Permissions implementation
-    versionCode 7
-    versionName "0.2.2-alpha"
+    versionCode 8
+    versionName "0.2.3-alpha"
   }
 
   buildTypes {
