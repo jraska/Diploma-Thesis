@@ -15,7 +15,6 @@ import com.google.android.gms.maps.model.*;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
-import com.jraska.pwmd.travel.collection.CircularFifoQueue;
 import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
@@ -31,7 +30,6 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import timber.log.Timber;
 
 import javax.inject.Inject;
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,10 +58,6 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   private ImageSize _photoIconSize;
 
   private EventListener _eventListener;
-
-  private final CircularFifoQueue<Marker> _markers = new CircularFifoQueue<>(2);
-  private final DecimalFormat _latLngFormat = new DecimalFormat("#.#######");
-  private int _markerCounter;
   private boolean _centered;
 
   //endregion
@@ -183,25 +177,6 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
       CameraUpdate center = CameraUpdateFactory.newLatLng(toLatLng(location));
       _mapView.animateCamera(center);
     }
-  }
-
-  public void addLocationMarker(Location location) {
-    if (_mapView == null) {
-      return;
-    }
-
-    String title = "#" + ++_markerCounter + " " + _latLngFormat.format(location.getLatitude())
-        + ", " + _latLngFormat.format(location.getLongitude());
-    MarkerOptions markerOptions = new MarkerOptions().position(toGoogleLatLng(location))
-        .alpha(0.5f).title(title);
-    Marker marker = _mapView.addMarker(markerOptions);
-
-    if (_markers.isAtFullCapacity()) {
-      Marker toRemove = _markers.remove();
-      toRemove.remove();
-    }
-
-    _markers.add(marker);
   }
 
   public void displayRoute(@NonNull RouteData routeData) {
