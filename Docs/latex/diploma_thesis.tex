@@ -196,6 +196,20 @@ LeakCanary(\url{https://github.com/square/leakcanary}).
         \centering Zdroj: \url{ http://developer.android.com/training/basics/activity-lifecycle/starting.html}
 \end{figure}
 
+\subsubsection{Fragmenty}
+Fragmenty mohou být části uživatelského rozhraní aktivity nebo sloužit například pro předávání
+dat mezi instancemi stejné aktivity například při rotaci. Fragmenty mají s aktivitou svázaný stejný životní cyklus
+a všechny metody tohoto cyklu aktivity jsou provolávány do fragmentu. Jedna instance fragmentu
+může být předávána mezi instancemi více aktivit a fragment tak může sloužit jako idální komponenta
+v případě, kde potřebujeme mít logiku svázanou s životním cyklem aktivity, chceme však jistá data
+předat bezpečně mezi instancemi rotojící aktivity, případně pokud chceme určitou část uživatelského
+rozhraní udržet i při změně instance aktivity. Toto v aplikaci používáme například u map, kde pomocí
+držení mapy ve fragmentu předcházíme novému načtení mapy při rotaci a tudíž nežádoucímu probliknutí.
+Fragmenty byly představeny v Androidu verze 3 a zpočátku způsobily mnoho otázek a jejich správném využívání.
+V současnosti se doporučuje využít je hlavně pro dynamické zobrazování uživatelského rozhraní na
+zařízeních s různými obrazovkami\cite{androiddevelopers}, nicméně využií jako datový kontejner pro
+předávání mezi instancemi aktivity se používá také.
+
 \subsubsection{Služby}
 Služby jsou určeny pro operace, které nejsou viditelné uživateli, případně asynchronní operace, které se mají
 provést bez vazby na rozhraní. Služby mají také svůj životní cyklus, nicméně odlišný a jednodušší,
@@ -1691,7 +1705,7 @@ na úložišti.
 
 \subsubsection{Přidávání poznámek}
 Kdykoliv během nahrávání může uživatel přidat textovou poznámku spojenou s aktuální polohou.
- Poznámka se zadává do ialogového okna a je poté uložena s pozicí, ve které byla napsána.
+ Poznámka se zadává do dialogového okna a je poté uložena se zaznamenanou GPS pozicí, ve které byla napsána.
 
 \subsubsection{Změna dopravního prostředku}
 Zvláště se dá uložit změna způsobu transportu uživatele a to klepnutím na tlačítko zobrazující
@@ -1699,6 +1713,7 @@ aktuální dopravní prostředek. Pokud například uživatel jde na zastávku, 
 pokud nastoupí do tramvaje a klepne na ikonu chodce, zobrazí se mu nabídka pro změnu dopravního
 prostředku a klepnutím na ikonu tramvaje se tato změna uloží opět s vazbou an aktuální GPS polohu.
 Uživatel může k této informaci přidat také textový popis například s číslem tramvaje nebo jiné instukce.
+Tyto informace se uloží jako záznam do databáze s vazbou na nahrávanou cestu v místě, kde byl záznam pořízen.
 
 Změna dopravního prostředku je také místo pro budoucí vylepšení, neboť je možné pomocí akcelerometru
 zařízení a rozpoznávání statistických vlastností hodnot zaznamenaných akcelerometrem určit tuto informaci
@@ -1706,9 +1721,96 @@ automaticky bez účasti uživatele. Knihovna Google Play Services také podporu
 poskytnout uživateli tuto informaci.
 
 
-\subsection{Zobrazení cesty}
+\subsection{Zobrazení nahrané cesty}
+Nahranou cestu je možné uživateli na zařízení zobrazit a umožnit tak kontrolu a prohlížení dat.
+Pro zobrazení slouží fragment mapy ve kterém se zobrazí spojená čára propojující jednotlivé body.
+Vzhledem k nepřesnostecm a šumu při nahrávání však často vzniká velmi lomená čára a dojem z čáry
+na mapě není dobrý. Z tohoto důvodu byla implementováno vyhlazování čar pomocí prokládání polynomem
+metodou nejmenších čtverců, která vyhlazuje trasu pomocí rovnice
 
-Spline
+TODO doplnit s referencí a obrázky ukazující rozdíl.
+
+
+Na mapě jsou dále zobrazeny všechny další data nahraná při cestě. Fotky se nahrají jako miniatury do paměti,
+oříznou se a zobrazí se jako kruhový výřez nad místem, kde byla fotka pořízena.
+Velikost miniatury je zadána jako 48dp pro zachování přibližně stejné velikosti na všech zařízeních.
+Obrázky jsou nahrávány asynchronně pomocí knihovny Universal Image Loader a kruhové oříznutí se realizuje
+pomocí implementovaného pre-processoru knihovny, která nahranou bitmapu ořízne do kruhového tvaru.
+Při kliknutí na miniaturu fotky se opět asynchronně načte obrázek do dialogového okna,
+které zaplní celý displej zařízení s poloprůhledným pruhem, ve kterém je napsán uložený titulek fotky.
+
+Pro zvukové nahrávky a poznámky se zobrazí jednochuchá značka na mapě v místě, kde byla pořízena a při
+klepnutí na značku se pouze v malém dialogovém okně zobrazí popis a v případě přítomnosti nahrávky
+se načte z úložiště soubor nahrávky a spustí se. Pro změny cestování se v době zobrazování cesty do mapy
+zobrazí z výčtu miniatury ikon, příslušných k zaznamenaným dat§m z změně dopravního prostředku.
+
+\subsection{Asistence uživateli na cestě}
+Pokud uživatel spustí asistenci na cestě, spustí se aktivita navigace, která načte z uložených
+dat všechny informace, spustí GPS pro obdržení aktuální polohy a připráví vše, co je pro asistenci potřebné.
+Navádění uživatele je pravděpodobně nejkomplexnější proces aplikace, jehož hlavním řídícím prvkem
+je třída \texttt{NavigationActivity}, která
+pomocí svých závislostí řeší několik základních úloh, jako je načtení a zobrazování cesty s aktuální polohou uživateli,
+nabízení následujícího směru, přípravu událostí při přiblížení k místu, kde byl pořízen záznam a upozornění
+uživatele v případě přiblížení k těmto místům. Zjednodušený třídní diagram se závisostmi třídy \texttt{NavigationActivity}
+můžeme vidět na obrázku \ref{fig:navigationactivitydependencies}, který bude následně blíže popsán.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.2]{img/NavigationActivity.png}
+        \caption{Diagram závislostí řídící třídy asistence \texttt{NavigationActivity}}
+        \label{fig:navigationactivitydependencies}
+\end{figure}
+
+Řídící třída \texttt{NavigationActivity} dostává při svém spuštění jako parametr id cesty,
+pro níž má asistenci spustit. Pomocí \texttt{TravelDataRepository} načte asynchronně data k této třídě
+do paměti a provede všechny úkony potřebné pro asistenci.
+
+\subsubsection{Sledování polohy a nabízení směru}
+Třída \texttt{NavigationActivity} volá metodu \texttt{startTracking} instance třídy \texttt{TrackingManager}
+ta začne na sběrnici událostí \texttt{EventBus} publikovat události o nové poloze, vždy, když jí
+obdrží od systému.
+Instance třídy \texttt{Navigator} je na této systémové sběrnici registrována po zavolání metody \texttt{startNavigation}
+a reaguje na tyto události vyhledáváním nejbližšího uloženého bodu na nahrané cestě, ke kterému pomocí metody
+systémové třídy \texttt{Location} vypočítá směr(bearing),kterým by se uživatel měl vydat a který následně publikuje zpět do sběrnice
+ jako událost o požadovaném směru, na kterou reaguje \texttt{NavigationActivity} zavoláním metody \texttt{setRotation}
+ na instanci \texttt{View}, obsahující obrázek šipky ukazující daným směrem.
+
+Třída \texttt{Navigator} využívá k vyhledávání nejbližšího bodu návrhový vzor Stav(State), jelikož
+se uživatel při používání může nacházet ve dvou různých stavech. Diagram implementace vzoru můžeme vidět
+na obrázku \ref{fig:navigatorstate}. První je při počátku navigace,
+kdy se přibližuje k nahrané cestě(\texttt{ApproachingToRouteState}) a při obdržení události o nové
+GPS pozice se prohledají body cesty a najde se nejbližší, ke kterému se spočítá vzdálenost a pokud
+je vzdálenost menší, než zadaná hranice, vyhodnotí se, že je uživatel již na cestě a stav se přepne
+na \texttt{OnRouteState}.
+V tomto stavu se při obdržení nové GPS pozice spočítá podle směru cesty bod, který je nejbliže aktuální pozici,
+nicméně leží ve směru cestování. Opět se počítá vzdálenost k cestě a pokud překročí určitou hranici,
+přepne se \texttt{Navigator} zpět do stavu \texttt{ApproachingToRouteState} a začne uživatele vést zpět přímo k cestě.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.2]{img/NavigatorState.png}
+        \caption{Využití návrhového vzoru stav ve třídě \texttt{Navigator}}
+        \label{fig:navigatorstate}
+\end{figure}
+
+\subsubsection{Zobrazení cesty během asistence}
+Uživateli se podobně jako při prohlížení detailu cesty zobrazí mapa s vyznačenou nahranou cestou.
+Pro zobrazení těchto dat slouží fragment \texttt{RouteDisplayFragment}, který aplikuje vyhlazování cesty
+a zobrazí ji na mapě, která se s pohybem uživatele centruje podle jeho GPS pozice, jelikož
+\texttt{NavigationActivity} během pohybu obdrží událost o nové pozici a zavolá metodu fragmentu \texttt{centerMapTo}.
+
+\subsubsection{Upozornění na uložená data během cesty}
+Během spuštění asistence pro cestu se pomocí třídy \texttt{RouteEventsManager} připraví všechny události,
+které se budou během cestování spouštět. Využívá se pro to
+Geofencing API\footnote{Dokumentace na http://developer.android.com/training/location/geofencing.html}
+z knihovny Google Play Services, kde pomocí API knihovny připravíme události, které instalovaná knihovna
+na zařízení sama vyvolá, jakmile se přiblížíme k zadanému místu. V naší aplikaci se události knihovny
+při přiblížení k místům záznamů přeloží na události aplikace a přes systémovou sběrnici se publikují
+dále, kde na ně opět čeka třída \texttt{NavigationActivity}, která při obdržení události pomocí
+systémové služby \texttt{Vibrator} zavibruje zařízením, v případě fotky zobrazí pomocí třídy
+\texttt{ImageDialog} dialogové okno s fotkou, u poznánky dialogové okno s textem a u zvukové nahrávky
+nahrávku přehraje třída \texttt{SoundsManager}, která podle identifikátoru vyhledá nahrávku v úložišti
+a spustí ji.
 
 \subsection{Ukládaní dat}
 V naší aplikaci je potřeba ukládat zaznamenané souřadnice cesty, poznámky, fotky, změny dopravního
@@ -1766,6 +1868,7 @@ souboru, který poté může zobrazit uživateli.
 Pro uživatelská nastavení, jako například číslo asistenta nebo jeho email, je použit mechanismus Androidu
 \texttt{SharedPreferences}, který v našem případě pouze obalujeme naším objektem s přístupovými
 metodami pro konkrétní, námi používaná nastavení.
+
 
 \subsection{Zálohování dat}
 Jelikož asistent může strávit poměrně dost času sběrem dat a jejich přípravou pro klienta, je žádoucí chránit data před ztrátou,
@@ -1896,7 +1999,7 @@ veřejně přístupná a může si ji stáhnout i náhodný uživatel, který ap
 vhledu publikování aplikace pro obchod Play můžeme vidět na obrázku \ref{fig:playconsole}.
 
 Existují také alternativní obchody, ze kterých si lze stáhnout aplikace, z nichž největší je obchod Amazonu,
-nicméně podíl těchto obchodů je minoritní a poku uživatel chce tyto alternativní obchody používat,
+nicméně podíl těchto obchodů je minoritní a pokud uživatel chce tyto alternativní obchody používat,
 musí na zařízení v nastavení povolit instalaci aplikací z neznámých zdrojů, což je značné bezpečnostní
 riziko. Dříve často diskutovaná chabá bezpečnost systému byla často zapříčiněna uživateli využívající
 tyto alternativní obchody, kde neexistovala verifikace uživatele nebo obsahu a mohl na ně prakicky
@@ -1924,7 +2027,13 @@ jako naše aplikace a distribuovat tak škodlivý kód pod naším jménem.
 \textit{High Performance Android Apps}. {O'Reilly Media, Inc., 2015}
 \newline(Dostupné na \url{https://www.safaribooksonline.com/library/view/high-performance-android/9781491913994/)}
 
-\bibitem{materialdesign}{GOOGLE}
+\bibitem{androiddevelopers}{GOOGLE, INC.}
+\textit{Android API Guides}. {Google, 2016}
+\newline(Dostupné na \url{http://developer.android.com/guide/index.html)}
+
+
+
+\bibitem{materialdesign}{GOOGLE, INC.}
 \textit{https://www.google.com/design/spec/material-design/}. {Google., 2015}
 \newline(Dostupné na \url{https://www.google.com/design/spec/material-design/)}
 
@@ -1950,7 +2059,7 @@ jako naše aplikace a distribuovat tak škodlivý kód pod naším jménem.
 \textit{The OAuth 2.0 Authorization Framework}. {Microsoft, 2012
 \newline(Dostupné na \url{https://tools.ietf.org/html/rfc6749})}
 
-\bibitem{gms}{GOOGLE}
+\bibitem{gms}{GOOGLE, INC.}
 \textit{Overview of Google Play Services}. {Google, 2016
 \newline(Dostupné na \url{https://developers.google.com/android/guides/overview})}
 
@@ -1960,7 +2069,7 @@ jako naše aplikace a distribuovat tak škodlivý kód pod naším jménem.
 
 
 
-\bibitem{driveappfolder}{GOOGLE}.
+\bibitem{driveappfolder}{GOOGLE, INC.}.
 \textit{Drive API for Android}. {Prosinec 2015,
 \newline(Dostupné na \url{https://developers.google.com/drive/android/appfolder})}
 
