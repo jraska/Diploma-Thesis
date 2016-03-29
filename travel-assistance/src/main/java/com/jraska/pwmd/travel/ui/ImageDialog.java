@@ -79,7 +79,7 @@ public class ImageDialog extends DialogFragment {
     ArgumentCheck.notNull(imageId);
 
     if (displayDuration < 500) {
-      Timber.w("Displaying just blinking dialog for %d seconds is pointless.", displayDuration);
+      Timber.w("Displaying just blinking dialog for %d miliseconds is pointless.", displayDuration);
     }
 
     Bundle args = new Bundle();
