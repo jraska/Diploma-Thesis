@@ -4,6 +4,8 @@ import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.core.gps.LatLng;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @PerApp
@@ -15,15 +17,10 @@ public class PathSmoother {
   public PathSmoother() {
   }
 
-  public LatLng[] smoothPath(List<LatLng> latLngs) {
-    // Nonsense to do smallest squares with just few points
+  public List<LatLng> smoothPath(List<LatLng> latLngs) {
+    // Nonsense to do B-spline
     if (latLngs.size() < MIN_REQUIRED_POINTS) {
-      LatLng[] toReturn = new LatLng[latLngs.size()];
-      for (int i = 0; i < latLngs.size(); i++) {
-        toReturn[i] = latLngs.get(i);
-      }
-
-      return toReturn;
+      return new ArrayList<>(latLngs);
     }
 
     double[] lats = new double[latLngs.size()];
@@ -36,10 +33,12 @@ public class PathSmoother {
     }
 
     double t, ax, ay, bx, by, cx, cy, dx, dy, lat, lon;
-    LatLng points[] = new LatLng[lats.length - 2]; //start and end are added
-    points[0] = latLngs.get(0);
+    List<LatLng> points = new ArrayList<>();
 
-    for (int i = 2, pointIndex = 1; i < lats.length - 2; i++, pointIndex++) {
+    // Add first point to have exact start
+    points.add(latLngs.get(0));
+
+    for (int i = 2, pointIndex = 1, searchLength = lats.length - 1; i < searchLength; i++, pointIndex++) {
       for (t = 0; t < 1; t += 0.2) {
         ax = (-lats[i - 2] + 3 * lats[i - 1] - 3 * lats[i] + lats[i + 1]) / 6;
         ay = (-lons[i - 2] + 3 * lons[i - 1] - 3 * lons[i] + lons[i + 1]) / 6;
@@ -51,11 +50,12 @@ public class PathSmoother {
         dy = (lons[i - 2] + 4 * lons[i - 1] + lons[i]) / 6;
         lat = ax * Math.pow(t + 0.1, 3) + bx * Math.pow(t + 0.1, 2) + cx * (t + 0.1) + dx;
         lon = ay * Math.pow(t + 0.1, 3) + by * Math.pow(t + 0.1, 2) + cy * (t + 0.1) + dy;
-        points[pointIndex] = new LatLng(lat, lon);
+        points.add(new LatLng(lat, lon));
       }
     }
 
-    points[points.length - 1] = latLngs.get(latLngs.size() - 1);
+    // add last point as it is not included
+    points.add(latLngs.get(latLngs.size() - 1));
 
     return points;
   }

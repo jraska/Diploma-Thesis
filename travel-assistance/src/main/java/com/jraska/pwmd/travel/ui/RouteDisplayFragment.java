@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.model.LatLng;
 import com.jraska.common.ArgumentCheck;
+import com.jraska.pwmd.core.gps.*;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
@@ -230,7 +232,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH)
         .color(Color.BLUE).visible(true);
 
-    com.jraska.pwmd.core.gps.LatLng[] spLinePoints = _pathSmoother.smoothPath(points);
+    List<com.jraska.pwmd.core.gps.LatLng> spLinePoints = _pathSmoother.smoothPath(points);
 
     for (com.jraska.pwmd.core.gps.LatLng latLng : spLinePoints) {
       polylineOptions.add(toGoogleLatLng(latLng));

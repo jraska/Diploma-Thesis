@@ -117,7 +117,7 @@ public class Navigator {
     }
 
     List<LatLng> path = _currentRoute.getPath();
-    path = Arrays.asList(_pathSmoother.smoothPath(path));
+    path = _pathSmoother.smoothPath(path);
     _closestLocationFinder = new ClosestLocationFinder(path);
     _routeCursor = new RouteCursor(_closestLocationFinder);
     _state = new ApproachingToRouteState();
