@@ -214,8 +214,8 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
 
     GoogleMap map = _mapView;
 
-    PolylineOptions spLineOptions = getSPLineOptions(points);
-    map.addPolyline(spLineOptions);
+    PolylineOptions polylineOptions = getPolylineOptions(points);
+    map.addPolyline(polylineOptions);
 
     if (!_centered) {
       LatLng start = toGoogleLatLng(points.get(0));
@@ -226,7 +226,7 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     map.setOnMarkerClickListener(this);
   }
 
-  private PolylineOptions getSPLineOptions(List<com.jraska.pwmd.core.gps.LatLng> points) {
+  private PolylineOptions getPolylineOptions(List<com.jraska.pwmd.core.gps.LatLng> points) {
     PolylineOptions polylineOptions = new PolylineOptions().width(ROUTE_WIDTH)
         .color(Color.BLUE).visible(true);
 
