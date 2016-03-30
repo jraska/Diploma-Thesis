@@ -1,5 +1,6 @@
 package com.jraska.gpsbatterytest;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 public class GpsBatteryTestService extends Service {
   //region Constants
 
+  public static final String LOCATION_LOGGING_EXTRA_KEY = "logLocation";
   protected static final int ID = 82791; //random number
 
   //endregion
@@ -60,14 +62,18 @@ public class GpsBatteryTestService extends Service {
 
     _logger = createLogger();
 
-    startLocationLogging();
-    startBatteryLogging();
-
     _systemBus.register(this);
   }
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
+    if (intent.getBooleanExtra(LOCATION_LOGGING_EXTRA_KEY, true)) {
+      startLocationLogging();
+    }
+
+
+    startBatteryLogging();
+
     return START_STICKY;
   }
 
@@ -106,15 +112,11 @@ public class GpsBatteryTestService extends Service {
   }
 
   private void startLocationLogging() {
-    final LocationService locationService = _locationService;
-
-    locationService.startTracking(new LocationSettings(5, 5));
+    _locationService.startTracking(new LocationSettings(5, 5));
   }
 
   private void stopLocationLogging() {
-    final LocationService locationService = _locationService;
-
-    locationService.stopTracking();
+    _locationService.stopTracking();
   }
 
   protected Logger createLogger() {
@@ -156,6 +158,26 @@ public class GpsBatteryTestService extends Service {
     builder.setContentIntent(pendingIntent);
 
     return builder.build();
+  }
+
+  static void start(Activity fromActivity) {
+    start(fromActivity, true);
+  }
+
+  static void startNoGps(Activity fromActivity) {
+    start(fromActivity, false);
+  }
+
+  private static void start(Activity fromActivity, boolean logGps) {
+    Intent intent = new Intent(fromActivity, GpsBatteryTestService.class);
+    intent.putExtra(LOCATION_LOGGING_EXTRA_KEY, logGps);
+
+    fromActivity.startService(intent);
+  }
+
+  static void stop(Activity fromActivity) {
+    Intent intent = new Intent(fromActivity, GpsBatteryTestService.class);
+    fromActivity.stopService(intent);
   }
 
   //endregion
