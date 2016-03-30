@@ -14,6 +14,7 @@
 \usepackage[stable]{footmisc}
 \usepackage{hyperref}
 \usepackage{amsfonts}
+\usepackage{amsmath}
  \usepackage{bbm}
  \usepackage{booktabs}
  \usepackage{url}
@@ -1724,12 +1725,32 @@ poskytnout uživateli tuto informaci.
 \subsection{Zobrazení nahrané cesty}
 Nahranou cestu je možné uživateli na zařízení zobrazit a umožnit tak kontrolu a prohlížení dat.
 Pro zobrazení slouží fragment mapy ve kterém se zobrazí spojená čára propojující jednotlivé body.
-Vzhledem k nepřesnostecm a šumu při nahrávání však často vzniká velmi lomená čára a dojem z čáry
-na mapě není dobrý. Z tohoto důvodu byla implementováno vyhlazování čar pomocí prokládání polynomem
-metodou nejmenších čtverců, která vyhlazuje trasu pomocí rovnice
+Vzhledem k nepřesnostecm a šumu při nahrávání však jako cesta často vzniká velmi lomená čára a dojem z vykreslení
+na mapě není dobrý. Z tohoto důvodu byla implementováno vyhlazování čar pomocí prokládání aproximační
+B-spline křivkou, algoritmem inspirovaným v \cite{bspline}. B-spline křivka je počítána podle
+rovnice \ref{eq:bspline}, kde je výsledná křivka vytvořena vždy podle 4 sousedních bodů $P_0$, $P_1$,
+$P_2$ a $P_3$.
 
-TODO doplnit s referencí a obrázky ukazující rozdíl.
+\begin{equation}
+B(t)=\frac{(-P_0 + 3P_1 - 3P_2 + P_3)t^3}{6} + \frac{(P_0 - 2P_1 + P_2)t^2}{2} + \frac{(-P_0 + P_2)t}{2} + \frac{(P_0 + 4P_1 + P_2)}{6}
+\label{eq:bspline}
+\end{equation}
+\centerline{Zdroj v \cite{bspline}}
+\vspace{0.2cm}
 
+
+Rovnice \ref{eq:bspline} se aplikuje zvlášť na GPS souřadnice zeměpisné šířky a délky s krokem $dt = 0.2$,
+ což znamená, že ke každému bodu nám vznikne místo jednoho pět aproximací s okolními body a výsledná
+ vykreslená čára je poté hladší, jak můžeme vidět na obrázku \ref{fig:splinediff}, kde je žlutou barvou
+ vykreslena čára hrubých dat, uložených u nahrané cesty a modrou barvou je vykreslena čára s aplikovanou
+ B-spline aproximací. Jak můžeme vidět, aproximace vyhladila ostré okraje zejména u změn směru.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.3]{img/screen/bsplineapplied.png}
+        \caption{Vyhlazení křivky cesty pomocí B-spline aproximace}
+        \label{fig:splinediff}
+\end{figure}
 
 Na mapě jsou dále zobrazeny všechny další data nahraná při cestě. Fotky se nahrají jako miniatury do paměti,
 oříznou se a zobrazí se jako kruhový výřez nad místem, kde byla fotka pořízena.
@@ -2066,6 +2087,11 @@ jako naše aplikace a distribuovat tak škodlivý kód pod naším jménem.
 \bibitem{sqlitetypes}{SQLITE}
 \textit{Datatypes In SQLite Version 3}. {SQLite
 \newline(Dostupné na \url{https://www.sqlite.org/datatype3.html})}
+
+
+\bibitem{bspline}{MAISSAN, CHRIS}
+\textit{Curves and Splines}.
+\newline(Dostupné na \url{https://maissan.net/articles/simulating-vines/2})
 
 
 
