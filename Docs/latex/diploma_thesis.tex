@@ -1,8 +1,8 @@
 % !TEX TS-program = pdflatex
 % !TEX encoding = UTF-8 Unicode
 
-%\documentclass[ing,male,java,dept460,oneside]{diploma}
-\documentclass{article}
+\documentclass[czech,master,public,dept460,male,cpdeclaration]{diploma}
+%\documentclass{article}
 
 \usepackage[czech]{babel}
 \usepackage[T1]{fontenc}
@@ -25,29 +25,40 @@
 
 
 
-% \ThesisAuthor{Josef Raška}
+ \ThesisAuthor{Josef Raška}
 
 % U bakalarske praxe neni nutne nazev zadavat
-%\ThesisTitle{Tos ten android ze}
+\CzechThesisTitle{Thesis Title}
+
 
 % U bakalarske prace neni nutne anglicky nazev zadavat
-%\EnglishThesisTitle{The Android stuff}
+\EnglishThesisTitle{The Android stuff}
 
-%\SubmissionDate{29. dubna 2016}
+\SubmissionDate{29. dubna 2016}
 
-%\PrintPublicationAgreement{true}
-
-
-%\Thanks{Podekovani \newline Dalsi lajna }
+\Thanks{Podekovani \newline Dalsi lajna }
 
 
-%\CzechAbstract{Cesky abstrakt}
+\CzechAbstract{Cesky abstrakt}
 
-%\CzechKeywords{vlastní číslo, vlastní vektor, vlastní dvojice, aplikace vlastních čísel, mocninná metoda, Lanczosova metoda, předpodmínění}
+\CzechKeywords{vlastní číslo, vlastní vektor, vlastní dvojice, aplikace vlastních čísel, mocninná metoda, Lanczosova metoda, předpodmínění}
 
-%\EnglishAbstract{English abstract}
+\EnglishAbstract{English abstract}
 
-%\EnglishKeywords{Android, development}
+\EnglishKeywords{Android, development}
+
+\AddAcronym{API}{Application Programming Interface}
+\AddAcronym{UML}{Unified Modeling Language}
+
+% Zadame cestu a jmeno souboru ci nekolika souboru s digitalizovanou podobou zadani prace
+% Pri sazbe se pak hledaji soubory Figures/Zadani1.jpg, Figures/Zadani2.jpg atd.
+% Do diplomove prace se postupne vlozi vsechny existujici soubory Figures/ZadaniXXX.jpg
+% Pokud toto makro zapoznamkujeme sazi se stranka s upozornenim
+%\ThesisAssignmentImagePath{Figures/Zadani}
+
+% Zadame soubor s digitalizovanou podobou prohlaseni
+% Pokud toto makro zapoznamkujeme sazi se cisty text prohlaseni
+%\DeclarationImageFile{Figures/Prohlaseni.jpg}
 
 \renewcommand{\lstlistingname}{Ukázka kódu}
 \renewcommand{\lstlistlistingname}{List of ukázek kódu s}
@@ -94,12 +105,12 @@
 
 \begin{document}
 %\maketitle
-%\MakeTitlePages
+\MakeTitlePages
 \urlstyle{same}
 
-\tableofcontents
-\listoffigures
-\listoftables
+%\tableofcontents
+%\listoffigures
+%\listoftables
 %\lstlistoflistings
 
 \newpage
