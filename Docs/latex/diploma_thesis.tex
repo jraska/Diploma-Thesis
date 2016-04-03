@@ -2101,7 +2101,7 @@ jako naše aplikace a distribuovat tak škodlivý kód pod naším jménem.
 
 
 \section{Testování aplikace}
-Po nasazení aplikace bylo třeba vychytat všechny možné problémy a nedostatky, které se mohly projevit
+Po nasazení aplikace bylo potřeba vychytat všechny možné problémy a nedostatky, které se mohly projevit
 a zhoršit uživatelskou zkušenost s aplikací.
 
 \subsection{Optimalizace výkonu}
@@ -2180,6 +2180,27 @@ na obrázku \ref{fig:asyncroutesrxthread}, kde můžeme vidět, že provádění
       \end{figure}
 
 Pro pomalé zařízení byl tedy problém se zablokováním uživatelského rozhraní takto vyřešen.
+
+\subsubsection{Průběžné monitorování výkonu}
+Jak již bylo řečeno, není nevyžádaná optimalizace doporučeným postupem, jelikož je optimalizovaný kód
+často složitější a húře čitelný. Během vývoje byl proto využit nástroj
+Hugo\footnote{Dostupné na https://github.com/JakeWharton/hugo dne 3. dubna 2016}, který pouhým
+anotováním metody anotací \texttt{@DebugLog} začne do logu zařízení vypisovat informace o vstupech metody,
+jejím výstupu a také čas provádění. Činí tak pouze v ladícím režimu, což je to, co od něj požadujeme
+a aplikace používaná finálními uživateli tedy není tímto logováním nijak ovlivněna. V projektu byly
+takto anotovány všechny potencionálně pomalé metody a po vyfiltrování těchto metod ve výstupu logů se
+tak lze snadno podívat, které metody opravdu zabírají více času a umožňuje nám ujisitit se, že jsou
+tyto metody spouštěny v asynchronním vlákně. Ukázku použití můžee vidět na ukázce kódu \ref{hugoshowcase},
+kde zjistíme, že načtení detailu cesty trvá 248ms, což by již bylo velmi problematické provádět v uživatelském
+vlákně, nicméně k naší spokojenosti také vidíme, že se toto provádí v asynchronním vlákně knihovny RxAndroid.
+
+\begin{lstlisting}[label=hugoshowcase,caption=Využití nástroje Hugo pro výpisy informací o prováděných metodách]
+  @DebugLog
+  private RouteData selectSync(long id) { ... }
+            ▼                ▼
+  V/DBFlowDataRepository:  selectSync(id=4) [Thread:"RxCachedThreadScheduler-1"]
+  V/DBFlowDataRepository:  selectSync [248ms] = RouteData(_deletedId=0, _id=4, _start...
+\end{lstlisting}
 
 \section{Závěr}
 
