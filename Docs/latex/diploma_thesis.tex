@@ -77,6 +77,8 @@ GPS, NFC, Google Play, GitHub}
 \AddAcronym{SDK}{Software development kit}
 \AddAcronym{GPS}{Global Positioning System}
 \AddAcronym{NFC}{Near field communication}
+\AddAcronym{SD karta}{todo}
+\AddAcronym{ORM}{Objektově relační mapování}
 
 % Zadame cestu a jmeno souboru ci nekolika souboru s digitalizovanou podobou zadani prace
 % Pri sazbe se pak hledaji soubory Figures/Zadani1.jpg, Figures/Zadani2.jpg atd.
@@ -2097,6 +2099,87 @@ jako naše aplikace a distribuovat tak škodlivý kód pod naším jménem.
         \label{fig:playconsole}
 \end{figure}
 
+
+\section{Testování aplikace}
+Po nasazení aplikace bylo třeba vychytat všechny možné problémy a nedostatky, které se mohly projevit
+a zhoršit uživatelskou zkušenost s aplikací.
+
+\subsection{Optimalizace výkonu}
+Jedno z nejstarších pravidel programování je neoptimalizovat zbytečně dopředu na základě odhadu,
+jelikož programátoři jsou v těchto odhadech většinou velmi špatní. Během vývoje byl přesto na efektivní
+implementaci kladen důraz a všechny potencionálně delší operace byly prováděny asynchronně mimo vlákno
+uživatelského rozhraní, jelikož pro optimální uživatelský zážitek je potřeba stihnout vše ve vlákně
+uživatelského rozhraní do 16ms\cite{perf}.
+
+Aplikace, která chce toto uživateli umožnit, musí do asynchronnních operací přesunou většinu svých déle
+trvajících operací, což bylo v našem případě zejména čtení a ukládání do databáze, jelikož se v tomto
+ případě komunikuje se souborovým systémem, ale také například komunikaci s API Google Play Services,
+ kde může dojít k ověřování využívání API přes internet což už z principu znamená poměrně dlouhou
+ prodlevu. Pro implementaci těchto operací byla použita knihovna RxAndroid, popsaná v sekci \ref{rxandroid}
+ a aplikace se poté stává mnohem rychlejší a zejména odezva uživatelského rozhraní
+ na akce uživatele je téměř okamžitá.
+
+\subsubsection{Pomalé načtení úvodní obrazovky s cestami}
+ Při testování se z počátku na pomalých zařízeních projevovalo pomalé načítání úvodní obrazovky se
+ seznamem cest. Bylo tedy využito profilovacího nástroje Traceview, který je součástí Android SDK
+  a je možné jej využít pro zaznamenání a zobrazení provádění metod za běhu. Výstup profilování kódu
+  mezi synchronním načtením v metodě \texttt{refreshRoutes} a zobrazením výsledku v uživatelském rozhraní
+  můžeme vidět na obrázku \ref{fig:syncroutes}, kde je výstup hlavního vlákna uživatelského rozhraní.
+  Z důvodu předcházení nedorozumění upozorňuji, že profilovací výstupy jsou lokalizovány
+  v angličtině a tudíž je čárka brána jako oddělovač tisíců, nikoliv jako oddělovač desetinných míst,
+  pro který je používána tečka. 88,509$\mu$s ve výstupu tedy znamená 88ms, 509$\mu$s.
+
+  \begin{figure}[H]
+          \centering
+                  \includegraphics[scale=0.38]{img/SyncRoutesMainThread.png}
+          \caption{Výstup profilování synchornního načítání cest}
+          \label{fig:syncroutes}
+  \end{figure}
+
+  Jak na obrázku \ref{fig:syncroutes} můžeme vidět, metoda \texttt{selectRoutesSync} zabírá 98.8\%
+  z celého načítání a zobrazení dat a trvá více než 88ms, což sice nemusí být kritické,
+  nicméně se jedná pouze o čas na testovacíma zařízení a na některých pomalejších zařízeních
+  s například starým typem SD karty může být tento čas mnohem vyšší a uživateli
+  již může přivodit pocit pomalé odezvy. Na časové ose také můžeme identifikovat důvody pomalého
+  zobrazení při prvním načtení. Při prvním volání se totiž v metodě \texttt{ClassLoader.loadClass}
+  načítají do paměti nahrávají do paměti všechny třídy potřebné pro načtení dat z databáze,
+  což jsou v tomto případě naše mapovací třídy reprezentující data v paměti, třídy ORM knihovny
+  DBFlow a také třídy samotného frameworku Android pro přístup k SQLite databázi. Významnou
+  roli hraje také otevírání databáze, které proběhne v metodě \texttt{SQLiteOpenHelper.getWritableDatabase}
+  a opět probíhá při prvním přistupu k databázi a samotné načtení dat, probíhající v metodě
+ \texttt{ModelLoaer.load} je v tomto případě minoritním konzumentem času vlákna.
+
+ Pro optimalizaci bylo tedy využito asynchronního načtení, kde se pomocí využití knihovny RxAndroid
+ přesunulo volání těchto metod do jiného vlákna a následně se do hlavního vlákna publikoval
+ pouze výsledek asynchronní operace. Implementaci takového volání jsme mohli vidět na ukázce kódu
+ \ref{rxmainthreaddeliver} na straně \pageref{rxmainthreaddeliver}.
+
+ Při opětovném profilování, jehož výstup můžeme vidět na obrázku \ref{fig:asyncroutesmainthread},
+ se nám povedlo významně snížit čas volání metody \texttt{refreshRoutes} na mnohem lepších 6.5ms
+ a majoritní část práce hlavního vlákna tvoří vykreslování uživatelského rozhraní v metodě
+ \texttt{doFrame}, což je přesně to, čeho jsme chtěli dosáhnout.
+
+ \begin{figure}[H]
+           \centering
+                   \includegraphics[scale=0.38]{img/AsyncRoutesMainThread.png}
+           \caption{Výstup profilování hlavního vlákna asynchronního načítání cest}
+           \label{fig:asyncroutesmainthread}
+   \end{figure}
+
+Ze stejného profilovacícho býstupu se lze přepnout do záznamů z asynchronního vlákna, který je
+na obrázku \ref{fig:asyncroutesrxthread}, kde můžeme vidět, že provádění metody
+\texttt{selectRoutesSync} nyní trvá 130ms, nicméně se tak děje v pracovním vlákně aplikace a uživatel
+ tak nezaznamená zaseknutí užovatelského rozhraní při zobrazování obrazovky a po prodlevě načítání
+ se mu pak do připraveného uživatelského rozhraní pouze zobrazí samotné cesty.
+
+    \begin{figure}[H]
+              \centering
+                      \includegraphics[scale=0.38]{img/AsyncRoutesRxThread.png}
+              \caption{Výstup profilování pracovního vlákna asynchronního načítání cest}
+              \label{fig:asyncroutesrxthread}
+      \end{figure}
+
+Pro pomalé zařízení byl tedy problém se zablokováním uživatelského rozhraní takto vyřešen.
 
 \section{Závěr}
 
