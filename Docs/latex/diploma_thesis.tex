@@ -63,7 +63,7 @@ application on Android platform with available tools, which will solve these iss
 Android application for travel asistance was designed and developed as part of this thesis, which should help the people
 with mental disabilities make their usual travels easier, provide them tool for saving them and speed up
 communication with their assistant. Application uses GPS system for assistace, lot of actual libraries
-and methodologies for effective implementation and NFC technology was used for fatser and easier input actions.
+and methodologies for effective implementation and NFC technology was used for faster and easier input actions.
 Application was published to Google Play store and then tested in city environment, where the users can benefit
 from it. Implementation is completely open source and the code could be source for its next development and
 broader usage.
@@ -77,8 +77,10 @@ GPS, NFC, Google Play, GitHub}
 \AddAcronym{SDK}{Software development kit}
 \AddAcronym{GPS}{Global Positioning System}
 \AddAcronym{NFC}{Near field communication}
-\AddAcronym{SD karta}{todo}
+\AddAcronym{SD karta}{Paměťová karta technologie Secure Digital}
 \AddAcronym{ORM}{Objektově relační mapování}
+\AddAcronym{ZIP}{Souborový formát pro kompresi a archivaci dat}
+
 
 % Zadame cestu a jmeno souboru ci nekolika souboru s digitalizovanou podobou zadani prace
 % Pri sazbe se pak hledaji soubory Figures/Zadani1.jpg, Figures/Zadani2.jpg atd.
@@ -147,6 +149,28 @@ GPS, NFC, Google Play, GitHub}
 \newpage
 
 \section{Úvod}
+Problém cestování a orientace se v reálném čase je v dnešním světě složitým problémem pro nás všechny,
+dvojnásob pak pro lidi s mentálním postižením. Naučit se dobře zvládnout cestu do zaměstnání, do banky
+nebo jen do obchodu může být pro člověka s mentálním postižením velmi těžký úkol, jelikož často musí
+využít hromadné dopravy, přecházet složité křižovatky a podobně. Lidí s mentálním postižením
+je momentálně v České Republice více než 100 tisíc\cite{komunikace} a jedná se tedy o velice
+významnou skupinu, která potřebuje zvláštní pozornost. Tito lidé pak při svém cestování často potřebují
+pomoc asistenta, kterých je však pro takto početnou skupinu nedostatek.
+V dnešní době jsou již chytré mobilní telefony poměrně snadno dostupnou věcí a spoustu lidí
+s mentálním postižením tyto telefony více než zdatně ovládá a nabízí se tedy možnost pokusit se prostřednictvím
+ této techniky těmto lidem pomoci, v našem případě mobilními zařízeními se systémem Android,
+ který je v současné době nejrozšířenějším a také nejdostupnějsím mobilním operačním systémem.
+
+ Jako téma mé diplomové práce jsem si proto vybral vytvoření mobilní aplikace pro mentálně postižené,
+ která se pokusí usnadnit jim cestování a urychlit komunikaci s asistentem. Během práce se nejprve
+ seznámíme s procesem vytváření zadání aplikace, kde bylo předmětem diskuze možnost využití této platformy
+ za tímto účelem, následně si představíme funkční a grafický návrhy aplikace a samotnou platformu Android.
+ Poté se přesuneme k implementaci za použití aktuálních nástrojů a knihoven, kde může práce sloužit
+ i jako přehled aktuálních trendů vývoje Android aplikací a následně ukážeme, jak je možné aplikaci propojit
+ se službami třetích stran pro rozšíření její funkcionality, jak
+ můžeme aplikaci publikovat a zpřístupnit ji snadno uživatelům. Závěrem popíšeme, jaké
+ změny a úpravy byly v aplikaci provedeny a jaké možnosti vývoje tento typ aplikace dále nabízí.
+
 
 \section{Návrh aplikace}
 \subsection{Platforma Android}
@@ -351,11 +375,11 @@ Příklady používaných ikon můžeme vidět na obrázcích \ref{fig:record}, 
 \endminipage
 \end{figure}
 
-Obrázky je od verze Androidu 5 možné specifikovat ve vektorovém formátu a odpoadá tak dříve
+Obrázky je od verze Androidu 5 možné specifikovat ve vektorovém formátu a odpadá tak dříve
 nutné vytváření mnoha verzí stejného obrázku pro každou třídu rozlišení.
 Z důvodu zpětné kompatibility pro verze nižší než 5 je přesto nutné tyto rastorvé verze obrázků
 vytvořit, nicméně vývojové nástroje již tento scénář předpokládají a tyto rastrové verze jsou
-pro nižší verze systémy vygenerovány během kompilace, což značně zjednosdušuje údržbu obrázků.
+pro nižší verze systémy vygenerovány během kompilace, což značně zjednodušuje údržbu obrázků.
 
 
 
@@ -2062,7 +2086,7 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
 \end{figure}
 
 \subsection{Publikování aplikace}
-Pro publikování aplikace byl zvolen obchpd Google Play provozovaný Googlem, což je standardní způsob
+Pro publikování aplikace byl zvolen obchod Google Play provozovaný Googlem, což je standardní způsob
 publikování Android aplikací. Google Play poskytuje bohaté rozhraní pro správu aplikací, statistiky
 instalovaných zařízení, verzí systému používajících naší aplikaci, reporting chyb a další. Posytuje také
 nástroje pro propagaci aplikace a v neposlední řadě správu verzí aplikace, grafiky a popisů
@@ -2207,6 +2231,12 @@ vlákně, nicméně k naší spokojenosti také vidíme, že se toto provádí v
 
 \begin{thebibliography}{99}
 
+
+\bibitem{komunikace}{INCLUSION EUROPE}
+\textit{Zásady úspěšné komunikace s lidmi s mentálním postižením: Doporučené přístupy k lidem
+s mentálním postižením v rámci jejich celoživotního vzdělávání i mimo něj.}. {Praha, 2009}
+\newline(Dostupné na \url{http://www.inclusion-europe.com/pathways2/images/CZ_Recommendations.pdf)}
+
 \bibitem{perf}{SILLARS, DOUG}
 \textit{High Performance Android Apps}. {O'Reilly Media, Inc., 2015}
 \newline(Dostupné na \url{https://www.safaribooksonline.com/library/view/high-performance-android/9781491913994/)}
@@ -2214,8 +2244,6 @@ vlákně, nicméně k naší spokojenosti také vidíme, že se toto provádí v
 \bibitem{androiddevelopers}{GOOGLE, INC.}
 \textit{Android API Guides}. {Google, 2016}
 \newline(Dostupné na \url{http://developer.android.com/guide/index.html)}
-
-
 
 \bibitem{materialdesign}{GOOGLE, INC.}
 \textit{https://www.google.com/design/spec/material-design/}. {Google., 2015}
@@ -2288,6 +2316,8 @@ vlákně, nicméně k naší spokojenosti také vidíme, že se toto provádí v
   \appendix
 
   \section{Zdrojové kódy}
-  Kódy lze nalézt i na přiloženém CD.
+  Kódy celé aplikace a všech dalších zdrojů lze nalézt na přiloženém CD, případně veškeré soubory
+  projektu jsou v aktuální verzi dostupné na adrese \url{https://github.com/jraska/Diploma-Thesis},
+  kde je verze uložená na CD dostupná pod tagem \texttt{1.0.0-thesis-release} v sekci releases.
 
 \end{document}
