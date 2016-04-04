@@ -18,6 +18,9 @@
         android:name="android.hardware.nfc"
         android:required="false" />
 
+    <uses-feature android:name="android.hardware.telephony" android:required="false" />
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+
     <application
         android:name=".TravelAssistanceApp"
         android:allowBackup="true"
