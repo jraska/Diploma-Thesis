@@ -193,230 +193,6 @@ Návrhy jim byly prezentovány a po diskuzi a zpětné vazbě byli ve spoluprác
 aktéři aplikace a vytvořena sada případú užití(use casů), které dávají pro toto zadání smysl a následně
 budou mnohé implementovány.
 
-
-\subsection{Platforma Android}
-Systém Android byl poprvé vypuštěn do světa v roce 2008 v útrobách prvního zařízení T-Mobile~G1\cite{androidcentral}
-a díky své dostupnosti a otevřenému kódu rychle rozšířil a v současné době je to zcela jasně nejvíce využívaný mobilní
-operační systém, který se stále bouřlivě vyvíjí. Jeho otevřenost je zároveň pro vývojáře i jedním z jeho problémů,
-neboť výrobci si systém rádi upravují, v důsledku čehož se může aplikace na některých zařízeních chovat
-neočekávaně a často se lze setkat se situací, že určitá funkce aplikace nefunguj správně právě na
-jednom konkrétním typu zařízení.
-
-Díky své rozšířenosti a dostupnosti se platforma Android nabízí jako dobrá možnost pro implementaci
-aplikace na podporu cestování, neboť bude pro klienty snadno dostupná na zařízeních všech cenových
-kategorií, kam si je mohou stáhnout přes obchod Google Play, kde může být naše aplikace publikována.
-Systém nabízí podporu pro velké množství různých senzorů, které dnešní mobilní zařízení obsahují
-a tak je čtení dat z Akcelerometru nebo zaznamenávání GPS řešeno pouze voláním příslušných metod
-rozhraní frameworku. Během doby existence systému se objevilo také mnoho rozšiřujících knihoven
-pro zjednodušení práce programátora umožnění vývoj aplikace efektivněji. Naše aplikace se
-za pomoci těchto nástrojů pokusí zjednodušit mentálně postiženým klientům cestování po svých
-obvyklých cestách.
-
-Systém Android poskytuje vývojáři několik základních komponent, z nichž námi používané detailněji popíšeme.
-
-\subsubsection{Záměr(\texttt{Intent})}
-Platforma Android byla vymýšlena tak, aby vývojář místo explicitního spouštění konkrétní aplikace pro danou činniost
-raději popsal záměr, co by chtěl udělat a systém sám vyhodnotí, která aplikace se pro tento záměr nejlépe
-hodí. Touto cestou se systém snaží vytvořit prostředí mnoha aplikací, které spolu navzájem komunikují,
-aniž by jedna o druhé přímo věděly a pomocí záměrů tak snižuje vazby mezi komponentami. Záměr může mít
-textově popsanou obecnou akci, blíže specifikovanou kategorii, typ, mnoho dalších parametrů až po konkrétní
-jméno komponenty, která má záměr obdržet, Pomocí těchto nastavení systém vyhodnotí nejlepší komponentu,
-která má pro uživatele záměr vykonat. Při vyhodnocování záměrů systém využívá pro správný výběr
- tzv. filtry záměrů(\texttt{IntentFilter}).
-
-Pokud chceme například odeslat email, nespouštíme emailovou aplikaci, ale vytvoříme záměr odeslat email
-s příslušnými parametry a tento záměr předáme systému, který ze seznamu nainstalovaných aplikací vybere
-ty, které dokážou náš email odeslat a v případ více výsledků nechá uživatele vybrat, která z aplikací
-má záměr obdržet. Parametry záměru by v tomto případě byly předmět, adresát emailu a tak dále.
-
-Naopak pokud chceme v aplikaci spustit některou z našich aktivit, dáváme aplikaci pomocí třídy
-aktivity přesné jméno komponenty, kterou má spustit, nicméně samotnou aktivitu s jejím životním
-cyklem vytvoří systém, nikoliv vývojář sám.
-
-Pomocí záměru se předávají všemožné informace a může kromě zmíněných případu sloužit k vyvolání
-vzdálené akce, informace o systémové události nebo pouze pro přenos dat, které musí být vždy
-serializovatelné, neboť je tím umožněno systému záměr uchovat i v případě ukončení spouštěcího
-procesu a předávání záměrů mezi procesy.
-
-\subsubsection{AndroidManifest.xml}
-Jedná se v o výpis všech veřejných informací aplikace ve formátu XML, které systém
-a také uživatel potřebují o aplikaci vědět. Android manifest obsahuje identifikátor aplikace, deklaruje všechny
-požadovaná povolení, podporované velikosti obrazovek zařízení nebo vyžadované funkce jako například přítomnost
-fotoaparátu. Dále deklaruje podporované verze systému a v neposlední řadě také všechny hlavní komponenty
-aplikace, jako například aktivity a služby a tím definuje všechny vstupní body aplikace a podmínky
-jejich spuštění pomocí záměrů. Při publikování aplikace
-parsuje Google Play tento soubor pro zobrazení informací pro záznam v obchodě a podobně instalační služba
-systému Android, pro zobrazení ikony v seznamu aplikací a také vytvoření uživatele podle identifikátoru
-aplikace a přiřazení přístupových práv pro konkrétní deklarovaná povolení.
-
-\subsubsection{Aktivity}
-Aktivita je komponenta aplikace, která obsahuje uživatelské rozhraní viditelné pro uživatele. Každá
- používaná aktivita aplikace musí být definována v Android manifestu se svými podmínkami pro své
- spuštění, neboli filtry záměrů(\texttt{IntentFilter}) a tím deklarovat vstupní místa do aplikace.
- Nejčastěji je v aplikaci jedna aktivita figurující jako spouštěč(akce záměru \texttt{MAIN},
- kategorie \texttt{LAUNCHER}), která se při
-  instalaci vyhledá a vytvoří se pro ní spouštěcí ikona v seznamu nainstalovaných aplikací, další
-  aktivity pak mohou mít explicitně definované vlastní filtry záměrů, případně nedefinovat žádný
-  a tedy mít implicitně definovaný filtr na jméno třídy aktivity v kontextu balíčku aplikace.
-
- Třída aktivity, dědící ze systémové třídy \texttt{Activity},
- poskytuje vývojáři API se svým životním cyklem, skrz který by mělo být reagováno na to, v jakém
-stavu se uživatelské rozhraní právě nachází. Pro akce při vytváření aktivity je používaná metoda
-\texttt{onCreate}, která se volá pro každou instanci aktivity právě jednou a mělo by se v ní připravit
-uživatelské rozhraní, získat příslušné služby a podobně. Aktivita je zobrazena uživateli po zavolání metody
-\texttt{onResume} a v této chvíli může uživatel interagovat s uživatelským rozhraním. Pokud uživatel
-přechází do jiné aktivity, přepíná aplikace, zamyká obrazovka nebo jiným způsobem uživatel opouští uživatelské
-rozhraní, volá se metoda \texttt{onPause}. Pokud se zcela ukončuje používání konkrétní aktivity,
-volá se metoda \texttt{onDestroy}, kde by se měly uvolnit všechny zdroje.
-Celý životní cyklus aktivity můžeme vidět na obrázku \ref{fig:activitylyfecycle} a jedná se
-často o první diagram, který vývojář pro platformu Android vidí.
-Velmi častým problémem při vývoji je držení dat a podobných věci přímo v aktivitách,
-neboť ta může být kdykoliv zničena systémem, například
-pokud uživatel pouze otočí obrazovku a vyžaduje se v tu chvíli nové uživatelské rozhraní. Pokud v takové chvíle
-někdo drží stále na aktivitu referenci, zničená instance aktivity neí uvolněna z paměti a vzniká únik paměti.
-Tento problém se stal ve světě vývojářů Androidu tak častý, že přímo pro jeho prevenci byla vytvořena knihovna
-LeakCanary(\url{https://github.com/square/leakcanary}).
-\begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.2]{img/basic-lifecycle.png}
-        \caption{Životní cyklus aktivity}
-        \label{fig:activitylyfecycle}
-\end{figure}
-
-\subsubsection{Fragmenty}
-Fragmenty mohou být části uživatelského rozhraní aktivity nebo sloužit například pro předávání
-dat mezi instancemi stejné aktivity například při rotaci. Fragmenty mají s aktivitou svázaný stejný životní cyklus
-a všechny metody tohoto cyklu aktivity jsou provolávány do fragmentu. Jedna instance fragmentu
-může být předávána mezi instancemi více aktivit a fragment tak může sloužit jako idální komponenta
-v případě, kde potřebujeme mít logiku svázanou s životním cyklem aktivity, chceme však jistá data
-předat bezpečně mezi instancemi rotojící aktivity, případně pokud chceme určitou část uživatelského
-rozhraní udržet i při změně instance aktivity. Toto v aplikaci používáme například u map, kde pomocí
-držení mapy ve fragmentu předcházíme novému načtení mapy při rotaci a tudíž nežádoucímu probliknutí.
-Fragmenty byly představeny v Androidu verze 3 a zpočátku způsobily mnoho otázek a jejich správném využívání.
-V současnosti se doporučuje využít je hlavně pro dynamické zobrazování uživatelského rozhraní na
-zařízeních s různými obrazovkami\cite{androiddevelopers}, nicméně využií jako datový kontejner pro
-předávání mezi instancemi aktivity se používá také.
-
-\subsubsection{Služby}
-Služby jsou určeny pro operace, které nejsou viditelné uživateli, případně asynchronní operace, které se mají
-provést bez vazby na rozhraní. Služby mají také svůj životní cyklus, nicméně odlišný a jednodušší,
-než aktivity. Instance služeb ,dědících ze systémvé třídy \texttt{Service}, opět vytváří
-systém a spravuje je po dobu jejich existence,
-přičemž vývojář spouští služby záměry a pomocí nich jim předává také například data ke zpracování.
-Služby se stejně jako aktivity musí registrovat v Android manifestu a mohou být součástí veřejného
-rozhraní pro jiné aplikace. Pomocí deklarace v manifestu můžeme také definovat nový proces pro službu
-a ještě více tak oddělit její spuštění od naší aplikace.
-
-\subsubsection{Aplikace}
-Při spuštění aplikace se vytvoří právě jeden aplikační objekt, kde může vývojář inicializovat
-komponenty potřebné v celé aplikaci. Aplikace se opět deklaruje v manifestu jménem své třídy, která
-dědí ze systémové třídy \texttt{Application}.
-
-\subsection{Grafický návrh}
-Cílem návrhu bylo používat v aplikaci konzistentní rozhraní a také jednoduchost všech uživatelských
-prvků pro snadné pochopení pro uživatele se specifickými nároky. Většina uživatelských prvků je tak
-realizována jako velká tlačítka, která při podržení prstu na prvku zobrazí jeho textový popis.
-Jako hlavní směr návrhu uživatelského rozhraní byl zvolen Material Design, neboť se jedná o aktuální
-doporučení pro mobilní aplikace a je v něm kladen velký důrazna jednoduchost a konzistenci,
-tedy naše požadavky. Velkou část této specifikace za nás řeí námi používaná knihovna Android Support,
-popsaná v sekci \ref{androidsupport}.
-
-\subsubsection{Material Design}
-Úplnou specifikaci Material designu, vydanou poprvé v roce 2015 lze nalézt v \cite{materialdesign}.
-Jedná se o detailní popis všech
-grafických prvků uživatelského rozhraní, které by měl vývojář používat, jejich chování, vzhled i vzájemnou
- interakci. Jako hlavní cíl si klade vytvořit vizuální jazyk, spojující klasické principy dobrého designu
-  a nových možností moderních technologií a vyvinout systém spojující zkušenost uživatele na různých
-  platformách a velikostech obrazovek\cite{materialdesign}. Uživatelské rozhraní v duchu Material designu
-  by mělo uživateli lépe napovídat, co který prvek dělá, pomocí animací a směru efektů přibližovat
-  význam grafických komponent, případně pomocí stínů různých délek vytvářet iluzi uložení prvků
-  v prostoru a jejich seřazení podle důležitosti.
-
-  Material design používá ke specifikaci rozměrů
-  stejně jako systém Android jednotku \texttt{dp}, což znamená značí v angličtině "Device independent
-  pixel" a jedná se o jednotku, která je relativní vůči skutečnému rozlišení zařízení a jejím účelem
-  je zobrazení prvků uživatelského rozhraní v přibližně stejné reálné velikosti bez ohledu na skutečnou
-  hustotu pixelů obrazovky, které se zařazují do tříd hustoty a podle této třídy se rozhoduje,
-  kolik skutečných pixelů bude ve výsleku prvek zabírat. Tyto třídy jsou v současnosti
-  \texttt{ldpi}, \texttt{hdpi}, \texttt{tvdpi}, \texttt{hdpi}, \texttt{xhdpi}, \texttt{xxhdpi} a \texttt{xxxhdpi}.
-  Obdelník o šířce 100dp bude pak například v třídě rozlišení \texttt{ldpi} zabírat 75 pixelů(1dp = 0.75px),
-  nicméně na zařízení ve třídě \texttt{xxxhdpi} bude mít rozměr 400 pixelů(1dp = 4px).
-
-  Specifikace zavádí jako jednu ze svých hlavních prvků zavedení prostorové osy \textit{z} do
-  definice uživatelského rozhraní a nazývá tuto vlastnost uživatelských prvků vyvýšení(elevation)\cite{materialdesign}.
-  Tato vlastnost ovlivňuje nejvíce velikost stínu uživatelského prvku. Nejvyší vyvýšení(24dp)
-  mají modální dialogy, poté postranní menu(16dp) následují další komponenty, mezi nimiž jsou námi využivané
-  menu(8dp), vyjíždějící upozornění "Snackbar"(6dp), případně lišta menu rychlých akcí "App bar"(4dp)\cite{materialdesign}.
-  Specifikace přesně určuje chování pro každou komponentu a precizně tak vývojáře vede ke správné
-  implementaci uživatelských prvků.
-
-
-\subsubsection{Barvy}
-  Material design také poskytuje barvy, které by měly být v naší aplikaci použity jako dominatní v hlavních
-  uživatelských prvcích. Paletu barev můžeme nalézt na \url{https://www.google.com/design/spec/style/color.html}.
-  Pro naší aplikaci byla vybrána jako hlavní barvy odstíny barvy indiga, zdůrazňující barvou byla zvolena zelená.
-  Jako barvy textu byla vybrána čistě bíla pro nadpisy na hlavních barvách, lehce průhledná černá pro
-  primární text a šedá pro sekundární text. Jako barva pozadí těla byla ponechána výchozí lehce ztmavená bílá
-  barva. Popsané barvy s ukázkou můžeme vidět na obrázku \ref{fig:colorpalette}.
-
-  \begin{figure}[H]
-          \centering
-                  \includegraphics[scale=0.3]{img/colorpalette.png}
-          \caption{Hlavní barvy použité v aplikaci}
-          \label{fig:colorpalette}
-  \end{figure}
-
-\subsubsection{Ikony}
-Pro akce aplikace jsou používány ikony ve stylu Material designu, které jsou vždy ploché
-a snaží se co nejvýstižněji popsat akci, kterou provádí. Existuje již obrovské množství
-ikon a lze je nalézt například na \url{https://materialdesignicons.com/}, případně lze ikony
-importovat přímo v Android Studiu ze oficiálních zdrojů Material designu.
-
-V obou případech těchto ikon je licence použití Creative Common Attribution 4.0 International License (CC-BY 4.0)
-\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/4.0/}}, což znamená,
-že můžeme bez problému ikony zdarma použít, musíme pouze někde v aplikaci uvést, že tyto ikony
-používáme a v případě, že bychom si je upravili toto také uvést.
-Příklady používaných ikon můžeme vidět na obrázcích \ref{fig:record}, \ref{fig:camera} a \ref{fig:recordsound}.
-
-\begin{figure}[H]
-\minipage{0.32\textwidth}
-  \centering
-  \includegraphics[scale=0.2]{img/record.png}
-  \caption{Nahrávání cesty}\label{fig:record}
-\endminipage\hfill
-\minipage{0.32\textwidth}
-  \centering
-  \includegraphics[scale=0.2]{img/camera.png}
-  \caption{Přídání fotky}\label{fig:camera}
-\endminipage\hfill
-\minipage{0.32\textwidth}%
-  \centering
-  \includegraphics[scale=0.2]{img/recordsound.png}
-  \caption{Nahrání zvuku}\label{fig:recordsound}
-\endminipage
-\end{figure}
-
-Obrázky je od verze Androidu 5 možné specifikovat ve vektorovém formátu a odpadá tak dříve
-nutné vytváření mnoha verzí stejného obrázku pro každou třídu rozlišení.
-Z důvodu zpětné kompatibility pro verze nižší než 5 je přesto nutné tyto rastorvé verze obrázků
-vytvořit, nicméně vývojové nástroje již tento scénář předpokládají a tyto rastrové verze jsou
-pro nižší verze systémy vygenerovány během kompilace, což značně zjednodušuje údržbu obrázků.
-
-
-
-Pro další ikony loga aplikace a podobně byly použity zdroje ze služby
-Iconfinder\footnote{\url{https://www.iconfinder.com/}}, kde je licence pro použití také zdarma. V tomto
-případě se jedná a Creative Commons Attribution 3.0 Unported (CC BY 3.0)
-\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/3.0/}}, což je starší verze
-licence popsané výše a v praxi jsou pak podmínky použití ikon stejné.
-
-
-
-
-%  Rozměry
-
-%  Kliknutí
-
 \subsection{Popis aktérů}
 \begin{figure}[H]
         \centering
@@ -1290,6 +1066,228 @@ klienta v době odeslání emailu.
 
 
 
+\subsection{Platforma Android}
+Systém Android byl poprvé vypuštěn do světa v roce 2008 v útrobách prvního zařízení T-Mobile~G1\cite{androidcentral}
+a díky své dostupnosti a otevřenému kódu rychle rozšířil a v současné době je to zcela jasně nejvíce využívaný mobilní
+operační systém, který se stále bouřlivě vyvíjí. Jeho otevřenost je zároveň pro vývojáře i jedním z jeho problémů,
+neboť výrobci si systém rádi upravují, v důsledku čehož se může aplikace na některých zařízeních chovat
+neočekávaně a často se lze setkat se situací, že určitá funkce aplikace nefunguj správně právě na
+jednom konkrétním typu zařízení.
+
+Díky své rozšířenosti a dostupnosti se platforma Android nabízí jako dobrá možnost pro implementaci
+aplikace na podporu cestování, neboť bude pro klienty snadno dostupná na zařízeních všech cenových
+kategorií, kam si je mohou stáhnout přes obchod Google Play, kde může být naše aplikace publikována.
+Systém nabízí podporu pro velké množství různých senzorů, které dnešní mobilní zařízení obsahují
+a tak je čtení dat z Akcelerometru nebo zaznamenávání GPS řešeno pouze voláním příslušných metod
+rozhraní frameworku. Během doby existence systému se objevilo také mnoho rozšiřujících knihoven
+pro zjednodušení práce programátora umožnění vývoj aplikace efektivněji. Naše aplikace se
+za pomoci těchto nástrojů pokusí zjednodušit mentálně postiženým klientům cestování po svých
+obvyklých cestách.
+
+Systém Android poskytuje vývojáři několik základních komponent, z nichž námi používané detailněji popíšeme.
+
+\subsubsection{Záměr(\texttt{Intent})}
+Platforma Android byla vymýšlena tak, aby vývojář místo explicitního spouštění konkrétní aplikace pro danou činniost
+raději popsal záměr, co by chtěl udělat a systém sám vyhodnotí, která aplikace se pro tento záměr nejlépe
+hodí. Touto cestou se systém snaží vytvořit prostředí mnoha aplikací, které spolu navzájem komunikují,
+aniž by jedna o druhé přímo věděly a pomocí záměrů tak snižuje vazby mezi komponentami. Záměr může mít
+textově popsanou obecnou akci, blíže specifikovanou kategorii, typ, mnoho dalších parametrů až po konkrétní
+jméno komponenty, která má záměr obdržet, Pomocí těchto nastavení systém vyhodnotí nejlepší komponentu,
+která má pro uživatele záměr vykonat. Při vyhodnocování záměrů systém využívá pro správný výběr
+ tzv. filtry záměrů(\texttt{IntentFilter}).
+
+Pokud chceme například odeslat email, nespouštíme emailovou aplikaci, ale vytvoříme záměr odeslat email
+s příslušnými parametry a tento záměr předáme systému, který ze seznamu nainstalovaných aplikací vybere
+ty, které dokážou náš email odeslat a v případ více výsledků nechá uživatele vybrat, která z aplikací
+má záměr obdržet. Parametry záměru by v tomto případě byly předmět, adresát emailu a tak dále.
+
+Naopak pokud chceme v aplikaci spustit některou z našich aktivit, dáváme aplikaci pomocí třídy
+aktivity přesné jméno komponenty, kterou má spustit, nicméně samotnou aktivitu s jejím životním
+cyklem vytvoří systém, nikoliv vývojář sám.
+
+Pomocí záměru se předávají všemožné informace a může kromě zmíněných případu sloužit k vyvolání
+vzdálené akce, informace o systémové události nebo pouze pro přenos dat, které musí být vždy
+serializovatelné, neboť je tím umožněno systému záměr uchovat i v případě ukončení spouštěcího
+procesu a předávání záměrů mezi procesy.
+
+\subsubsection{AndroidManifest.xml}
+Jedná se v o výpis všech veřejných informací aplikace ve formátu XML, které systém
+a také uživatel potřebují o aplikaci vědět. Android manifest obsahuje identifikátor aplikace, deklaruje všechny
+požadovaná povolení, podporované velikosti obrazovek zařízení nebo vyžadované funkce jako například přítomnost
+fotoaparátu. Dále deklaruje podporované verze systému a v neposlední řadě také všechny hlavní komponenty
+aplikace, jako například aktivity a služby a tím definuje všechny vstupní body aplikace a podmínky
+jejich spuštění pomocí záměrů. Při publikování aplikace
+parsuje Google Play tento soubor pro zobrazení informací pro záznam v obchodě a podobně instalační služba
+systému Android, pro zobrazení ikony v seznamu aplikací a také vytvoření uživatele podle identifikátoru
+aplikace a přiřazení přístupových práv pro konkrétní deklarovaná povolení.
+
+\subsubsection{Aktivity}
+Aktivita je komponenta aplikace, která obsahuje uživatelské rozhraní viditelné pro uživatele. Každá
+ používaná aktivita aplikace musí být definována v Android manifestu se svými podmínkami pro své
+ spuštění, neboli filtry záměrů(\texttt{IntentFilter}) a tím deklarovat vstupní místa do aplikace.
+ Nejčastěji je v aplikaci jedna aktivita figurující jako spouštěč(akce záměru \texttt{MAIN},
+ kategorie \texttt{LAUNCHER}), která se při
+  instalaci vyhledá a vytvoří se pro ní spouštěcí ikona v seznamu nainstalovaných aplikací, další
+  aktivity pak mohou mít explicitně definované vlastní filtry záměrů, případně nedefinovat žádný
+  a tedy mít implicitně definovaný filtr na jméno třídy aktivity v kontextu balíčku aplikace.
+
+ Třída aktivity, dědící ze systémové třídy \texttt{Activity},
+ poskytuje vývojáři API se svým životním cyklem, skrz který by mělo být reagováno na to, v jakém
+stavu se uživatelské rozhraní právě nachází. Pro akce při vytváření aktivity je používaná metoda
+\texttt{onCreate}, která se volá pro každou instanci aktivity právě jednou a mělo by se v ní připravit
+uživatelské rozhraní, získat příslušné služby a podobně. Aktivita je zobrazena uživateli po zavolání metody
+\texttt{onResume} a v této chvíli může uživatel interagovat s uživatelským rozhraním. Pokud uživatel
+přechází do jiné aktivity, přepíná aplikace, zamyká obrazovka nebo jiným způsobem uživatel opouští uživatelské
+rozhraní, volá se metoda \texttt{onPause}. Pokud se zcela ukončuje používání konkrétní aktivity,
+volá se metoda \texttt{onDestroy}, kde by se měly uvolnit všechny zdroje.
+Celý životní cyklus aktivity můžeme vidět na obrázku \ref{fig:activitylyfecycle} a jedná se
+často o první diagram, který vývojář pro platformu Android vidí.
+Velmi častým problémem při vývoji je držení dat a podobných věci přímo v aktivitách,
+neboť ta může být kdykoliv zničena systémem, například
+pokud uživatel pouze otočí obrazovku a vyžaduje se v tu chvíli nové uživatelské rozhraní. Pokud v takové chvíle
+někdo drží stále na aktivitu referenci, zničená instance aktivity neí uvolněna z paměti a vzniká únik paměti.
+Tento problém se stal ve světě vývojářů Androidu tak častý, že přímo pro jeho prevenci byla vytvořena knihovna
+LeakCanary(\url{https://github.com/square/leakcanary}).
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.2]{img/basic-lifecycle.png}
+        \caption{Životní cyklus aktivity}
+        \label{fig:activitylyfecycle}
+\end{figure}
+
+\subsubsection{Fragmenty}
+Fragmenty mohou být části uživatelského rozhraní aktivity nebo sloužit například pro předávání
+dat mezi instancemi stejné aktivity například při rotaci. Fragmenty mají s aktivitou svázaný stejný životní cyklus
+a všechny metody tohoto cyklu aktivity jsou provolávány do fragmentu. Jedna instance fragmentu
+může být předávána mezi instancemi více aktivit a fragment tak může sloužit jako idální komponenta
+v případě, kde potřebujeme mít logiku svázanou s životním cyklem aktivity, chceme však jistá data
+předat bezpečně mezi instancemi rotojící aktivity, případně pokud chceme určitou část uživatelského
+rozhraní udržet i při změně instance aktivity. Toto v aplikaci používáme například u map, kde pomocí
+držení mapy ve fragmentu předcházíme novému načtení mapy při rotaci a tudíž nežádoucímu probliknutí.
+Fragmenty byly představeny v Androidu verze 3 a zpočátku způsobily mnoho otázek a jejich správném využívání.
+V současnosti se doporučuje využít je hlavně pro dynamické zobrazování uživatelského rozhraní na
+zařízeních s různými obrazovkami\cite{androiddevelopers}, nicméně využií jako datový kontejner pro
+předávání mezi instancemi aktivity se používá také.
+
+\subsubsection{Služby}
+Služby jsou určeny pro operace, které nejsou viditelné uživateli, případně asynchronní operace, které se mají
+provést bez vazby na rozhraní. Služby mají také svůj životní cyklus, nicméně odlišný a jednodušší,
+než aktivity. Instance služeb ,dědících ze systémvé třídy \texttt{Service}, opět vytváří
+systém a spravuje je po dobu jejich existence,
+přičemž vývojář spouští služby záměry a pomocí nich jim předává také například data ke zpracování.
+Služby se stejně jako aktivity musí registrovat v Android manifestu a mohou být součástí veřejného
+rozhraní pro jiné aplikace. Pomocí deklarace v manifestu můžeme také definovat nový proces pro službu
+a ještě více tak oddělit její spuštění od naší aplikace.
+
+\subsubsection{Aplikace}
+Při spuštění aplikace se vytvoří právě jeden aplikační objekt, kde může vývojář inicializovat
+komponenty potřebné v celé aplikaci. Aplikace se opět deklaruje v manifestu jménem své třídy, která
+dědí ze systémové třídy \texttt{Application}.
+
+\subsection{Grafický návrh}
+Cílem návrhu bylo používat v aplikaci konzistentní rozhraní a také jednoduchost všech uživatelských
+prvků pro snadné pochopení pro uživatele se specifickými nároky. Většina uživatelských prvků je tak
+realizována jako velká tlačítka, která při podržení prstu na prvku zobrazí jeho textový popis.
+Jako hlavní směr návrhu uživatelského rozhraní byl zvolen Material Design, neboť se jedná o aktuální
+doporučení pro mobilní aplikace a je v něm kladen velký důrazna jednoduchost a konzistenci,
+tedy naše požadavky. Velkou část této specifikace za nás řeí námi používaná knihovna Android Support,
+popsaná v sekci \ref{androidsupport}.
+
+\subsubsection{Material Design}
+Úplnou specifikaci Material designu, vydanou poprvé v roce 2015 lze nalézt v \cite{materialdesign}.
+Jedná se o detailní popis všech
+grafických prvků uživatelského rozhraní, které by měl vývojář používat, jejich chování, vzhled i vzájemnou
+ interakci. Jako hlavní cíl si klade vytvořit vizuální jazyk, spojující klasické principy dobrého designu
+  a nových možností moderních technologií a vyvinout systém spojující zkušenost uživatele na různých
+  platformách a velikostech obrazovek\cite{materialdesign}. Uživatelské rozhraní v duchu Material designu
+  by mělo uživateli lépe napovídat, co který prvek dělá, pomocí animací a směru efektů přibližovat
+  význam grafických komponent, případně pomocí stínů různých délek vytvářet iluzi uložení prvků
+  v prostoru a jejich seřazení podle důležitosti.
+
+  Material design používá ke specifikaci rozměrů
+  stejně jako systém Android jednotku \texttt{dp}, což znamená značí v angličtině "Device independent
+  pixel" a jedná se o jednotku, která je relativní vůči skutečnému rozlišení zařízení a jejím účelem
+  je zobrazení prvků uživatelského rozhraní v přibližně stejné reálné velikosti bez ohledu na skutečnou
+  hustotu pixelů obrazovky, které se zařazují do tříd hustoty a podle této třídy se rozhoduje,
+  kolik skutečných pixelů bude ve výsleku prvek zabírat. Tyto třídy jsou v současnosti
+  \texttt{ldpi}, \texttt{hdpi}, \texttt{tvdpi}, \texttt{hdpi}, \texttt{xhdpi}, \texttt{xxhdpi} a \texttt{xxxhdpi}.
+  Obdelník o šířce 100dp bude pak například v třídě rozlišení \texttt{ldpi} zabírat 75 pixelů(1dp = 0.75px),
+  nicméně na zařízení ve třídě \texttt{xxxhdpi} bude mít rozměr 400 pixelů(1dp = 4px).
+
+  Specifikace zavádí jako jednu ze svých hlavních prvků zavedení prostorové osy \textit{z} do
+  definice uživatelského rozhraní a nazývá tuto vlastnost uživatelských prvků vyvýšení(elevation)\cite{materialdesign}.
+  Tato vlastnost ovlivňuje nejvíce velikost stínu uživatelského prvku. Nejvyší vyvýšení(24dp)
+  mají modální dialogy, poté postranní menu(16dp) následují další komponenty, mezi nimiž jsou námi využivané
+  menu(8dp), vyjíždějící upozornění "Snackbar"(6dp), případně lišta menu rychlých akcí "App bar"(4dp)\cite{materialdesign}.
+  Specifikace přesně určuje chování pro každou komponentu a precizně tak vývojáře vede ke správné
+  implementaci uživatelských prvků.
+
+
+\subsubsection{Barvy}
+  Material design také poskytuje barvy, které by měly být v naší aplikaci použity jako dominatní v hlavních
+  uživatelských prvcích. Paletu barev můžeme nalézt na \url{https://www.google.com/design/spec/style/color.html}.
+  Pro naší aplikaci byla vybrána jako hlavní barvy odstíny barvy indiga, zdůrazňující barvou byla zvolena zelená.
+  Jako barvy textu byla vybrána čistě bíla pro nadpisy na hlavních barvách, lehce průhledná černá pro
+  primární text a šedá pro sekundární text. Jako barva pozadí těla byla ponechána výchozí lehce ztmavená bílá
+  barva. Popsané barvy s ukázkou můžeme vidět na obrázku \ref{fig:colorpalette}.
+
+  \begin{figure}[H]
+          \centering
+                  \includegraphics[scale=0.3]{img/colorpalette.png}
+          \caption{Hlavní barvy použité v aplikaci}
+          \label{fig:colorpalette}
+  \end{figure}
+
+\subsubsection{Ikony}
+Pro akce aplikace jsou používány ikony ve stylu Material designu, které jsou vždy ploché
+a snaží se co nejvýstižněji popsat akci, kterou provádí. Existuje již obrovské množství
+ikon a lze je nalézt například na \url{https://materialdesignicons.com/}, případně lze ikony
+importovat přímo v Android Studiu ze oficiálních zdrojů Material designu.
+
+V obou případech těchto ikon je licence použití Creative Common Attribution 4.0 International License (CC-BY 4.0)
+\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/4.0/}}, což znamená,
+že můžeme bez problému ikony zdarma použít, musíme pouze někde v aplikaci uvést, že tyto ikony
+používáme a v případě, že bychom si je upravili toto také uvést.
+Příklady používaných ikon můžeme vidět na obrázcích \ref{fig:record}, \ref{fig:camera} a \ref{fig:recordsound}.
+
+\begin{figure}[H]
+\minipage{0.32\textwidth}
+  \centering
+  \includegraphics[scale=0.2]{img/record.png}
+  \caption{Nahrávání cesty}\label{fig:record}
+\endminipage\hfill
+\minipage{0.32\textwidth}
+  \centering
+  \includegraphics[scale=0.2]{img/camera.png}
+  \caption{Přídání fotky}\label{fig:camera}
+\endminipage\hfill
+\minipage{0.32\textwidth}%
+  \centering
+  \includegraphics[scale=0.2]{img/recordsound.png}
+  \caption{Nahrání zvuku}\label{fig:recordsound}
+\endminipage
+\end{figure}
+
+Obrázky je od verze Androidu 5 možné specifikovat ve vektorovém formátu a odpadá tak dříve
+nutné vytváření mnoha verzí stejného obrázku pro každou třídu rozlišení.
+Z důvodu zpětné kompatibility pro verze nižší než 5 je přesto nutné tyto rastorvé verze obrázků
+vytvořit, nicméně vývojové nástroje již tento scénář předpokládají a tyto rastrové verze jsou
+pro nižší verze systémy vygenerovány během kompilace, což značně zjednodušuje údržbu obrázků.
+
+
+
+Pro další ikony loga aplikace a podobně byly použity zdroje ze služby
+Iconfinder\footnote{\url{https://www.iconfinder.com/}}, kde je licence pro použití také zdarma. V tomto
+případě se jedná a Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/3.0/}}, což je starší verze
+licence popsané výše a v praxi jsou pak podmínky použití ikon stejné.
+
+
+
+
+%  Rozměry
+
+%  Kliknutí
 
 
 
