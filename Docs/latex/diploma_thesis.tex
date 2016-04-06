@@ -2247,6 +2247,39 @@ vlákně, nicméně k naší spokojenosti také vidíme, že se toto provádí v
   V/DBFlowDataRepository:  selectSync [248ms] = RouteData(_deletedId=0, _id=4, _start...
 \end{lstlisting}
 
+\subsection{Pády aplikace}
+Jedním z nejnepříjemnějších problémů, co může uživatele potkat, je pád aplikace a neslavné dialogové
+okno s dotazem, zda chceme aplikaci ukončit. Bývá poté velmi těžké uživatele přesvědčit, aby se
+do aplikace vrátil. Při každém vydávání verze byly proto vždy otestovány všechny hlavní scénáře,
+kterými aplikace prochází, nicméně i přesto se můžou chyby dostat do produkce a je důležité se
+ o nich dozvědět.
+
+ Pro tyto účely se opět používají služby obchodu Google Play a knihovny Google Play Services instalované
+ na zařízení. Pokud nastane za běhu aplikace výjimka a aplikace spadne. Zobrazí se uživateli nabídka
+ k odeslání zpětné vazby spolu s informacemi o chybě. testovací uživatelé byli instrováni toto udělat
+ a vzhledem k dřívějším testům byla takto nahlášena pouze jedná výjimka.
+
+ Nahlášené chyby si lze poté prohlédnou v konzoli obchodu Google Play, kde se nahrajou také další
+ důležité informace o zařízení, jako verze systému, výrobce, typ zařízení a zejména trasování zásobníku
+ chyby, podle kterého je snadno možné chybu odhalit. Ukázku nahlášené chyby můžeme vidět na obrázku
+ \ref{fig:anr}.
+
+   \begin{figure}[H]
+               \centering
+                       \includegraphics[scale=0.7]{img/anr.png}
+               \caption{Nahlášený pád aplikace v konzoli Google Play}
+               \label{fig:anr}
+       \end{figure}
+
+Při procházení výpisu bylo zjištěno, že chyba je způsobena voláním metod fragmentu pro získání textových zdrojů
+ vyžadujících připojenou aktivitu, nicméně volání této metody přišlo v okamžiku, kdy aktivita rotovala
+a tudíž byl fragment již z aktivity odstraněn, což vedlo k nahlášenému selhání.
+
+Chyba byla vyřešena kontrolou stavu a získáváním textových zdrojů již při vytváření fragmentu,
+kdy máme jistotu, že je fragment k aktivitě správně připojen. Po nahrání opravné verze na Google Play
+byla nové verze distribuována během pár hodin, byla tak opravena a jak můžeme vidět na obrázku
+\ref{fig:anr}, objevila se pouze jednou.
+
 \section{Závěr}
 V práci jsme si ukázali průběh návrhu mobilní aplikace od diskuze zadání po funkční a grafický návrh.
 Následně byly vybrané části implementovány a v rámci implementace jsme si taky předvedli použití mnoha knihoven a technik
