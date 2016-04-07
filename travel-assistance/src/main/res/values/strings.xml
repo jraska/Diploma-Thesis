@@ -102,5 +102,7 @@
     <string name="select_route_icon">Select route icon</string>
     <string name="pick_route_icon">Pick Route icon</string>
     <string name="record_tracking_now">Recording now…</string>
+    <string name="record_button_showcase_title">Recording</string>
+    <string name="record_button_showcase_subtitle">Tap the button to start route recording</string>
 
 </resources>

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +27,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.android.gms.maps.*;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
@@ -86,6 +91,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
   private UUID _lastPhotoRequestId;
   private GoogleMap _map;
+  private ShowcaseView _showcaseView;
 
   //endregion
 
@@ -100,6 +106,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     TravelAssistanceApp.getComponent(this).inject(this);
 
     updateUIState();
+    showRecordShowcase();
     updateTransportIcon();
     updateRouteIcon();
 
@@ -113,6 +120,28 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     }
 
     _eventBus.register(this);
+  }
+
+  private void showRecordShowcase() {
+    _showcaseView = new ShowcaseView.Builder(this)
+        .setTarget(new ViewTarget(_startTrackingButton))
+        .setContentTitle(R.string.record_button_showcase_title)
+        .setContentTitlePaint(paintOf(R.color.colorAccent))
+        .setContentText(R.string.record_button_showcase_subtitle)
+        .setContentTextPaint(paintOf(R.color.textMain))
+        .hideOnTouchOutside()
+        .singleShot(12345)
+        .build();
+  }
+
+  private TextPaint paintOf(int colorRes) {
+    int color = ContextCompat.getColor(this, colorRes);
+    TextPaint paint = new TextPaint();
+    paint.setColor(color);
+    paint.setAntiAlias(true);
+    paint.setTextSize(getResources().getDimension(R.dimen.textTitle));
+
+    return paint;
   }
 
   @Override
@@ -258,6 +287,10 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   }
 
   private void updateUIState() {
+    if (_showcaseView != null) {
+      _showcaseView.hide();
+    }
+
     boolean tracking = _trackingManager.isTracking();
 
     if (tracking) {

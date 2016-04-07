@@ -48,7 +48,6 @@ public class RoutesListActivity extends BaseActivity
   @Inject TravelDataRepository _travelDataRepository;
   @Inject RoutesAdapter _routesAdapter;
   @Inject EventBus _eventBus;
-  @Inject SettingsManager _settingsManager;
   @Inject TravelAssistanceApp _app;
   @Inject NfcRouteEncoder _routeEncoder;
 

@@ -103,4 +103,6 @@
     <string name="select_route_icon">Vyberte ikonu cesty</string>
     <string name="pick_route_icon">Vyberte ikonu cesty</string>
     <string name="record_tracking_now">Nahrává se…</string>
+    <string name="record_button_showcase_title">Začátek nahrávání</string>
+    <string name="record_button_showcase_subtitle">Klepněte pro spuštění nahrávání</string>
 </resources>

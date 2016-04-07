@@ -85,6 +85,8 @@ dependencies {
   compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
   compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
 
+  compile 'com.github.amlcurran.showcaseview:library:5.4.3'
+
   testCompile 'junit:junit:4.12'
   testCompile 'org.robolectric:robolectric:3.0'
   testCompile 'org.hamcrest:hamcrest-library:1.3'
