@@ -102,4 +102,5 @@
     <string name="backup_restore_snackbar_action">Ukázat</string>
     <string name="select_route_icon">Vyberte ikonu cesty</string>
     <string name="pick_route_icon">Vyberte ikonu cesty</string>
+    <string name="record_tracking_now">Nahrává se…</string>
 </resources>

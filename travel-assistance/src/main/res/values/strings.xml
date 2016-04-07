@@ -101,5 +101,6 @@
     <string name="settings_backup_title">Data backup</string>
     <string name="select_route_icon">Select route icon</string>
     <string name="pick_route_icon">Pick Route icon</string>
+    <string name="record_tracking_now">Recording now…</string>
 
 </resources>

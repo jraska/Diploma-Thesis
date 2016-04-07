@@ -99,7 +99,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
     TravelAssistanceApp.getComponent(this).inject(this);
 
-    updateButtonClickability();
+    updateUIState();
     updateTransportIcon();
     updateRouteIcon();
 
@@ -244,7 +244,9 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
     Timber.i("User started recording");
 
-    updateButtonClickability();
+    Snackbar.make(_titleInput, R.string.record_tracking_now, Snackbar.LENGTH_INDEFINITE).show();
+
+    updateUIState();
   }
 
   @OnClick(R.id.record_btnStopRecording) void stopTracking() {
@@ -252,11 +254,17 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
     Timber.i("User stopped tracking");
 
-    updateButtonClickability();
+    updateUIState();
   }
 
-  private void updateButtonClickability() {
+  private void updateUIState() {
     boolean tracking = _trackingManager.isTracking();
+
+    if (tracking) {
+      setTitle(R.string.record_tracking_now);
+    } else {
+      setTitle(R.string.title_activity_route_record);
+    }
 
     if (tracking) {
       _startTrackingButton.setVisibility(View.GONE);
