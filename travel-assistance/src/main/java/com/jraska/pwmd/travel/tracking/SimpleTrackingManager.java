@@ -164,6 +164,8 @@ public class SimpleTrackingManager implements TrackingManager {
       }
     }
 
+    _routeData.setIconId(getRouteIcon().id);
+
     _pendingChanges.clear();
     _pendingNoteSpecs.clear();
     _pendingLocations.clear();

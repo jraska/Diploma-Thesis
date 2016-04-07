@@ -29,6 +29,7 @@ public class RouteData extends BaseModel {
   @Column Date _start;
   @Column Date _end;
   @Column String _title;
+  @Column int _iconId;
 
   List<TransportChangeSpec> _transportChangeSpecs;
   List<NoteSpec> _noteSpecs;
@@ -81,6 +82,14 @@ public class RouteData extends BaseModel {
     ArgumentCheck.notNull(end);
 
     _end = end;
+  }
+
+  public int getIconId() {
+    return _iconId;
+  }
+
+  public void setIconId(int iconId) {
+    _iconId = iconId;
   }
 
   public String getTitle() {

@@ -19,6 +19,7 @@ import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.data.RouteIcon;
 import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 
 import javax.inject.Inject;
@@ -94,8 +95,8 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     return _routes.size();
   }
 
-  public static int getRouteIcon(RouteData rout) {
-    return R.drawable.ic_location_48dp;
+  public static int getRouteIcon(RouteData route) {
+    return RouteIcon.fromId(route.getIconId()).iconResId;
   }
 
   //endregion
@@ -190,7 +191,7 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
     }
 
     @OnLongClick({R.id.route_item_more, R.id.route_item_navigate})
-    boolean showContentDescription(View v){
+    boolean showContentDescription(View v) {
       return ShowContentDescriptionLongClickListener.showContentDescription(v);
     }
 
