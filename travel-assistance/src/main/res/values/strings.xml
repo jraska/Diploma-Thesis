@@ -99,5 +99,7 @@
     <string name="backup_resolve_error_generic">Problem resolving backup</string>
     <string name="backup_restore_snackbar_action">View</string>
     <string name="settings_backup_title">Data backup</string>
+    <string name="select_route_icon">Select route icon</string>
+    <string name="pick_route_icon">Pick Route icon</string>
 
 </resources>

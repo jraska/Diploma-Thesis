@@ -11,10 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.core.gps.LatLng;
-import com.jraska.pwmd.travel.data.NoteSpec;
-import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.data.RouteDescription;
-import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import com.jraska.pwmd.travel.data.*;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,6 +41,8 @@ public class SimpleTrackingManager implements TrackingManager {
 
   private RouteData _routeData;
   private UserInput _lastUserInput;
+
+  private RouteIcon _routeIcon;
 
   //endregion
 
@@ -88,6 +87,18 @@ public class SimpleTrackingManager implements TrackingManager {
 
   //region ITrackingManagementService impl
 
+  @Override
+  public void setRouteIcon(RouteIcon routeIcon) {
+    _routeIcon = routeIcon;
+  }
+
+  @Override @NonNull public RouteIcon getRouteIcon() {
+    if (_routeIcon == null) {
+      return RouteIcon.DEFAULT;
+    }
+
+    return _routeIcon;
+  }
 
   @Nullable @Override public UserInput getLastUserInput() {
     return _lastUserInput;

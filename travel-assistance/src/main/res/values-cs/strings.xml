@@ -100,4 +100,6 @@
     <string name="backup_error_generic">Nepodařilo se vytvořit zálohu </string>
     <string name="backup_resolve_error_generic">Zálohu se nepodařilo obnovit</string>
     <string name="backup_restore_snackbar_action">Ukázat</string>
+    <string name="select_route_icon">Vyberte ikonu cesty</string>
+    <string name="pick_route_icon">Vyberte ikonu cesty</string>
 </resources>

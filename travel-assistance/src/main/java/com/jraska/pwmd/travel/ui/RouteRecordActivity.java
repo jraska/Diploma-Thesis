@@ -28,6 +28,7 @@ import com.google.android.gms.maps.*;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.data.RouteIcon;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
 import com.jraska.pwmd.travel.feedback.Feedback;
 import com.jraska.pwmd.travel.media.PicturesManager;
@@ -72,6 +73,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   @Bind(R.id.record_btnAddTextNote) View _addNoteButton;
   @Bind(R.id.record_btnAddVoice) View _addSoundButton;
   @Bind(R.id.record_route_title_input) EditText _titleInput;
+  @Bind(R.id.record_set_icon_view) ImageView _pickIconView;
 
   @Inject SimpleTransportManager _transportManager;
   @Inject TrackingManager _trackingManager;
@@ -97,8 +99,9 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
     TravelAssistanceApp.getComponent(this).inject(this);
 
-    updateStartStopButtons();
+    updateButtonClickability();
     updateTransportIcon();
+    updateRouteIcon();
 
     SupportMapFragment mapFragment =
         (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -241,7 +244,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
     Timber.i("User started recording");
 
-    updateStartStopButtons();
+    updateButtonClickability();
   }
 
   @OnClick(R.id.record_btnStopRecording) void stopTracking() {
@@ -249,10 +252,10 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
     Timber.i("User stopped tracking");
 
-    updateStartStopButtons();
+    updateButtonClickability();
   }
 
-  private void updateStartStopButtons() {
+  private void updateButtonClickability() {
     boolean tracking = _trackingManager.isTracking();
 
     if (tracking) {
@@ -268,6 +271,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     _saveRouteButton.setEnabled(tracking);
     _changeTransportButton.setEnabled(tracking);
     _addSoundButton.setEnabled(tracking);
+    _pickIconView.setEnabled(tracking);
   }
 
   @OnClick(R.id.record_btnSaveRoute) void saveRoute() {
@@ -441,9 +445,22 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
   @OnLongClick({R.id.record_btnAddTextNote, R.id.record_btnAddVoice, R.id.record_btnAddPhoto,
       R.id.record_btnChangeTransportType, R.id.record_btnStartRecording,
-      R.id.record_btnStopRecording, R.id.record_btnSaveRoute})
+      R.id.record_btnStopRecording, R.id.record_btnSaveRoute, R.id.record_set_icon_view})
   boolean showContentDescription(View view) {
     return ShowContentDescriptionLongClickListener.showContentDescription(view);
+  }
+
+  @OnClick(R.id.record_set_icon_view) void showIconPickDialog() {
+    PickRouteIconDialog.show(this, _trackingManager.getRouteIcon());
+  }
+
+  void onRouteIconPicked(RouteIcon routeIcon) {
+    _trackingManager.setRouteIcon(routeIcon);
+    updateRouteIcon();
+  }
+
+  void updateRouteIcon() {
+    _pickIconView.setImageResource(_trackingManager.getRouteIcon().iconResId);
   }
 
   //endregion

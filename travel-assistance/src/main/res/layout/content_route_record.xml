@@ -13,17 +13,34 @@
     tools:showIn="@layout/activity_route_record"
     tools:context="com.jraska.pwmd.travel.ui.RouteRecordActivity">
 
-    <android.support.design.widget.TextInputLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/record_route_title_input"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/route_title"
-            style="@style/TextInputMain" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_toLeftOf="@+id/record_set_icon_view"
+            android:layout_toStartOf="@+id/record_set_icon_view">
+
+            <EditText
+                android:id="@+id/record_route_title_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/route_title"
+                style="@style/TextInputMain" />
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/record_set_icon_view"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:contentDescription="@string/select_route_icon"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            tools:src="@drawable/ic_apartment_48dp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/record_tracking_controls_container"
@@ -150,6 +167,6 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+        android:layout_marginTop="@dimen/activity_vertical_margin" />
 
 </LinearLayout>

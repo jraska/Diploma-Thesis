@@ -3,6 +3,7 @@ package com.jraska.pwmd.travel.tracking;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.data.RouteIcon;
 
 import java.util.UUID;
 
@@ -11,8 +12,7 @@ public interface TrackingManager {
 
   boolean isTracking();
 
-  @Nullable
-  UserInput getLastUserInput();
+  @Nullable UserInput getLastUserInput();
 
   //endregion
 
@@ -27,6 +27,10 @@ public interface TrackingManager {
   boolean addChange(int type, @NonNull String title);
 
   boolean addNote(@Nullable UUID imageId, @NonNull String caption, @Nullable UUID soundId);
+
+  void setRouteIcon(RouteIcon routeIcon);
+
+  RouteIcon getRouteIcon();
 
   //endregion
 
