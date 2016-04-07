@@ -273,7 +273,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
     Timber.i("User started recording");
 
-    Snackbar.make(_titleInput, R.string.record_tracking_now, Snackbar.LENGTH_INDEFINITE).show();
+    Snackbar.make(_titleInput, R.string.record_tracking_now, Snackbar.LENGTH_LONG).show();
 
     updateUIState();
   }
