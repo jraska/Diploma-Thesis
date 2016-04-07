@@ -3,10 +3,7 @@ package com.jraska.pwmd.travel.persistence;
 import android.support.annotation.NonNull;
 import com.jraska.BaseTest;
 import com.jraska.pwmd.core.gps.LatLng;
-import com.jraska.pwmd.travel.data.NoteSpec;
-import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.data.RouteDescription;
-import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import com.jraska.pwmd.travel.data.*;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -57,6 +54,7 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     assertThat(loadedData.getNoteSpecs()).isEqualTo(insertedData.getNoteSpecs());
     assertThat(loadedData.getLocations()).isEqualTo(insertedData.getLocations());
     assertThat(loadedData.getTransportChangeSpecs()).isEqualTo(insertedData.getTransportChangeSpecs());
+    assertThat(loadedData.getIconId()).isEqualTo(insertedData.getIconId());
   }
 
   @Test
@@ -165,7 +163,9 @@ public class DBFlowDataRepositoryTest extends BaseTest {
     ArrayList<NoteSpec> noteSpecs = new ArrayList<>();
     noteSpecs.add(new NoteSpec(generatePosition(), UUID.randomUUID(), "das"));
 
-    return new RouteData(routeDescription, latLngs, specs, noteSpecs);
+    RouteData routeData = new RouteData(routeDescription, latLngs, specs, noteSpecs);
+    routeData.setIconId(RouteIcon.ALL.get(5).id);
+    return routeData;
   }
 
   @NonNull
