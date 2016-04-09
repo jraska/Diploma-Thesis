@@ -81,16 +81,12 @@ GPS, NFC, Google Play, GitHub}
 \AddAcronym{ORM}{Objektově relační mapování}
 \AddAcronym{ZIP}{Souborový formát pro kompresi a archivaci dat}
 \AddAcronym{REST}{Representational State Transfer}
-\AddAcronym{MVP}{Model-view-controller}
-\AddAcronym{MVC}{Model-view-presenter}
+\AddAcronym{MVC}{Model View Controller}
+\AddAcronym{MVP}{Model View Presenter}
 \AddAcronym{SOLID}{Single responsibility, open-closed, Liskov substitution, interface segregation and dependency inversion}
 \AddAcronym{IoC}{Inversion of control}
 
 
-% Zadame cestu a jmeno souboru ci nekolika souboru s digitalizovanou podobou zadani prace
-% Pri sazbe se pak hledaji soubory Figures/Zadani1.jpg, Figures/Zadani2.jpg atd.
-% Do diplomove prace se postupne vlozi vsechny existujici soubory Figures/ZadaniXXX.jpg
-% Pokud toto makro zapoznamkujeme sazi se stranka s upozornenim
 %\ThesisAssignmentImagePath{Figures/Zadani}
 
 % Zadame soubor s digitalizovanou podobou prohlaseni
@@ -166,17 +162,17 @@ pomoc asistenta, kterých je však pro takto početnou skupinu nedostatek.
 V dnešní době jsou již chytré mobilní telefony poměrně snadno dostupnou věcí a spoustu lidí
 s mentálním postižením tyto telefony více než zdatně ovládá a nabízí se tedy možnost pokusit se prostřednictvím
  této techniky těmto lidem pomoci, v našem případě mobilními zařízeními se systémem Android,
- který je v současné době nejrozšířenějším a také nejdostupnějsím mobilním operačním systémem.
+ který je v současné době nejrozšířenějším a také nejdostupnějším mobilním operačním systémem.
 
  Jako téma mé diplomové práce jsem si proto vybral vytvoření mobilní aplikace pro mentálně postižené,
  která se pokusí usnadnit jim cestování a urychlit komunikaci s asistentem. Během práce se nejprve
  seznámíme s procesem vytváření zadání aplikace, kde bylo předmětem diskuze možnost využití této platformy
- za tímto účelem, následně si představíme funkční a grafický návrhy aplikace a samotnou platformu Android.
+ za tímto účelem, následně si představíme funkční a grafický návrh aplikace a samotnou platformu Android.
  Poté se přesuneme k implementaci za použití aktuálních nástrojů a knihoven, kde může práce sloužit
  i jako přehled aktuálních trendů vývoje Android aplikací a následně ukážeme, jak je možné aplikaci propojit
  se službami třetích stran pro rozšíření její funkcionality, jak
  můžeme aplikaci publikovat a zpřístupnit ji snadno uživatelům. Závěrem popíšeme, jaké
- změny a úpravy byly v aplikaci provedeny po obdžení zpětné vazby
+ změny a úpravy byly v aplikaci provedeny po obdržení zpětné vazby
  a jaké možnosti vývoje tento typ aplikace dále nabízí.
 
 
@@ -192,13 +188,13 @@ získal cenné rady jak postupovat a zdroje, které mi pomohly lépe pochopit, j
  co od nich očekávat a jak k nim, jako k uživatelům mobilní aplikace přistupovat.
 
 Po první konzultaci byly vytvořeny návrhy, co by mohla aplikace dělat a tyto návrhy byly diskutovány.
-Po další emailové komunikacijsme se s paní Uhlířovou dohodli, že pro ještě lepší zadání bude
+Po další emailové komunikaci jsme se s paní Uhlířovou dohodli, že pro ještě lepší zadání bude
 dobré konzultovat nápady s jejími kolegy v Brně a začalo se připravovat setkání, které se následně
-v Brně uskutečnilo a zůčastnilo se ho asi deset pečovatelů různých věkových kategorií a také dva klienti
+v Brně uskutečnilo a zúčastnilo se ho asi deset pečovatelů různých věkových kategorií a také dva klienti
 sdružení.
 
-Návrhy jim byly prezentovány a po diskuzi a zpětné vazbě byli ve spolupráci s mým vedoucím definování
-aktéři aplikace a vytvořena sada případú užití(use casů), které dávají pro toto zadání smysl a následně
+Návrhy jim byly prezentovány a po diskuzi a zpětné vazbě byli ve spolupráci s mým vedoucím definováni
+aktéři aplikace a vytvořena sada případů užití(use casů), které dávají pro toto zadání smysl a následně
 budou mnohé implementovány.
 
 \subsection{Popis aktérů}
@@ -210,7 +206,7 @@ budou mnohé implementovány.
 \end{figure}
 
 Pro uživatele klienta i asistenta jsou definovány případy užití zvlášť, neboť se celé chování
-a použití aplikace bude v obou případech značně lišit. Grafické zobrazení aktéru je na obrázku~\ref{fig:actors}.
+a použití aplikace bude v obou případech značně lišit. Grafické zobrazení aktérů je na obrázku~\ref{fig:actors}.
 
 \subsubsection{Uživatel Asistent}
 Jedná se o aktéra, který je zároveň klientovi s mentálním postižením odborným asistentem,
@@ -257,7 +253,7 @@ a podobně. Obrazovku prohlížení cest lze vidět na obrázku~\ref{fig:prohliz
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Uživatel spustí aplikaci nebo se do ní vrátí pomocí notifikace v notifikační liště.
+\textbf{Spouštěč:} Uživatel spustí aplikaci nebo se do ní vrátí pomocí notifikace v liště upozornění.
 
 \vspace{0.1cm}
 \noindent
@@ -290,7 +286,7 @@ a podobně. Obrazovku prohlížení cest lze vidět na obrázku~\ref{fig:prohliz
 \vspace{0.1cm}
 \noindent
 \textbf{Hlavní scénář:} Uživateli se zobrazí detail cesty se všemi informacemi, které jsou o ní uloženy.
-Na mapě si může prohlédnout kudy vedla, na místech fotografií jsou miniatury fotek, při změně dopravních
+Na mapě si může prohlédnout kudy vedla, na místech pořízení fotografií jsou miniatury fotek, při změně dopravních
 prostředků lze vidět ikony daných prostředků, zvukově a textové záznamy jsou označeny příslušnou ikonou.
 Při klepnutí na indikátor některého z těchto záznamů se zobrazí jeho popis, který uživatel dříve zadal.
 V detailu cesty lze poklepáním na tlačítko editovat přejít do módu editace cesty a všechny dříve zmíněné
@@ -483,7 +479,7 @@ uživatele. Okno přidávání poznámky lze vidět na obrázku~\ref{fig:pridani
 \vspace{0.1cm}
 \noindent
 \textbf{Hlavní scénář:} Zobrazí se okno se nabídkou tlačítek s obrázkem dopravního prostředku.
-Uživatel může zároveň přidat ke změně dopravního prostředku přidat popis. Po kliknutí na
+Uživatel může zároveň přidat ke změně dopravního prostředku popisný text. Po kliknutí na
 tlačítko s dopravním prostředkem se změna dopravního prostředku uloží s asociovanou aktuální polohou
 uživatele. Okno změny dopravního prostředku lze vidět na obrázku~\ref{fig:pridanizmenyprostredku}.
 
@@ -505,7 +501,7 @@ uživatele. Okno změny dopravního prostředku lze vidět na obrázku~\ref{fig:
 \noindent
 \textbf{Hlavní scénář:} Uživateli se zobrazí nahrávací okno, kde může vidět svou aktuální pozici
 a po klepnutí na tlačítko nahrávat začne aplikace sbírat data o poloze a umožní mu přidávat další data
-k právě nahrávané pozici. V notifikační liště se objeví notifikace o tom, že aplikace právě nahrává.
+k právě nahrávané pozici. V notifikační liště se objeví upozornění o tom, že aplikace právě nahrává.
 Uživatel může v tu chvíli odejít z aplikace, případně navštívit její jiné obrazovky a poté se do nahrávání vrátit,
 aniž by ztratil právě nahrávaná data. Stejně tak po opuštění aplikace při nahrávání se do ní může vrátit
 klepnutím na zobrazenou notifikaci.
@@ -760,7 +756,7 @@ co má v danou chvíli udělat. Use casy klienta a jejich vztahy lze vidět na o
 \noindent
 \textbf{Hlavní scénář:} Na úvodní obrazovce jsou pod sebou vyobrazeny všechny cesty, pro které může
 uživateli aplikace poskytnout asistenci. Uživatel si prohlíží cesty, které mají zobrazeny pouze
-základní informace a jsou označeny vybraným obrázkem pro snažší orientaci. Uživatel si poklepnutím
+základní informace a jsou označeny vybraným obrázkem pro snazší orientaci. Uživatel si poklepnutím
 na řádek cesty může dostat na její detail případně rychlými akcemi spustí navigaci.
 
 \vspace{0.1cm}
@@ -877,7 +873,7 @@ Přes spodní část fotky je zobrazen popisek, který této fotce dříve zadal
 \vspace{0.1cm}
 \noindent
 \textbf{Hlavní scénář:} Uživatel se se zapnutou asistencí cestování přiblíží místu,
-kde byla dríve za pomoci asistenta pořízena zvuková nahrávka. Uložená nahrávka se načte
+kde byla dříve za pomoci asistenta pořízena zvuková nahrávka. Uložená nahrávka se načte
 a začne se uživateli přehrávat. Zároveň se zobrazí popis nahrávky a tlačítko umožňující
 nahrávku přehrát znovu.
 
@@ -1000,7 +996,7 @@ asistencí cestování na cestu zapsanou na tagu.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Uživateli se zbrazí obrazovka s volbami rychlých akcí,
+\textbf{Hlavní scénář:} Uživateli se zobrazí obrazovka s volbami rychlých akcí,
 které kontaktují jeho asistenta. Obrazovka pomoci je na obrázku~\ref{fig:pomoc}.
 
 \vspace{0.1cm}
@@ -1060,7 +1056,7 @@ Asistentovi se zobrazí zpráva, ve které je také odkaz na mapu s GPS polohou 
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Kientovi se otevře emailová aplikace s nachystanou zprávou a adresou asistenta
+\textbf{Hlavní scénář:} Klientovi se otevře emailová aplikace s nachystanou zprávou a adresou asistenta
 a klient klepne odeslat. Asistentovi přijde email s žádostí o pomoc a odkazem na mapu s GPS polohou
 klienta v době odeslání emailu.
 
@@ -1095,7 +1091,7 @@ obvyklých cestách.
 Systém Android poskytuje vývojáři několik základních komponent, z nichž námi používané detailněji popíšeme.
 
 \subsubsection{Záměr(\texttt{Intent})}
-Platforma Android byla vymýšlena tak, aby vývojář místo explicitního spouštění konkrétní aplikace pro danou činniost
+Platforma Android byla vymýšlena tak, aby vývojář místo explicitního spouštění konkrétní aplikace pro danou činnosti
 raději popsal záměr, co by chtěl udělat a systém sám vyhodnotí, která aplikace se pro tento záměr nejlépe
 hodí. Touto cestou se systém snaží vytvořit prostředí mnoha aplikací, které spolu navzájem komunikují,
 aniž by jedna o druhé přímo věděly a pomocí záměrů tak snižuje vazby mezi komponentami. Záměr může mít
@@ -1153,7 +1149,7 @@ Celý životní cyklus aktivity můžeme vidět na obrázku \ref{fig:activitylyf
 Velmi častým problémem při vývoji je držení dat a podobných věci přímo v aktivitách,
 neboť ta může být kdykoliv zničena systémem, například
 pokud uživatel pouze otočí obrazovku a vyžaduje se v tu chvíli nové uživatelské rozhraní. Pokud v takové chvíle
-někdo drží stále na aktivitu referenci, zničená instance aktivity neí uvolněna z paměti a vzniká únik paměti.
+někdo drží stále na aktivitu referenci, zničená instance aktivity není uvolněna z paměti a vzniká únik paměti.
 Tento problém se stal ve světě vývojářů Androidu tak častý, že přímo pro jeho prevenci byla vytvořena knihovna
 LeakCanary(\url{https://github.com/square/leakcanary}).
 \begin{figure}[H]
@@ -1167,20 +1163,20 @@ LeakCanary(\url{https://github.com/square/leakcanary}).
 Fragmenty mohou být části uživatelského rozhraní aktivity nebo sloužit například pro předávání
 dat mezi instancemi stejné aktivity například při rotaci. Fragmenty mají s aktivitou svázaný stejný životní cyklus
 a všechny metody tohoto cyklu aktivity jsou provolávány do fragmentu. Jedna instance fragmentu
-může být předávána mezi instancemi více aktivit a fragment tak může sloužit jako idální komponenta
+může být předávána mezi instancemi více aktivit a fragment tak může sloužit jako ideální komponenta
 v případě, kde potřebujeme mít logiku svázanou s životním cyklem aktivity, chceme však jistá data
-předat bezpečně mezi instancemi rotojící aktivity, případně pokud chceme určitou část uživatelského
+předat bezpečně mezi instancemi rotující aktivity, případně pokud chceme určitou část uživatelského
 rozhraní udržet i při změně instance aktivity. Toto v aplikaci používáme například u map, kde pomocí
 držení mapy ve fragmentu předcházíme novému načtení mapy při rotaci a tudíž nežádoucímu probliknutí.
 Fragmenty byly představeny v Androidu verze 3 a zpočátku způsobily mnoho otázek a jejich správném využívání.
 V současnosti se doporučuje využít je hlavně pro dynamické zobrazování uživatelského rozhraní na
-zařízeních s různými obrazovkami\cite{androiddevelopers}, nicméně využií jako datový kontejner pro
+zařízeních s různými obrazovkami\cite{androiddevelopers}, nicméně využití jako datový kontejner pro
 předávání mezi instancemi aktivity se používá také.
 
 \subsubsection{Služby}
 Služby jsou určeny pro operace, které nejsou viditelné uživateli, případně asynchronní operace, které se mají
 provést bez vazby na rozhraní. Služby mají také svůj životní cyklus, nicméně odlišný a jednodušší,
-než aktivity. Instance služeb ,dědících ze systémvé třídy \texttt{Service}, opět vytváří
+než aktivity. Instance služeb, dědících ze systémové třídy \texttt{Service}, opět vytváří
 systém a spravuje je po dobu jejich existence,
 přičemž vývojář spouští služby záměry a pomocí nich jim předává také například data ke zpracování.
 Služby se stejně jako aktivity musí registrovat v Android manifestu a mohou být součástí veřejného
@@ -1197,7 +1193,7 @@ Cílem návrhu bylo používat v aplikaci konzistentní rozhraní a také jednod
 prvků pro snadné pochopení pro uživatele se specifickými nároky. Většina uživatelských prvků je tak
 realizována jako velká tlačítka, která při podržení prstu na prvku zobrazí jeho textový popis.
 Jako hlavní směr návrhu uživatelského rozhraní byl zvolen Material Design, neboť se jedná o aktuální
-doporučení pro mobilní aplikace a je v něm kladen velký důrazna jednoduchost a konzistenci,
+doporučení pro mobilní aplikace a je v něm kladen velký důrazná jednoduchost a konzistenci,
 tedy naše požadavky. Velkou část této specifikace za nás řeší námi používaná knihovna Android Support,
 popsaná v sekci \ref{androidsupport}.
 
@@ -1217,22 +1213,22 @@ grafických prvků uživatelského rozhraní, které by měl vývojář použív
   pixel" a jedná se o jednotku, která je relativní vůči skutečnému rozlišení zařízení a jejím účelem
   je zobrazení prvků uživatelského rozhraní v přibližně stejné reálné velikosti bez ohledu na skutečnou
   hustotu pixelů obrazovky, které se zařazují do tříd hustoty a podle této třídy se rozhoduje,
-  kolik skutečných pixelů bude ve výsleku prvek zabírat. Tyto třídy jsou v současnosti
+  kolik skutečných pixelů bude ve výsledku prvek zabírat. Tyto třídy jsou v současnosti
   \texttt{ldpi}, \texttt{hdpi}, \texttt{tvdpi}, \texttt{hdpi}, \texttt{xhdpi}, \texttt{xxhdpi} a \texttt{xxxhdpi}.
-  Obdelník o šířce 100dp bude pak například v třídě rozlišení \texttt{ldpi} zabírat 75 pixelů(1dp = 0.75px),
+  Obdélník o šířce 100dp bude pak například v třídě rozlišení \texttt{ldpi} zabírat 75 pixelů(1dp = 0.75px),
   nicméně na zařízení ve třídě \texttt{xxxhdpi} bude mít rozměr 400 pixelů(1dp = 4px).
 
   Specifikace zavádí jako jednu ze svých hlavních prvků zavedení prostorové osy \textit{z} do
   definice uživatelského rozhraní a nazývá tuto vlastnost uživatelských prvků vyvýšení(elevation)\cite{materialdesign}.
-  Tato vlastnost ovlivňuje nejvíce velikost stínu uživatelského prvku. Nejvyší vyvýšení(24dp)
-  mají modální dialogy, poté postranní menu(16dp) následují další komponenty, mezi nimiž jsou námi využivané
+  Tato vlastnost ovlivňuje nejvíce velikost stínu uživatelského prvku. Nejvyšší vyvýšení(24dp)
+  mají modální dialogy, poté postranní menu(16dp) následují další komponenty, mezi nimiž jsou námi využívané
   menu(8dp), vyjíždějící upozornění "Snackbar"(6dp), případně lišta menu rychlých akcí "App bar"(4dp)\cite{materialdesign}.
   Specifikace přesně určuje chování pro každou komponentu a precizně tak vývojáře vede ke správné
   implementaci uživatelských prvků.
 
 
 \subsubsection{Barvy}
-  Material design také poskytuje barvy, které by měly být v naší aplikaci použity jako dominatní v hlavních
+  Material design také poskytuje barvy, které by měly být v naší aplikaci použity jako dominantní v hlavních
   uživatelských prvcích. Paletu barev můžeme nalézt na \url{https://www.google.com/design/spec/style/color.html}.
   Pro naší aplikaci byla vybrána jako hlavní barvy odstíny barvy indiga, zdůrazňující barvou byla zvolena zelená.
   Jako barvy textu byla vybrána čistě bíla pro nadpisy na hlavních barvách, lehce průhledná černá pro
@@ -1267,7 +1263,7 @@ Příklady používaných ikon můžeme vidět na obrázcích \ref{fig:record}, 
 \minipage{0.32\textwidth}
   \centering
   \includegraphics[scale=0.2]{img/camera.png}
-  \caption{Přídání fotky}\label{fig:camera}
+  \caption{Přidání fotky}\label{fig:camera}
 \endminipage\hfill
 \minipage{0.32\textwidth}%
   \centering
@@ -1278,7 +1274,7 @@ Příklady používaných ikon můžeme vidět na obrázcích \ref{fig:record}, 
 
 Obrázky je od verze Androidu 5 možné specifikovat ve vektorovém formátu a odpadá tak dříve
 nutné vytváření mnoha verzí stejného obrázku pro každou třídu rozlišení.
-Z důvodu zpětné kompatibility pro verze nižší než 5 je přesto nutné tyto rastorvé verze obrázků
+Z důvodu zpětné kompatibility pro verze nižší než 5 je přesto nutné tyto rastrové verze obrázků
 vytvořit, nicméně vývojové nástroje již tento scénář předpokládají a tyto rastrové verze jsou
 pro nižší verze systémy vygenerovány během kompilace, což značně zjednodušuje údržbu obrázků.
 
@@ -1343,16 +1339,16 @@ Nástroj byl použit pro vytváření use case diagramů a třídních diagramů
 GIMP je široce používaný nástroj pro práci s obrázky a jejich úpravu. GIMP znamená
  \textit{GNU Image Manipulation Program}, což lze volně přeložit jako program pro práci s obrázky s GNU
  licencí, která nám říká, že program je zdarma a tudíž se hodí pro naše použití. GIMP nabízí obrovské
- množství funkcí apro naše účely byl použit zejména pro úpravu snímků obrazovky užitých v této práci.
+ množství funkcí a pro naše účely byl použit zejména pro úpravu snímků obrazovky užitých v této práci.
 
 
  \subsubsection{Android Asset Studio (https://romannurik.github.io/AndroidAssetStudio/)}
  Specifikem platformy Android je, že spoustu obrázků je potřeba držet v několika verzích pro optimální
- zobrazení na různých zařízních, pro zdroje platí určitá pravidla a například poměr velikostí variant
+ zobrazení na různých zařízeních, pro zdroje platí určitá pravidla a například poměr velikostí variant
  obrázků musí splňovat určitá kritéria. Udržovat a vytvářet tyto zdroje je často velmi obtížné
- a pomoci se nám s tím snaží nástorj Android Asset Studio, což je webová aplikace poskytující
- podporu pro vytáření obrázků v požadovaných velikostech, generování motivů aplikace a podobně.
- Pro naší aplikaci byl nástorj použit zejména pro generování ikon vyskytujících se v aplikaci
+ a pomoci se nám s tím snaží nástroj Android Asset Studio, což je webová aplikace poskytující
+ podporu pro vytváření obrázků v požadovaných velikostech, generování motivů aplikace a podobně.
+ Pro naší aplikaci byl nástroj použit zejména pro generování ikon vyskytujících se v aplikaci
  a také pro generaci spouštěcí ikony, která podléhá jiným pravidlům než běžné ikony.
 
 \section{Implementace}
@@ -1364,7 +1360,7 @@ a spoustu dalších společností pro ně poskytuje celou řadu nástrojů, kter
 
 \subsubsection{Vývojové prostředí}
 Přesto, že první verze Android vyšla již před 10 lety, získal Android své vlastní vývojové prostředí, Android Studio,
-až v roce 2013 a na verzi 1.0 si vývojáři počkali až do konce roku 2014. Dříve býl vývoj řešen pluginy ve známých
+až v roce 2013 a na verzi 1.0 si vývojáři počkali až do konce roku 2014. Dříve byl vývoj řešen pluginy ve známých
 vývojových prostředích jako Eclipse, NetBeans a později IntelliJ IDEA od JetBrains. Právě poslední jmenované
 se časem stalo jedničkou a díky tomu, že existuje open source verze, posloužila IntelliJ jako základ pro Android Studio
 a dodnes se změny pro IntelliJ dostávají postupně do Android Studia a naopak, takže se vzájemně stále obohacují.
@@ -1384,17 +1380,17 @@ napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však
  skript a vývojář se nemusí starat o jakoukoliv komplikovanou instalaci build systému.
 
  \subsubsection{Verzování kódu}
- Jako systém verzování byl použit Git, který je jeden z nejrozšířenějších verzovacích systémů a služba GitHub\url{https://github.com}.
- podporuje zdarma hostování open source repositářů s nabídkou mnoha služeb okolo, mimo jiné snadnou integraci se službou
+ Jako systém verzování byl použit Git, který je jeden z nejrozšířenějších verzovacích systémů a služba GitHub\url{https://github.com},
+ která podporuje zdarma hostování open source repositářů s nabídkou mnoha služeb okolo, mimo jiné snadnou integraci se službou
  Travis CI, která byla použita pro průběžnou integraci projektu. Díky službě GitHub je zajištěno zálohování kódu
- během vývoje a díky Gitu je vyřešeno verzování se všemi výhodami, které to s sebou přináší, jaok možnst vráti se
+ během vývoje a díky Gitu je vyřešeno verzování se všemi výhodami, které to s sebou přináší, jako možnost vrátit se
  ke konkrétní verzi projektu, porovnávat a sledovat změny, případně vyvíjet několik funkcionalit nezávisle na sobě.
  Dále bylo pomocí těchto nástrojů řešeno uzavírání verzí publikováno na Google Play, kdy byl pro každou verzi vytvořen
  release, takže v případě, že se objeví problém u uživatele, jsme vždy schopní snadno dostat kód do stavu
  ve kterém je u uživatele a snáze tak najít a vyřešit problém. Stránku projektu na GitHubu lze nalézt na
  \url{https://github.com/jraska/Diploma-Thesis}.
 
- \subsubsection{Průběžná intergace}
+ \subsubsection{Průběžná integrace}
  Díky hostování projektu na GitHubu bylo možné snadné využití službu Travis CI(\url{https://travis-ci.org}),
  která se zaregistruje pro repositář
  a při každé změně spustí build celého projektu v uzavřeném prostředí, díky čemuž dokážeme okamžitě
@@ -1430,7 +1426,7 @@ napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však
 \textbf{Codacy}
 
 
-Dalším použitám nástrojem je služba Codacy(\url{https://www.codacy.com/}), což je ve své podstatě
+Dalším použitým nástrojem je služba Codacy(\url{https://www.codacy.com/}), což je ve své podstatě
 automatizována analýza kódu vyhledávající potenciální chyby a problémy, která se spustí po každé změně v kódu
 díky opět snadné integraci s GitHubem. Služba odhaluje problémy jako nepoužívaný kód, příliš složité
 třídy nebo metody, známé programátorské chyby či bezpečnostní rizika. Po analýze projekt oznámkuje podle
@@ -1438,20 +1434,20 @@ množství nalezených problémů v poměru k množství analyzovaného kódu. A
 na \url{https://www.codacy.com/app/josef-raska/Diploma-Thesis/dashboard}.
 
 \subsection{Architektura}
-Android samotný se snaží uživateli nabízet implementaci Architektury Model-view-controller\cite{bestpracticesfuturice}, kde
+Android samotný se snaží uživateli nabízet implementaci Architektury Model View Controller\cite{bestpracticesfuturice}, kde
 každá akce rozhraní view směřuje na controller, který provede příslušnou logiku, případnou komunikaci
 s modelem - vrstvou poskytující data,
-kde se dá aktivita považovat jako controller, třídy dědící ze systémové třídy \texttt{View} která
+kde se dá aktivita považovat jako controller\cite{mvcxmvp}, třídy dědící ze systémové třídy \texttt{View} která
 se umí vykreslovat na obrazovku jako view a jako model nabízí systém mechanizmus poskytovatel obsahu
 (\texttt{ContentProvider}), který umožňuje vytvořit v podstatě REST API nad SQLite databází.
 Zejména pro část modelu se však tato část často implementuje zcela jinak, neboť uživatel nemá tímto způsobem
-přímy přístup k databázi a poskytovatelé obsahu jsou tak často vhodní více pro komunikaci mezi aplikacemi,
+přímý přístup k databázi a poskytovatelé obsahu jsou tak často vhodní více pro komunikaci mezi aplikacemi,
 kterou přístup k datům založený na URL poskytovatele obsahu umožňuje. Ohledně rozdělení na view a controller je opět
 v platformě několik nejasností z důvodu nekonzistence API mezi verzemi, kdy ve verzi Androidu 3.0 přibyly
 jako části aktivity fragmenty a u mnoha vestavěných tříd systému pro View vrstvu(například ListAdapter)
-provádí i sám systém logiku patřící mimo View vrstvu a tento vzor není tedy striktně dodržováno.
-Aktivita by navíc podle dokumentace měla sloužit více jako view, než controller, nicméně logika načítání
-modelu musí být velice často provázána s životním cyklem aktivity a toto úplné oddělení tedy není možné.
+provádí i sám systém logiku patřící mimo View vrstvu a tento vzor není tedy striktně dodržováno a vzhledem
+k nutnosti provazovat logiku načítání dat s životními cykly aktivit, které jsou zase svázané s uživatelským
+rozhraním nelze tedy komponenty zcela precizně oddělit\cite{mvcxmvp}.
 Schéma architektury MVC můžeme vidět na obrázku \ref{fig:mvc}.
 
 \begin{figure}[H]
@@ -1462,14 +1458,14 @@ Schéma architektury MVC můžeme vidět na obrázku \ref{fig:mvc}.
 \end{figure}
 
 Díky specifikům platformy existuje mnoho odlišných přístupů, které se snaží přizpůsobit
-tradiční architektury jako již zmíněný Model-view-controller, případně podobný Model-view-viewmodel
-nebo Model-view-presenter(MVP) a existuje mnoho projektů, která se snaží ukázat adaptaci těchto modelů
+tradiční architektury jako již zmíněný Model View Controller, případně podobný Model View, View Model
+nebo Model View Presenter(MVP) a existuje mnoho projektů, která se snaží ukázat adaptaci těchto modelů
 pro Android.
 
-Pro náš projekt jsme vybrali architekturu Model-view-presenter, která nám lépe umožňuje
+Pro náš projekt jsme vybrali architekturu Model View Presenter, která nám lépe umožňuje
 úplné oddělení modelu od view a všechny aktualizace uživatelského rozhraní se provádí skrz presenter,
  což je v našem případě aktivita. MVP tak více připomíná vrstvenou architekturu, což nám vyhovuje, neboť
-za vrstvou modelu mohou bý  další vrstvy komunikace s databází, případně po síti.
+za vrstvou modelu mohou být další vrstvy komunikace s databází, případně po síti.
 
 \begin{figure}[H]
         \centering
@@ -1478,21 +1474,23 @@ za vrstvou modelu mohou bý  další vrstvy komunikace s databází, případně
         \label{fig:mvp}
 \end{figure}
 
-Architektura projektu byla tedy volena s přikloněním k MVP, vzhledem k menšímu rozsahu aplikace
-se však kladl větší důraz na následování známých principů SOLID, popsaných
+Architektura projektu byla tedy volena s přikloněním k MVP, ve velké míře se používají
+aktuální úspěšné knihovny a byl kladen důraz na následování známých principů SOLID, popsaných
 například v \cite{solid} a IoC(Inversion of Control), popsaných v \cite{ioc} spolu s vkládáním
 závislostí pomocí knihovny Dagger 2, kterou popisujeme v sekci \ref{dagger2}.
 V projektu je na mnoha místech použito jednotkové testování pro podporu menší chybovosti v kódu
 za pomocí nástroje Robolectric popsaného v sekci \ref{robolectric}. Přístup k datům a tedy
-vrstva modelu je realizována s pomocí RxAndroid(sekce \ref{rxandroid}), kde se posytuje přístup
-controllerům k těmto datům pomocí popisovaných objektů \texttt{Observable}. controller, tedy aktivita
+vrstva modelu s propagací výsledků do vyšších vrstev je realizována
+ pomocí RxAndroid(sekce \ref{rxandroid}), kde se poskytuje přístup
+presenterům k těmto datům pomocí objektů \texttt{Observable}. Presenter, tedy aktivita,
 pak publikuje tato data do vrstvy view, kde objekty view zobrazí příslušná data. Fragment v našem
 případě reprezentuje část view aktivity a je určen například k zobrazení nahrané cesty a všech informací,
 které k ní byly přidány.
 
 \subsection{Použité knihovny}
 Jak již bylo zmíněno, Android používá velké množství vývojářů a pro jejich potřebu vzniklo velké množství
-z drivé většiny open source knihoven, které se snaží vyřešit a zjednodušit společný problém mnoha vývojářů
+z drtivé většiny open source knihoven, tedy knihoven s volně přístupným kódem,
+ které se snaží vyřešit a zjednodušit společný problém mnoha vývojářů
 a usnadnit programování pro Android. Knihovny jsou díky tomu, že si může napsat knihovnu prakticky kdokoliv
 různých kvalit a je proto nutné si každou napřed prohlédnout před jejím použitím, nicméně díky jejich
 otevřenému kódu a hodnocením dalších uživatelů lze již nyní poměrně snadno najít spolehlivou knihovnu na téměř každý
@@ -1504,10 +1502,10 @@ neboť mnohé řeší velice časté problémy vývoje, příčiny problematick�
 architektura aplikace.
 
 \subsubsection{Android Support}\label{androidsupport}
-Jedná se o základní knihovnu poskytovanou jako součást SDK, která řeší problémy komptibility aplikace
+Jedná se o základní knihovnu poskytovanou jako součást SDK, která řeší problémy kompatibility aplikace
 mezi různými verzemi a sjednocuje jejich vzhled. Poskytuje také množství rozšiřujících komponent uživatelského rozhraní,
 pomocné třídy například pro notifikace, média a spoustu dalších. V současné době by měla být součástí každé
-aplikace a při vytáření nového projektu je k projektu již automaticky přidána.
+aplikace a při vytváření nového projektu je k projektu již automaticky přidána.
 
 Dokumentaci knihovny můžeme najít na \url{http://developer.android.com/tools/support-library/index.html}.
 
@@ -1515,9 +1513,9 @@ Dokumentaci knihovny můžeme najít na \url{http://developer.android.com/tools/
 Poměrně nová knihovna spravovaná Googlem a uvolněná poprvé v srpnu 2015, která pro nás řeší tzv. vkládání
 závislostí(anglicky Dependecy Injection) do objektů,
 které tyto závislosti chtějí používat. Knihovna je použita za účelem zkvalitnění kódu a zlepšení testovatelnosti, jelikož
-je v celém projetku následována filozofie, že třídy by měly objekty buď vytvářet a nebo používat. To v podstatě to znamená,
+je v celém projektu následována filozofie, že třídy by měly objekty buď vytvářet a nebo používat. To v podstatě to znamená,
 že se snažíme omezit situace, kdy si třída v rámci své metody vytváří vlastní objekty, které potřebuje k vykonání
-dané operace a zejména se se snaží úplně elimonivat situace, kdy si třída své závislosti sama začne vybírat z nějakého
+dané operace a zejména se se snaží úplně eliminovat situace, kdy si třída své závislosti sama začne vybírat z nějakého
 kontejneru, statických proměnných a podobně. Jako špatný přístup je v tomto případě brán i často používán návrhový vzor
 Jedináček, jelikož se jedná v podstatě o sdílený globální stav. Všechny objekty by měly své závislosti obdržet v konstruktoru
 a neměly by se vyskytovat žádné metody tipu inicializuj objekt, nastav proměnnou, bez které objekt nemůže fungovat a podobně.
@@ -1542,7 +1540,7 @@ aplikace samotné jsou provázány co nejvolněji a nelze jednoduše předat jed
 dokud se nejedná o primitivní typ, případně jej lze serializovat.
 
 Tento problém pro nás řeší knihovny pro vkládání závislostí, které se nám snaží umožnit to, že si o potřebné
-závisloti prostě řekneme a knihovna nám je poskytne. My však musíme knihovně říct, jak tyto závislosti může
+závislosti prostě požádáme a knihovna nám je poskytne. My však musíme knihovně říct, jak tyto závislosti může
 získat a kde je má uložit. Dagger 2 používá objekt nazvaný \texttt{Component}, což je kontejner závislostí
 který dokáže vytvářet námi požadované objekty i s jejich závislostmi. Kontejner se skládá z modulů, které
 za podmínky určitých vstupů poskytnou kontejneru nové výstupy. V kódu se tyto třídy definují pomocí anotací
@@ -1565,7 +1563,7 @@ Knihovna k Java implementaci pouze přidává vlastnosti specifické pro platfor
 vzoru Pozorovatel(Observer) a její záměr je implementovat reakce na události bez vědomí, kdy přesně
 událost nastane, ale s vědomím, že v tuto chvíli bude registrovaný pozorovatel na tuto událost
 upozorněn a zareaguje na ni. Knihovna nabízí spoustu metod, jak na události reagovat, shlukovat je do
-skupin, mapovat objekty výsledku na jiné, řeší příliš mnoho požadavků v jednom čase a spostu dalších vlastností.
+skupin, mapovat objekty výsledku na jiné, řeší příliš mnoho požadavků v jednom čase a spoustu dalších vlastností.
 Jedná se o poměrně mocný nástroj, který nicméně vyžaduje nemálo času na nastudování, pochopení a v případě
 Android platformy platí, že s velkou sílou přichází velká zodpovědnost, jelikož při registrace pozorovatele
 se často v rámci registrace drží reference na aktivitu, což může v případě například rotace způsobit únik paměti,
@@ -1579,7 +1577,7 @@ každá knihovna si je řeší po svém, není nad nimi kontrola a výsledkem je
 ve kterém se lze jen složitě orientovat. Díky RxAndroid a jejich implementaci plánovačů, lze rozhodnutí,
 na jakých vláknech bude operace spuštěna a na kterém vlákně bude doručen výsledek nechat na klientovi třídy
 a tím pádem například řetězit synchronní volání, pokud jsme již v asynchronním vlákně a zejména zajistit,
-že výsledek obdržíme ve vlákně uživatelského rozhraní. Typická ukázka využití této vlastnosi
+že výsledek obdržíme ve vlákně uživatelského rozhraní. Typická ukázka využití této vlastnosti
 lze vidět na ukázce kódu \ref{rxmainthreaddeliver}, kde se získá seznam cest, operace pro jeho získání,
 které jsou časově náročné se spustí v jiném vlákně a výsledek bude doručen na hlavní vlákno,
 kde spustí poskytnutou metodu.
@@ -1610,7 +1608,7 @@ kompatibilitě podporuje pouze Javu 7
 a lambda výrazy byly do Javy přidány až ve verzi 8, nemůže tyto funkce vývojář využívat,
 což vede často k velkému množství anonymních tříd pro zpětné volání mnoha metod, jako typicky klepnutí,
 vrácení načtených asynchronních dat nebo při registraci posluchače u výše zmíněné knihovny RxAndroid.
-Tyto anonymní třídy značně znepřehledňují kód a velmi často vedou také k únikům paměti,
+Tyto anonymní třídy značně ztěžují čitelnost kódu a velmi často vedou také k únikům paměti,
 neboť anonymní třída drží implicitně referenci na instanci třídy, ve které je vytvářena, což je často
 aktivita nebo jiný objekt, který by měl být z paměti jinak odstraněn.
 
@@ -1645,12 +1643,12 @@ Lombok je další z nástrojů který rozšiřuje jazyk Java, respektive se nás
 ceremonií jako implementace metod \texttt{equals, hashCode, toString}, implementaci přístupových
 metod k datům třídy a podobně. Moderní vývojová prostředí včetně Android Studia toto vše umí
 vygenerovat, nicméně při každé úpravě třídy se musí myslet na to, že je třeba příslušné metody
-přegenerovat, aby zůstaly aktuální, což může vést k chybám.
+vygenerovat znovu, aby zůstaly aktuální, což může vést k chybám.
 
 Lombok pomocí anotací u příslušné třídy vygeneruje během kompilace obvyklých metod a díky Lombok
 pluginu do Android Studia nám vývojové prostředí tyto generované metody automaticky nabízí a díky tomu,
 že se metody generují během každé kompilace, generované metody zůstanou vždy aktuální. Jednoduchá datová
-třída se dvěmi vlastnostmi z ukázky kódu \ref{lombokshowcase} se všemi korektně napsanými implementacemi
+třída se dvěma vlastnostmi z ukázky kódu \ref{lombokshowcase} se všemi korektně napsanými implementacemi
 metod objektu \texttt{equals, hashCode, toString} a přístupových metod má délku kolem 50 řádků, nicméně
 díky tomuto nástroji lze totožnou funkcionalitu napsat jen na 5 řádků, jak vidíme na ukázce \ref{lombokshowcase},
 navíc s benefitem, že pro přidání další vlastnosti do všech metod stačí přidat pouze řádek vlastnosti
@@ -1701,10 +1699,10 @@ Knihovnu můžeme najít na \url{http://jakewharton.github.io/butterknife/}
 
 \subsubsection{DBFlow}\label{dbflow}
 Jedné se o knihovnu pro objektově relační mapování objektů pro databáze SQLite, které se v
- Androidu používají jako výchozí. Práce s touto databází pomocí API Andoridu není
+ Androidu používají jako výchozí. Práce s touto databází pomocí API Androidu není
  složitá, nicméně kód je poměrně zdlouhavý a pro přečtení nebo uložení objektu je potřeba
  mnoho řádek kódu. Pro objektově relační mapování existuje mnoho knihoven, najít mezi nimi takovou,
- která by vyhvěla všem požadavkům, je velice obtížné. Velká většina těchto knihoven využívá reflexi,
+ která by vyhověla všem požadavkům, je velice obtížné. Velká většina těchto knihoven využívá reflexi,
  která svou časovou náročností může překonat i operace zápisu a čtení z databáze.
  DBFlow se snaží tento problém řešit generací kódu pro čtení a zápis dat pomocí anotací nad objekty
  a jejich vlastnostmi, následně jejich ukládání řeší pomocí adaptérů vygenerovaných pro každou anotovanou
@@ -1723,7 +1721,7 @@ Jedné se o knihovnu pro objektově relační mapování objektů pro databáze 
 
   DBFlow nám také umožňuje přidávat adaptéry pro vlastní datové typu a tím nám umožnit uložit
   typ do jednoho sloupce, kde by si bez adaptéru knihovna neuměla poradit. V aplikaci
-  tohoto využívámé pro uložení identifikátorů \texttt{UUID} a také objektů \texttt{LatLng},
+  tohoto využíváme pro uložení identifikátorů \texttt{UUID} a také objektů \texttt{LatLng},
   které obsahují GPS souřadnice a adaptér je ukládá jako text oddělený čárkou.
   Knihovna obsahuje také některé vestavěné adaptéry pro často potřebné objekty, například námi
   také využívaný objekt \texttt{Date}.
@@ -1800,18 +1798,18 @@ GPS pozici, která později určí, kdy bude klient na tato data upozorněn.
 Při spuštění nahrávání se spustí služba pro nahrávání pozice, která zaregistruje
 posluchače na systémovou službu poskytující GPS souřadnice a při obdržení těchto souřadnic
 vyšle po aplikační sběrnici událostí událost o nové pozici. Na této sběrnici jsou v tuto chvíli
-registrvání všichni, kteří tuto informaci potřebují znát, což je v tuto chvíli uživatelské rozhraní
+registrování všichni, kteří tuto informaci potřebují znát, což je v tuto chvíli uživatelské rozhraní
 zobrazující mapu a služba ukládající GPS souřadnice do seznamu, který je v případě, že se uživatel
 rozhodne cestu uložit uložen do databáze. Jako systémová sběrnice se používá knihovna EventBus a pro
-možnost registrovat posluchače na poskytovatele GPS souřadnic potřebuju naše aplikace povolení
+možnost registrovat posluchače na poskytovatele GPS souřadnic potřebuje naše aplikace povolení
 získávat lokaci zařízení.
 
 \subsubsection{Pořizování fotek}
 Během nahrávání cesty může uživatel pořizovat svým telefonem fotky, které by klientovi při asistenci
 cestování měly pomoci v orientaci a připomenout mu důležité body cesty. Při kliknutí na ikonku přidat
-fotografii se vytvoří záměr pořídit fotogtafii s místem požadovaného uložení, spustí se
+fotografii se vytvoří záměr pořídit fotografii s místem požadovaného uložení, spustí se
 výchozí aplikace fotoaparátu na zařízení a o pořízení aplikace se nestará naše
-aplikace, nýbřž aplikace, na kterou je uživatel zvyklý. Pokud uživatel pořídí fotku a rozhodne se jí
+aplikace, nýbrž aplikace, na kterou je uživatel zvyklý. Pokud uživatel pořídí fotku a rozhodne se jí
 uložit, naše aplikace o tom obdrží zprávu, zobrazí se dialog, kde může uživatel fotografii pojmenovat,
 vytvoří se unikátní identifikátor fotografie a příslušný záznam asociovaný s nahrávanou cestou,
 přiřadí se mu aktuální pozice a v případě uložení cesty se tento záznam uloží spolu s cestou.
@@ -1843,7 +1841,7 @@ Zvláště se dá uložit změna způsobu transportu uživatele a to klepnutím 
 aktuální dopravní prostředek. Pokud například uživatel jde na zastávku, má zobrazenou ikonu chodce,
 pokud nastoupí do tramvaje a klepne na ikonu chodce, zobrazí se mu nabídka pro změnu dopravního
 prostředku a klepnutím na ikonu tramvaje se tato změna uloží opět s vazbou an aktuální GPS polohu.
-Uživatel může k této informaci přidat také textový popis například s číslem tramvaje nebo jiné instukce.
+Uživatel může k této informaci přidat také textový popis například s číslem tramvaje nebo jiné instrukce.
 Tyto informace se uloží jako záznam do databáze s vazbou na nahrávanou cestu v místě, kde byl záznam pořízen.
 Ikony používané pro vyjádření druhů dopravních prostředků můžeme vidět na obrázcích \ref{fig:icwalk},
 \ref{fig:icbus} a \ref{fig:ictram}.
@@ -1875,7 +1873,7 @@ poskytnout uživateli tuto informaci.
 \subsection{Zobrazení nahrané cesty}
 Nahranou cestu je možné uživateli na zařízení zobrazit a umožnit tak kontrolu a prohlížení dat.
 Pro zobrazení slouží fragment mapy ve kterém se zobrazí spojená čára propojující jednotlivé body.
-Vzhledem k nepřesnostecm a šumu při nahrávání však jako cesta často vzniká velmi lomená čára a dojem z vykreslení
+Vzhledem k nepřesnostem a šumu při nahrávání však jako cesta často vzniká velmi lomená čára a dojem z vykreslení
 na mapě není dobrý. Z tohoto důvodu byla implementováno vyhlazování čar pomocí prokládání aproximační
 B-spline křivkou, algoritmem inspirovaným v \cite{bspline}. B-spline křivka je počítána podle
 rovnice \ref{eq:bspline}, kde je výsledná křivka vytvořena vždy podle 4 sousedních bodů $P_0$, $P_1$,
@@ -1910,19 +1908,19 @@ pomocí implementovaného pre-processoru knihovny, která nahranou bitmapu oří
 Při kliknutí na miniaturu fotky se opět asynchronně načte obrázek do dialogového okna,
 které zaplní celý displej zařízení s poloprůhledným pruhem, ve kterém je napsán uložený titulek fotky.
 
-Pro zvukové nahrávky a poznámky se zobrazí jednochuchá značka na mapě v místě, kde byla pořízena a při
+Pro zvukové nahrávky a poznámky se zobrazí jednoduchá značka na mapě v místě, kde byla pořízena a při
 klepnutí na značku se pouze v malém dialogovém okně zobrazí popis a v případě přítomnosti nahrávky
 se načte z úložiště soubor nahrávky a spustí se. Pro změny cestování se v době zobrazování cesty do mapy
-zobrazí z výčtu miniatury ikon, příslušných k zaznamenaným dat§m z změně dopravního prostředku.
+zobrazí z výčtu miniatury ikon, příslušných k zaznamenaným datům z změně dopravního prostředku.
 
-\subsection{Asistence uživateli na cestě}
+\subsection{Asistence uživatele na cestě}
 Pokud uživatel spustí asistenci na cestě, spustí se aktivita navigace, která načte z uložených
-dat všechny informace, spustí GPS pro obdržení aktuální polohy a připráví vše, co je pro asistenci potřebné.
+dat všechny informace, spustí GPS pro obdržení aktuální polohy a připraví vše, co je pro asistenci potřebné.
 Navádění uživatele je pravděpodobně nejkomplexnější proces aplikace, jehož hlavním řídícím prvkem
 je třída \texttt{NavigationActivity}, která
 pomocí svých závislostí řeší několik základních úloh, jako je načtení a zobrazování cesty s aktuální polohou uživateli,
 nabízení následujícího směru, přípravu událostí při přiblížení k místu, kde byl pořízen záznam a upozornění
-uživatele v případě přiblížení k těmto místům. Zjednodušený třídní diagram se závisostmi třídy \texttt{NavigationActivity}
+uživatele v případě přiblížení k těmto místům. Zjednodušený třídní diagram se závislostmi třídy \texttt{NavigationActivity}
 můžeme vidět na obrázku \ref{fig:navigationactivitydependencies}, který bude následně blíže popsán.
 
 \begin{figure}[H]
@@ -1953,7 +1951,7 @@ kdy se přibližuje k nahrané cestě(\texttt{ApproachingToRouteState}) a při o
 GPS pozice se prohledají body cesty a najde se nejbližší, ke kterému se spočítá vzdálenost a pokud
 je vzdálenost menší, než zadaná hranice, vyhodnotí se, že je uživatel již na cestě a stav se přepne
 na \texttt{OnRouteState}.
-V tomto stavu se při obdržení nové GPS pozice spočítá podle směru cesty bod, který je nejbliže aktuální pozici,
+V tomto stavu se při obdržení nové GPS pozice spočítá podle směru cesty bod, který je nejblíže aktuální pozici,
 nicméně leží ve směru cestování. Opět se počítá vzdálenost k cestě a pokud překročí určitou hranici,
 přepne se \texttt{Navigator} zpět do stavu \texttt{ApproachingToRouteState} a začne uživatele vést zpět přímo k cestě.
 
@@ -1977,9 +1975,9 @@ Geofencing API\footnote{Dokumentace na http://developer.android.com/training/loc
 z knihovny Google Play Services, kde pomocí API knihovny připravíme události, které instalovaná knihovna
 na zařízení sama vyvolá, jakmile se přiblížíme k zadanému místu. V naší aplikaci se události knihovny
 při přiblížení k místům záznamů přeloží na události aplikace a přes systémovou sběrnici se publikují
-dále, kde na ně opět čeka třída \texttt{NavigationActivity}, která při obdržení události pomocí
+dále, kde na ně opět čeká třída \texttt{NavigationActivity}, která při obdržení události pomocí
 systémové služby \texttt{Vibrator} zavibruje zařízením, v případě fotky zobrazí pomocí třídy
-\texttt{ImageDialog} dialogové okno s fotkou, u poznánky dialogové okno s textem a u zvukové nahrávky
+\texttt{ImageDialog} dialogové okno s fotkou, u poznámky dialogové okno s textem a u zvukové nahrávky
 nahrávku přehraje třída \texttt{SoundsManager}, která podle identifikátoru vyhledá nahrávku v úložišti
 a spustí ji.
 
@@ -2028,7 +2026,7 @@ chce data načíst synchronně, asynchronně, případně umožňuje provést da
 
 \subsubsection{Přístup k souborovým datům}
 Jelikož aplikace vytváří i souborová data, je potřeba tato dat ukládat a provázat je s daty v databázi.
-Pro naše dva případny fotek a zvukových nahrávek u poznámek bylo použito vygenerování náhodného
+Pro naše dva případy fotek a zvukových nahrávek u poznámek bylo použito vygenerování náhodného
 objektu \texttt{UUID} při vytváření souboru, soubor se následně v příslušném adresáři pro tento typ
 dat podle tohoto identifikátoru pojmenuje a hodnota identifikátoru se uloží do asociovaného sloupce
 v databázi. Při načítání dat se tak aplikace například pro obrázky pouze podívá, zda záznam obsahuje
@@ -2043,7 +2041,7 @@ metodami pro konkrétní, námi používaná nastavení.
 
 \subsection{Zálohování dat}
 Jelikož asistent může strávit poměrně dost času sběrem dat a jejich přípravou pro klienta, je žádoucí chránit data před ztrátou,
-poškozením nebo pouze nechtěným smazáním či smazáním odinstalací aplikace. Aplikace tudíž obsahuje mechanismus pro zálohu všech
+poškozením nebo pouze nechtěným smazáním či smazáním odinstalováním aplikace. Aplikace tudíž obsahuje mechanismus pro zálohu všech
 dat a to nahraných cest s poznámkami, upozorněními na změnu cesty, fotkami a nahrávkami.
 
 Pro fungující zálohování je nutné přiřadit uživateli identitu a tu rozpoznávat a ověřovat pro přiřazení případná zálohy,
@@ -2052,11 +2050,11 @@ což je poměrně komplexní úkol a vlastní implementace by
 vyžadovala vlastní server, hosting a zejména registraci uživatel, což by v případě mentálně postižených klientů
 přineslo další složitost do aplikace a nutilo by klienta pamatovat si další uživatelské jméno a heslo.
 
-Tento problém byl vyřešel využitím OAuth2\footnote{Více o OAuth2 se můžeme dozvědět v \cite{oauth2}.}
+Tento problém byl vyřešen využitím OAuth2\footnote{Více o OAuth2 se můžeme dozvědět v \cite{oauth2}.}
 autorizace přes připojený Google účet na zařízení a API Google Drive nebo česky Disk,
  které je součástí Google Play Services a na zařízení uživatele, který si naši aplikací stáhnul z obchodu Play,
  jsou tato API k dispozici.
-V Google vývojářské konzoli je napřed nutné aktivovat využití Google Drive API pomocí jména balíčku aplikace a SHA-1 hashe
+V Google vývojářské konzoli je napřed nutné aktivovat využití Google Drive API pomocí jména balíčku aplikace a SHA-1 heše
 certifikátu, kterým je podepsáno APK aplikace. Na stejném místě lze také nastavit popis, který se pro aplikaci
 uživateli zobrazí, když si prohlíží, které aplikace má ke svému Disku připojeny.
 Díky API Google Drive je odpovědnost synchronizace dat přesunuta na služby Googlu a pomocí
@@ -2099,7 +2097,7 @@ databázové připojení aplikace, nahradí se databázový soubor souborem ze z
 Uživatel může následně začít využívat obnovená data.
 
 \subsection{NFC (\textit{Near Field Communication})}
-NFC je bezdrátová technolgoie umožňující komunikaci dvou zařízení na velmi krátké vzdálenosti do 4 cm
+NFC je bezdrátová technologie umožňující komunikaci dvou zařízení na velmi krátké vzdálenosti do 4 cm
 rychlostí do 424 kb/s.\cite{nfcforum}  Výměna dat může být aktivována pouhým přiblížením dvou zařízení k sobě
 a technologie podporuje zabezpečený přenos dat. Technologii spravuje organizace NFC Forum jejíž logo lze vidět
 na obrázku \ref{fig:nfcforumlogo} a její specifikaci lze nalézt v \cite{nfciso}.
@@ -2153,14 +2151,14 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
 \subsection{Publikování aplikace}
 Pro publikování aplikace byl zvolen obchod Google Play provozovaný Googlem, což je standardní způsob
 publikování Android aplikací. Google Play poskytuje bohaté rozhraní pro správu aplikací, statistiky
-instalovaných zařízení, verzí systému používajících naší aplikaci, reporting chyb a další. Posytuje také
+instalovaných zařízení, verzí systému používajících naší aplikaci, reporting chyb a další. Poskytuje také
 nástroje pro propagaci aplikace a v neposlední řadě správu verzí aplikace, grafiky a popisů
-vztahujících se k aplikaci. Naše aplikace je v tomto obchodě samořejmé přístupná zdarma, nicméně
+vztahujících se k aplikaci. Naše aplikace je v tomto obchodě samozřejmě přístupná zdarma, nicméně
 je možné publikovat placené aplikace, kde Google Play řeší distribuci do všech vybraných států a za služby
 prodeje si strhává provizi 30\%.
 
 Od nedávna obchod podporuje také otevřené alfa a beta testování, pro které lze uživatele zvát anonymně
-pouza za pomoci odkazu. Dříve bylo nutné zakládat vývojářské skupiny a přidávata do nich jmenovitě
+pouze za pomoci odkazu. Dříve bylo nutné zakládat vývojářské skupiny a přidávat do nich jmenovitě
 lidi, což bylo zdlouhavé a pracné. Po odeslání testovacího odkazu se obchod uživatele pouze zeptá,
 zda se chce stát testerem a může si následně stáhnout aplikaci, která je jinak pro veřejnost nepřístupná
 Pro původní testování aplikace je využit alfa kanál pouze pro úzký okruh uživatelů, následně následuje beta
@@ -2173,7 +2171,7 @@ Existují také alternativní obchody, ze kterých si lze stáhnout aplikace, z 
 nicméně podíl těchto obchodů je minoritní a pokud uživatel chce tyto alternativní obchody používat,
 musí na zařízení v nastavení povolit instalaci aplikací z neznámých zdrojů, což je značné bezpečnostní
 riziko. Dříve často diskutovaná chabá bezpečnost systému byla často zapříčiněna uživateli využívající
-tyto alternativní obchody, kde neexistovala verifikace uživatele nebo obsahu a mohl na ně prakicky
+tyto alternativní obchody, kde neexistovala verifikace uživatele nebo obsahu a mohl na ně prakticky
 kdokoliv nahrát škodlivou aplikaci zdarma tvářící se jako některá z populárních placených aplikací.
 
 Pro publikování na Google Play je nutné aplikaci podepsat produkčním certifikátem, který byl
@@ -2200,7 +2198,7 @@ implementaci kladen důraz a všechny potencionálně delší operace byly prov�
 uživatelského rozhraní, jelikož pro optimální uživatelský zážitek je potřeba stihnout vše ve vlákně
 uživatelského rozhraní do 16ms\cite{perf}.
 
-Aplikace, která chce toto uživateli umožnit, musí do asynchronnních operací přesunou většinu svých déle
+Aplikace, která chce toto uživateli umožnit, musí do asynchronních operací přesunou většinu svých déle
 trvajících operací, což bylo v našem případě zejména čtení a ukládání do databáze, jelikož se v tomto
  případě komunikuje se souborovým systémem, ale také například komunikaci s API Google Play Services,
  kde může dojít k ověřování využívání API přes internet což už z principu znamená poměrně dlouhou
@@ -2221,7 +2219,7 @@ trvajících operací, což bylo v našem případě zejména čtení a ukládá
   \begin{figure}[H]
           \centering
                   \includegraphics[scale=0.38]{img/SyncRoutesMainThread.png}
-          \caption{Výstup profilování synchornního načítání cest}
+          \caption{Výstup profilování synchronního načítání cest}
           \label{fig:syncroutes}
   \end{figure}
 
@@ -2255,7 +2253,7 @@ trvajících operací, což bylo v našem případě zejména čtení a ukládá
            \label{fig:asyncroutesmainthread}
    \end{figure}
 
-Ze stejného profilovacícho býstupu se lze přepnout do záznamů z asynchronního vlákna, který je
+Ze stejného profilovacícho výstupu se lze přepnout do záznamů z asynchronního vlákna, který je
 na obrázku \ref{fig:asyncroutesrxthread}, kde můžeme vidět, že provádění metody
 \texttt{selectRoutesSync} nyní trvá 130ms, nicméně se tak děje v pracovním vlákně aplikace a uživatel
  tak nezaznamená zaseknutí uživatelského rozhraní při zobrazování obrazovky a po prodlevě načítání
@@ -2270,19 +2268,19 @@ na obrázku \ref{fig:asyncroutesrxthread}, kde můžeme vidět, že provádění
 
 Pro pomalé zařízení byl tedy problém se zablokováním uživatelského rozhraní takto vyřešen. Podobné
 profilování bylo provedeno preventivně i u ostatních obrazovek, neboť výstup profilovací nástroje může
-velmi často odhalit nejen výkonostní problémy, ale také chyby. Žádné zásadní problémy nebyly
+velmi často odhalit nejen výkonnostní problémy, ale také chyby. Žádné zásadní problémy nebyly
 v době psaní této práce objeveny.
 
 \subsubsection{Průběžné monitorování výkonu}
 Jak již bylo řečeno, není nevyžádaná optimalizace doporučeným postupem, jelikož je optimalizovaný kód
-často složitější a húře čitelný. Během vývoje byl proto využit nástroj
+často složitější a hůře čitelný. Během vývoje byl proto využit nástroj
 Hugo\footnote{Dostupné na https://github.com/JakeWharton/hugo dne 3. dubna 2016}, který pouhým
 anotováním metody anotací \texttt{@DebugLog} začne do logu zařízení vypisovat informace o vstupech metody,
 jejím výstupu a také čas provádění. Činí tak pouze v ladícím režimu, což je to, co od něj požadujeme
 a aplikace používaná finálními uživateli tedy není tímto logováním nijak ovlivněna. V projektu byly
 takto anotovány všechny potencionálně pomalé metody a po vyfiltrování těchto metod ve výstupu logů se
-tak lze snadno podívat, které metody opravdu zabírají více času a umožňuje nám ujisitit se, že jsou
-tyto metody spouštěny v asynchronním vlákně. Ukázku použití můžee vidět na ukázce kódu \ref{hugoshowcase},
+tak lze snadno podívat, které metody opravdu zabírají více času a umožňuje nám ujistit se, že jsou
+tyto metody spouštěny v asynchronním vlákně. Ukázku použití můžeme vidět na ukázce kódu \ref{hugoshowcase},
 kde zjistíme, že načtení detailu cesty trvá 248ms, což by již bylo velmi problematické provádět v uživatelském
 vlákně, nicméně k naší spokojenosti také vidíme, že se toto provádí v asynchronním vlákně knihovny RxAndroid.
 
@@ -2303,10 +2301,10 @@ kterými aplikace prochází, nicméně i přesto se můžou chyby dostat do pro
 
  Pro tyto účely se opět používají služby obchodu Google Play a knihovny Google Play Services instalované
  na zařízení. Pokud nastane za běhu aplikace výjimka a aplikace spadne. Zobrazí se uživateli nabídka
- k odeslání zpětné vazby spolu s informacemi o chybě. testovací uživatelé byli instrováni toto udělat
+ k odeslání zpětné vazby spolu s informacemi o chybě. testovací uživatelé byli instruováni toto udělat
  a vzhledem k dřívějším testům byla takto nahlášena pouze jedná výjimka.
 
- Nahlášené chyby si lze poté prohlédnou v konzoli obchodu Google Play, kde se nahrajou také další
+ Nahlášené chyby si lze poté prohlédnou v konzoli obchodu Google Play, kde se nahrají také další
  důležité informace o zařízení, jako verze systému, výrobce, typ zařízení a zejména trasování zásobníku
  chyby, podle kterého je snadno možné chybu odhalit. Ukázku nahlášené chyby můžeme vidět na obrázku
  \ref{fig:anr}.
@@ -2334,8 +2332,8 @@ Jak se během testování ukázalo, někteří uživatelé si při prvním spuš
  a při podržení prstu na tlačítku s touto ikonou se zobrazí popis akce.
 
  Bylo proto potřeba při prvním spuštění uživateli ještě výrazněji ukázat, kde má na této obrazovce začít.
- Pro tento účel bylo použito překrytí celé obrazovky poloprůhlednou vrstvou, na které je napsán text instruující
- uživatele, že má klepnout na tlačítko nahrávání a toto tlačítko se nachází v kruhové oblasti nápovědy, která je
+ Pro tento účel bylo použito překrytí celé obrazovky poloprůhlednou vrstvou, na které je napsán text, který radí
+ uživateli, že má klepnout na tlačítko nahrávání a toto tlačítko se nachází v kruhové oblasti nápovědy, která je
  jako jediná v ten okamžik průhledná. Uživateli se toto zobrazí pouze pokud obrazovku otevře poprvé
  a upozornění se skryje, pokud provede jakoukoliv uživatelskou akci a informace o tom, že nápověda byla uživateli
  již zobrazena se uloží do nastavení zařízení. Zobrazení nápovědy můžete vidět na obrázku \ref{fig:nahravaninapoveda}.
@@ -2353,7 +2351,7 @@ Jak se během testování ukázalo, někteří uživatelé si při prvním spuš
 V práci jsme si ukázali průběh návrhu mobilní aplikace od diskuze zadání po funkční a grafický návrh.
 Následně byly vybrané části implementovány a v rámci implementace jsme si taky předvedli použití mnoha knihoven a technik
 pro efektivní vývoj a stabilní Android aplikace. Byla diskutována architektura a metodika vývoje Android aplikace,
-která byla následně využita k implementaci. Aplikace byla následně publikována a otestována několika uživately pro
+která byla následně využita k implementaci. Aplikace byla následně publikována a otestována několika uživateli pro
  získání zpětné vazby a vyladění nedostatků, přičemž je stále co zlepšovat a rozšiřovat.
 
 Asistence cestování mentálně postižených se ukázala jako mimořádně zajímavý a také obtížný úkol.
@@ -2396,6 +2394,11 @@ s mentálním postižením v rámci jejich celoživotního vzdělávání i mimo
 \bibitem{androidcentral}{MOBILE NATIONS}
 \textit{Android History}. {Android Central, 2016}
 \newline(Dostupné na \url{http://www.androidcentral.com/android-history)}
+
+\bibitem{mvcxmvp}{TECHYOURCHANCE}
+\textit{Model View Controller (MVC) and Model View Presenter (MVP) architectural patterns in Android}. {TechYourChance, 2015}
+\newline(Dostupné na \url{http://bit.ly/25RbZ4L)(9.4.2016)}
+
 
 
 \bibitem{ioc}{FOWLER, MARTIN}
@@ -2463,6 +2466,6 @@ s mentálním postižením v rámci jejich celoživotního vzdělávání i mimo
   Kódy celé aplikace a všech dalších zdrojů, včetně zdrojového \LaTeX soubouru k tomuto dokumentu
    lze nalézt na přiloženém CD, případně veškeré soubory
   projektu jsou v aktuální verzi dostupné na adrese \url{https://github.com/jraska/Diploma-Thesis},
-  kde je verze uložená na CD dostupná pod tagem \texttt{1.0.0-thesis-release} v sekci releases.
+  kde je verze uložená na CD dostupná pod tagem \texttt{thesis-release} v sekci releases.
 
 \end{document}
