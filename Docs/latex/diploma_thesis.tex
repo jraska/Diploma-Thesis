@@ -80,6 +80,11 @@ GPS, NFC, Google Play, GitHub}
 \AddAcronym{SD karta}{Paměťová karta technologie Secure Digital}
 \AddAcronym{ORM}{Objektově relační mapování}
 \AddAcronym{ZIP}{Souborový formát pro kompresi a archivaci dat}
+\AddAcronym{REST}{Representational State Transfer}
+\AddAcronym{MVP}{Model-view-controller}
+\AddAcronym{MVC}{Model-view-presenter}
+\AddAcronym{SOLID}{Single responsibility, open-closed, Liskov substitution, interface segregation and dependency inversion}
+\AddAcronym{IoC}{Inversion of control}
 
 
 % Zadame cestu a jmeno souboru ci nekolika souboru s digitalizovanou podobou zadani prace
@@ -171,7 +176,8 @@ s mentálním postižením tyto telefony více než zdatně ovládá a nabízí 
  i jako přehled aktuálních trendů vývoje Android aplikací a následně ukážeme, jak je možné aplikaci propojit
  se službami třetích stran pro rozšíření její funkcionality, jak
  můžeme aplikaci publikovat a zpřístupnit ji snadno uživatelům. Závěrem popíšeme, jaké
- změny a úpravy byly v aplikaci provedeny a jaké možnosti vývoje tento typ aplikace dále nabízí.
+ změny a úpravy byly v aplikaci provedeny po obdžení zpětné vazby
+ a jaké možnosti vývoje tento typ aplikace dále nabízí.
 
 
 \section{Návrh aplikace}
@@ -1192,7 +1198,7 @@ prvků pro snadné pochopení pro uživatele se specifickými nároky. Většina
 realizována jako velká tlačítka, která při podržení prstu na prvku zobrazí jeho textový popis.
 Jako hlavní směr návrhu uživatelského rozhraní byl zvolen Material Design, neboť se jedná o aktuální
 doporučení pro mobilní aplikace a je v něm kladen velký důrazna jednoduchost a konzistenci,
-tedy naše požadavky. Velkou část této specifikace za nás řeí námi používaná knihovna Android Support,
+tedy naše požadavky. Velkou část této specifikace za nás řeší námi používaná knihovna Android Support,
 popsaná v sekci \ref{androidsupport}.
 
 \subsubsection{Material Design}
@@ -1698,40 +1704,63 @@ Knihovnu lze nalézt na \url{http://robolectric.org/}.
   \item \textbf{Timber} - Logování zpráv v aplikaci. (\url{https://github.com/JakeWharton/timber})
   \item \textbf{Okio} - Efektivní a snadné práce se soubory a datovými proudy. (\url{https://github.com/square/okio})
   \item \textbf{EventBus} - Snadné publikování a konzumování globálních události v aplikaci. (\url{http://greenrobot.org/eventbus/})
+  \item \textbf{ShowcaseView} - Zobrazení uživatelsky přívětivé nápovědy. (\url{https://github.com/amlcurran/ShowcaseView})
   \item \textbf{JUnit 4} - Známý framewrok pro Java jednotkové testy. (\url{http://junit.org/})
   \item \textbf{AssertJ Android} - Pomocné aserce pro jednotkové testy. (\url{http://square.github.io/assertj-android/})
   \item \textbf{Mockito} - Mockovací knihovna pro jednotkové testy. (\url{http://mockito.org/})
+
+
 \end{itemize}
 
 \subsection{Architektura}
-Android samotný se snaží uživateli nabízet implementaci Architektury MVC(Model-view-controller), kde
+Android samotný se snaží uživateli nabízet implementaci Architektury Model-view-controller\cite{bestpracticesfuturice}, kde
 každá akce rozhraní view směřuje na controller, který provede příslušnou logiku, případnou komunikaci
-s modelem - vrstvou poskytující
+s modelem - vrstvou poskytující data,
 kde se dá aktivita považovat jako controller, třídy dědící ze systémové třídy \texttt{View} která
 se umí vykreslovat na obrazovku jako view a jako model nabízí systém mechanizmus poskytovatel obsahu
 (\texttt{ContentProvider}), který umožňuje vytvořit v podstatě REST API nad SQLite databází.
 Zejména pro část modelu se však tato část často implementuje zcela jinak, neboť uživatel nemá tímto způsobem
 přímy přístup k databázi a poskytovatelé obsahu jsou tak často vhodní více pro komunikaci mezi aplikacemi,
-kterou přístup k datům založený na URL poskytovatele obsahu umožňuje. Ohledně rozdělení na View a Controller je opět
+kterou přístup k datům založený na URL poskytovatele obsahu umožňuje. Ohledně rozdělení na view a controller je opět
 v platformě několik nejasností z důvodu nekonzistence API mezi verzemi, kdy ve verzi Androidu 3.0 přibyly
 jako části aktivity fragmenty a u mnoha vestavěných tříd systému pro View vrstvu(například ListAdapter)
 provádí i sám systém logiku patřící mimo View vrstvu a tento vzor není tedy striktně dodržováno.
 Aktivita by navíc podle dokumentace měla sloužit více jako view, než controller, nicméně logika načítání
 modelu musí být velice často provázána s životním cyklem aktivity a toto úplné oddělení tedy není možné.
+Schéma architektury MVC můžeme vidět na obrázku \ref{fig:mvc}.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.3]{img/mvc.png}
+        \caption{Schéma architektury MVC}
+        \label{fig:mvc}
+\end{figure}
 
 Díky specifikům platformy existuje mnoho odlišných přístupů, které se snaží přizpůsobit
-tradiční architektury jako již popsaný Model-view-controller, případně podobný Model-view-viewmodel
-nebo Model-view-presenter a existuje mnoho projektů, která se snaží ukázat adaptaci těchto modelů
+tradiční architektury jako již zmíněný Model-view-controller, případně podobný Model-view-viewmodel
+nebo Model-view-presenter(MVP) a existuje mnoho projektů, která se snaží ukázat adaptaci těchto modelů
 pro Android.
 
-Architektura projektu byla tedy volena s přikloněním k MVC, vzhledem k menšímu rozsahu aplikace
+Pro náš projekt jsme vybrali architekturu Model-view-presenter, která nám lépe umožňuje
+úplné oddělení modelu od view a všechny aktualizace uživatelského rozhraní se provádí skrz presenter,
+ což je v našem případě aktivita. MVP tak více připomíná vrstvenou architekturu, což nám vyhovuje, neboť
+za vrstvou modelu mohou bý  další vrstvy komunikace s databází, případně po síti.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.3]{img/mvp.png}
+        \caption{Schéma architektury MVP použité v projektu}
+        \label{fig:mvp}
+\end{figure}
+
+Architektura projektu byla tedy volena s přikloněním k MVP, vzhledem k menšímu rozsahu aplikace
 se však kladl větší důraz na následování známých principů SOLID, popsaných
 například v \cite{solid} a IoC(Inversion of Control), popsaných v \cite{ioc} spolu s vkládáním
-závislostí pomocí knihovny Dagger 2, kterou jsme blíže popisovali v sekci \ref{dagger2}.
+závislostí pomocí knihovny Dagger 2, kterou popisujeme v sekci \ref{dagger2}.
 V projektu je na mnoha místech použito jednotkové testování pro podporu menší chybovosti v kódu
 za pomocí nástroje Robolectric popsaného v sekci \ref{robolectric}. Přístup k datům a tedy
 vrstva modelu je realizována s pomocí RxAndroid(sekce \ref{rxandroid}), kde se posytuje přístup
-controllerům k těmto datům pomocí popisovaných objektů \ref{Observable}. Controller, tedy aktivita
+controllerům k těmto datům pomocí popisovaných objektů \texttt{Observable}. controller, tedy aktivita
 pak publikuje tato data do vrstvy view, kde objekty view zobrazí příslušná data. Fragment v našem
 případě reprezentuje část view aktivity a je určen například k zobrazení nahrané cesty a všech informací,
 které k ní byly přidány.
@@ -2336,7 +2365,7 @@ jistě budu moci brzy zúročit v profesním životě.
 V problematice této mobilní aplikace pro asistenci cestování je stále spoustu věcí k vylepšování
 a v případě používání aplikace uživateli může pokračovat i její vývoj, případná implementace serverové části.
 Vzhledem k otevřenosti kódu aplikace může v mé práci kdokoliv pokračovat a díky použití
-aktuálních knihoven a nástrojů může aplikace posloužit také jako ukázka použití některé z knihoven
+aktuálních knihoven a nástrojů může aplikace posloužit také jako ukázka využití některé z knihoven
 a již jsme jí také za tímto účelem použil.
 
 \begin{thebibliography}{99}
@@ -2350,6 +2379,11 @@ s mentálním postižením v rámci jejich celoživotního vzdělávání i mimo
 \bibitem{perf}{SILLARS, DOUG}
 \textit{High Performance Android Apps}. {O'Reilly Media, Inc., 2015}
 \newline(Dostupné na \url{https://www.safaribooksonline.com/library/view/high-performance-android/9781491913994/)}
+
+\bibitem{bestpracticesfuturice}{FUTURICE OY}
+\textit{Best practices in Android development}. {Futurice Oy, 2016}
+\newline(Dostupné na \url{https://github.com/futurice/android-best-practices)}
+
 
 \bibitem{androiddevelopers}{GOOGLE, INC.}
 \textit{Android API Guides}. {Google, 2016}
