@@ -1437,6 +1437,59 @@ třídy nebo metody, známé programátorské chyby či bezpečnostní rizika. P
 množství nalezených problémů v poměru k množství analyzovaného kódu. Aktuální analýzu projektu si můžeme prohlédnout
 na \url{https://www.codacy.com/app/josef-raska/Diploma-Thesis/dashboard}.
 
+\subsection{Architektura}
+Android samotný se snaží uživateli nabízet implementaci Architektury Model-view-controller\cite{bestpracticesfuturice}, kde
+každá akce rozhraní view směřuje na controller, který provede příslušnou logiku, případnou komunikaci
+s modelem - vrstvou poskytující data,
+kde se dá aktivita považovat jako controller, třídy dědící ze systémové třídy \texttt{View} která
+se umí vykreslovat na obrazovku jako view a jako model nabízí systém mechanizmus poskytovatel obsahu
+(\texttt{ContentProvider}), který umožňuje vytvořit v podstatě REST API nad SQLite databází.
+Zejména pro část modelu se však tato část často implementuje zcela jinak, neboť uživatel nemá tímto způsobem
+přímy přístup k databázi a poskytovatelé obsahu jsou tak často vhodní více pro komunikaci mezi aplikacemi,
+kterou přístup k datům založený na URL poskytovatele obsahu umožňuje. Ohledně rozdělení na view a controller je opět
+v platformě několik nejasností z důvodu nekonzistence API mezi verzemi, kdy ve verzi Androidu 3.0 přibyly
+jako části aktivity fragmenty a u mnoha vestavěných tříd systému pro View vrstvu(například ListAdapter)
+provádí i sám systém logiku patřící mimo View vrstvu a tento vzor není tedy striktně dodržováno.
+Aktivita by navíc podle dokumentace měla sloužit více jako view, než controller, nicméně logika načítání
+modelu musí být velice často provázána s životním cyklem aktivity a toto úplné oddělení tedy není možné.
+Schéma architektury MVC můžeme vidět na obrázku \ref{fig:mvc}.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.3]{img/mvc.png}
+        \caption{Schéma architektury MVC}
+        \label{fig:mvc}
+\end{figure}
+
+Díky specifikům platformy existuje mnoho odlišných přístupů, které se snaží přizpůsobit
+tradiční architektury jako již zmíněný Model-view-controller, případně podobný Model-view-viewmodel
+nebo Model-view-presenter(MVP) a existuje mnoho projektů, která se snaží ukázat adaptaci těchto modelů
+pro Android.
+
+Pro náš projekt jsme vybrali architekturu Model-view-presenter, která nám lépe umožňuje
+úplné oddělení modelu od view a všechny aktualizace uživatelského rozhraní se provádí skrz presenter,
+ což je v našem případě aktivita. MVP tak více připomíná vrstvenou architekturu, což nám vyhovuje, neboť
+za vrstvou modelu mohou bý  další vrstvy komunikace s databází, případně po síti.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.3]{img/mvp.png}
+        \caption{Schéma architektury MVP použité v projektu}
+        \label{fig:mvp}
+\end{figure}
+
+Architektura projektu byla tedy volena s přikloněním k MVP, vzhledem k menšímu rozsahu aplikace
+se však kladl větší důraz na následování známých principů SOLID, popsaných
+například v \cite{solid} a IoC(Inversion of Control), popsaných v \cite{ioc} spolu s vkládáním
+závislostí pomocí knihovny Dagger 2, kterou popisujeme v sekci \ref{dagger2}.
+V projektu je na mnoha místech použito jednotkové testování pro podporu menší chybovosti v kódu
+za pomocí nástroje Robolectric popsaného v sekci \ref{robolectric}. Přístup k datům a tedy
+vrstva modelu je realizována s pomocí RxAndroid(sekce \ref{rxandroid}), kde se posytuje přístup
+controllerům k těmto datům pomocí popisovaných objektů \texttt{Observable}. controller, tedy aktivita
+pak publikuje tato data do vrstvy view, kde objekty view zobrazí příslušná data. Fragment v našem
+případě reprezentuje část view aktivity a je určen například k zobrazení nahrané cesty a všech informací,
+které k ní byly přidány.
+
 \subsection{Použité knihovny}
 Jak již bylo zmíněno, Android používá velké množství vývojářů a pro jejich potřebu vzniklo velké množství
 z drivé většiny open source knihoven, které se snaží vyřešit a zjednodušit společný problém mnoha vývojářů
@@ -1711,59 +1764,6 @@ Knihovnu lze nalézt na \url{http://robolectric.org/}.
 
 
 \end{itemize}
-
-\subsection{Architektura}
-Android samotný se snaží uživateli nabízet implementaci Architektury Model-view-controller\cite{bestpracticesfuturice}, kde
-každá akce rozhraní view směřuje na controller, který provede příslušnou logiku, případnou komunikaci
-s modelem - vrstvou poskytující data,
-kde se dá aktivita považovat jako controller, třídy dědící ze systémové třídy \texttt{View} která
-se umí vykreslovat na obrazovku jako view a jako model nabízí systém mechanizmus poskytovatel obsahu
-(\texttt{ContentProvider}), který umožňuje vytvořit v podstatě REST API nad SQLite databází.
-Zejména pro část modelu se však tato část často implementuje zcela jinak, neboť uživatel nemá tímto způsobem
-přímy přístup k databázi a poskytovatelé obsahu jsou tak často vhodní více pro komunikaci mezi aplikacemi,
-kterou přístup k datům založený na URL poskytovatele obsahu umožňuje. Ohledně rozdělení na view a controller je opět
-v platformě několik nejasností z důvodu nekonzistence API mezi verzemi, kdy ve verzi Androidu 3.0 přibyly
-jako části aktivity fragmenty a u mnoha vestavěných tříd systému pro View vrstvu(například ListAdapter)
-provádí i sám systém logiku patřící mimo View vrstvu a tento vzor není tedy striktně dodržováno.
-Aktivita by navíc podle dokumentace měla sloužit více jako view, než controller, nicméně logika načítání
-modelu musí být velice často provázána s životním cyklem aktivity a toto úplné oddělení tedy není možné.
-Schéma architektury MVC můžeme vidět na obrázku \ref{fig:mvc}.
-
-\begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.3]{img/mvc.png}
-        \caption{Schéma architektury MVC}
-        \label{fig:mvc}
-\end{figure}
-
-Díky specifikům platformy existuje mnoho odlišných přístupů, které se snaží přizpůsobit
-tradiční architektury jako již zmíněný Model-view-controller, případně podobný Model-view-viewmodel
-nebo Model-view-presenter(MVP) a existuje mnoho projektů, která se snaží ukázat adaptaci těchto modelů
-pro Android.
-
-Pro náš projekt jsme vybrali architekturu Model-view-presenter, která nám lépe umožňuje
-úplné oddělení modelu od view a všechny aktualizace uživatelského rozhraní se provádí skrz presenter,
- což je v našem případě aktivita. MVP tak více připomíná vrstvenou architekturu, což nám vyhovuje, neboť
-za vrstvou modelu mohou bý  další vrstvy komunikace s databází, případně po síti.
-
-\begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.3]{img/mvp.png}
-        \caption{Schéma architektury MVP použité v projektu}
-        \label{fig:mvp}
-\end{figure}
-
-Architektura projektu byla tedy volena s přikloněním k MVP, vzhledem k menšímu rozsahu aplikace
-se však kladl větší důraz na následování známých principů SOLID, popsaných
-například v \cite{solid} a IoC(Inversion of Control), popsaných v \cite{ioc} spolu s vkládáním
-závislostí pomocí knihovny Dagger 2, kterou popisujeme v sekci \ref{dagger2}.
-V projektu je na mnoha místech použito jednotkové testování pro podporu menší chybovosti v kódu
-za pomocí nástroje Robolectric popsaného v sekci \ref{robolectric}. Přístup k datům a tedy
-vrstva modelu je realizována s pomocí RxAndroid(sekce \ref{rxandroid}), kde se posytuje přístup
-controllerům k těmto datům pomocí popisovaných objektů \texttt{Observable}. controller, tedy aktivita
-pak publikuje tato data do vrstvy view, kde objekty view zobrazí příslušná data. Fragment v našem
-případě reprezentuje část view aktivity a je určen například k zobrazení nahrané cesty a všech informací,
-které k ní byly přidány.
 
 \subsection{Volání o pomoc}
 Během cestování se klient může dostat do různých situací a naše aplikace by mu měla umožnit rychle se
