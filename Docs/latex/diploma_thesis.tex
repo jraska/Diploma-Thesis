@@ -509,7 +509,7 @@ Klepnutím na tlačítko uložit se aktuálně nahraní data a média uloží, p
 Pokud uživatel dokončil nahrávání cesty, klepne na tlačítko uložit a poté tlačítkem stop zastaví nahrávání,
 notifikace zmizí a cesta je v seznamu cest připraveno pro spuštění asistence, případně následnou editaci.
 Pokud uživatel ukončí nahrávání bez uložení, je na toto upozorněn a při potvrzení ukončení jsou nahraná data
-smazána. Obrazovku nahrávání můžeme vidět na obrázku~\ref{fig:nahravanicesty} a zobrazenou notifikaci
+smazána. Obrazovku nahrávání můžeme vidět na obrázku~\ref{fig:nahravanicestyicon} a zobrazenou notifikaci
 na obrázku~\ref{fig:notifikacenahravanicesty}.
 
 \vspace{0.1cm}
@@ -541,7 +541,7 @@ na obrázku~\ref{fig:notifikacenahravanicesty}.
         \centering
                 \includegraphics[scale=0.14]{img/screen/nahravani.png}
         \caption{Nahrávání cesty}
-        \label{fig:nahravanicesty}
+        \label{fig:nahravanicestyicon}
 \end{minipage}
 \begin{minipage}{.5\textwidth}
   \centering
@@ -2214,7 +2214,7 @@ trvajících operací, což bylo v našem případě zejména čtení a ukládá
 Ze stejného profilovacícho býstupu se lze přepnout do záznamů z asynchronního vlákna, který je
 na obrázku \ref{fig:asyncroutesrxthread}, kde můžeme vidět, že provádění metody
 \texttt{selectRoutesSync} nyní trvá 130ms, nicméně se tak děje v pracovním vlákně aplikace a uživatel
- tak nezaznamená zaseknutí užovatelského rozhraní při zobrazování obrazovky a po prodlevě načítání
+ tak nezaznamená zaseknutí uživatelského rozhraní při zobrazování obrazovky a po prodlevě načítání
  se mu pak do připraveného uživatelského rozhraní pouze zobrazí samotné cesty.
 
     \begin{figure}[H]
@@ -2224,7 +2224,10 @@ na obrázku \ref{fig:asyncroutesrxthread}, kde můžeme vidět, že provádění
               \label{fig:asyncroutesrxthread}
       \end{figure}
 
-Pro pomalé zařízení byl tedy problém se zablokováním uživatelského rozhraní takto vyřešen.
+Pro pomalé zařízení byl tedy problém se zablokováním uživatelského rozhraní takto vyřešen. Podobné
+profilování bylo provedeno preventivně i u ostatních obrazovek, neboť výstup profilovací nástroje může
+velmi často odhalit nejen výkonostní problémy, ale také chyby. Žádné zásadní problémy nebyly
+v době psaní této práce objeveny.
 
 \subsubsection{Průběžné monitorování výkonu}
 Jak již bylo řečeno, není nevyžádaná optimalizace doporučeným postupem, jelikož je optimalizovaný kód
@@ -2279,6 +2282,28 @@ Chyba byla vyřešena kontrolou stavu a získáváním textových zdrojů již p
 kdy máme jistotu, že je fragment k aktivitě správně připojen. Po nahrání opravné verze na Google Play
 byla nové verze distribuována během pár hodin, byla tak opravena a jak můžeme vidět na obrázku
 \ref{fig:anr}, objevila se pouze jednou.
+
+\subsection{Napovídání uživateli}
+Jak se během testování ukázalo, někteří uživatelé si při prvním spuštění obrazovky nahrávání nebyli
+ jistí, čím mají začít a přesto, že jediné tlačítko, na které je v tu chvíli možné klepnout je
+ tlačítko nahrávání s ikonou, kterou jsme mohli vidět na obrázku \ref{fig:nahravanicestyicon}
+ a při podržení prstu na tlačítku s touto ikonou se zobrazí popis akce.
+
+ Bylo proto potřeba při prvním spuštění uživateli ještě výrazněji ukázat, kde má na této obrazovce začít.
+ Pro tento účel bylo použito překrytí celé obrazovky poloprůhlednou vrstvou, na které je napsán text instruující
+ uživatele, že má klepnout na tlačítko nahrávání a toto tlačítko se nachází v kruhové oblasti nápovědy, která je
+ jako jediná v ten okamžik průhledná. Uživateli se toto zobrazí pouze pokud obrazovku otevře poprvé
+ a upozornění se skryje, pokud provede jakoukoliv uživatelskou akci a informace o tom, že nápověda byla uživateli
+ již zobrazena se uloží do nastavení zařízení. Zobrazení nápovědy můžete vidět na obrázku \ref{fig:nahravaninapoveda}.
+
+  \begin{figure}[H]
+            \centering
+                    \includegraphics[scale=0.14]{img/screen/nahravaninapoveda.png}
+            \caption{Zobrazení nápovědy uživateli}
+            \label{fig:nahravaninapoveda}
+    \end{figure}
+
+
 
 \section{Závěr}
 V práci jsme si ukázali průběh návrhu mobilní aplikace od diskuze zadání po funkční a grafický návrh.
