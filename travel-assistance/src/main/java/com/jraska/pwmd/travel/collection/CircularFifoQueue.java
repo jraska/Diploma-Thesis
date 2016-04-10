@@ -11,15 +11,15 @@ import java.util.*;
 /**
  * CircularFifoQueue is a first-in first-out queue with a fixed size that
  * replaces its oldest element if full.
- * <p/>
+ * <p>
  * The removal order of a {@link CircularFifoQueue} is based on the
  * insertion order; elements are removed in the same order in which they
  * were added.  The iteration order is the same as the removal order.
- * <p/>
+ * <p>
  * The {@link #add(Object)}, {@link #remove()}, {@link #peek()}, {@link #poll},
  * {@link #offer(Object)} operations all perform in constant time.
  * All other operations perform in linear time or worse.
- * <p/>
+ * <p>
  * This queue prevents null objects from being added.
  *
  * @version $Id: CircularFifoQueue.java 1543246 2013-11-19 00:36:29Z ggregory $
@@ -128,7 +128,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>
 
   /**
    * {@inheritDoc}
-   * <p/>
+   * <p>
    * A {@code CircularFifoQueue} can never be full, thus this returns always
    * {@code false}.
    *

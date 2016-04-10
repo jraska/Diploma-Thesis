@@ -19,7 +19,7 @@ import static okio.Okio.*;
 /**
  * One shot helper object reader
  */
-final class ZipReader implements Closeable{
+final class ZipReader implements Closeable {
   private final ZipFile _zipFile;
   private final List<? extends ZipEntry> _entries;
 
@@ -43,12 +43,12 @@ final class ZipReader implements Closeable{
   void readToFile(String key, File intoFile) throws IOException {
     if (intoFile.exists()) {
       Timber.v("File %s already exists, overwriting", intoFile.getName());
-      if(!intoFile.delete()){
+      if (!intoFile.delete()) {
         throw new IOException("Cannot overwrite file " + intoFile);
       }
     }
 
-    if(!intoFile.createNewFile()){
+    if (!intoFile.createNewFile()) {
       throw new IOException("Cannot create file " + intoFile);
     }
 
