@@ -70,19 +70,31 @@ broader usage.
 \EnglishKeywords{Android, development, travel asistance, mobile application, mental disabilities, application design,
 GPS, NFC, Google Play, GitHub}
 
-\AddAcronym{API}{Application programming interface}
-\AddAcronym{UML}{Unified Modeling Language}
-\AddAcronym{SDK}{Software development kit}
-\AddAcronym{GPS}{Global Positioning System}
-\AddAcronym{NFC}{Near field communication}
+\AddAcronym{SDK}{Software development kit (\textit{Soubor nástrojů pro vývoj})}
+\AddAcronym{GPS}{Global Positioning System (\textit{Globální systém určování polohy})}
+\AddAcronym{NFC}{Near field communication (\textit{Technologie pro přenos dat})}
+\AddAcronym{API}{Application programming interface
+\newline (\textit{Rozhraní pro programování aplikací})}
+
+\AddAcronym{UML}{Unified Modeling Language
+\newline (\textit{Grafický jazyk v softwarovém inženýrství})}
+
 \AddAcronym{SD karta}{Paměťová karta technologie Secure Digital}
 \AddAcronym{ORM}{Objektově relační mapování}
 \AddAcronym{ZIP}{Souborový formát pro kompresi a archivaci dat}
-\AddAcronym{REST}{Representational State Transfer}
-\AddAcronym{MVC}{Model View Controller}
-\AddAcronym{MVP}{Model View Presenter}
-\AddAcronym{SOLID}{Single responsibility, open-closed, Liskov substitution, interface segregation and dependency inversion}
-\AddAcronym{IoC}{Inversion of control}
+\AddAcronym{HTTP}{Hypertext Transfer Protocol
+\newline (\textit{Protokol pro přenos webových dokumentů})}
+
+\AddAcronym{REST}{Representational State Transfer
+\newline (\textit{Architektura rozhraní HTTP komunikace})}
+
+\AddAcronym{SOLID}{Single responsibility, open-closed, Liskov substitution principle, interface segregation and dependency inversion
+(\textit{Jedna odpovědnost, otevřenost k rozšíření, uzavřenost ke změnám, princip Liskové substituce,
+oddělení rozhraní a obrácení závislostí})}
+\AddAcronym{IoC}{Inversion of control (\textit{Obrácení závislostí})}
+\AddAcronym{MVC}{Model View Controller (\textit{Typ architektury aplikací})}
+\AddAcronym{MVP}{Model View Presenter (\textit{Typ architektury aplikací})}
+
 
 
 %\ThesisAssignmentImagePath{Figures/Zadani}
@@ -200,7 +212,7 @@ sdružení.
 
 Návrhy jim byly prezentovány a po diskuzi a zpětné vazbě byli ve spolupráci s mým vedoucím definováni
 aktéři aplikace a vytvořena sada případů užití(use casů), které dávají pro toto zadání smysl a následně
-budou mnohé implementovány.
+budou mnohé z nich implementovány.
 
 \subsection{Popis aktérů}
 \begin{figure}[H]
@@ -232,8 +244,10 @@ data v závislosti na své pozici a měl by tak získat relevantní informace k 
 nachází. Dále může aplikaci využít ke snadnému kontaktování svého asistenta.
 
 
-
 \subsubsection{Uživatel Administrátor}
+Administrátor může být spravující asistent, případně jiná osoba, která je oprávněna spravovat
+data nahraná ostatními asistenty a využívána klienty. Může tyto záznamy prohlížet a případně
+ upravovat a ovlivnit tak co se kterému uživateli zobrazí a jakým způsobem bude asistence probíhat.
 
 
 \subsection{Use casy uživatel Asistent}
@@ -1188,7 +1202,7 @@ licence popsané výše a v praxi jsou pak podmínky použití ikon stejné.
 
 \subsection{Použité nástroje}
 Následující nástroje byly použity pro návrh, úpravy a správu projektu a značně pomohly při jeho vytváření.
-\subsubsection{Trello (\url{https://trello.com/, 10.4.2016})}
+\subsubsection{Trello (\url{https://trello.com}, 10.4.2016)}
 Trello je jednoduchý online nástroj pro správu úkolů, jejich štítkování, zapisování poznámek a přesouvání
 mezi různými seznamy reprezentujícími kategorii úkolů. V této práci bylo Trello použito pro lepší
 rozvržení úkolů implementace a úseků psaní práce a přesto, že na projektu pracoval pouze jeden vývojář,
@@ -1312,7 +1326,7 @@ stavu se uživatelské rozhraní právě nachází. Pro akce při vytváření a
 \texttt{onCreate}, která se volá pro každou instanci aktivity právě jednou a mělo by se v ní připravit
 uživatelské rozhraní, získat příslušné služby a podobně. Aktivita je zobrazena uživateli po zavolání metody
 \texttt{onResume} a v této chvíli může uživatel interagovat s uživatelským rozhraním. Pokud uživatel
-přechází do jiné aktivity, přepíná aplikace, zamyká obrazovka nebo jiným způsobem uživatel opouští uživatelské
+přechází do jiné aktivity, přepíná aplikace, zamyká obrazovka nebo jiným způsobem opouští uživatelské
 rozhraní, volá se metoda \texttt{onPause}. Pokud se zcela ukončuje používání konkrétní aktivity,
 volá se metoda \texttt{onDestroy}, kde by se měly uvolnit všechny zdroje.
 Celý životní cyklus aktivity můžeme vidět na obrázku \ref{fig:activitylyfecycle} a jedná se
@@ -1333,7 +1347,7 @@ LeakCanary(\url{https://github.com/square/leakcanary}, 10.4.2016).
 \subsubsection{Fragmenty}
 Fragmenty mohou být části uživatelského rozhraní aktivity nebo sloužit například pro předávání
 dat mezi instancemi stejné aktivity například při rotaci. Fragmenty mají s aktivitou svázaný stejný životní cyklus
-a všechny metody tohoto cyklu aktivity jsou provolávány do fragmentu. Jedna instance fragmentu
+a všechny metody tohoto cyklu jsou provolávány do fragmentu. Jedna instance fragmentu
 může být předávána mezi instancemi více aktivit a fragment tak může sloužit jako ideální komponenta
 v případě, kde potřebujeme mít logiku svázanou s životním cyklem aktivity, chceme však jistá data
 předat bezpečně mezi instancemi rotující aktivity, případně pokud chceme určitou část uživatelského
@@ -1341,8 +1355,7 @@ rozhraní udržet i při změně instance aktivity. Toto v aplikaci používáme
 držení mapy ve fragmentu předcházíme novému načtení mapy při rotaci a tudíž nežádoucímu probliknutí.
 Fragmenty byly představeny v Androidu verze 3 a zpočátku způsobily mnoho otázek a jejich správném využívání.
 V současnosti se doporučuje využít je hlavně pro dynamické zobrazování uživatelského rozhraní na
-zařízeních s různými obrazovkami\cite{androiddevelopers}, nicméně využití jako datový kontejner pro
-předávání mezi instancemi aktivity se používá také.
+zařízeních s různými obrazovkami\cite{androiddevelopers} a pro logiku patřící pouze uživatelskému rozhraní.
 
 \subsubsection{Služby}
 Služby jsou určeny pro operace, které nejsou viditelné uživateli, případně asynchronní operace, které se mají
@@ -1434,7 +1447,7 @@ napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však
 
 \noindent
 \textbf{Codacy}
-
+\nopagebreak
 
 Dalším použitým nástrojem je služba Codacy(\url{https://www.codacy.com/}, 10.4.2016), což je ve své podstatě
 automatizována analýza kódu vyhledávající potenciální chyby a problémy, která se spustí po každé změně v kódu
@@ -1581,7 +1594,7 @@ případně i pád aplikace v důsledku pokusu o aktualizaci uživatelského roz
 
 RxAndroid navíc řeší další, pro Android velmi významný problém a tím je výběr vlákna, ve kterém se
 operace spouští. Jako hlavní vlákno totiž slouží vlákno uživatelského rozhraní, které by
-nemělo provádět žádné, byť je trochu náročné operace, neboť by se vše mělo stihnout během 16ms\cite{perf}.
+nemělo provádět žádné, byť jen trochu náročné operace, neboť by se vše mělo stihnout během 16ms\cite{perf}.
 V aplikacích i knihovnách toto vede k obrovskému množství asynchronních zpětných volání, které mají různá jména,
 každá knihovna si je řeší po svém, není nad nimi kontrola a výsledkem je nepřehledný asynchronní kód,
 ve kterém se lze jen složitě orientovat. Díky RxAndroid a jejich implementaci plánovačů, lze rozhodnutí,
