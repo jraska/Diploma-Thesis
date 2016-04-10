@@ -1079,12 +1079,12 @@ klienta v době odeslání emailu.
 Cílem návrhu bylo používat v aplikaci konzistentní rozhraní a také jednoduchost všech uživatelských
 prvků pro snadné pochopení pro uživatele se specifickými nároky. Většina uživatelských prvků je tak
 realizována jako velká tlačítka, která při podržení prstu na prvku zobrazí jeho textový popis.
-Jako hlavní směr návrhu uživatelského rozhraní byl zvolen Material Design, neboť se jedná o aktuální
+Jako hlavní směr návrhu uživatelského rozhraní byl zvolen Material design, neboť se jedná o aktuální
 doporučení pro mobilní aplikace a je v něm kladen velký důrazná jednoduchost a konzistenci,
 tedy naše požadavky. Velkou část této specifikace za nás řeší námi používaná knihovna Android Support,
 popsaná v sekci \ref{androidsupport}.
 
-\subsubsection{Material Design}
+\subsubsection{Material design}
 Úplnou specifikaci Material designu, vydanou poprvé v roce 2015 lze nalézt v \cite{materialdesign}.
 Jedná se o detailní popis všech
 grafických prvků uživatelského rozhraní, které by měl vývojář používat, jejich chování, vzhled i vzájemnou
@@ -1096,14 +1096,15 @@ grafických prvků uživatelského rozhraní, které by měl vývojář použív
   v prostoru a jejich seřazení podle důležitosti.
 
   Material design používá ke specifikaci rozměrů
-  stejně jako systém Android jednotku \texttt{dp}, což znamená značí v angličtině "Device independent
-  pixel" a jedná se o jednotku, která je relativní vůči skutečnému rozlišení zařízení a jejím účelem
+  stejně jako systém Android jednotku \texttt{dp}, což znamená v angličtině \uv{Device independent
+  pixel} a jedná se o jednotku, která je relativní vůči skutečnému rozlišení zařízení a jejím účelem
   je zobrazení prvků uživatelského rozhraní v přibližně stejné reálné velikosti bez ohledu na skutečnou
   hustotu pixelů obrazovky, které se zařazují do tříd hustoty a podle této třídy se rozhoduje,
   kolik skutečných pixelů bude ve výsledku prvek zabírat. Tyto třídy jsou v současnosti
   \texttt{ldpi}, \texttt{hdpi}, \texttt{tvdpi}, \texttt{hdpi}, \texttt{xhdpi}, \texttt{xxhdpi} a \texttt{xxxhdpi}.
   Obdélník o šířce 100dp bude pak například v třídě rozlišení \texttt{ldpi} zabírat 75 pixelů(1dp = 0.75px),
-  nicméně na zařízení ve třídě \texttt{xxxhdpi} bude mít rozměr 400 pixelů(1dp = 4px).
+  nicméně na zařízení ve třídě \texttt{xxxhdpi} bude mít rozměr 400 pixelů(1dp = 4px). Pro uživatelské
+  prvky naší aplikace budeme vždy používat jednotku \texttt{dp}.
 
   Specifikace zavádí jako jednu ze svých hlavních prvků zavedení prostorové osy \textit{z} do
   definice uživatelského rozhraní a nazývá tuto vlastnost uživatelských prvků vyvýšení(elevation)\cite{materialdesign}.
@@ -1116,8 +1117,8 @@ grafických prvků uživatelského rozhraní, které by měl vývojář použív
 
 \subsubsection{Barvy}
   Material design také poskytuje barvy, které by měly být v naší aplikaci použity jako dominantní v hlavních
-  uživatelských prvcích. Paletu barev můžeme nalézt na \url{https://www.google.com/design/spec/style/color.html}(10.4.2016).
-  Pro naší aplikaci byla vybrána jako hlavní barvy odstíny barvy indiga, zdůrazňující barvou byla zvolena zelená.
+  uživatelských prvcích. Paletu barev můžeme nalézt na \url{https://www.google.com/design/spec/style/color.html}  (10.4.2016).
+  Pro naší aplikaci byla vybrána jako hlavní barvy odstíny barvy indiga a zdůrazňující barvou byla zvolena zelená.
   Jako barvy textu byla vybrána čistě bíla pro nadpisy na hlavních barvách, lehce průhledná černá pro
   primární text a šedá pro sekundární text. Jako barva pozadí těla byla ponechána výchozí lehce ztmavená bílá
   barva. Popsané barvy s ukázkou můžeme vidět na obrázku \ref{fig:colorpalette}.
@@ -1132,11 +1133,11 @@ grafických prvků uživatelského rozhraní, které by měl vývojář použív
 \subsubsection{Ikony}
 Pro akce aplikace jsou používány ikony ve stylu Material designu, které jsou vždy ploché
 a snaží se co nejvýstižněji popsat akci, kterou provádí. Existuje již obrovské množství
-ikon a lze je nalézt například na \url{https://materialdesignicons.com/}(10.4.2016), případně lze ikony
-importovat přímo v Android Studiu ze oficiálních zdrojů Material designu.
+ikon a lze je nalézt například na \url{https://materialdesignicons.com/}  (10.4.2016), případně lze ikony
+importovat přímo v Android Studiu z oficiálních zdrojů Material designu.
 
 V obou případech těchto ikon je licence použití Creative Common Attribution 4.0 International License (CC-BY 4.0)
-\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/4.0/}(10.4.2016)}, což znamená,
+\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/4.0/}  (10.4.2016)}, což znamená,
 že můžeme bez problému ikony zdarma použít, musíme pouze někde v aplikaci uvést, že tyto ikony
 používáme a v případě, že bychom si je upravili toto také uvést.
 Příklady používaných ikon můžeme vidět na obrázcích \ref{fig:record}, \ref{fig:camera} a \ref{fig:recordsound}.
@@ -1168,9 +1169,9 @@ pro nižší verze systémy vygenerovány během kompilace, což značně zjedno
 
 
 Pro další ikony loga aplikace a podobně byly použity zdroje ze služby
-Iconfinder\footnote{\url{https://www.iconfinder.com/}(10.4.2016)}, kde je licence pro použití také zdarma. V tomto
+Iconfinder\footnote{\url{https://www.iconfinder.com/}  (10.4.2016)}, kde je licence pro použití také zdarma. V tomto
 případě se jedná a Creative Commons Attribution 3.0 Unported (CC BY 3.0)
-\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/3.0/}(10.4.2016)}, což je starší verze
+\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/3.0/}  (10.4.2016)}, což je starší verze
 licence popsané výše a v praxi jsou pak podmínky použití ikon stejné.
 
 
@@ -1186,9 +1187,10 @@ licence popsané výše a v praxi jsou pak podmínky použití ikon stejné.
 
 
 \subsection{Použité nástroje}
+Následující nástroje byly použity pro návrh, úpravy a správu projektu a značně pomohly při jeho vytváření.
 \subsubsection{Trello (\url{https://trello.com/, 10.4.2016})}
 Trello je jednoduchý online nástroj pro správu úkolů, jejich štítkování, zapisování poznámek a přesouvání
-mezi různými seznamy reprezentujícími kategorii úkolů. K této práci bylo Trello použito pro lepší
+mezi různými seznamy reprezentujícími kategorii úkolů. V této práci bylo Trello použito pro lepší
 rozvržení úkolů implementace a úseků psaní práce a přesto, že na projektu pracoval pouze jeden vývojář,
 Trello mnoho věcí zpřehlednilo a psaní práce tak byla efektivnější. Logo nástroje můžeme vidět
 na obrázku \ref{fig:trellologo}. Nástroj je přístupný zdarma a nabízí premium edici pro zpřístupnění
@@ -1201,7 +1203,7 @@ Google Drive nebo Dropbox. Grafy jsou tak přístupné  a editovatelné odkudkol
 je opravdu pokročilá a při práci není vůbec poznat, že vše probíhá pouze v prohlížeči.
 Umožňuje sdílení i export zhotovených diagramů do mnoha formátů a je tedy velice snadné
 sdílet a používat vytvořenou práci.
-Nástroj byl použit pro vytváření use case diagramů a třídních diagramů v této práci.
+Nástroj byl použit pro vytváření veškerých diagramů a schémat v této práci.
 
 \begin{figure}[H]
 \begin{minipage}{.5\textwidth}
@@ -1240,8 +1242,8 @@ GIMP je široce používaný nástroj pro práci s obrázky a jejich úpravu. GI
 
 
 \subsection{Platforma Android}
-Systém Android byl poprvé vypuštěn do světa v roce 2008 v útrobách prvního zařízení T-Mobile~G1\cite{androidcentral}
-a díky své dostupnosti a otevřenému kódu rychle rozšířil a v současné době je to zcela jasně nejvíce využívaný mobilní
+Systém Android byl poprvé vypuštěn do světa v roce 2008 v útrobách zařízení T-Mobile~G1\cite{androidcentral}
+a~díky své dostupnosti a otevřenému kódu rychle rozšířil a v současné době je to zcela jasně nejvíce využívaný mobilní
 operační systém, který se stále bouřlivě vyvíjí. Jeho otevřenost je zároveň pro vývojáře i jedním z jeho problémů,
 neboť výrobci si systém rádi upravují, v důsledku čehož se může aplikace na některých zařízeních chovat
 neočekávaně a často se lze setkat se situací, že určitá funkce aplikace nefunguje správně právě na
@@ -1249,9 +1251,9 @@ jednom konkrétním typu zařízení.
 
 Díky své rozšířenosti a dostupnosti se platforma Android nabízí jako dobrá možnost pro implementaci
 aplikace na podporu cestování, neboť bude pro klienty snadno dostupná na zařízeních všech cenových
-kategorií, kam si je mohou stáhnout přes obchod Google Play, kde může být naše aplikace publikována.
+kategorií, kam si je mohou stáhnout přes obchod Google Play, kde může bude aplikace publikována.
 Systém nabízí podporu pro velké množství různých senzorů, které dnešní mobilní zařízení obsahují
-a tak je čtení dat z Akcelerometru nebo zaznamenávání GPS řešeno pouze voláním příslušných metod
+a tak je čtení dat z akcelerometru nebo zaznamenávání GPS řešeno pouze voláním příslušných metod
 rozhraní frameworku. Během doby existence systému se objevilo také mnoho rozšiřujících knihoven
 pro zjednodušení práce programátora umožnění vývoj aplikace efektivněji. Naše aplikace se
 za pomoci těchto nástrojů pokusí zjednodušit mentálně postiženým klientům cestování po svých
@@ -1294,7 +1296,7 @@ parsuje Google Play tento soubor pro zobrazení informací pro záznam v obchod�
 systému Android, pro zobrazení ikony v seznamu aplikací a také vytvoření uživatele podle identifikátoru
 aplikace a přiřazení přístupových práv pro konkrétní deklarovaná povolení.
 
-\subsubsection{Aktivity}
+\subsubsection{Aktivita}
 Aktivita je komponenta aplikace, která obsahuje uživatelské rozhraní viditelné pro uživatele. Každá
  používaná aktivita aplikace musí být definována v Android manifestu se svými podmínkami pro své
  spuštění, neboli filtry záměrů(\texttt{IntentFilter}) a tím deklarovat vstupní místa do aplikace.
@@ -1408,7 +1410,7 @@ napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však
  soubor \texttt{travis.yml} v kořenovém adresáři repositáře, v němž je specifikováno, že se projekt má sestavit jako Android projekt,
  jaký software se do prostředí má před každým během nainstalovat a co se má stát v případě chyby. Travis CI po stažení
  repositáře tento soubor vyhledá a na základě jeho obsahu provede požadované akce.
- Službu a historii buildů pro aplikaci Asistence cestování si můžeme prohlédnout na \url{https://travis-ci.org/jraska/Diploma-Thesis}(10.4.2016).
+ Službu a historii buildů pro aplikaci Asistence cestování si můžeme prohlédnout na \url{https://travis-ci.org/jraska/Diploma-Thesis}  (10.4.2016).
 
  \subsubsection{Statická analýza kódu}
 
@@ -1515,7 +1517,7 @@ mezi různými verzemi a sjednocuje jejich vzhled. Poskytuje také množství ro
 pomocné třídy například pro notifikace, média a spoustu dalších. V současné době by měla být součástí každé
 aplikace a při vytváření nového projektu je k projektu již automaticky přidána.
 
-Dokumentaci knihovny můžeme najít na \url{http://developer.android.com/tools/support-library/index.html}(10.4.2016).
+Dokumentaci knihovny můžeme najít na \url{http://developer.android.com/tools/support-library/index.html}  (10.4.2016).
 
 \subsubsection{Dagger 2 a vkládání závislostí}\label{dagger2}
 Poměrně nová knihovna spravovaná Googlem a uvolněná poprvé v srpnu 2015, která pro nás řeší tzv. vkládání
@@ -1561,7 +1563,7 @@ dojít k chybě za běhu. Oproti tomu Dagger 2 vytváří objektový graf během
 všechny požadované závislosti je možné získat a v případě aplikace nám neumožní aplikaci úspěšně zkompilovat,
 díky čemuž minimalizuje možné pády aplikace v případě nesprávného použití knihovny.
 
-Dokumentaci a popis knihovny můžeme nalézt na \url{http://google.github.io/dagger/}(10.4.2016).
+Dokumentaci a popis knihovny můžeme nalézt na \url{http://google.github.io/dagger/}  (10.4.2016).
 
 \subsubsection{RxAndroid}\label{rxandroid}
 Jedná se o Android rozšíření známé knihovny RxJava, která implementuje reaktivní rozšíření
@@ -1606,7 +1608,7 @@ Výhody reaktivního programování můžeme ocenit i při testování, které j
 rozhraním testované třídy problematické, nicméně díky RxAndroid volání \texttt{toBlocking()} vynutíme
 synchronní spuštění požadované operace, což nám výrazně zjednoduší testování.
 
-Knihovnu můžeme nalézt na \url{https://github.com/ReactiveX/RxAndroid}(10.4.2016).
+Knihovnu můžeme nalézt na \url{https://github.com/ReactiveX/RxAndroid}  (10.4.2016).
 
 \subsubsection{Retrolambda}
 Lambda výrazy jsou mocným nástrojem a příjemnou pomůckou každého jazyka, který je podporuje a redukují
@@ -1644,7 +1646,7 @@ Ukázku odstranění anonymní třídy můžeme vidět na ukázce kódu \ref{use
   saveButton.setOnClickListener(v -> save());
 \end{lstlisting}
 
-Knihovnu můžeme nalézt na \url{https://github.com/orfjackal/retrolambda}(10.4.2016).
+Knihovnu můžeme nalézt na \url{https://github.com/orfjackal/retrolambda}  (10.4.2016).
 
 \subsubsection{Lombok}
 Lombok je další z nástrojů který rozšiřuje jazyk Java, respektive se nás snaží ušetřit obvyklých
@@ -1675,7 +1677,7 @@ bez přístupových metod, \texttt{@Builder} pro generování stavitelů objekt�
 počtem parametrů, případně \texttt{@SneakyThrows}, který nás zbavuje nutnosti obalovat kontrolované výjimky
 \texttt{try-catch} blokem případně výjimku propagovat do signatury metody a mnohé další.
 
-Stránky Lomboku můžeme nalézt na \url{https://projectlombok.org/}(10.4.2016).
+Stránky Lomboku můžeme nalézt na \url{https://projectlombok.org/}  (10.4.2016).
 
 \subsubsection{Google Play Services}
 Soubor knihoven od Googlu, které se snaží vývojáři rozšířit možnosti implementace všemi různými způsoby.
@@ -1687,7 +1689,7 @@ obsahuje aplikaci obchodu Google Play a tudíž na všech zařízeních, kde je 
 Knihovna je zároveň přes aplikaci obchodu aktualizovaná a tudíž u ní nemusíme řešit problémy
 kompatibility, jako u vlastního SDK. \cite{gms}
 
-Přehled všech rozhraní lze nalézt na \url{https://developers.google.com/android/guides/overview}(10.4.2016).
+Přehled všech rozhraní lze nalézt na \url{https://developers.google.com/android/guides/overview}  (10.4.2016).
 
 \subsubsection{Butter Knife}
 Jedná se o knihovnu, která nás zbavuje dalších ceremonií Androidu nastavování posluchačů
@@ -1703,7 +1705,7 @@ používána v aplikaci, můžeme vidět na ukázce \ref{butterknife}.
 
 \end{lstlisting}
 
-Knihovnu můžeme najít na \url{http://jakewharton.github.io/butterknife/}(10.4.2016).
+Knihovnu můžeme najít na \url{http://jakewharton.github.io/butterknife/}  (10.4.2016).
 
 \subsubsection{DBFlow}\label{dbflow}
 Jedné se o knihovnu pro objektově relační mapování objektů pro databáze SQLite, které se v
@@ -1737,7 +1739,7 @@ Jedné se o knihovnu pro objektově relační mapování objektů pro databáze 
   Další podporovanou funkcí jsou migrace, kde se opět pouze anotacemi dá definovat třída,
   která má migraci databáze na novou verzi převést.
 
-  Knihovnu můžeme najít na \url{https://github.com/Raizlabs/DBFlow}(10.4.2016).
+  Knihovnu můžeme najít na \url{https://github.com/Raizlabs/DBFlow}  (10.4.2016).
 
 
 \subsubsection{Robolectric}\label{robolectric}
@@ -1755,18 +1757,18 @@ určitých podmínek. Knihovna se vyvíjí už mnoho let a díky záměru simulo
 rozsáhlá a zatím stále ne zcela dokonalá, nicméně se stala standardem pro testování Android kódu
 přímo na pracovní stanici.
 
-Knihovnu lze nalézt na \url{http://robolectric.org/}(10.4.2016).
+Knihovnu lze nalézt na \url{http://robolectric.org/}  (10.4.2016).
 
 \subsubsection{Další použité knihovny}
 \begin{itemize}
-  \item \textbf{Universal Image Loader} - Práce s obrázky a fotkami. (\url{https://github.com/nostra13/Android-Universal-Image-Loader}(10.4.2016))
-  \item \textbf{Timber} - Logování zpráv v aplikaci. (\url{https://github.com/JakeWharton/timber}(10.4.2016))
-  \item \textbf{Okio} - Efektivní a snadné práce se soubory a datovými proudy. (\url{https://github.com/square/okio}(10.4.2016))
-  \item \textbf{EventBus} - Snadné publikování a konzumování globálních události v aplikaci. (\url{http://greenrobot.org/eventbus/}(10.4.2016))
-  \item \textbf{ShowcaseView} - Zobrazení uživatelsky přívětivé nápovědy. (\url{https://github.com/amlcurran/ShowcaseView}(10.4.2016))
-  \item \textbf{JUnit 4} - Známý framewrok pro Java jednotkové testy. (\url{http://junit.org/}(10.4.2016))
-  \item \textbf{AssertJ Android} - Pomocné aserce pro jednotkové testy. (\url{http://square.github.io/assertj-android/}(10.4.2016))
-  \item \textbf{Mockito} - Mockovací knihovna pro jednotkové testy. (\url{http://mockito.org/}(10.4.2016))
+  \item \textbf{Universal Image Loader} - Práce s obrázky a fotkami. (\url{https://github.com/nostra13/Android-Universal-Image-Loader}  (10.4.2016))
+  \item \textbf{Timber} - Logování zpráv v aplikaci. (\url{https://github.com/JakeWharton/timber}  (10.4.2016))
+  \item \textbf{Okio} - Efektivní a snadné práce se soubory a datovými proudy. (\url{https://github.com/square/okio}  (10.4.2016))
+  \item \textbf{EventBus} - Snadné publikování a konzumování globálních události v aplikaci. (\url{http://greenrobot.org/eventbus/}  (10.4.2016))
+  \item \textbf{ShowcaseView} - Zobrazení uživatelsky přívětivé nápovědy. (\url{https://github.com/amlcurran/ShowcaseView}  (10.4.2016))
+  \item \textbf{JUnit 4} - Známý framewrok pro Java jednotkové testy. (\url{http://junit.org/}  (10.4.2016))
+  \item \textbf{AssertJ Android} - Pomocné aserce pro jednotkové testy. (\url{http://square.github.io/assertj-android/}  (10.4.2016))
+  \item \textbf{Mockito} - Mockovací knihovna pro jednotkové testy. (\url{http://mockito.org/}  (10.4.2016))
 
 
 \end{itemize}
