@@ -951,7 +951,7 @@ nebezpečí vybití baterie v terénu.
 \noindent
 \textbf{Hlavní scénář:} Na základě pohybu uživatele jsou data vyhodnocována a vypočítán aktuální směr uživatele.
 Ten se porovná s očekávaným a uloženým směrem a podle rozdílu se zobrazí směr, kterým by se uživatel měl ideálně
-vydat. Informace je zobrazena v dolní části obrazovky v podobě jednoduché šípky.
+vydat. Informace je zobrazena v dolní části obrazovky v podobě jednoduché šipky.
 
 \vspace{0.1cm}
 \noindent
@@ -1246,7 +1246,7 @@ Systém Android byl poprvé vypuštěn do světa v roce 2008 v útrobách první
 a díky své dostupnosti a otevřenému kódu rychle rozšířil a v současné době je to zcela jasně nejvíce využívaný mobilní
 operační systém, který se stále bouřlivě vyvíjí. Jeho otevřenost je zároveň pro vývojáře i jedním z jeho problémů,
 neboť výrobci si systém rádi upravují, v důsledku čehož se může aplikace na některých zařízeních chovat
-neočekávaně a často se lze setkat se situací, že určitá funkce aplikace nefunguj správně právě na
+neočekávaně a často se lze setkat se situací, že určitá funkce aplikace nefunguje správně právě na
 jednom konkrétním typu zařízení.
 
 Díky své rozšířenosti a dostupnosti se platforma Android nabízí jako dobrá možnost pro implementaci
@@ -1262,7 +1262,7 @@ obvyklých cestách.
 Systém Android poskytuje vývojáři několik základních komponent, z nichž námi používané detailněji popíšeme.
 
 \subsubsection{Záměr(\texttt{Intent})}
-Platforma Android byla vymýšlena tak, aby vývojář místo explicitního spouštění konkrétní aplikace pro danou činnosti
+Platforma Android byla vymýšlena tak, aby vývojář místo explicitního spouštění konkrétní aplikace pro danou činnost
 raději popsal záměr, co by chtěl udělat a systém sám vyhodnotí, která aplikace se pro tento záměr nejlépe
 hodí. Touto cestou se systém snaží vytvořit prostředí mnoha aplikací, které spolu navzájem komunikují,
 aniž by jedna o druhé přímo věděly a pomocí záměrů tak snižuje vazby mezi komponentami. Záměr může mít
@@ -1273,14 +1273,14 @@ která má pro uživatele záměr vykonat. Při vyhodnocování záměrů systé
 
 Pokud chceme například odeslat email, nespouštíme emailovou aplikaci, ale vytvoříme záměr odeslat email
 s příslušnými parametry a tento záměr předáme systému, který ze seznamu nainstalovaných aplikací vybere
-ty, které dokážou náš email odeslat a v případ více výsledků nechá uživatele vybrat, která z aplikací
+ty, které dokážou náš email odeslat a v případě více výsledků nechá uživatele vybrat, která z aplikací
 má záměr obdržet. Parametry záměru by v tomto případě byly předmět, adresát emailu a tak dále.
 
 Naopak pokud chceme v aplikaci spustit některou z našich aktivit, dáváme aplikaci pomocí třídy
 aktivity přesné jméno komponenty, kterou má spustit, nicméně samotnou aktivitu s jejím životním
 cyklem vytvoří systém, nikoliv vývojář sám.
 
-Pomocí záměru se předávají všemožné informace a může kromě zmíněných případu sloužit k vyvolání
+Pomocí záměru se předávají všemožné informace a může kromě zmíněných případů sloužit k vyvolání
 vzdálené akce, informace o systémové události nebo pouze pro přenos dat, které musí být vždy
 serializovatelné, neboť je tím umožněno systému záměr uchovat i v případě ukončení spouštěcího
 procesu a předávání záměrů mezi procesy.
@@ -1319,7 +1319,7 @@ Celý životní cyklus aktivity můžeme vidět na obrázku \ref{fig:activitylyf
 často o první diagram, který vývojář pro platformu Android vidí.
 Velmi častým problémem při vývoji je držení dat a podobných věci přímo v aktivitách,
 neboť ta může být kdykoliv zničena systémem, například
-pokud uživatel pouze otočí obrazovku a vyžaduje se v tu chvíli nové uživatelské rozhraní. Pokud v takové chvíle
+pokud uživatel pouze otočí obrazovku a vyžaduje se v tu chvíli nové uživatelské rozhraní. Pokud v takové chvíli
 někdo drží stále na aktivitu referenci, zničená instance aktivity není uvolněna z paměti a vzniká únik paměti.
 Tento problém se stal ve světě vývojářů Androidu tak častý, že přímo pro jeho prevenci byla vytvořena knihovna
 LeakCanary(\url{https://github.com/square/leakcanary}).
@@ -1523,7 +1523,7 @@ Dokumentaci knihovny můžeme najít na \url{http://developer.android.com/tools/
 Poměrně nová knihovna spravovaná Googlem a uvolněná poprvé v srpnu 2015, která pro nás řeší tzv. vkládání
 závislostí(anglicky Dependecy Injection) do objektů,
 které tyto závislosti chtějí používat. Knihovna je použita za účelem zkvalitnění kódu a zlepšení testovatelnosti, jelikož
-je v celém projektu následována filozofie, že třídy by měly objekty buď vytvářet a nebo používat. To v podstatě to znamená,
+je v celém projektu následována filozofie, že třídy by měly objekty buď vytvářet a nebo používat. To v podstatě znamená,
 že se snažíme omezit situace, kdy si třída v rámci své metody vytváří vlastní objekty, které potřebuje k vykonání
 dané operace a zejména se se snaží úplně eliminovat situace, kdy si třída své závislosti sama začne vybírat z nějakého
 kontejneru, statických proměnných a podobně. Jako špatný přístup je v tomto případě brán i často používán návrhový vzor
