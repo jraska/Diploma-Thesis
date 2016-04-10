@@ -21,13 +21,12 @@ import com.jraska.pwmd.travel.navigation.Compass;
 import com.jraska.pwmd.travel.navigation.Navigator;
 import com.jraska.pwmd.travel.navigation.RouteEventsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import com.jraska.pwmd.travel.rx.IOThreadTransformer;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 import hugo.weaving.DebugLog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -199,8 +198,7 @@ public class NavigationActivity extends BaseActivity {
 
     if (routeData == null) {
       _travelDataRepository.select(_routeId)
-          .subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread())
+          .compose(IOThreadTransformer.get())
           .subscribe(this::startNavigation);
     }
   }
@@ -212,8 +210,7 @@ public class NavigationActivity extends BaseActivity {
       _routeDisplayFragment.displayRoute(routeData);
       _navigator.startNavigation(routeData);
       _routeEventsManager.setupEvents(routeData)
-          .subscribeOn(Schedulers.computation())
-          .observeOn(AndroidSchedulers.mainThread())
+          .compose(IOThreadTransformer.get())
           .subscribe(this::onEventsSetUp);
     }
   }
@@ -224,8 +221,7 @@ public class NavigationActivity extends BaseActivity {
     _navigator.stopNavigation();
 
     _routeEventsManager.clearEvents()
-        .subscribeOn(Schedulers.computation())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(IOThreadTransformer.get())
         .subscribe(this::onEventsRemoved);
   }
 

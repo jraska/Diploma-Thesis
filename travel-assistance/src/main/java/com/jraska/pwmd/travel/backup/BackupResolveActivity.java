@@ -13,10 +13,9 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
+import com.jraska.pwmd.travel.rx.IOThreadTransformer;
 import com.jraska.pwmd.travel.ui.BaseActivity;
 import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -153,15 +152,13 @@ public class BackupResolveActivity extends BaseActivity implements GoogleApiClie
 
   private void doRestore() {
     _backupManager.restoreFromBackup(_driveClient)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(IOThreadTransformer.get())
         .subscribe(new ActionSubscriber());
   }
 
   private void doBackup() {
     _backupManager.createBackup(_driveClient)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(IOThreadTransformer.get())
         .subscribe(new ActionSubscriber());
   }
 

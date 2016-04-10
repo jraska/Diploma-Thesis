@@ -12,8 +12,7 @@ import com.jraska.pwmd.travel.data.NoteSpec;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.media.SoundsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import com.jraska.pwmd.travel.rx.IOThreadTransformer;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -119,8 +118,7 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
   public void showRoute() {
     if (!_routeDisplayFragment.isRouteDisplayed()) {
       _travelDataRepository.select(_routeId)
-          .subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread())
+          .compose(IOThreadTransformer.get())
           .subscribe(this::showRoute);
     }
   }

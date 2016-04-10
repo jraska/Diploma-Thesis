@@ -20,13 +20,11 @@ import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.feedback.Feedback;
 import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
-import com.jraska.pwmd.travel.settings.SettingsManager;
+import com.jraska.pwmd.travel.rx.IOThreadTransformer;
 import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 import hugo.weaving.DebugLog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -255,8 +253,7 @@ public class RoutesListActivity extends BaseActivity
   @DebugLog void refreshRoutes() {
     TravelDataRepository routesRepository = _travelDataRepository;
     routesRepository.selectAll()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(IOThreadTransformer.get())
         .subscribe(this::setRoutes);
   }
 
@@ -280,8 +277,7 @@ public class RoutesListActivity extends BaseActivity
 
   protected void deleteRoute(RouteData route) {
     _travelDataRepository.delete(route)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(IOThreadTransformer.get())
         .subscribe();
   }
 

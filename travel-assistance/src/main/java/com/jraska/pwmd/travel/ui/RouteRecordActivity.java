@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,13 +38,12 @@ import com.jraska.pwmd.travel.feedback.Feedback;
 import com.jraska.pwmd.travel.media.PicturesManager;
 import com.jraska.pwmd.travel.media.SoundsManager;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
+import com.jraska.pwmd.travel.rx.IOThreadTransformer;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import com.jraska.pwmd.travel.transport.SimpleTransportManager;
 import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -326,8 +324,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     Timber.i("Saving route title=%s", routeData.getTitle());
 
     _travelDataRepository.insertOrUpdate(routeData)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(IOThreadTransformer.get())
         .subscribe(this::onSaved);
   }
 

@@ -16,9 +16,8 @@ import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.network.OnlineProperty;
+import com.jraska.pwmd.travel.rx.IOThreadTransformer;
 import com.jraska.pwmd.travel.settings.SettingsManager;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -99,8 +98,7 @@ public class BackupFragment extends Fragment {
 
   private void refreshBackupViewVisibility() {
     _backupChecker.isAnythingToBackup()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(IOThreadTransformer.get())
         .subscribe(this::onAnythingToBackup);
   }
 
@@ -115,8 +113,7 @@ public class BackupFragment extends Fragment {
 
   protected void refreshLastBackupTime() {
     _backupChecker.getLastBackupDate()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .compose(IOThreadTransformer.get())
         .subscribe(this::onNewLastBackupDate);
   }
 

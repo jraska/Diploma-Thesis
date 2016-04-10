@@ -12,7 +12,6 @@ import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
 import javax.inject.Inject;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.jraska.pwmd.travel.navigation.Compass.UNKNOWN_BEARING;
