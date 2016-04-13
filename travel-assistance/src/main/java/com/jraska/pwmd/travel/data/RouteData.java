@@ -35,6 +35,8 @@ public class RouteData extends BaseModel {
   List<NoteSpec> _noteSpecs;
   List<DbPosition> _locations;
 
+  private final Object _lock = new Object();
+
   //endregion
 
   //region Constructors
@@ -134,7 +136,9 @@ public class RouteData extends BaseModel {
   }
 
   public void addLatLng(LatLng latLng) {
-    getPositionsInternal().add(new DbPosition(latLng));
+    synchronized (_lock) {
+      getPositionsInternal().add(new DbPosition(latLng));
+    }
   }
 
   @OneToMany(methods = {OneToMany.Method.DELETE}, variableName = "_transportChangeSpecs")
@@ -156,7 +160,9 @@ public class RouteData extends BaseModel {
   }
 
   public void addChange(TransportChangeSpec spec) {
-    getTransportChangesInternal().add(spec);
+    synchronized (_lock) {
+      getTransportChangesInternal().add(spec);
+    }
   }
 
   @OneToMany(methods = {OneToMany.Method.DELETE}, variableName = "_noteSpecs")
@@ -189,7 +195,9 @@ public class RouteData extends BaseModel {
   public void addNote(NoteSpec spec) {
     ArgumentCheck.notNull(spec);
 
-    getNoteSpecsInternal().add(spec);
+    synchronized (_lock) {
+      getNoteSpecsInternal().add(spec);
+    }
   }
 
   //endregion
@@ -197,23 +205,25 @@ public class RouteData extends BaseModel {
   //region Model overrides
 
   @Override public void save() {
-    List<DbPosition> locations = getLocations();
+    synchronized (_lock) {
+      List<DbPosition> locations = getLocations();
 
-    super.save();
+      super.save();
 
-    for (NoteSpec noteSpec : getNoteSpecs()) {
-      noteSpec._routeId = _id;
-      noteSpec.save();
-    }
+      for (NoteSpec noteSpec : getNoteSpecs()) {
+        noteSpec._routeId = _id;
+        noteSpec.save();
+      }
 
-    for (DbPosition location : locations) {
-      location._routeId = _id;
-      location.save();
-    }
+      for (DbPosition location : locations) {
+        location._routeId = _id;
+        location.save();
+      }
 
-    for (TransportChangeSpec pec : getTransportChangeSpecs()) {
-      pec._routeId = _id;
-      pec.save();
+      for (TransportChangeSpec pec : getTransportChangeSpecs()) {
+        pec._routeId = _id;
+        pec.save();
+      }
     }
   }
 
