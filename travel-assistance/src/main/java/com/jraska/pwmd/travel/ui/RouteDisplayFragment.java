@@ -6,13 +6,12 @@ import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.NoteSpec;
@@ -30,6 +29,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import timber.log.Timber;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,13 +52,15 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   private RouteData _routeData;
   private GoogleMap _mapView;
 
+  private Polyline _lastPolyline;
+  private final Map<Marker, TransportChangeSpec> _transportChangeMarkers = new HashMap<>();
   private final Map<Marker, NoteSpec> _noteSpecMap = new HashMap<>();
 
   private DisplayImageOptions _imageOptions;
   private ImageSize _photoIconSize;
 
   private EventListener _eventListener;
-  private boolean _centered;
+  private final List<CameraUpdate> _pendingUpdates = new ArrayList<>();
 
   //endregion
 
@@ -165,6 +167,15 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     if (_routeData != null) {
       displayRoute(_routeData);
     }
+
+    for (CameraUpdate update : _pendingUpdates) {
+      _mapView.moveCamera(update);
+    }
+
+    _pendingUpdates.clear();
+
+    CameraUpdate zoomUpdate = CameraUpdateFactory.newLatLngZoom(_mapView.getCameraPosition().target, ZOOM);
+    _mapView.animateCamera(zoomUpdate);
   }
 
   //endregion
@@ -172,17 +183,31 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
   //region Methods
 
   public void centerMapTo(Location location) {
-    _centered = true;
+    CameraUpdate center = CameraUpdateFactory.newLatLng(toLatLng(location));
+
+    updateCamera(center, true);
+  }
+
+  private void updateCamera(CameraUpdate cameraUpdate, boolean animate) {
     if (_mapView != null) {
-      CameraUpdate center = CameraUpdateFactory.newLatLng(toLatLng(location));
-      _mapView.animateCamera(center);
+      if (animate) {
+        _mapView.animateCamera(cameraUpdate);
+      } else {
+        _mapView.moveCamera(cameraUpdate);
+      }
+    } else {
+      _pendingUpdates.add(cameraUpdate);
     }
   }
 
-  public void displayRoute(@NonNull RouteData routeData) {
-    ArgumentCheck.notNull(routeData);
-
+  public void displayRoute(@Nullable RouteData routeData) {
     _routeData = routeData;
+
+    if (routeData == null) {
+      removeAll();
+      return;
+    }
+
     setupActivity(getActivity());
     if (_mapView == null) {
       // route will be displayed on map ready
@@ -214,16 +239,18 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
 
     GoogleMap map = _mapView;
 
-    PolylineOptions polylineOptions = getPolylineOptions(points);
-    map.addPolyline(polylineOptions);
+    removeLastPolyline();
 
-    if (!_centered) {
-      LatLng start = toGoogleLatLng(points.get(0));
-      CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(start, ZOOM);
-      map.moveCamera(cameraUpdate);
-    }
+    PolylineOptions polylineOptions = getPolylineOptions(points);
+    _lastPolyline = map.addPolyline(polylineOptions);
 
     map.setOnMarkerClickListener(this);
+  }
+
+  private void removeLastPolyline() {
+    if (_lastPolyline != null) {
+      _lastPolyline.remove();
+    }
   }
 
   private PolylineOptions getPolylineOptions(List<com.jraska.pwmd.core.gps.LatLng> points) {
@@ -240,15 +267,20 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
 
   protected void displayRouteChanges(RouteData routeData) {
     for (TransportChangeSpec spec : routeData.getTransportChangeSpecs()) {
+      if (_transportChangeMarkers.containsValue(spec)) {
+        continue;
+      }
+
       BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(spec.getHardIconRes());
 
       LatLng markerLocation = toGoogleLatLng(spec.getLatLng());
 
-      MarkerOptions routeChangeMarker = new MarkerOptions().position(markerLocation)
+      MarkerOptions routeChangeMarkerOptions = new MarkerOptions().position(markerLocation)
           .title(spec.getTitle())
           .icon(icon);
 
-      _mapView.addMarker(routeChangeMarker);
+      Marker routeChangeMarker = _mapView.addMarker(routeChangeMarkerOptions);
+      _transportChangeMarkers.put(routeChangeMarker, spec);
     }
   }
 
@@ -257,6 +289,10 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
 
     Stopwatch stopwatch = Stopwatch.started();
     for (NoteSpec spec : noteSpecs) {
+      if (_noteSpecMap.containsValue(spec)) {
+        continue;
+      }
+
       LatLng markerLocation = toGoogleLatLng(spec.getLatLng());
 
       MarkerOptions routeChangeMarker = new MarkerOptions().position(markerLocation)
@@ -281,6 +317,38 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     }
   }
 
+  void removeAll() {
+    removeLastPolyline();
+    removeNoteSpecMarkers();
+    removeTransporChangeMarkers();
+  }
+
+  private void removeTransporChangeMarkers() {
+    for (Marker marker : _transportChangeMarkers.keySet()) {
+      marker.remove();
+    }
+
+    _transportChangeMarkers.clear();
+  }
+
+  private void removeNoteSpecMarkers() {
+    for (Marker marker : _noteSpecMap.keySet()) {
+      marker.remove();
+    }
+
+    _noteSpecMap.clear();
+  }
+
+  public void centerMapToRouteStart() {
+    if (_routeData == null) {
+      return;
+    }
+
+    LatLng latLng = toGoogleLatLng(_routeData.getLocations().get(0).latLng);
+    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, ZOOM);
+    updateCamera(cameraUpdate, false);
+  }
+
   //endregion
 
   //region Nested classes
@@ -301,7 +369,9 @@ public class RouteDisplayFragment extends SupportMapFragment implements GoogleMa
     }
 
     @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-      _marker.setIcon(BitmapDescriptorFactory.fromBitmap(loadedImage));
+      if (_marker.isVisible()) {
+        _marker.setIcon(BitmapDescriptorFactory.fromBitmap(loadedImage));
+      }
     }
 
     @Override public void onLoadingCancelled(String imageUri, View view) {

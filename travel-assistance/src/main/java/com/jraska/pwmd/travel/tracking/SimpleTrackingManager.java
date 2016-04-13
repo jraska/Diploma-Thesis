@@ -187,13 +187,13 @@ public class SimpleTrackingManager implements TrackingManager {
 
     _pendingChanges.clear();
 
-    for (NoteSpec spec : _pendingNoteSpecs) {
-      if (!spec.exists()) {
-        _eventBus.post(new TravelDataRepository.NoteSpecDeletedEvent(spec));
-      }
+    postDiscardingNoteSpecs(_pendingNoteSpecs);
+    _pendingNoteSpecs.clear();
+
+    if(_routeData != null){
+      postDiscardingNoteSpecs(_routeData.getNoteSpecs());
     }
 
-    _pendingNoteSpecs.clear();
     _routeData = null;
     _lastUserInput = null;
 
@@ -202,6 +202,14 @@ public class SimpleTrackingManager implements TrackingManager {
 
     _serviceBinder = null;
     _running = false;
+  }
+
+  private void postDiscardingNoteSpecs(Collection<NoteSpec> noteSpecs) {
+    for (NoteSpec spec : noteSpecs) {
+      if (spec.getRouteId() < 1) {
+        _eventBus.post(new TravelDataRepository.NoteSpecDeletedEvent(spec));
+      }
+    }
   }
 
   @Override

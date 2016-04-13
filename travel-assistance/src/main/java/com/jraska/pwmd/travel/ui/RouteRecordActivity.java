@@ -28,7 +28,6 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.google.android.gms.maps.*;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
@@ -51,9 +50,7 @@ import javax.inject.Provider;
 import java.util.Date;
 import java.util.UUID;
 
-import static com.jraska.pwmd.travel.ui.MapHelper.toLatLng;
-
-public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallback {
+public class RouteRecordActivity extends BaseActivity {
 
   //region Constants
 
@@ -88,7 +85,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   @Inject Provider<Location> _lastLocationProvider;
 
   private UUID _lastPhotoRequestId;
-  private GoogleMap _map;
+  private RouteDisplayFragment _routeDisplayFragment;
   private ShowcaseView _showcaseView;
 
   //endregion
@@ -103,14 +100,13 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
     TravelAssistanceApp.getComponent(this).inject(this);
 
+    _routeDisplayFragment = (RouteDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
     updateUIState();
     showRecordShowcase();
     updateTransportIcon();
     updateRouteIcon();
-
-    SupportMapFragment mapFragment =
-        (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-    mapFragment.getMapAsync(this);
+    centerMapToLastPosition();
 
     TrackingManager.UserInput lastUserInput = _trackingManager.getLastUserInput();
     if (lastUserInput != null) {
@@ -191,20 +187,6 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
   //endregion
 
-  //region OnMapReadyCallback
-
-  @Override
-  public void onMapReady(GoogleMap map) {
-    MapHelper.configureMap(map);
-    _map = map;
-    CameraUpdate cameraUpdate = CameraUpdateFactory.zoomTo(MapHelper.ZOOM);
-    _map.moveCamera(cameraUpdate);
-
-    centerMapToLastPosition(false);
-  }
-
-  //endregion
-
   //region Methods
 
   void promptFinish() {
@@ -220,18 +202,14 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
   @Subscribe
   public void onNewLocation(Location location) {
-    centerMapToLastPosition(true);
+    updateDisplayedRoute();
+    centerMapToLastPosition();
   }
 
-  public void centerMapToLastPosition(boolean animate) {
+  public void centerMapToLastPosition() {
     Location location = _lastLocationProvider.get();
-    if (location != null && _map != null) {
-      CameraUpdate center = CameraUpdateFactory.newLatLng(toLatLng(location));
-      if (animate) {
-        _map.animateCamera(center);
-      } else {
-        _map.moveCamera(center);
-      }
+    if (location != null) {
+      _routeDisplayFragment.centerMapTo(location);
     }
   }
 
@@ -278,8 +256,9 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
   @OnClick(R.id.record_btnStopRecording) void stopTracking() {
     _trackingManager.stopTracking();
+    updateDisplayedRoute();
 
-    Timber.i("User stopped tracking");
+    Timber.i("User stopped recording");
 
     updateUIState();
   }
@@ -348,7 +327,12 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
   }
 
   protected boolean addTransportationChange(int type, @NonNull String title) {
-    return _trackingManager.addChange(type, title);
+    boolean result = _trackingManager.addChange(type, title);
+    if (result) {
+      updateDisplayedRoute();
+    }
+
+    return result;
   }
 
   protected void updateTransportIcon() {
@@ -396,9 +380,18 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     UUID id = (UUID) data.getSerializableExtra(VoiceRecordActivity.RECORDED_ID_KEY);
     String title = data.getStringExtra(VoiceRecordActivity.RECORDED_TITLE_KEY);
 
-    if (_trackingManager.addNote(null, title, id)) {
+    if (addNote(null, title, id)) {
       Toast.makeText(this, R.string.record_voice_saved, Toast.LENGTH_SHORT).show();
     }
+  }
+
+  boolean addNote(UUID imageId, String title, UUID soundId) {
+    boolean result = _trackingManager.addNote(imageId, title, soundId);
+    if (result) {
+      updateDisplayedRoute();
+    }
+
+    return result;
   }
 
   protected void handlePhotoTakenIntent(@Nullable Intent data) {
@@ -451,7 +444,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     });
     builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
       String caption = photoDialogHolder._captionInput.getText().toString();
-      _trackingManager.addNote(imageId, caption, null);
+      addNote(imageId, caption, null);
     });
 
     builder.show();
@@ -470,7 +463,7 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
     builder.setNegativeButton(android.R.string.cancel, null);
     builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
       String caption = noteInput.getText().toString();
-      _trackingManager.addNote(null, caption, null);
+      addNote(null, caption, null);
     });
 
     builder.show();
@@ -499,6 +492,11 @@ public class RouteRecordActivity extends BaseActivity implements OnMapReadyCallb
 
   void updateRouteIcon() {
     _pickIconView.setImageResource(_trackingManager.getRouteIcon().iconResId);
+  }
+
+  void updateDisplayedRoute() {
+    RouteData routeData = _trackingManager.getRouteData(getUserInput());
+    _routeDisplayFragment.displayRoute(routeData);
   }
 
   //endregion

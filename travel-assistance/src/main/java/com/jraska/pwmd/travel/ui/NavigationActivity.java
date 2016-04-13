@@ -208,6 +208,7 @@ public class NavigationActivity extends BaseActivity {
       onRouteNotFound();
     } else {
       _routeDisplayFragment.displayRoute(routeData);
+      _routeDisplayFragment.centerMapToRouteStart();
       _navigator.startNavigation(routeData);
       _routeEventsManager.setupEvents(routeData)
           .compose(IOThreadTransformer.get())

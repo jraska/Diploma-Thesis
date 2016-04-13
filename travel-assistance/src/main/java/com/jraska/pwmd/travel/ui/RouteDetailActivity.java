@@ -128,6 +128,7 @@ public class RouteDetailActivity extends BaseActivity implements RouteDisplayFra
       onRouteNotFound();
     } else {
       _routeDisplayFragment.displayRoute(routeData);
+      _routeDisplayFragment.centerMapToRouteStart();
     }
   }
 
