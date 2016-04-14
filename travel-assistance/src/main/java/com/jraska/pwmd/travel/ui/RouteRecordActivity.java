@@ -61,6 +61,10 @@ public class RouteRecordActivity extends BaseActivity {
   // when user currently changed the title, did not saved so far and activity rotated.
   private static final String STATE_KEY_TITLE = "titleInput";
 
+  private static final String STATE_KEY_LAST_SAVED_TIME = "lastSavedTime";
+
+  private static final long SECONDS_TO_PROMPT_SAVE = 60;
+
   //endregion
 
   //region Fields
@@ -87,6 +91,7 @@ public class RouteRecordActivity extends BaseActivity {
   private UUID _lastPhotoRequestId;
   private RouteDisplayFragment _routeDisplayFragment;
   private ShowcaseView _showcaseView;
+  private long _lastSavedRouteTime;
 
   //endregion
 
@@ -152,6 +157,8 @@ public class RouteRecordActivity extends BaseActivity {
       if (title != null) {
         setInputTitle(title);
       }
+
+      _lastSavedRouteTime = savedInstanceState.getLong(STATE_KEY_LAST_SAVED_TIME);
     }
   }
 
@@ -160,6 +167,7 @@ public class RouteRecordActivity extends BaseActivity {
     super.onSaveInstanceState(outState);
 
     outState.putString(STATE_KEY_TITLE, getInputTitle());
+    outState.putLong(STATE_KEY_LAST_SAVED_TIME, _lastSavedRouteTime);
   }
 
   @Override
@@ -175,12 +183,20 @@ public class RouteRecordActivity extends BaseActivity {
 
   @Override
   public void onBackPressed() {
-    promptFinish();
+    if (isUserRecordingLongWithoutSaving()) {
+      promptFinish();
+    } else {
+      super.onBackPressed();
+    }
   }
 
   @Override
   protected boolean onNavigationIconClicked() {
-    promptFinish();
+    if (isUserRecordingLongWithoutSaving()) {
+      promptFinish();
+    } else {
+      finish();
+    }
 
     return true;
   }
@@ -249,14 +265,41 @@ public class RouteRecordActivity extends BaseActivity {
 
     Timber.i("User started recording");
 
+    // Nothing is saved now
+    _lastSavedRouteTime = currentMillis();
+
     Snackbar.make(_titleInput, R.string.record_tracking_now, Snackbar.LENGTH_LONG).show();
 
     updateUIState();
   }
 
-  @OnClick(R.id.record_btnStopRecording) void stopTracking() {
+  @OnClick(R.id.record_btnStopRecording) void stopTrackingClicked() {
+    if (isUserRecordingLongWithoutSaving()) {
+      UnsavedRoutePromptDialog.show(this);
+    } else {
+      stopTracking();
+    }
+  }
+
+  private boolean isUserRecordingLongWithoutSaving() {
+    RouteData routeData = _trackingManager.getRouteData(getUserInput());
+    if (routeData == null) {
+      return false;
+    }
+
+    long now = currentMillis();
+
+    long secondsAfterLastSave = (now - _lastSavedRouteTime) / 1000;
+    if (secondsAfterLastSave > SECONDS_TO_PROMPT_SAVE) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void stopTracking() {
     _trackingManager.stopTracking();
-    updateDisplayedRoute();
+    _routeDisplayFragment.displayRoute(null);
 
     Timber.i("User stopped recording");
 
@@ -308,6 +351,7 @@ public class RouteRecordActivity extends BaseActivity {
   }
 
   void onSaved(long savedCount) {
+    _lastSavedRouteTime = currentMillis();
     Toast.makeText(this, getString(R.string.saved), Toast.LENGTH_SHORT).show();
   }
 
@@ -497,6 +541,10 @@ public class RouteRecordActivity extends BaseActivity {
   void updateDisplayedRoute() {
     RouteData routeData = _trackingManager.getRouteData(getUserInput());
     _routeDisplayFragment.displayRoute(routeData);
+  }
+
+  long currentMillis() {
+    return System.currentTimeMillis();
   }
 
   //endregion

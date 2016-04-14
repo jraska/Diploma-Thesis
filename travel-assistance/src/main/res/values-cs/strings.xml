@@ -105,4 +105,5 @@
     <string name="record_tracking_now">Nahrává se…</string>
     <string name="record_button_showcase_title">Začátek nahrávání</string>
     <string name="record_button_showcase_subtitle">Klepněte pro spuštění nahrávání</string>
+    <string name="record_unsaved_prompt_message">Cesta není uložena, opravdu chcete nahrávání ukončit?</string>
 </resources>

@@ -104,5 +104,6 @@
     <string name="record_tracking_now">Recording now…</string>
     <string name="record_button_showcase_title">Recording</string>
     <string name="record_button_showcase_subtitle">Tap the button to start route recording</string>
+    <string name="record_unsaved_prompt_message">Recording is not saved, do you really want to stop?</string>
 
 </resources>
