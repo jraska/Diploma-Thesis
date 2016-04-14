@@ -9,6 +9,7 @@ import com.jraska.dagger.PerApp;
 import com.jraska.pwmd.travel.gms.GoogleLocationApiClientProvider;
 import com.jraska.pwmd.travel.tracking.LocationFilter;
 import com.jraska.pwmd.travel.tracking.SimpleTrackingManager;
+import com.jraska.pwmd.travel.util.TimeProvider;
 import dagger.Module;
 import dagger.Provides;
 import org.greenrobot.eventbus.EventBus;
@@ -45,5 +46,9 @@ public class AppModule {
 
   @Provides @PerApp EventBus provideDefaultBus() {
     return EventBus.getDefault();
+  }
+
+  @Provides @PerApp public TimeProvider providerTimeProvider(){
+    return TimeProvider.INSTANCE;
   }
 }

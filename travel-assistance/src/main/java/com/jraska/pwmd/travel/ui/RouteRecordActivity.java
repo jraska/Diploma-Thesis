@@ -41,6 +41,7 @@ import com.jraska.pwmd.travel.rx.IOThreadTransformer;
 import com.jraska.pwmd.travel.tracking.TrackingManager;
 import com.jraska.pwmd.travel.transport.SimpleTransportManager;
 import com.jraska.pwmd.travel.util.ShowContentDescriptionLongClickListener;
+import com.jraska.pwmd.travel.util.TimeProvider;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
@@ -87,6 +88,7 @@ public class RouteRecordActivity extends BaseActivity {
   @Inject SoundsManager _soundsManager;
   @Inject EventBus _eventBus;
   @Inject Provider<Location> _lastLocationProvider;
+  @Inject TimeProvider _timeProvider;
 
   private UUID _lastPhotoRequestId;
   private RouteDisplayFragment _routeDisplayFragment;
@@ -544,7 +546,7 @@ public class RouteRecordActivity extends BaseActivity {
   }
 
   long currentMillis() {
-    return System.currentTimeMillis();
+    return _timeProvider.currentTime();
   }
 
   //endregion
