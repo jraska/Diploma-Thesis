@@ -31,9 +31,9 @@
 %% original source files, as listed above, are part of the
 %% same distribution. (The sources need not necessarily be
 %% in the same archive or directory.)
-\def\fileversion{3.915}
-\def\filedate{2016/03/29}
-\def\docdate{29. března 2016}
+\def\fileversion{3.93}
+\def\filedate{2016/04/7}
+\def\docdate{7. dubna 2016}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{diploma}[\filedate\space \fileversion\space diploma LaTeX document class]
 \RequirePackage[utf8]{inputenc}
@@ -103,16 +103,17 @@
 \RequirePackage[T1]{fontenc}
 \RequirePackage{lmodern}
 \RequirePackage[a4paper,includefoot,nohead,marginparwidth=0mm,marginparsep=0mm,left=30mm,right=20mm,top=30mm,bottom=30mm]{geometry}
-\RequirePackage{xcolor}
+\RequirePackage{booktabs}
 \RequirePackage{graphicx}
 \RequirePackage[final]{listings}
-\RequirePackage{rotating}
 \RequirePackage{longtable}
+\RequirePackage{rotating}
 \RequirePackage{setspace}
 \RequirePackage{theorem}
 \RequirePackage{titlesec}
 \RequirePackage[nottoc,notindex,section]{tocbibind}
 \RequirePackage{totcount}
+\RequirePackage{xcolor}
 \RequirePackage[a-1b]{pdfx}
 \DeclareOption{czech}
 {
@@ -167,27 +168,27 @@
 {
 \Dipl@AuthorDeclaration={\Dipl@IfEnglish{I hereby declare that this bachelor's thesis was written by myself. I have quoted all the references I have drawn upon.}{Prohlašuji, že jsem tuto bakalářskou práci vypracoval samostatně. Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.}}
 }
-{}
+{\relax}
 \ifthenelse{\value{Dipl@CurrentThesisType}=\Dipl@MasterThesis}
 {
 
 \Dipl@AuthorDeclaration={\Dipl@IfEnglish{I hereby declare that this master's thesis was written by myself. I have quoted all the references I have drawn upon.}{Prohlašuji, že jsem tuto diplomovou práci vypracoval samostatně. Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.}}
 }
-{}
+{\relax}
 }
 \DeclareOption{female}
 {
 \setboolean{Dipl@AuthorIsMale}{false}
-
 \ifthenelse{\(\value{Dipl@CurrentThesisType}=\Dipl@BachelorThesis\) \or \(\value{Dipl@CurrentThesisType}=\Dipl@BachelorPractice\)}
 {
 \Dipl@AuthorDeclaration={\Dipl@IfEnglish{I hereby declare that this bachelor's thesis was written by myself. I have quoted all the references I have drawn upon.}{Prohlašuji, že jsem tuto bakalářskou práci vypracovala samostatně. Uvedla jsem všechny literární prameny a publikace, ze kterých jsem čerpala.}}
 }
-{}
+{\relax}
 \ifthenelse{\value{Dipl@CurrentThesisType}=\Dipl@MasterThesis}
 {
 \Dipl@AuthorDeclaration={\Dipl@IfEnglish{I hereby declare that this master's thesis was written by myself. I have quoted all the references I have drawn upon.}{Prohlašuji, že jsem tuto diplomovou práci vypracovala samostatně. Uvedla jsem všechny literární prameny a publikace, ze kterých jsem čerpala.}}
 }
+{\relax}
 }
 \DeclareOption{ansic}{\Dipl@DefaultSourceCodeLanguage={ansic}}
 \DeclareOption{bash}{\Dipl@DefaultSourceCodeLanguage={bash}}
@@ -249,13 +250,7 @@
 \tableofcontents\cleardoublepage
 \Dipl@WriteAcronymsPage
 \ifthenelse{\totvalue{figure}>0}{\listoffigures\cleardoublepage}{\relax}
-\ifthenelse{\equal{\the\Dipl@Acronyms}{\empty}}
-{
 \ifthenelse{\totvalue{table}>0}{\listoftables\cleardoublepage}{\relax}
-}
-{
-\ifthenelse{\totvalue{table}>1}{\listoftables\cleardoublepage}{\relax}
-}
 }
 {\theorembodyfont{\itshape}\newtheorem{definition}{\Dipl@IfEnglish{Definition}{Definice}}}
 {\theorembodyfont{\itshape}\newtheorem{theorem}{\Dipl@IfEnglish{Theorem}{Věta}}}
@@ -310,7 +305,6 @@
 \Dipl@IfEnglish{This page will be replaced by official thesis assignment in printed and electronic version of the submitted thesis.}%
 {Tuto stránku nahradíte v tištěné verzi práce oficiálním zadáním Vaší diplomové či bakalářské práce.}
 \end{center}
-\cleardoublepage
 }
 {
 \setcounter{Dipl@ThesisAssignmentImageCounter}{1}
@@ -325,8 +319,8 @@
 \setcounter{Dipl@ThesisAssignmentImageCounter}{-1}
 }
 }
-\cleardoublepage
 }
+\cleardoublepage
 }
 \newcommand{\Dipl@AuthorDeclarationPage}
 {
@@ -339,11 +333,11 @@
 \par
 \vspace{15mm}
 \noindent\Dipl@IfEnglish{Ostrava,}{V Ostravě}~\the\Dipl@SubmissionDate\hfill\hbox to50mm{\dotfill}
-\cleardoublepage
 }
 {
 \Dipl@InsertFullPageImage{\the\Dipl@AuthorDeclarationImageFile}
 }
+\cleardoublepage
 }
 \newcommand{\Dipl@CooperatingPersonsDeclarationPage}
 {
@@ -361,18 +355,18 @@
 \par
 \vspace{15mm}
 \noindent\Dipl@IfEnglish{Ostrava,}{V Ostravě}~\the\Dipl@SubmissionDate\hfill\hbox to50mm{\dotfill}
-\cleardoublepage
 }
 {
 \Dipl@InsertFullPageImage{\the\Dipl@CooperatingPersonsDeclarationImageFile}
 }
+\cleardoublepage
 }
 {\relax}
 }
 \newcommand{\Dipl@WriteThanksPage}
 {
 \ifthenelse{\equal{\the\Dipl@Thanks}{\empty}}
-{}
+{\relax}
 {
 \mbox{}
 \vfill
@@ -393,7 +387,8 @@
 \noindent\textbf{Klíčová slova}:~\the\Dipl@CzechKeywords\par
 
 \end{otherlanguage}
-}{}
+}
+{\relax}
 \ifthenelse{\value{Dipl@CurrentThesisLanguage}=\Dipl@SlovakLanguage}
 {
 \begin{otherlanguage}{slovak}
@@ -403,7 +398,8 @@
 \bigskip
 \noindent\textbf{Klíčová slova}:~\the\Dipl@CzechKeywords\par
  \end{otherlanguage}
-}{}
+}
+{\relax}
 \vspace*{30mm}
 \begin{otherlanguage}{english}
 \noindent\textbf{Abstract}\par
@@ -420,7 +416,6 @@
 {\relax}
 {
 \section*{\Dipl@IfEnglish{List of symbols and abbreviations}{Seznam použitých zkratek a symbolů}}
-
 \ifthenelse{\value{Dipl@CurrentThesisLanguage}=\Dipl@EnglishLanguage}
 {
 \addcontentsline{toc}{section}{List of symbols and abbreviations}
@@ -428,9 +423,9 @@
 {
 \addcontentsline{toc}{section}{Seznam použitých zkratek a symbolů}
 }
-\begin{longtable}[l]{p{0.2\textwidth}cp{0.7\textwidth}}
+\begin{longtable*}[l]{p{0.2\textwidth}cp{0.7\textwidth}}
 \the\Dipl@Acronyms
-\end{longtable}
+\end{longtable*}
 \cleardoublepage
 }
 }
