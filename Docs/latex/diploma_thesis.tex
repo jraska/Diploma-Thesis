@@ -2211,11 +2211,13 @@ jako naše aplikace a distribuovat tak škodlivý kód pod naším jménem.
 
 
 \section{Testování aplikace}
-Po nasazení aplikace bylo potřeba vychytat všechny možné problémy a nedostatky, které se mohly projevit
-a zhoršit uživatelskou zkušenost s aplikací.
+Po nasazení aplikace bylo potřeba vychytat všechny možné problémy a nedostatky.
+Aplikace byla pomocí alfa a beta kanálů obchodu Google Play
+distribuována testovacím uživatelům, kteří se po otevření zaslaného odkazu stali testery a pro jejich
+Google účet bylo umožněno aplikaci používat.
 
 \subsection{Optimalizace výkonu}
-Jedno z nejstarších pravidel programování je neoptimalizovat zbytečně dopředu na základě odhadu,
+Jedno z pravidel programování je neoptimalizovat zbytečně dopředu na základě odhadu,
 jelikož programátoři jsou v těchto odhadech většinou velmi špatní. Během vývoje byl přesto na efektivní
 implementaci kladen důraz a všechny potencionálně delší operace byly prováděny asynchronně mimo vlákno
 uživatelského rozhraní, jelikož pro optimální uživatelský zážitek je potřeba stihnout vše ve vlákně
@@ -2368,6 +2370,20 @@ Jak se během testování ukázalo, někteří uživatelé si při prvním spuš
             \label{fig:nahravaninapoveda}
     \end{figure}
 
+\subsection{Další dojmy uživatelů}
+Aplikace byla zaslána více než deseti uživatelům a mnozí ji velmi detailně otestovali, nahráli různé cesty
+a nechali se navádět. Obecně byla zpětná vazba velmi pozitivní, aplikace byla stabilní a uživatelé přicházeli s velkým množstvím
+nápadů pro rozšíření aplikace jako využití i pro děti, kterým nahraje někdo dopředu cestu do školy, sdílení cest
+a turistické průvodce.
+Zpětná vazba dala podnět k úpravám popsaným výše a odhalila spoustu míst, kde si uživatel nebyl
+zcela jistý tím, co má povést a úpravy měly za cíl toto zlepšit.
+Několik uživatelů si například při nahrávání nebylo jistých, zda se cesta správně nahrává. Bylo proto implementováno
+zobrazování cesty s nahranými daty už během nahrávání, takže uživateli se ještě neuložená cesta ukazuje na
+mapě a aktualizuje se po obdržení každé nové GPS souřadnice.
+
+Celkové byla zpětná vazba velmi cenná a ukázala zcela rozdílný přístup vývojáře a uživatele při používání
+aplikace. Díky této zkušenosti je třeba používání aplikace vždy konzultovat s běžnými uživateli, neboť
+představa vývojáře o myšlení uživatele může být často velmi mylná.
 
 
 \section{Závěr}
