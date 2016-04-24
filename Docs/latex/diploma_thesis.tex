@@ -287,7 +287,7 @@ rozhraní udržet i při změně instance aktivity. Toto v aplikaci používáme
 držení mapy ve fragmentu předcházíme novému načtení mapy při rotaci a tudíž nežádoucímu probliknutí.
 Fragmenty byly představeny v Androidu verze 3 a zpočátku způsobily mnoho otázek a jejich správném využívání.
 V současnosti se doporučuje využít je hlavně pro dynamické zobrazování uživatelského rozhraní na
-zařízeních s různými obrazovkami\ cite{androiddevelopers} a pro logiku patřící pouze uživatelskému rozhraní.
+zařízeních s různými obrazovkami~\cite{androiddevelopers} a pro logiku patřící pouze uživatelskému rozhraní.
 
 \subsubsection{Služby}
 Služby jsou určeny pro operace, které nejsou viditelné uživateli, případně asynchronní operace, které se mají
@@ -404,7 +404,7 @@ mezi různými verzemi a sjednocuje jejich vzhled. Poskytuje také množství ro
 pomocné třídy například pro notifikace, média a spoustu dalších. V současné době by měla být součástí každé
 aplikace a při vytváření nového projektu je k projektu již automaticky přidána.
 
-Dokumentaci knihovny můžeme najít na \url{http://developer.android.com/tools/support-library/index.html}  (10.4.2016).
+Dokumentaci knihovny můžeme najít na \url{http://developer.android.com/tools/support-library/index.html} (10.4.2016).
 
 \subsubsection{RxAndroid}\label{rxandroid}
 Jedná se o Android rozšíření známé knihovny RxJava, která implementuje reaktivní rozšíření
@@ -449,7 +449,7 @@ Výhody reaktivního programování můžeme ocenit i při testování, které j
 rozhraním testované třídy problematické, nicméně díky RxAndroid volání \texttt{toBlocking()} vynutíme
 synchronní spuštění požadované operace, což nám výrazně zjednoduší testování.
 
-Knihovnu můžeme nalézt na \url{https://github.com/ReactiveX/RxAndroid}  (10.4.2016).
+Knihovnu můžeme nalézt na \url{https://github.com/ReactiveX/RxAndroid} (10.4.2016).
 
 \subsubsection{Retrolambda}
 Lambda výrazy jsou mocným nástrojem a příjemnou pomůckou každého jazyka, který je podporuje a redukují
@@ -487,7 +487,7 @@ Ukázku odstranění anonymní třídy můžeme vidět na ukázce kódu \ref{use
   saveButton.setOnClickListener(v -> save());
 \end{lstlisting}
 
-Knihovnu můžeme nalézt na \url{https://github.com/orfjackal/retrolambda}  (10.4.2016).
+Knihovnu můžeme nalézt na \url{https://github.com/orfjackal/retrolambda} (10.4.2016).
 
 \subsubsection{Dagger 2 a vkládání závislostí}\label{dagger2}
 Poměrně nová knihovna spravovaná Googlem a uvolněná poprvé v srpnu 2015, která pro nás řeší tzv. vkládání
@@ -533,7 +533,7 @@ dojít k chybě za běhu. Oproti tomu Dagger 2 vytváří objektový graf během
 všechny požadované závislosti je možné získat a v případě aplikace nám neumožní aplikaci úspěšně zkompilovat,
 díky čemuž minimalizuje možné pády aplikace v případě nesprávného použití knihovny.
 
-Dokumentaci a popis knihovny můžeme nalézt na \url{http://google.github.io/dagger/}  (10.4.2016).
+Dokumentaci a popis knihovny můžeme nalézt na \url{http://google.github.io/dagger/} (10.4.2016).
 
 \subsubsection{Lombok}
 Lombok je další z nástrojů který rozšiřuje jazyk Java, respektive se nás snaží ušetřit obvyklých
@@ -564,7 +564,7 @@ bez přístupových metod, \texttt{@Builder} pro generování stavitelů objekt�
 počtem parametrů, případně \texttt{@SneakyThrows}, který nás zbavuje nutnosti obalovat kontrolované výjimky
 \texttt{try-catch} blokem případně výjimku propagovat do signatury metody a mnohé další.
 
-Stránky Lomboku můžeme nalézt na \url{https://projectlombok.org/}  (10.4.2016).
+Stránky Lomboku můžeme nalézt na \url{https://projectlombok.org/} (10.4.2016).
 
 \subsubsection{Google Play Services}
 Soubor knihoven od Googlu, které se snaží vývojáři rozšířit možnosti implementace všemi různými způsoby.
@@ -576,7 +576,7 @@ obsahuje aplikaci obchodu Google Play a tudíž na všech zařízeních, kde je 
 Knihovna je zároveň přes aplikaci obchodu aktualizovaná a tudíž u ní nemusíme řešit problémy
 kompatibility, jako u vlastního SDK~\cite{gms}.
 
-Přehled všech rozhraní lze nalézt na \url{https://developers.google.com/android/guides/overview}  (10.4.2016).
+Přehled všech rozhraní lze nalézt na \url{https://developers.google.com/android/guides/overview} (10.4.2016).
 
 \subsubsection{Butter Knife}
 Jedná se o knihovnu, která nás zbavuje dalších ceremonií Androidu nastavování posluchačů
@@ -592,7 +592,7 @@ používána v aplikaci, můžeme vidět na ukázce \ref{butterknife}.
 
 \end{lstlisting}
 
-Knihovnu můžeme najít na \url{http://jakewharton.github.io/butterknife/}  (10.4.2016).
+Knihovnu můžeme najít na \url{http://jakewharton.github.io/butterknife/} (10.4.2016).
 
 \subsubsection{DBFlow}\label{dbflow}
 Jedné se o knihovnu pro objektově relační mapování objektů pro databáze SQLite, které se v
@@ -626,7 +626,7 @@ Jedné se o knihovnu pro objektově relační mapování objektů pro databáze 
   Další podporovanou funkcí jsou migrace, kde se opět pouze anotacemi dá definovat třída,
   která má migraci databáze na novou verzi převést.
 
-  Knihovnu můžeme najít na \url{https://github.com/Raizlabs/DBFlow}  (10.4.2016).
+  Knihovnu můžeme najít na \url{https://github.com/Raizlabs/DBFlow} (10.4.2016).
 
 
 \subsubsection{Robolectric}\label{robolectric}
@@ -644,18 +644,18 @@ určitých podmínek. Knihovna se vyvíjí už mnoho let a díky záměru simulo
 rozsáhlá a zatím stále ne zcela dokonalá, nicméně se stala standardem pro testování Android kódu
 přímo na pracovní stanici.
 
-Knihovnu lze nalézt na \url{http://robolectric.org/}  (10.4.2016).
+Knihovnu lze nalézt na \url{http://robolectric.org/} (10.4.2016).
 
 \subsubsection{Další použité knihovny}
 \begin{itemize}
-  \item \textbf{Universal Image Loader} - Práce s obrázky a fotkami. (\url{https://github.com/nostra13/Android-Universal-Image-Loader}  (10.4.2016))
-  \item \textbf{Timber} - Logování zpráv v aplikaci. (\url{https://github.com/JakeWharton/timber}  (10.4.2016))
-  \item \textbf{Okio} - Efektivní a snadné práce se soubory a datovými proudy. (\url{https://github.com/square/okio}  (10.4.2016))
-  \item \textbf{EventBus} - Snadné publikování a konzumování globálních události v aplikaci. (\url{http://greenrobot.org/eventbus/}  (10.4.2016))
-  \item \textbf{ShowcaseView} - Zobrazení uživatelsky přívětivé nápovědy. (\url{https://github.com/amlcurran/ShowcaseView}  (10.4.2016))
-  \item \textbf{JUnit 4} - Známý framewrok pro Java jednotkové testy. (\url{http://junit.org/}  (10.4.2016))
-  \item \textbf{AssertJ Android} - Pomocné aserce pro jednotkové testy. (\url{http://square.github.io/assertj-android/}  (10.4.2016))
-  \item \textbf{Mockito} - Mockovací knihovna pro jednotkové testy. (\url{http://mockito.org/}  (10.4.2016))
+  \item \textbf{Universal Image Loader} - Práce s obrázky a fotkami. (\url{https://github.com/nostra13/Android-Universal-Image-Loader} (10.4.2016))
+  \item \textbf{Timber} - Logování zpráv v aplikaci. (\url{https://github.com/JakeWharton/timber} (10.4.2016))
+  \item \textbf{Okio} - Efektivní a snadné práce se soubory a datovými proudy. (\url{https://github.com/square/okio} (10.4.2016))
+  \item \textbf{EventBus} - Snadné publikování a konzumování globálních události v aplikaci. (\url{http://greenrobot.org/eventbus/} (10.4.2016))
+  \item \textbf{ShowcaseView} - Zobrazení uživatelsky přívětivé nápovědy. (\url{https://github.com/amlcurran/ShowcaseView} (10.4.2016))
+  \item \textbf{JUnit 4} - Známý framewrok pro Java jednotkové testy. (\url{http://junit.org/} (10.4.2016))
+  \item \textbf{AssertJ Android} - Pomocné aserce pro jednotkové testy. (\url{http://square.github.io/assertj-android/} (10.4.2016))
+  \item \textbf{Mockito} - Mockovací knihovna pro jednotkové testy. (\url{http://mockito.org/} (10.4.2016))
 
 
 \end{itemize}
@@ -681,14 +681,13 @@ Společnosti pro podporu lidí s mentálním postižením v České republice, z
 Po prvních konzultacích byly vytvořeny návrhy, co by mohla aplikace dělat a tyto návrhy byly diskutovány,
 kdy paní Uhlířová přibližovala situaci klientů, jejich problémy s orientací a se soustředěním při cestování.
 Po další emailové komunikaci bylo s paní Uhlířovou dohodnuto, že pro lepší zadání bude vše dále
-kozultováno s více kolegy z praxe v Brně.
+konzultováno s více kolegy z praxe v Brně.
 
 Setkání se zúčastnilo množství asistentů mentálně postižených, kterým byly existující návrhy prezentovány.
 Asistenti měli k těmto návrhům mnoho připomínek z praxe, navrhli mnoho rozšíření založené na zkušenostech
 s klienty, jako nutnost připomínání povinností, upozorňování a podobně.
-Následně byli definováni
-aktéři aplikace a vytvořena sada případů užití(use casů), které dávají pro tuto aplikaci smysl a
- mnohé z nich budou implementovány.
+Následně byli definováni aktéři aplikace a vytvořena sada případů užití,
+které dávají pro tuto aplikaci smysl a mnohé z nich budou implementovány.
 
 \subsection{Popis aktérů}
 \begin{figure}[H]
@@ -701,7 +700,7 @@ aktéři aplikace a vytvořena sada případů užití(use casů), které dávaj
 Pro uživatele klienta i asistenta jsou definovány případy užití zvlášť, neboť se celé chování
 a použití aplikace bude v obou případech značně lišit. Grafické zobrazení aktérů je na obrázku~\ref{fig:actors}.
 Pro ilustraci případů užití jednotlivých aktérů jsou použity obrázky z reálné aplikace pro
-lepší přiblížení a popis daného use casu.
+lepší přiblížení a popis daného případu užití..
 
 \subsubsection{Uživatel Asistent}
 Jedná se o aktéra, který je zároveň klientovi s mentálním postižením odborným asistentem,
@@ -762,7 +761,7 @@ a podobně. Obrazovku prohlížení cest lze vidět na obrázku~\ref{fig:prohliz
 \begin{figure}[H]
         \centering
                 \includegraphics[scale=0.2]{img/UseCasesAsistant.png}
-        \caption{Diagram use casů uživatele asistent}
+        \caption{Diagram případů užití uživatele asistent}
         \label{fig:UseCasesAsistant}
 \end{figure}
 
@@ -952,7 +951,7 @@ a poznámky, které jsou reprezentovány svými příslušnými jednoduchými ik
 \begin{figure}[H]
         \centering
                 \includegraphics[scale=0.2]{img/UseCasesClient.png}
-        \caption{Diagram use casů uživatele klient}
+        \caption{Diagram případů užití uživatele klient}
         \label{fig:UseCasesClient}
 \end{figure}
 
@@ -1512,7 +1511,7 @@ nebo za měsíc. Uživatel vybere jednu z možností a podle výběru se naplán
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Během cestování se ukládají průběžně data o spotřebě beterie a délce trvání
+\textbf{Hlavní scénář:} Během cestování se ukládají průběžně data o spotřebě baterie a délce trvání
 cesty. Data jsou poté spolu s předchozími záznamy statisticky analyzována a je odhadována a upřesňována
 očekávaná výdrž baterie během navigace. Na základě těchto analýz může být uživatel poté upozorněn na
 nebezpečí vybití baterie v terénu.
@@ -1581,11 +1580,11 @@ grafických prvků uživatelského rozhraní, které by měl vývojář použív
 \subsubsection{Ikony}
 Pro akce aplikace jsou používány ikony ve stylu Material designu, které jsou vždy ploché
 a snaží se co nejvýstižněji popsat akci, kterou provádí. Ikony lze snadno nalézt na internetu
-\footnote{Například na \url{https://materialdesignicons.com/}  (10.4.2016)}, případně
+\footnote{Například na \url{https://materialdesignicons.com/} (10.4.2016)}, případně
 importovat přímo v Android Studiu z oficiálních zdrojů Material designu.
 
 V případech těchto ikon je licence použití Creative Common Attribution 4.0 International License (CC-BY 4.0)
-\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/4.0/}  (10.4.2016)}, což znamená,
+\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/4.0/} (10.4.2016)}, což znamená,
 že můžeme bez problému ikony zdarma použít, musíme pouze někde v aplikaci uvést, že tyto ikony
 používáme a v případě, že bychom si je upravili toto také uvést.
 Příklady používaných ikon můžeme vidět na obrázcích \ref{fig:record}, \ref{fig:camera} a \ref{fig:recordsound}.
@@ -1617,9 +1616,9 @@ pro nižší verze systémy vygenerovány během kompilace, což značně zjedno
 
 
 Pro další ikony loga aplikace a podobně byly použity zdroje ze služby
-Iconfinder\footnote{\url{https://www.iconfinder.com/}  (10.4.2016)}, kde je licence pro použití také zdarma. V tomto
+Iconfinder\footnote{\url{https://www.iconfinder.com/} (10.4.2016)}, kde je licence pro použití také zdarma. V tomto
 případě se jedná a Creative Commons Attribution 3.0 Unported (CC BY 3.0)
-\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/3.0/}  (10.4.2016)}, což je starší verze
+\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/3.0/} (10.4.2016)}, což je starší verze
 licence popsané výše a v praxi jsou pak podmínky použití ikon stejné.
 
 
@@ -1645,7 +1644,7 @@ více funkcí. Pro naše potřeby verze zdarma zcela stačila.
 Draw.io\footnote{\url{http://www.draw.io} (10.4.2016)} je online nástroj pro tvorbu grafů,
 všech různých typů diagramů, myšlenkových map a dalších.
 Celý editor běží pouze v prohlížeči a synchronizuje vytvářené grafy s připojeným úložištěm
-Google Drive nebo Dropbox. Grafy jsou tak přístupné  a editovatelné odkudkoliv a aplikace
+Google Drive nebo Dropbox. Grafy jsou tak přístupné a editovatelné odkudkoliv a aplikace
 je opravdu pokročilá a při práci není vůbec poznat, že vše probíhá pouze v prohlížeči.
 Umožňuje sdílení i export zhotovených diagramů do mnoha formátů a je tedy velice snadné
 sdílet a používat vytvořenou práci.
@@ -1689,7 +1688,7 @@ GIMP\footnote{\url{https://www.gimp.org/} (10.4.2016)} je široce používaný n
 
 \section{Implementace}
 Po vytvoření zadání a návrhu bylo třeba tyto myšlenky přeměnit ve funkční aplikaci. V této kapitole si popíšeme,
-jak byly jednotlivé fukcionality aplikace implementovány a jak byly za tímto účelem použity dříve diskutované nástroje a knihovny.
+jak byly jednotlivé funkcionality aplikace implementovány a jak byly za tímto účelem použity dříve diskutované nástroje a knihovny.
 
 \subsection{Architektura}
 Android samotný se snaží uživateli nabízet implementaci Architektury Model View Controller~\cite{bestpracticesfuturice}, kde
@@ -1823,7 +1822,7 @@ Kdykoliv během nahrávání může uživatel přidat textovou poznámku spojeno
 Zvláště se dá uložit změna způsobu transportu uživatele a to klepnutím na tlačítko zobrazující
 aktuální dopravní prostředek. Pokud například uživatel jde na zastávku, má zobrazenou ikonu chodce,
 pokud nastoupí do tramvaje a klepne na ikonu chodce, zobrazí se mu nabídka pro změnu dopravního
-prostředku a klepnutím na ikonu tramvaje se tato změna uloží opět s vazbou an aktuální GPS polohu.
+prostředku a klepnutím na ikonu tramvaje se tato změna uloží opět s vazbou na aktuální GPS polohu.
 Uživatel může k této informaci přidat také textový popis například s číslem tramvaje nebo jiné instrukce.
 Tyto informace se uloží jako záznam do databáze s vazbou na nahrávanou cestu v místě, kde byl záznam pořízen.
 Ikony používané pro vyjádření druhů dopravních prostředků můžeme vidět na obrázcích \ref{fig:icwalk},
@@ -1913,7 +1912,7 @@ můžeme vidět na obrázku \ref{fig:navigationactivitydependencies}, který bud
         \label{fig:navigationactivitydependencies}
 \end{figure}
 
-Řídící třída \texttt{NavigationActivity} dostává při svém spuštění jako parametr id cesty,
+Řídící třída \texttt{NavigationActivity} dostává při svém spuštění jako parametr identifikátor cesty,
 pro níž má asistenci spustit. Pomocí \texttt{TravelDataRepository} načte asynchronně data k této třídě
 do paměti a provede všechny úkony potřebné pro asistenci.
 
@@ -2049,8 +2048,8 @@ OAuth2 se využívá existující účet, čímž se odstraňuje nutnost uživat
 
  Data záloh jsou ukládána do tzv. appfolderu~\cite{driveappfolder}, což je privátní úložiště aplikace
  a uživatel poté v nastavení svého Disku vidí,
-  která aplikace tuto službu využívá a kolik dat zabírá, nevidí však konkrétní data.
-  Uživatelův pohled po připojení aplikace a zálohování dat můžeme vidět na obrázku~\ref{fig:connecteddrive}.
+ která aplikace tuto službu využívá a kolik dat zabírá, nevidí však konkrétní data.
+ Uživatelův pohled po připojení aplikace a zálohování dat můžeme vidět na obrázku~\ref{fig:connecteddrive}.
 
 \begin{figure}[H]
         \centering
