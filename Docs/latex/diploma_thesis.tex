@@ -200,14 +200,15 @@ a tak je čtení dat z akcelerometru nebo zaznamenávání GPS řešeno pouze vo
 rozhraní frameworku. Během doby existence systému se objevilo také mnoho rozšiřujících knihoven
 pro zjednodušení práce programátora umožnění vývoj aplikace efektivněji. Naše aplikace se
 za pomoci těchto nástrojů pokusí zjednodušit mentálně postiženým klientům cestování po svých
-obvyklých cestách.
+obvyklých cestách. V této kapitole se seznámíme se základním programovým rozhraním systému, představíme
+si použité vývojářské nástroje a také využité knihovny.
 
 \subsection{Základní komponenty programového rozhraní}
 Systém Android poskytuje vývojáři několik základních komponent, pomocí nichž by měl skládat svou aplikaci.
 Pochopení účelu těchto komponent je důležité pro orientaci v implementaci a proto si nejdůležitější námi
 používané komponenty blíže popíšeme.
 
-\subsubsection{Komponenta typu Záměr(\texttt{Intent})}
+\subsubsection{Komponenta typu Záměr (\texttt{Intent})}
 Platforma Android byla vymýšlena tak, aby vývojář místo explicitního spouštění konkrétní aplikace pro danou činnost
 raději popsal záměr, co by chtěl udělat a systém sám vyhodnotí, která aplikace se pro tento záměr nejlépe
 hodí. Touto cestou se systém snaží vytvořit prostředí mnoha aplikací, které spolu navzájem komunikují,
@@ -215,7 +216,7 @@ aniž by jedna o druhé přímo věděly a pomocí záměrů tak snižuje vazby 
 textově popsanou obecnou akci, blíže specifikovanou kategorii, typ, mnoho dalších parametrů až po konkrétní
 jméno komponenty, která má záměr obdržet, Pomocí těchto nastavení systém vyhodnotí nejlepší komponentu,
 která má pro uživatele záměr vykonat. Při vyhodnocování záměrů systém využívá pro správný výběr
- tzv. filtry záměrů(\texttt{IntentFilter}).
+ tzv. filtry záměrů (\texttt{IntentFilter}).
 
 Pokud chceme například odeslat email, nespouštíme emailovou aplikaci, ale vytvoříme záměr odeslat email
 s příslušnými parametry a tento záměr předáme systému, který ze seznamu nainstalovaných aplikací vybere
@@ -245,8 +246,8 @@ aplikace a přiřazení přístupových práv pro konkrétní deklarovaná povol
 \subsubsection{Aktivita}
 Aktivita je komponenta aplikace, která obsahuje uživatelské rozhraní viditelné pro uživatele. Každá
  používaná aktivita aplikace musí být definována v Android manifestu se svými podmínkami pro své
- spuštění, neboli filtry záměrů(\texttt{IntentFilter}) a tím deklarovat vstupní místa do aplikace.
- Nejčastěji je v aplikaci jedna aktivita figurující jako spouštěč(akce záměru \texttt{MAIN},
+ spuštění, neboli filtry záměrů (\texttt{IntentFilter}) a tím deklarovat vstupní místa do aplikace.
+ Nejčastěji je v aplikaci jedna aktivita figurující jako spouštěč (akce záměru \texttt{MAIN},
  kategorie \texttt{LAUNCHER}), která se při
   instalaci vyhledá a vytvoří se pro ní spouštěcí ikona v seznamu nainstalovaných aplikací, další
   aktivity pak mohou mít explicitně definované vlastní filtry záměrů, případně nedefinovat žádný
@@ -409,7 +410,7 @@ Jedná se o Android rozšíření známé knihovny RxJava, která implementuje r
 mnohých programovacích jazyků sdružené pod projekt ReactiveX (\url{http://reactivex.io/}, 10.4.2016).
 Knihovna k původní Java implementaci pouze přidává vlastnosti specifické pro platformu Android a to konkrétně
 řešení spouštění metod v hlavním vlákně uživatelského rozhraní. Knihovna je založena na návrhovém
-vzoru Pozorovatel (Observer \cite{designpatterns}) a její záměr je implementovat reakce na události bez vědomí, kdy přesně
+vzoru Pozorovatel (Observer~\cite{designpatterns}) a její záměr je implementovat reakce na události bez vědomí, kdy přesně
 událost nastane, ale s vědomím, že v tuto chvíli bude registrovaný pozorovatel na tuto událost
 upozorněn a zareaguje na ni. Knihovna nabízí spoustu metod, jak na události reagovat, shlukovat je do
 skupin, mapovat objekty výsledku na jiné, řeší příliš mnoho požadavků v jednom čase a spoustu dalších vlastností.
@@ -659,6 +660,10 @@ Knihovnu lze nalézt na \url{http://robolectric.org/} (10.4.2016).
 \end{itemize}
 
 \section{Návrh aplikace}
+V této kapitole si napřed uvedeme, jak probíhalo vytvoření zadání pro aplikaci,
+poté představím scénáře využití aplikace a návrh uživatelského rozhraní. V závěru kapitoly jsou popsány
+další nástroje, které byly pro návrh využity.
+
 Mentální postižení není nemoc, je to trvalý stav, který se projeví do 18 let věku a nedá se léčit~\cite{komunikace}.
 U každého člověka s mentálním postižením se jeho stav projevuje jinak a je proto potřeba k nim
 přistupovat individuálně. Tito lidé mají často potíže s učením, porozuměním, sníženou míru pozornosti
@@ -666,8 +671,8 @@ a horší orientaci v čase a prostoru~\cite{komunikace}, což je pro spolehliv�
 Aplikace byla navrhována s přihlédnutím k těmto faktům a v každé její části jsme se snažili o co nejjednodušší
 vzhled aplikace a její ovládání.
 
-
 \subsection{Příprava zadání}
+
 Na začátku práce bylo potřeba stanovit si cíle a zjistit, jaká úskalí vlastně lidé s mentálním
 postižením při cestování zažívají, s jakými problémy se potýkají a co by pro ně mohlo být přínosné.
 
@@ -695,10 +700,10 @@ které dávají pro tuto aplikaci smysl a mnohé z nich budou implementovány.
         \label{fig:actors}
 \end{figure}
 
-Pro uživatele klienta i asistenta jsou definovány případy užití zvlášť, neboť se celé chování
+Pro uživatele klienta i asistenta jsou definovány různé případy užití, neboť se celé chování
 a použití aplikace bude v obou případech značně lišit. Grafické zobrazení aktérů je na obrázku~\ref{fig:actors}.
 Pro ilustraci případů užití jednotlivých aktérů jsou použity obrázky z reálné aplikace pro
-lepší přiblížení a popis daného případu užití..
+lepší přiblížení a popis daného případu užití.
 
 \subsubsection{Uživatel Asistent}
 Jedná se o aktéra, který je zároveň klientovi s mentálním postižením odborným asistentem,
@@ -732,6 +737,12 @@ Pro klienta jsou určeny více intuitivní a nenáročné operace vyžadující 
 kroků z klientovi strany. Aplikace by měla na základě polohy a dalších údajů sama rozpoznat,
 co má v danou chvíli udělat. Případy užití klienta a jejich vztahy lze vidět na obrázku~\ref{fig:UseCasesClient}.
 
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.2]{img/UseCasesAsistant.png}
+        \caption{Diagram případů užití uživatele asistent}
+        \label{fig:UseCasesAsistant}
+\end{figure}
 
 \usecase{Prohlížení seznamu nahraných cest}{prohlizeniasistent}
 \textbf{Aktéři:} Asistent
@@ -755,13 +766,6 @@ a podobně. Obrazovku prohlížení cest lze vidět na obrázku~\ref{fig:prohliz
   \item \nameref{detailasistent}
   \item \nameref{nfczapis}
 \end{itemize}
-
-\begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.2]{img/UseCasesAsistant.png}
-        \caption{Diagram případů užití uživatele asistent}
-        \label{fig:UseCasesAsistant}
-\end{figure}
 
 \usecase{Nahrávání cesty}{nahravanicesty}
 \textbf{Aktéři:} Asistent
@@ -805,24 +809,6 @@ na obrázku~\ref{fig:notifikacenahravanicesty}.
   \item \nameref{odebranizmenyprostredku}
 \end{itemize}
 
-\begin{figure}[H]
-\begin{minipage}{.5\textwidth}
-
-
-        \centering
-                \includegraphics[scale=0.14]{img/screen/nahravani.png}
-        \caption{Nahrávání cesty}
-        \label{fig:nahravanicestyicon}
-\end{minipage}
-\begin{minipage}{.5\textwidth}
-  \centering
-                \includegraphics[scale=0.14]{img/screen/notifikace.png}
-        \caption{Zobrazená notifikace}
-        \label{fig:notifikacenahravanicesty}
-
-       \end{minipage}
-\end{figure}
-
 \usecase{Zobrazení detailu cesty}{detailasistent}
 \textbf{Aktéři:} Asistent
 
@@ -850,6 +836,24 @@ záznamy upravit. Ukázku lze vidět na obrázku~\ref{fig:detailasistent}.
   \item \nameref{editacecesty}
   \item \nameref{nfczapis}
 \end{itemize}
+
+\begin{figure}[H]
+\begin{minipage}{.5\textwidth}
+
+
+        \centering
+                \includegraphics[scale=0.14]{img/screen/nahravani.png}
+        \caption{Nahrávání cesty}
+        \label{fig:nahravanicestyicon}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+  \centering
+                \includegraphics[scale=0.14]{img/screen/notifikace.png}
+        \caption{Zobrazená notifikace}
+        \label{fig:notifikacenahravanicesty}
+
+       \end{minipage}
+\end{figure}
 
 \begin{figure}[H]
 \begin{minipage}{.5\textwidth}
@@ -1547,15 +1551,15 @@ grafických prvků uživatelského rozhraní, které by měl vývojář použív
   hustotu pixelů obrazovky, které se zařazují do tříd hustoty a podle této třídy se rozhoduje,
   kolik skutečných pixelů bude ve výsledku prvek zabírat. Tyto třídy jsou v současnosti
   \texttt{ldpi}, \texttt{hdpi}, \texttt{tvdpi}, \texttt{hdpi}, \texttt{xhdpi}, \texttt{xxhdpi} a \texttt{xxxhdpi}.
-  Obdélník o šířce 100dp bude pak například v třídě rozlišení \texttt{ldpi} zabírat 75 pixelů(1dp = 0.75px),
-  nicméně na zařízení ve třídě \texttt{xxxhdpi} bude mít rozměr 400 pixelů(1dp = 4px). Pro uživatelské
+  Obdélník o šířce 100dp bude pak například v třídě rozlišení \texttt{ldpi} zabírat 75 pixelů (1dp = 0.75px),
+  nicméně na zařízení ve třídě \texttt{xxxhdpi} bude mít rozměr 400 pixelů (1dp = 4px). Pro uživatelské
   prvky naší aplikace budeme vždy používat jednotku \texttt{dp}.
 
   Specifikace Material designu zavádí jako jednu ze svých hlavních prvků zavedení prostorové osy \textit{z} do
   definice uživatelského rozhraní a nazývá tuto vlastnost uživatelských prvků vyvýšení (elevation)~\cite{materialdesign}.
   Tato vlastnost ovlivňuje nejvíce velikost stínu uživatelského prvku. Nejvyšší vyvýšení (24dp)
-  mají modální dialogy, poté postranní menu(16dp) následují další komponenty, mezi nimiž jsou námi využívané
-  menu (8dp), vyjíždějící upozornění "Snackbar"(6dp), případně lišta menu rychlých akcí "App bar" (4dp)~\cite{materialdesign}.
+  mají modální dialogy, poté postranní menu (16dp) následují další komponenty, mezi nimiž jsou námi využívané
+  menu (8dp), vyjíždějící upozornění \uv{Snackbar}(6dp), případně lišta menu rychlých akcí \uv{App bar} (4dp)~\cite{materialdesign}.
   Material design tak přesně určuje chování pro každou komponentu a precizně tak vývojáře vede ke správné
   implementaci uživatelských prvků.
 
@@ -1628,7 +1632,7 @@ licence popsané výše a v praxi jsou pak podmínky použití ikon stejné.
 
 
 
-\subsection{Použité nástroje pro návrh}
+\subsection{Nástroje použité pro návrh}
 Následující nástroje byly použity pro návrh, úpravy a správu projektu a značně pomohly při jeho vytváření.
 \subsubsection{Trello}
 Trello\footnote{\url{https://trello.com} (10.4.2016)} je jednoduchý online nástroj pro správu úkolů, jejich štítkování, zapisování poznámek a přesouvání
@@ -1744,41 +1748,16 @@ případě reprezentuje část view aktivity a je určen například k zobrazen�
 které k ní byly přidány.
 
 
-\subsection{Volání o pomoc}
-Během cestování se klient může dostat do různých situací a naše aplikace by mu měla umožnit rychle se
-spojit se svým asistentem pro vyřešení problému, případně mu poslat zprávu. Asistent může v aplikaci nastavit své kontaktní
-údaje a aplikace může následně tyto údaje využít k rychlému kontaktování. Klepnutím ikony kontaktovat
-asistenta se klientovi zobrazí tlačítka s možnostmi.
-
-\subsubsection{Volání asistentovi}
-Pokud má uživatel v aplikaci uloženo číslo asistenta, po klepnutí na možnost volat se automaticky
-vytočí jeho číslo a spustí se vytáčení. Hovor je v tuto chvíli zpoplatněn jako jakýkoliv jiný hovor
-z telefonu uživatele.
-
-\subsubsection{Odeslání SMS}
-Pokud klient zvolí tuto možnost, vytvoří se SMS zpráva s textem, obsahující odkaz na Google mapy
-se zakódovaným ukazatelem na místo, kde se klient nacházel v odesílání zprávy. Asistent si tak po obdržení
-SMS zprávy může snadno zobrazit, kde se uživatel, který má problémy nachází. při vytváření a posílání zprávy
-dbá aplikace na t, aby zpráva neobsahovala více než 160 znaků a klient tak zaplatil pouze za jednu SMS.
-
-\subsubsection{Poslání emailu}
-Podobně jako při odesílání SMS je připravena zpráva s odkazem na Google mapy, která opět asistentovi
-umožní rychlý přístup k aktuální pozici uživatele. Vytvoří se záměr pro odeslání emailu s předvyplněnou
-adresou asistenta, pokud je tato adresa v nastavení a spustí se emailová aplikace na zařízení pro odeslání
-emailu z klientova emailového účtu. Spouštění emailové aplikace na zařízení nám umožňuje nepožadovat
-od uživatele jeho zabezpečovací údaje k emailové schránce, což by bylo pro uživatele velmi nepříjemné.
-
-
-
 \subsection{Nahrávání cesty}
-Během nahrávání cesty se sbírají GPS souřadnice bodů, kterými uživatel se zařízením prochází,
-k nim se přidávají další data jako fotografie, zvukové nahrávky poznámky,
+Během nahrávání cesty se ze systému získávají GPS souřadnice bodů, kterými uživatel se zařízením prochází
+a k nim se přidávají další data jako fotografie, zvukové nahrávky, poznámky,
 případně informace o změně dopravního prostředku. Tyto data mají vždy přiřazenou zaznamenanou
 GPS pozici, která později určí, kdy bude klient na tato data upozorněn.
 
 Při spuštění nahrávání se spustí služba pro nahrávání pozice, která zaregistruje
-posluchače na systémovou službu poskytující GPS souřadnice a při obdržení těchto souřadnic
-vyšle po aplikační sběrnici událostí událost o nové pozici. Na této sběrnici jsou v tuto chvíli
+posluchače na systémový objekt třídy \texttt{LocationManager}~\cite{androiddevelopers},
+poskytující GPS souřadnice a při obdržení těchto souřadnic
+vyšleme po aplikační sběrnici událost o nové pozici. Na této sběrnici jsou v tuto chvíli
 registrování všichni, kteří tuto informaci potřebují znát, což je v tuto chvíli uživatelské rozhraní
 zobrazující mapu a služba ukládající GPS souřadnice do seznamu, který je v případě, že se uživatel
 rozhodne cestu uložit uložen do databáze. Jako systémová sběrnice se používá knihovna EventBus a pro
@@ -1788,12 +1767,13 @@ získávat lokaci zařízení.
 \subsubsection{Pořizování fotek}
 Během nahrávání cesty může uživatel pořizovat svým telefonem fotky, které by klientovi při asistenci
 cestování měly pomoci v orientaci a připomenout mu důležité body cesty. Při kliknutí na ikonku přidat
-fotografii se vytvoří záměr pořídit fotografii s místem požadovaného uložení, spustí se
+fotografii se vytvoří záměr (\texttt{Intent}) pořídit fotografii s místem požadovaného uložení voláním metody
+\texttt{startActivity(Intent)} systém spustí
 výchozí aplikace fotoaparátu na zařízení a o pořízení aplikace se nestará naše
 aplikace, nýbrž aplikace, na kterou je uživatel zvyklý. Pokud uživatel pořídí fotku a rozhodne se jí
-uložit, naše aplikace o tom obdrží zprávu, zobrazí se dialog, kde může uživatel fotografii pojmenovat,
-vytvoří se unikátní identifikátor fotografie a příslušný záznam asociovaný s nahrávanou cestou,
-přiřadí se mu aktuální pozice a v případě uložení cesty se tento záznam uloží spolu s cestou.
+uložit, naše aplikace o tom obdrží zprávu, zobrazí se dialog, kde může uživatel fotografii pojmenovat.
+Vytvoří se unikátní identifikátor fotografie a příslušný záznam asociovaný s nahrávanou cestou.
+Do záznamu se zapíše aktuální pozice a v případě uložení cesty se tento záznam uloží spolu s cestou.
 
 Jelikož fotografie mohou zabírat poměrně velké množství paměti, vysílá se v případě mazání cesty po
 systémové sběrnici událost o mazání cesty na kterou čeká objekt promazávající všechny fotografie
@@ -1801,13 +1781,15 @@ a zvukové nahrávky, asociované s touto cestou.
 
 \subsubsection{Pořizování zvukových nahrávek}
 Při nahrávání může uživatel pomocí mikrofonu svého zařízení pořídit zvukovou nahrávku, které se bude
-vztahovat k aktuálnímu místu, kde byla nahrávka pořízena a může klientovi poskytnout zvukovou
+vztahovat k aktuálnímu místu. Klientovi tak může poskytnout zvukovou
 informaci hlasem, který je mu známý a sdělit mu obsáhlejší informace, které by bylo zdlouhavé číst.
 Pokud uživatel klepne na tlačítko nahrávaní zvuku, spustí se obrazovka ukazující probíhající nahrávání
-a začne se zaznamenávat zvuk, dokud uživatel neklepne na tlačítko zastavit nebo nezmáčkne tlačítko zpět.
-V okamžiku otevření aplikace se vytvoří soubor, do kterého systémová služba pro nahrávání
-zvuku začne zapisovat zvuk ve formátu 3GP.
-Pokud uživatel ukončí nahrávání, může nahrávku pojmenovat a uložit. Té se následně přiřadí unikátní
+a začne se pomocí systémové služby \texttt{MediaRecorder}~\cite{androiddevelopers} zaznamenávat zvuk,
+dokud uživatel neklepne na tlačítko zastavit nebo nezmáčkne tlačítko zpět.
+V okamžiku otevření nahrávací obrazovky se vytvoří soubor, do kterého systémová služba pro nahrávání
+začne zapisovat zvuk ve formátu 3GP.
+Pokud uživatel ukončí nahrávání, může nahrávku ve zobrazeném dialogovém okně pojmenovat a uložit.
+Nahrávce se následně přiřadí unikátní
 identifikátor asociovaný s uloženým souborem a nahrávané cestě se přiřadí záznam přiřazující tuto
 nahrávku dané cestě. V případě, že uživatel zvolí neukládat nahrávku, nahraný soubor se smaže.
 Podobně jako v případě fotek jsou při smazání cesty vyčištěny i nahrávky pro zamezení plýtvání místem
@@ -1820,7 +1802,7 @@ Kdykoliv během nahrávání může uživatel přidat textovou poznámku spojeno
 \subsubsection{Změna dopravního prostředku}
 Zvláště se dá uložit změna způsobu transportu uživatele a to klepnutím na tlačítko zobrazující
 aktuální dopravní prostředek. Pokud například uživatel jde na zastávku, má zobrazenou ikonu chodce,
-pokud nastoupí do tramvaje a klepne na ikonu chodce, zobrazí se mu nabídka pro změnu dopravního
+pokud nastoupí do tramvaje a klepne na ikonu chodce, zobrazí se mu dialog s nabídkou pro změnu dopravního
 prostředku a klepnutím na ikonu tramvaje se tato změna uloží opět s vazbou na aktuální GPS polohu.
 Uživatel může k této informaci přidat také textový popis například s číslem tramvaje nebo jiné instrukce.
 Tyto informace se uloží jako záznam do databáze s vazbou na nahrávanou cestu v místě, kde byl záznam pořízen.
@@ -1925,7 +1907,7 @@ systémové třídy \texttt{Location} vypočítá směr (bearing),kterým by se 
  jako událost o požadovaném směru, na kterou reaguje \texttt{NavigationActivity} zavoláním metody \texttt{setRotation}
  na instanci \texttt{View}, obsahující obrázek šipky ukazující daným směrem.
 
-Třída \texttt{Navigator} využívá k vyhledávání nejbližšího bodu návrhový vzor Stav (State \cite{designpatterns}), jelikož
+Třída \texttt{Navigator} využívá k vyhledávání nejbližšího bodu návrhový vzor Stav (State~\cite{designpatterns}), jelikož
 se uživatel při používání může nacházet ve dvou různých stavech. Diagram implementace vzoru můžeme vidět
 na obrázku \ref{fig:navigatorstate}. První je při počátku navigace,
 kdy se přibližuje k nahrané cestě (\texttt{ApproachingToRouteState}) a při obdržení události o nové
@@ -1961,6 +1943,33 @@ systémové služby \texttt{Vibrator} zavibruje zařízením, v případě fotky
 \texttt{ImageDialog} dialogové okno s fotkou, u poznámky dialogové okno s textem a u zvukové nahrávky
 nahrávku přehraje třída \texttt{SoundsManager}, která podle identifikátoru vyhledá nahrávku v úložišti
 a spustí ji.
+
+\subsection{Volání o pomoc}
+Během cestování se klient může dostat do různých situací a naše aplikace by mu měla umožnit rychle se
+spojit se svým asistentem pro vyřešení problému, případně mu poslat zprávu. Asistent může v aplikaci nastavit své kontaktní
+údaje a aplikace může následně tyto údaje využít k rychlému kontaktování. Klepnutím ikony kontaktovat
+asistenta se klientovi zobrazí tlačítka s možnostmi.
+
+\subsubsection{Volání asistentovi}
+Pokud má uživatel v aplikaci uloženo číslo asistenta, po klepnutí na možnost volat se v kódu vytvoří
+ objekt záměru (\texttt{Intent}) se specifikací, že se na toto číslo má vytočit hovor. Systém vyhledá aplikaci,
+ která dokáže tento záměr vykonat a spustí vytáčení.
+ Hovor je v tuto chvíli zpoplatněn jako jakýkoliv jiný hovor z telefonu uživatele.
+
+\subsubsection{Odeslání SMS}
+Pokud klient zvolí tuto možnost, vytvoří se SMS zpráva s textem, obsahující odkaz na Google mapy
+se zakódovaným ukazatelem na místo, kde se klient nacházel v odesílání zprávy. Asistent si tak po obdržení
+SMS zprávy může snadno zobrazit, kde se uživatel, který má problémy nachází. při vytváření a posílání zprávy
+dbá aplikace na ot, aby zpráva neobsahovala více než 160 znaků a klient tak zaplatil pouze za jednu SMS.
+Aplikace využívá pro odeslání SMS systémové služby \texttt{SmsManager} \cite{androiddevelopers}.
+
+\subsubsection{Poslání emailu}
+Podobně jako při odesílání SMS je připravena zpráva s odkazem na Google mapy, která opět asistentovi
+umožní rychlý přístup k aktuální pozici uživatele. Vytvoří se object záměr pro odeslání emailu s předvyplněnou
+adresou asistenta, pokud je tato adresa v nastavení a voláním metody \texttt{startActivity(emailIntent)}
+spustí systém emailovou aplikaci na zařízení pro odeslání
+emailu z klientova účtu. Spouštění emailové aplikace na zařízení nám umožňuje nepožadovat
+od uživatele jeho zabezpečovací údaje k emailové schránce, což by bylo pro uživatele velmi nepříjemné.
 
 \subsection{Ukládaní dat}
 V naší aplikaci je potřeba ukládat zaznamenané souřadnice cesty, poznámky, fotky, změny dopravního
@@ -2171,8 +2180,8 @@ jako naše aplikace a distribuovat tak škodlivý kód pod naším jménem.
 \section{Testování aplikace}
 Po nasazení aplikace bylo potřeba identifikovat a odladit všechny možné problémy a nedostatky.
 Aplikace byla pomocí alfa a beta kanálů obchodu Google Play
-distribuována testovacím uživatelům, kteří se po otevření zaslaného odkazu stali testery a pro jejich
-Google účet bylo umožněno aplikaci používat.
+distribuována testovacím uživatelům, kteří se po otevření zaslaného odkazu stali testery.
+V této kapitole si představímeúpravy spojené s jejich zpětnou vazbou a dojmy testerů.
 
 \subsection{Optimalizace výkonu}
 Jedno z pravidel programování je neoptimalizovat zbytečně dopředu na základě odhadu,
@@ -2190,7 +2199,7 @@ trvajících operací, což bylo v našem případě zejména čtení a ukládá
  na akce uživatele je téměř okamžitá.
 
 \subsubsection{Pomalé načtení úvodní obrazovky s cestami}
- Při testování se z počátku na pomalých zařízeních projevovalo pomalé načítání úvodní obrazovky se
+ Při testování se na pomalých zařízeních projevilo pomalé načítání úvodní obrazovky se
  seznamem cest. Bylo tedy využito profilovacího nástroje Traceview, který je součástí Android SDK
   a je možné jej využít pro zaznamenání a zobrazení provádění metod za běhu. Výstup profilování kódu
   mezi synchronním načtením v metodě \texttt{refreshRoutes} a zobrazením výsledku v uživatelském rozhraní
