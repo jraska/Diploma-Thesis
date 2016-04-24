@@ -165,7 +165,7 @@ Problém cestování a orientace v reálném čase je v dnešním světě občas
 pro lidi s mentálním postižením pak problémem mnohonásobným. Cesta do zaměstnání, do banky
 nebo jen do obchodu může být pro člověka s mentálním postižením velmi těžký úkol, jelikož často musí
 využít hromadné dopravy, přecházet složité křižovatky a podobně. Lidí s mentálním postižením
-je momentálně v České republice více než 100 tisíc \cite{komunikace} a jedná se tedy o velice
+je momentálně v České republice více než 100 tisíc~\cite{komunikace} a jedná se tedy o velice
 významnou skupinu, která si zaslouží zvláštní pozornost. Tito lidé pak při svém cestování často potřebují
 pomoc asistenta, kterých je však pro takto početnou skupinu nedostatek.
 Dnes jsou již chytré mobilní telefony poměrně snadno dostupnou věcí, spoustu lidí
@@ -185,7 +185,7 @@ Jako téma diplomové práce bylo proto zvoleno vytvoření mobilní aplikace pr
 
 
 \section{Platforma Android}
-Systém Android byl poprvé vypuštěn do světa v roce 2008 v útrobách zařízení T-Mobile~G1 \cite{androidcentral}
+Systém Android byl poprvé vypuštěn do světa v roce 2008 v útrobách zařízení T-Mobile~G1~\cite{androidcentral}
 a~díky své dostupnosti a otevřenému kódu rychle rozšířil a v současné době je to zcela jasně nejvíce využívaný mobilní
 operační systém, který se stále bouřlivě vyvíjí. Jeho otevřenost je zároveň pro vývojáře i jedním z jeho problémů,
 neboť výrobci si systém rádi upravují, v důsledku čehož se může aplikace na některých zařízeních chovat
@@ -468,7 +468,7 @@ případně i pád aplikace v důsledku pokusu o aktualizaci uživatelského roz
 
 RxAndroid navíc řeší další, pro Android velmi významný problém a tím je výběr vlákna, ve kterém se
 operace spouští. Jako hlavní vlákno totiž slouží vlákno uživatelského rozhraní, které by
-nemělo provádět žádné, byť jen trochu náročné operace, neboť by se vše mělo stihnout během 16ms \cite{perf}.
+nemělo provádět žádné, byť jen trochu náročné operace, neboť by se vše mělo stihnout během 16ms~\cite{perf}.
 V aplikacích i knihovnách toto vede k obrovskému množství asynchronních zpětných volání, které mají různá jména,
 každá knihovna si je řeší po svém, není nad nimi kontrola a výsledkem je nepřehledný asynchronní kód,
 ve kterém se lze jen složitě orientovat. Díky RxAndroid a jejich implementaci plánovačů, lze rozhodnutí,
@@ -574,7 +574,7 @@ mnohé další a také námi používané rozhraní na upozornění přiblížen
 Jedná se v podstatě o rozšiřující API celého frameworku, které by mělo být dostupné na každém zařízení, které
 obsahuje aplikaci obchodu Google Play a tudíž na všech zařízeních, kde je možné naší aplikaci stáhnout.
 Knihovna je zároveň přes aplikaci obchodu aktualizovaná a tudíž u ní nemusíme řešit problémy
-kompatibility, jako u vlastního SDK \cite{gms}.
+kompatibility, jako u vlastního SDK~\cite{gms}.
 
 Přehled všech rozhraní lze nalézt na \url{https://developers.google.com/android/guides/overview}  (10.4.2016).
 
@@ -661,10 +661,10 @@ Knihovnu lze nalézt na \url{http://robolectric.org/}  (10.4.2016).
 \end{itemize}
 
 \section{Návrh aplikace}
-Mentální postižení není nemoc, je to trvalý stav, který se projeví do 18 let věku a nedá se léčit \cite{komunikace}.
+Mentální postižení není nemoc, je to trvalý stav, který se projeví do 18 let věku a nedá se léčit~\cite{komunikace}.
 U každého člověka s mentálním postižením se jeho stav projevuje jinak a je proto potřeba k nim
 přistupovat individuálně. Tito lidé mají často potíže s učením, porozuměním, sníženou míru pozornosti
-a horší orientaci v čase a prostoru \cite{komunikace}, což je pro spolehlivé cestování důležité.
+a horší orientaci v čase a prostoru~\cite{komunikace}, což je pro spolehlivé cestování důležité.
 Aplikace byla navrhována s přihlédnutím k těmto faktům a v každé její části jsme se snažili o co nejjednodušší
 vzhled aplikace a její ovládání.
 
@@ -1527,18 +1527,18 @@ nebezpečí vybití baterie v terénu.
 Cílem návrhu bylo používat v aplikaci konzistentní rozhraní a také jednoduchost všech uživatelských
 prvků pro snadné pochopení pro uživatele se specifickými nároky. Většina uživatelských prvků je tak
 realizována jako velká tlačítka, která při podržení prstu na prvku zobrazí jeho textový popis.
-Jako hlavní směr návrhu uživatelského rozhraní byl zvolen Material design \cite{materialdesign}, neboť se jedná o aktuální
+Jako hlavní směr návrhu uživatelského rozhraní byl zvolen Material design~\cite{materialdesign}, neboť se jedná o aktuální
 doporučení pro mobilní aplikace a je v něm kladen velký důrazná jednoduchost a konzistenci,
 tedy naše požadavky. Velkou část této specifikace za nás řeší námi používaná knihovna Android Support,
 popsaná v sekci \ref{androidsupport}.
 
 \subsubsection{Material design}
-Úplnou specifikaci Material designu, vydanou poprvé v roce 2015 lze nalézt v \cite{materialdesign}.
+Úplnou specifikaci Material designu, vydanou poprvé v roce 2015 lze nalézt v~\cite{materialdesign}.
 Jedná se o detailní popis všech
 grafických prvků uživatelského rozhraní, které by měl vývojář používat, jejich chování, vzhled i vzájemnou
  interakci. Jako hlavní cíl si klade vytvořit vizuální jazyk, spojující klasické principy dobrého designu
   a nových možností moderních technologií a vyvinout systém spojující zkušenost uživatele na různých
-  platformách a velikostech obrazovek \cite{materialdesign}. Uživatelské rozhraní v duchu Material designu
+  platformách a velikostech obrazovek~\cite{materialdesign}. Uživatelské rozhraní v duchu Material designu
   by mělo uživateli lépe napovídat, co který prvek dělá, pomocí animací a směru efektů přibližovat
   význam grafických komponent, případně pomocí stínů různých délek vytvářet iluzi uložení prvků
   v prostoru a jejich seřazení podle důležitosti.
@@ -1555,10 +1555,10 @@ grafických prvků uživatelského rozhraní, které by měl vývojář použív
   prvky naší aplikace budeme vždy používat jednotku \texttt{dp}.
 
   Specifikace Material designu zavádí jako jednu ze svých hlavních prvků zavedení prostorové osy \textit{z} do
-  definice uživatelského rozhraní a nazývá tuto vlastnost uživatelských prvků vyvýšení (elevation) \cite{materialdesign}.
+  definice uživatelského rozhraní a nazývá tuto vlastnost uživatelských prvků vyvýšení (elevation)~\cite{materialdesign}.
   Tato vlastnost ovlivňuje nejvíce velikost stínu uživatelského prvku. Nejvyšší vyvýšení (24dp)
   mají modální dialogy, poté postranní menu(16dp) následují další komponenty, mezi nimiž jsou námi využívané
-  menu (8dp), vyjíždějící upozornění "Snackbar"(6dp), případně lišta menu rychlých akcí "App bar" (4dp) \cite{materialdesign}.
+  menu (8dp), vyjíždějící upozornění "Snackbar"(6dp), případně lišta menu rychlých akcí "App bar" (4dp)~\cite{materialdesign}.
   Material design tak přesně určuje chování pro každou komponentu a precizně tak vývojáře vede ke správné
   implementaci uživatelských prvků.
 
@@ -1692,10 +1692,10 @@ Po vytvoření zadání a návrhu bylo třeba tyto myšlenky přeměnit ve funk�
 jak byly jednotlivé fukcionality aplikace implementovány a jak byly za tímto účelem použity dříve diskutované nástroje a knihovny.
 
 \subsection{Architektura}
-Android samotný se snaží uživateli nabízet implementaci Architektury Model View Controller \cite{bestpracticesfuturice}, kde
+Android samotný se snaží uživateli nabízet implementaci Architektury Model View Controller~\cite{bestpracticesfuturice}, kde
 každá akce rozhraní view směřuje na controller, který provede příslušnou logiku, případnou komunikaci
 s modelem - vrstvou poskytující data,
-kde se dá aktivita považovat jako controller \cite{mvcxmvp}, třídy dědící ze systémové třídy \texttt{View} která
+kde se dá aktivita považovat jako controller~\cite{mvcxmvp}, třídy dědící ze systémové třídy \texttt{View} která
 se umí vykreslovat na obrazovku jako view a jako model nabízí systém mechanizmus poskytovatel obsahu
  (\texttt{ContentProvider}), který umožňuje vytvořit v podstatě REST API nad SQLite databází.
 Zejména pro část modelu se však tato část často implementuje zcela jinak, neboť uživatel nemá tímto způsobem
@@ -1705,7 +1705,7 @@ v platformě několik nejasností z důvodu nekonzistence API mezi verzemi, kdy 
 jako části aktivity fragmenty a u mnoha vestavěných tříd systému pro View vrstvu (například ListAdapter)
 provádí i sám systém logiku patřící mimo View vrstvu a tento vzor není tedy striktně dodržováno a vzhledem
 k nutnosti provazovat logiku načítání dat s životními cykly aktivit, které jsou zase svázané s uživatelským
-rozhraním nelze tedy komponenty zcela precizně oddělit \cite{mvcxmvp}.
+rozhraním nelze tedy komponenty zcela precizně oddělit~\cite{mvcxmvp}.
 Schéma architektury MVC můžeme vidět na obrázku \ref{fig:mvc}.
 
 \begin{figure}[H]
@@ -1734,7 +1734,7 @@ za vrstvou modelu mohou být další vrstvy komunikace s databází, případně
 
 Architektura projektu byla tedy volena s přikloněním k MVP, ve velké míře se používají
 aktuální úspěšné knihovny a byl kladen důraz na následování známých principů SOLID, popsaných
-například v \cite{solid} a IoC (Inversion of Control), popsaných v \cite{ioc} spolu s vkládáním
+například v~\cite{solid} a IoC (Inversion of Control), popsaných v~\cite{ioc} spolu s vkládáním
 závislostí pomocí knihovny Dagger 2, kterou popisujeme v sekci \ref{dagger2}.
 V projektu je na mnoha místech použito jednotkové testování pro podporu menší chybovosti v kódu
 za pomocí nástroje Robolectric popsaného v sekci \ref{robolectric}. Přístup k datům a tedy
@@ -1858,7 +1858,7 @@ Nahranou cestu je možné uživateli na zařízení zobrazit a umožnit tak kont
 Pro zobrazení slouží fragment mapy ve kterém se zobrazí spojená čára propojující jednotlivé body.
 Vzhledem k nepřesnostem a šumu při nahrávání však jako cesta často vzniká velmi lomená čára a dojem z vykreslení
 na mapě není dobrý. Z tohoto důvodu byla implementováno vyhlazování čar pomocí prokládání aproximační
-B-spline křivkou, algoritmem inspirovaným v \cite{bspline}. B-spline křivka je počítána podle
+B-spline křivkou, algoritmem inspirovaným v~\cite{bspline}. B-spline křivka je počítána podle
 rovnice \ref{eq:bspline}, kde je výsledná křivka vytvořena vždy podle 4 sousedních bodů $P_0$, $P_1$,
 $P_2$ a $P_3$.
 
@@ -1866,7 +1866,7 @@ $P_2$ a $P_3$.
 B(t)=\frac{(-P_0 + 3P_1 - 3P_2 + P_3)t^3}{6} + \frac{(P_0 - 2P_1 + P_2)t^2}{2} + \frac{(-P_0 + P_2)t}{2} + \frac{(P_0 + 4P_1 + P_2)}{6}
 \label{eq:bspline}
 \end{equation}
-\centerline{Zdroj v \cite{bspline}}
+\centerline{Zdroj v~\cite{bspline}}
 \vspace{0.2cm}
 
 
@@ -1973,9 +1973,9 @@ s časy nahrání a názvem cesty, tabulka \texttt{DbPosition} obsahuje nahrané
 na hlavní záznam cesty, tabulka \texttt{NoteSpec} poznámky ke konkrétnímu místu s případnými identifikátory
 souborů fotek nebo nahrávek a tabulka \texttt{TransportChangeSpec} informace o změně dopravního prostředku.
 ER diagram databázového schématu můžeme vidět na obrázku \ref{fig:db_er}. SQLite používá místo typických datových typů koncept afinit
- \cite{sqlitetypes}, kterých je 5 a to \texttt{INTEGER}, \texttt{TEXT}, \texttt{BLOB}, \texttt{REAL} a \texttt{NUMERIC}.
+~\cite{sqlitetypes}, kterých je 5 a to \texttt{INTEGER}, \texttt{TEXT}, \texttt{BLOB}, \texttt{REAL} a \texttt{NUMERIC}.
 Pro naše účely bylo potřeba pouze využít prvních dvou, neboť typ \texttt{INTEGER} může podle potřeby
-mít až 8 bytů \cite{sqlitetypes}, což nám bez problému umožňuje do něj uložit beze ztráty hodnoty typu
+mít až 8 bytů~\cite{sqlitetypes}, což nám bez problému umožňuje do něj uložit beze ztráty hodnoty typu
 \texttt{long} jazyka Java, kterou používáme pro naše hodnoty id.
 
 
@@ -1990,7 +1990,7 @@ mít až 8 bytů \cite{sqlitetypes}, což nám bez problému umožňuje do něj 
 Pro práci s databází byla využita knihovna DBFlow, popsaná v sekci \ref{dbflow}, díky které jsme pro vytvoření
 požadované databázové struktury pouze vytvořili třídy pro mapování, které jsme anotovali příslušnými
 anotacemi knihovny. Ukládání dat pak probíhá přes tyto objekty a k nim vygenerované adaptéry.
-Pro přístup k datům byl použit vzor Repositář \cite{repository}, díky kterému
+Pro přístup k datům byl použit vzor Repositář~\cite{repository}, díky kterému
 jsou všechny operace s daty prováděny přes jednu vrstvu a oddělují tak kód práce s daty od zbytku aplikace
 jedním rozhraním, za kterým se může nacházet námi implementovaná databázová vrstva, ale také lze toto
 pak snadno zaměnit za webovou službu, případně pouze čtení ze souboru.
@@ -2033,7 +2033,7 @@ což je poměrně komplexní úkol a vlastní implementace by
 vyžadovala vlastní server, hosting a zejména registraci uživatel, což by v případě mentálně postižených klientů
 přineslo další složitost do aplikace a nutilo by klienta pamatovat si další uživatelské jméno a heslo.
 
-Tento problém byl vyřešen využitím OAuth2\footnote{Více o OAuth2 se můžeme dozvědět v \cite{oauth2}.}
+Tento problém byl vyřešen využitím OAuth2\footnote{Více o OAuth2 se můžeme dozvědět v~\cite{oauth2}.}
 autorizace přes připojený Google účet na zařízení a API Google Drive nebo česky Disk,
  které je součástí Google Play Services a na zařízení uživatele, který si naši aplikací stáhnul z obchodu Play,
  jsou tato API k dispozici.
@@ -2047,7 +2047,7 @@ OAuth2 se využívá existující účet, čímž se odstraňuje nutnost uživat
  API s tímto počítá a při pokusu o vytváření souborů při nutnosti autorizace sám nabídne ke zobrazení
  dialog pro uživatele a následně vrátí výsledek, zda uživatel službu povolil.
 
- Data záloh jsou ukládána do tzv. appfolderu \cite{driveappfolder}, což je privátní úložiště aplikace
+ Data záloh jsou ukládána do tzv. appfolderu~\cite{driveappfolder}, což je privátní úložiště aplikace
  a uživatel poté v nastavení svého Disku vidí,
   která aplikace tuto službu využívá a kolik dat zabírá, nevidí však konkrétní data.
   Uživatelův pohled po připojení aplikace a zálohování dat můžeme vidět na obrázku~\ref{fig:connecteddrive}.
@@ -2081,11 +2081,11 @@ Uživatel může následně začít využívat obnovená data.
 
 \subsection{NFC (\textit{Near Field Communication})}\label{nfcsection}
 NFC je bezdrátová technologie umožňující komunikaci dvou zařízení na velmi krátké vzdálenosti do 4 cm
-rychlostí do 424 kb/s \cite{nfcforum}. Výměna dat může být aktivována pouhým přiblížením dvou zařízení k sobě
+rychlostí do 424 kb/s~\cite{nfcforum}. Výměna dat může být aktivována pouhým přiblížením dvou zařízení k sobě
 a technologie podporuje zabezpečený přenos dat. Technologii spravuje organizace NFC Forum jejíž logo lze vidět
-na obrázku \ref{fig:nfcforumlogo} a její specifikaci lze nalézt v \cite{nfciso}.
-NFC dále implementuje specifikaci ISO/IEC 14443 A a B \cite{nfcforum}, což je standard používaný
-současnými platebními kartami a jinými čipy, jehož definici můžeme najít v \cite{rfidiso} a díky této
+na obrázku \ref{fig:nfcforumlogo} a její specifikaci lze nalézt v~\cite{nfciso}.
+NFC dále implementuje specifikaci ISO/IEC 14443 A a B~\cite{nfcforum}, což je standard používaný
+současnými platebními kartami a jinými čipy, jehož definici můžeme najít v~\cite{rfidiso} a díky této
 implementaci je plně kompatibilní se současnými platebními terminály a systémy, což nabízí možnost využití zařízení
 podporujících NFC jako platebních čipů jelikož oproti klasickým čipům může NFC zařízení uchovávat více informací
 a umožňuje například sloučení více platebních karet a bezpečnostních čipů dohromady do jednoho zařízení,
@@ -2181,7 +2181,7 @@ Jedno z pravidel programování je neoptimalizovat zbytečně dopředu na zákla
 jelikož programátoři jsou v těchto odhadech většinou velmi špatní. Během vývoje byl přesto na efektivní
 implementaci kladen důraz a všechny potencionálně delší operace byly prováděny asynchronně mimo vlákno
 uživatelského rozhraní, jelikož pro optimální uživatelský zážitek je potřeba stihnout vše ve vlákně
-uživatelského rozhraní do 16ms \cite{perf}.
+uživatelského rozhraní do 16ms~\cite{perf}.
 
 Aplikace, která chce toto uživateli umožnit, musí do asynchronních operací přesunou většinu svých déle
 trvajících operací, což bylo v našem případě zejména čtení a ukládání do databáze, jelikož se v tomto
