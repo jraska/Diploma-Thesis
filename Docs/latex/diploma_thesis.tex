@@ -394,7 +394,7 @@ otevřenému kódu a hodnocením dalších uživatelů lze již nyní poměrně 
 typický problém, který při vývoji aplikací nastává a pročtením jejího kódu se ujistit, případně inspirovat,
 jak dělat danou věc správně.
 
-U některých knihoven je také zdůvodněno, proč jsou používány,
+U některých knihoven je také podrobně zdůvodněno, proč jsou používány,
 neboť mnohé řeší velice časté problémy vývoje, příčiny problematického kódu a je na nich později založena
 architektura aplikace a metodika vývoje.
 
@@ -405,52 +405,6 @@ pomocné třídy například pro notifikace, média a spoustu dalších. V souč
 aplikace a při vytváření nového projektu je k projektu již automaticky přidána.
 
 Dokumentaci knihovny můžeme najít na \url{http://developer.android.com/tools/support-library/index.html}  (10.4.2016).
-
-\subsubsection{Dagger 2 a vkládání závislostí}\label{dagger2}
-Poměrně nová knihovna spravovaná Googlem a uvolněná poprvé v srpnu 2015, která pro nás řeší tzv. vkládání
-závislostí (anglicky Dependecy Injection) do objektů,
-které tyto závislosti chtějí používat. Knihovna je použita za účelem zkvalitnění kódu a zlepšení testovatelnosti, jelikož
-je v celém projektu následována filozofie, že třídy by měly objekty buď vytvářet a nebo používat. To v podstatě znamená,
-že se snažíme omezit situace, kdy si třída v rámci své metody vytváří vlastní objekty, které potřebuje k vykonání
-dané operace a zejména se snaží úplně eliminovat situace, kdy si třída své závislosti sama začne vybírat z nějakého
-kontejneru, statických proměnných a podobně. Jako špatný přístup je v tomto případě brán i často používán návrhový vzor
-Jedináček, jelikož se jedná v podstatě o sdílený globální stav. Všechny objekty by měly své závislosti obdržet v konstruktoru
-a neměly by se vyskytovat žádné metody tipu inicializuj objekt, nastav proměnnou, bez které objekt nemůže fungovat a podobně.
-
-Cílem tohoto přístupu je zaručit jakémukoliv klientovi třídy, tedy programátorovi používajícímu její rozhraní,
-záruku, že pokud získá referenci na tento objekt, bude vždy ve stavu připraveném pro použití a nemůže se mu stát,
-že při volání některé z metod obdrží chybu, že zapomněl něco nastavit. Myšlenkou je, že programátor používající
-tuto třídu musí pro její použití vidět pouze konstruktor a následně její rozhraní a nemusí pátrat, zda musí po
-vytvoření objektu něco nastavovat. Kromě toho tento přístup výrazně zjednodušuje testovatelnost třídy, jelikož v rámci
-Android testů běží všechny testy v jednom virtuálním stroji, mají tedy sdílenou paměť, což znamená, že statický
-stav zůstává sdílen mezi testy, rozbíjí filozofii izolovanosti testů a může vyústit v situaci, kde jeden test selže,
-jelikož nějaký jiný test před ním nastavil něco do globálního stavu.
-
-Často je však tuto filozofii poměrně složité následovat, jelikož aby mohl programátor vytvořit objekt, který
-v dané situaci potřebuje, musí mít přístup ke všem jeho závislostem, což může být obtížné zajistit
-a vyvstává diskuze, kde odkazy na tyto objekty držet, jak je zpřístupnit všem potenciálním klientům třídy
-a jak toto udělat přehledně bez toho, aniž by bylo vše vytvářeno na jednom místě. Toto může vyústit v techniky
-jako je lokátor služeb, již zmíněný Jedináček a podobné, kdy si třída sama ve své implementaci potřebnou
-závislost vytáhne, čemuž bychom chtěli předejít.
-Android nám tento problém také značně stěžuje tím, že hlavní komponenty aplikace jako aktivity, služby a objekt
-aplikace samotné jsou provázány co nejvolněji a nelze jednoduše předat jeden objekt z aktivity do aktivity,
-dokud se nejedná o primitivní typ, případně jej lze serializovat.
-
-Tento problém pro nás řeší knihovny pro vkládání závislostí, které se nám snaží umožnit to, že si o potřebné
-závislosti prostě požádáme a knihovna nám je poskytne. My však musíme knihovně říct, jak tyto závislosti může
-získat a kde je má uložit. Dagger 2 používá objekt nazvaný \texttt{Component}, což je kontejner závislostí
-který dokáže vytvářet námi požadované objekty i s jejich závislostmi. Kontejner se skládá z modulů, které
-za podmínky určitých vstupů poskytnou kontejneru nové výstupy. V kódu se tyto třídy definují pomocí anotací
-a kód pro vytvoření kontejneru závislostí, nebo také objektového grafu, je vygenerován během kompilace
-a díky tomu se za běhu vytvoří velmi rychle, což je jeden z hlavních důvodů, proč je Dagger 2 používá,
-protože za běhu vůbec nepoužívá reflexi, která je u knihoven tohoto typu častá a která způsobuje v Android
-aplikacích značné výkonnostní problémy. Knihovny pro vkládání závislostí existovaly již mnohem dříve,
-jako například Spring nebo Guice, při použití na platformě Android byly však díky reflexe pomalé a mohlo snadno
-dojít k chybě za běhu. Oproti tomu Dagger 2 vytváří objektový graf během kompilace, zkontroluje zda je acyklický,
-všechny požadované závislosti je možné získat a v případě aplikace nám neumožní aplikaci úspěšně zkompilovat,
-díky čemuž minimalizuje možné pády aplikace v případě nesprávného použití knihovny.
-
-Dokumentaci a popis knihovny můžeme nalézt na \url{http://google.github.io/dagger/}  (10.4.2016).
 
 \subsubsection{RxAndroid}\label{rxandroid}
 Jedná se o Android rozšíření známé knihovny RxJava, která implementuje reaktivní rozšíření
@@ -534,6 +488,52 @@ Ukázku odstranění anonymní třídy můžeme vidět na ukázce kódu \ref{use
 \end{lstlisting}
 
 Knihovnu můžeme nalézt na \url{https://github.com/orfjackal/retrolambda}  (10.4.2016).
+
+\subsubsection{Dagger 2 a vkládání závislostí}\label{dagger2}
+Poměrně nová knihovna spravovaná Googlem a uvolněná poprvé v srpnu 2015, která pro nás řeší tzv. vkládání
+závislostí (anglicky Dependecy Injection) do objektů,
+které tyto závislosti chtějí používat. Knihovna je použita za účelem zkvalitnění kódu a zlepšení testovatelnosti, jelikož
+je v celém projektu následována filozofie, že třídy by měly objekty buď vytvářet a nebo používat. To v podstatě znamená,
+že se snažíme omezit situace, kdy si třída v rámci své metody vytváří vlastní objekty, které potřebuje k vykonání
+dané operace a zejména se snaží úplně eliminovat situace, kdy si třída své závislosti sama začne vybírat z nějakého
+kontejneru, statických proměnných a podobně. Jako špatný přístup je v tomto případě brán i často používán návrhový vzor
+Jedináček, jelikož se jedná v podstatě o sdílený globální stav. Všechny objekty by měly své závislosti obdržet v konstruktoru
+a neměly by se vyskytovat žádné metody tipu inicializuj objekt, nastav proměnnou, bez které objekt nemůže fungovat a podobně.
+
+Cílem tohoto přístupu je zaručit jakémukoliv klientovi třídy, tedy programátorovi používajícímu její rozhraní,
+záruku, že pokud získá referenci na tento objekt, bude vždy ve stavu připraveném pro použití a nemůže se mu stát,
+že při volání některé z metod obdrží chybu, že zapomněl něco nastavit. Myšlenkou je, že programátor používající
+tuto třídu musí pro její použití vidět pouze konstruktor a následně její rozhraní a nemusí pátrat, zda musí po
+vytvoření objektu něco nastavovat. Kromě toho tento přístup výrazně zjednodušuje testovatelnost třídy, jelikož v rámci
+Android testů běží všechny testy v jednom virtuálním stroji, mají tedy sdílenou paměť, což znamená, že statický
+stav zůstává sdílen mezi testy, rozbíjí filozofii izolovanosti testů a může vyústit v situaci, kde jeden test selže,
+jelikož nějaký jiný test před ním nastavil něco do globálního stavu.
+
+Často je však tuto filozofii poměrně složité následovat, jelikož aby mohl programátor vytvořit objekt, který
+v dané situaci potřebuje, musí mít přístup ke všem jeho závislostem, což může být obtížné zajistit
+a vyvstává diskuze, kde odkazy na tyto objekty držet, jak je zpřístupnit všem potenciálním klientům třídy
+a jak toto udělat přehledně bez toho, aniž by bylo vše vytvářeno na jednom místě. Toto může vyústit v techniky
+jako je lokátor služeb, již zmíněný Jedináček a podobné, kdy si třída sama ve své implementaci potřebnou
+závislost vytáhne, čemuž bychom chtěli předejít.
+Android nám tento problém také značně stěžuje tím, že hlavní komponenty aplikace jako aktivity, služby a objekt
+aplikace samotné jsou provázány co nejvolněji a nelze jednoduše předat jeden objekt z aktivity do aktivity,
+dokud se nejedná o primitivní typ, případně jej lze serializovat.
+
+Tento problém pro nás řeší knihovny pro vkládání závislostí, které se nám snaží umožnit to, že si o potřebné
+závislosti prostě požádáme a knihovna nám je poskytne. My však musíme knihovně říct, jak tyto závislosti může
+získat a kde je má uložit. Dagger 2 používá objekt nazvaný \texttt{Component}, což je kontejner závislostí
+který dokáže vytvářet námi požadované objekty i s jejich závislostmi. Kontejner se skládá z modulů, které
+za podmínky určitých vstupů poskytnou kontejneru nové výstupy. V kódu se tyto třídy definují pomocí anotací
+a kód pro vytvoření kontejneru závislostí, nebo také objektového grafu, je vygenerován během kompilace
+a díky tomu se za běhu vytvoří velmi rychle, což je jeden z hlavních důvodů, proč je Dagger 2 používá,
+protože za běhu vůbec nepoužívá reflexi, která je u knihoven tohoto typu častá a která způsobuje v Android
+aplikacích značné výkonnostní problémy. Knihovny pro vkládání závislostí existovaly již mnohem dříve,
+jako například Spring nebo Guice, při použití na platformě Android byly však díky reflexi pomalé a mohlo snadno
+dojít k chybě za běhu. Oproti tomu Dagger 2 vytváří objektový graf během kompilace, zkontroluje zda je acyklický,
+všechny požadované závislosti je možné získat a v případě aplikace nám neumožní aplikaci úspěšně zkompilovat,
+díky čemuž minimalizuje možné pády aplikace v případě nesprávného použití knihovny.
+
+Dokumentaci a popis knihovny můžeme nalézt na \url{http://google.github.io/dagger/}  (10.4.2016).
 
 \subsubsection{Lombok}
 Lombok je další z nástrojů který rozšiřuje jazyk Java, respektive se nás snaží ušetřit obvyklých
