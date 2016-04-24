@@ -409,7 +409,7 @@ Jedná se o Android rozšíření známé knihovny RxJava, která implementuje r
 mnohých programovacích jazyků sdružené pod projekt ReactiveX (\url{http://reactivex.io/}, 10.4.2016).
 Knihovna k původní Java implementaci pouze přidává vlastnosti specifické pro platformu Android a to konkrétně
 řešení spouštění metod v hlavním vlákně uživatelského rozhraní. Knihovna je založena na návrhovém
-vzoru Pozorovatel (Observer) a její záměr je implementovat reakce na události bez vědomí, kdy přesně
+vzoru Pozorovatel (Observer \cite{designpatterns}) a její záměr je implementovat reakce na události bez vědomí, kdy přesně
 událost nastane, ale s vědomím, že v tuto chvíli bude registrovaný pozorovatel na tuto událost
 upozorněn a zareaguje na ni. Knihovna nabízí spoustu metod, jak na události reagovat, shlukovat je do
 skupin, mapovat objekty výsledku na jiné, řeší příliš mnoho požadavků v jednom čase a spoustu dalších vlastností.
@@ -1925,7 +1925,7 @@ systémové třídy \texttt{Location} vypočítá směr (bearing),kterým by se 
  jako událost o požadovaném směru, na kterou reaguje \texttt{NavigationActivity} zavoláním metody \texttt{setRotation}
  na instanci \texttt{View}, obsahující obrázek šipky ukazující daným směrem.
 
-Třída \texttt{Navigator} využívá k vyhledávání nejbližšího bodu návrhový vzor Stav (State), jelikož
+Třída \texttt{Navigator} využívá k vyhledávání nejbližšího bodu návrhový vzor Stav (State \cite{designpatterns}), jelikož
 se uživatel při používání může nacházet ve dvou různých stavech. Diagram implementace vzoru můžeme vidět
 na obrázku \ref{fig:navigatorstate}. První je při počátku navigace,
 kdy se přibližuje k nahrané cestě (\texttt{ApproachingToRouteState}) a při obdržení události o nové
@@ -2386,6 +2386,9 @@ s mentálním postižením v rámci jejich celoživotního vzdělávání i mimo
 \bibitem{bestpracticesfuturice}{FUTURICE OY}
 \textit{Best practices in Android development}. {Futurice Oy, 2016}
 \newline(Dostupné na \url{https://github.com/futurice/android-best-practices}, 10.4.2016)
+
+\bibitem{designpatterns}{Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides}
+\textit{Design Patterns: Elements of Reusable Object-Oriented Software}. {Pearson Education, říjen, 1994}
 
 
 \bibitem{androiddevelopers}{GOOGLE, INC.}
