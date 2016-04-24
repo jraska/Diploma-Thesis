@@ -726,17 +726,15 @@ data nahraná ostatními asistenty a využívána klienty. Může tyto záznamy 
  upravovat a ovlivnit tak co se kterému uživateli zobrazí a jakým způsobem bude asistence probíhat.
 
 
-\subsection{Případy užití uživatele Asistent}
+\subsection{Případy užití uživatelů}
 Pro uživatele asistenta jsou určeny složitější operace pro vytváření interaktivního obsahu pro klienta,
-nastavování aplikace a prezentace klientovi. Pro use casy asistenta platí, že klient může těmto
-krokům přihlížet, pokud o to projeví zájem. Use casy asistenta a jejich vztahy lze vidět na obrázku~\ref{fig:UseCasesAsistant}.
+nastavování aplikace a prezentace klientovi. Pro případy užití asistenta platí, že klient může těmto
+krokům přihlížet, pokud o to projeví zájem. Případy užití asistenta a jejich vztahy lze vidět na obrázku~\ref{fig:UseCasesAsistant}.
 
-\begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.2]{img/UseCasesAsistant.png}
-        \caption{Diagram use casů uživatele asistent}
-        \label{fig:UseCasesAsistant}
-\end{figure}
+Pro klienta jsou určeny více intuitivní a nenáročné operace vyžadující co nejméně aktivních
+kroků z klientovi strany. Aplikace by měla na základě polohy a dalších údajů sama rozpoznat,
+co má v danou chvíli udělat. Případy užití klienta a jejich vztahy lze vidět na obrázku~\ref{fig:UseCasesClient}.
+
 
 \usecase{Prohlížení seznamu nahraných cest}{prohlizeniasistent}
 \textbf{Aktéři:} Asistent
@@ -762,234 +760,11 @@ a podobně. Obrazovku prohlížení cest lze vidět na obrázku~\ref{fig:prohliz
 \end{itemize}
 
 \begin{figure}[H]
-\begin{minipage}{.5\textwidth}
-\centering
-                \includegraphics[scale=0.14]{img/screen/seznamcest.png}
-        \caption{Prohlížení seznamu cest}
-        \label{fig:prohlizeniasistent}
-\end{minipage}
-\begin{minipage}{.5\textwidth}
-    \centering
-                    \includegraphics[scale=0.14]{img/screen/detailcesty.png}
-            \caption{Zobrazení detailu cesty}
-            \label{fig:detailasistent}
-
-       \end{minipage}
+        \centering
+                \includegraphics[scale=0.2]{img/UseCasesAsistant.png}
+        \caption{Diagram use casů uživatele asistent}
+        \label{fig:UseCasesAsistant}
 \end{figure}
-
-\usecase{Zobrazení detailu cesty}{detailasistent}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí detail cesty se všemi informacemi, které jsou o ní uloženy.
-Na mapě si může prohlédnout kudy vedla, na místech pořízení fotografií jsou miniatury fotek, při změně dopravních
-prostředků lze vidět ikony daných prostředků, zvukově a textové záznamy jsou označeny příslušnou ikonou.
-Při klepnutí na indikátor některého z těchto záznamů se zobrazí jeho popis, který uživatel dříve zadal.
-V detailu cesty lze poklepáním na tlačítko editovat přejít do módu editace cesty a všechny dříve zmíněné
-záznamy upravit. Ukázku lze vidět na obrázku~\ref{fig:detailasistent}.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Cesta je uložena.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel klepne na řádek se zobrazenou cestou v seznamu cest.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Rozšíření:}
-\begin{itemize}
-  \item \nameref{editacecesty}
-  \item \nameref{nfczapis}
-\end{itemize}
-
-
-
-
-
-
-\usecase{Zapsání cesty do NFC tagu}{nfczapis}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí
-obrazovka, která jej instruuje k přiložení NFC tagu k telefonu. Jakmile telefon zaznamená blízkost tagu,
-zapíše do něj informaci o uložené cestě pro následné rychlé spouštění při přiložení tagu k telefonu.
-Obrazovku zápisu do NFC tagu lze vidět na obrázku~\ref{fig:nfczapis} a oznámení o zapsaném tagu
-na obrázku~\ref{fig:nfczapsano}. Technologie NFC je blíže popsána v sekci \ref{nfcsection}.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Cesta je uložena.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel klepne na ikonu NFC v detailu cesty nebo na rozšiřující menu v seznamu cest.
-
-
-\begin{figure}[H]
-\begin{minipage}{.5\textwidth}
-\centering
-                \includegraphics[scale=0.14]{img/screen/zapisnfcdetail.png}
-        \caption{Zápis do NFC tagu}
-        \label{fig:nfczapis}
-\end{minipage}
-\begin{minipage}{.5\textwidth}
-    \centering
-                    \includegraphics[scale=0.14]{img/screen/zapisdonfc.png}
-            \caption{Zapsáno do NFC tagu}
-            \label{fig:nfczapsano}
-
-       \end{minipage}
-\end{figure}
-
-
-
-\usecase{Editace cesty}{editacecesty}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživatel může editovat všechny uložené informace o cestě. Přepsání editačních
-polí může změnit názvy a popis nahrané cesty, podržením a přetažením miniatur fotek nebo ikon dalších údajů na mapě může změnit
-jejich pozici a tudíž místo, kdy se později vyvolají. Dále může podržením a přetažením měnit tvar trasy,
-při klepnutí na mapu přidat další záznamy. Jakmile je uživatel s editací spokojen, klepnutím na tlačítko
-uložit se údaje zapíší do databáze a následující asistence cestování bude tyto údaje používat.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Cesta je uložena.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel klepne na tlačítko editovat v detailu cesty.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Rozšíření:}
-\begin{itemize}
-  \item \nameref{pridanifotky}
-  \item \nameref{pridaninahravky}
-  \item \nameref{pridanipoznamky}
-  \item \nameref{pridanizmenyprostredku}
-    \item \nameref{odebranifotky}
-    \item \nameref{odebraninahravky}
-    \item \nameref{odebranipoznamky}
-    \item \nameref{odebranizmenyprostredku}
-\end{itemize}
-
-\usecase{Přidání fotky}{pridanifotky}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Spustí se fotoaparát zařízení a uživatel může začít fotit. Jakmile pořídí
-fotografii, zobrazí se v aplikace okno pro zadání názvu fotky s dotazem pro uložení. Uživatel zadá název
-a klepnutím na potvrzovací tlačítko se fotka uloží mezi data aplikace a zobrazí mezi aktuálními fotografiemi
-na místě polohy uživatele v době pořízení fotografie. Uložení fotky lze vidět na obrázku~\ref{fig:pridanifotky}.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat fotku.
-
-\begin{figure}[H]
-\begin{minipage}{.5\textwidth}
-\centering
-                \includegraphics[scale=0.14]{img/screen/ulozenifotky.png}
-        \caption{Pojmenování fotky po pořízení}
-        \label{fig:pridanifotky}
-\end{minipage}
-\begin{minipage}{.5\textwidth}
-     \centering
-                     \includegraphics[scale=0.14]{img/screen/nahravaninahravky.png}
-             \caption{Přidání zvukové nahrávky}
-             \label{fig:pridaninahravky}
-
-       \end{minipage}
-\end{figure}
-
-\usecase{Přidání zvukové nahrávky}{pridaninahravky}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí obrazovka s textem mluvte a zvuk se zaznamenává.
-Když je uživatel hotov, klepne na tlačítko stop a může nahrávce přidat název, který se bude později zobrazovat.
-Poté tlačítkem nahrávku uloží mezi data aplikace s přiřazenou aktuální polohou uživatele.
-Zobrazení nahrávání lze vidět na obrázku~\ref{fig:pridaninahravky}.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat nahrávku.
-
-
-
-
-\usecase{Přidání poznámky}{pridanipoznamky}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí okno s textovým vstupem a vysune se klávesnice. Uživatel
-zadá textovou poznámku a po klepnutí na potvrzovací tlačítko se poznámka uloží s asociací k aktuální poloze
-uživatele. Okno přidávání poznámky lze vidět na obrázku~\ref{fig:pridanipoznamky}.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat poznámku.
-
-\begin{figure}[H]
-\begin{minipage}{.5\textwidth}
-\centering
-                \includegraphics[scale=0.14]{img/screen/pridanipoznamky.png}
-        \caption{Přidání poznámky}
-        \label{fig:pridanipoznamky}
-\end{minipage}
-\begin{minipage}{.5\textwidth}
-  \centering
-                  \includegraphics[scale=0.14]{img/screen/zmenaprostredku.png}
-          \caption{Změna dopravního prostředku}
-          \label{fig:pridanizmenyprostredku}
-
-       \end{minipage}
-\end{figure}
-
-\usecase{Přidání změny dopravního prostředku}{pridanizmenyprostredku}
-\textbf{Aktéři:} Asistent
-
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Zobrazí se okno s nabídkou tlačítek s obrázkem dopravního prostředku.
-Uživatel může zároveň přidat ke změně dopravního prostředku popisný text. Po kliknutí na
-tlačítko s dopravním prostředkem se změna dopravního prostředku uloží s asociovanou aktuální polohou
-uživatele. Okno změny dopravního prostředku lze vidět na obrázku~\ref{fig:pridanizmenyprostredku}.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel klepl na tlačítko s aktuálním dopravním prostředkem.
-
-
-
 
 \usecase{Nahrávání cesty}{nahravanicesty}
 \textbf{Aktéři:} Asistent
@@ -1051,195 +826,84 @@ na obrázku~\ref{fig:notifikacenahravanicesty}.
        \end{minipage}
 \end{figure}
 
-
-\usecase{Odebrání fotky}{odebranifotky}
+\usecase{Zobrazení detailu cesty}{detailasistent}
 \textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem zda chce fotku odebrat. Po klepnutí na
-potvrzovací tlačítko je fotka smazána z úložiště a odstraněna její miniatura z aktuální cesty.
+\textbf{Hlavní scénář:} Uživateli se zobrazí detail cesty se všemi informacemi, které jsou o ní uloženy.
+Na mapě si může prohlédnout kudy vedla, na místech pořízení fotografií jsou miniatury fotek, při změně dopravních
+prostředků lze vidět ikony daných prostředků, zvukově a textové záznamy jsou označeny příslušnou ikonou.
+Při klepnutí na indikátor některého z těchto záznamů se zobrazí jeho popis, který uživatel dříve zadal.
+V detailu cesty lze poklepáním na tlačítko editovat přejít do módu editace cesty a všechny dříve zmíněné
+záznamy upravit. Ukázku lze vidět na obrázku~\ref{fig:detailasistent}.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou fotografii.
+\textbf{Prekondice:} Cesta je uložena.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Uživatel podrží prst na miniatuře fotografie a vybere možnost smazat.
-
-
-
-\usecase{Odebrání zvukové nahrávky}{odebraninahravky}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí dotaz zda chce nahrávku opravdu smazat, po potvrzení
-se uložená nahrávka odstraní a zmizí její ikona.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou nahrávku.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel podrží prst na ikoně nahrávky a vybere možnost smazat.
-
-
-
-\usecase{Odebrání poznámky}{odebranipoznamky}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem na smazání poznámky. Po potvrzení se
-nahrávka smaže a zmizí ikona indikující nahrávku.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou poznámku.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel podrží prst na ikoně poznámky a vybere možnost smazat.
-
-
-\usecase{Odebrání změny dopravního prostředku}{odebranizmenyprostredku}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem na smazání změny dopravního prostředku.
-Po potvrzení se nahrávka smaže a zmizí ikona indikující nahrávku. Zobrazené nastavení údajů
-lze vidět na obrázku~\ref{fig:nastaveniudaju}.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou změnu dopravního prostředku.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel podrží prst na ikoně změny dopravního prostředku a vybere možnost smazat.
-
-
-\usecase{Nastavení údajů asistenta}{nastaveniudaju}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí obrazovka s nastavením údajů, kde může vyplnit své údaje.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel klepl na tlačítko nastavení.
+\textbf{Spouštěč:} Uživatel klepne na řádek se zobrazenou cestou v seznamu cest.
 
 \vspace{0.1cm}
 \noindent
 \textbf{Rozšíření:}
 \begin{itemize}
-  \item \nameref{nastavenicisla}
-  \item \nameref{nastaveniemailu}
+  \item \nameref{editacecesty}
+  \item \nameref{nfczapis}
 \end{itemize}
 
 \begin{figure}[H]
 \begin{minipage}{.5\textwidth}
 \centering
-                \includegraphics[scale=0.14]{img/screen/nastaveni.png}
-        \caption{Spuštění nastavení údajů}
-        \label{fig:nastaveniudaju}
+                \includegraphics[scale=0.14]{img/screen/seznamcest.png}
+        \caption{Prohlížení seznamu cest}
+        \label{fig:prohlizeniasistent}
 \end{minipage}
 \begin{minipage}{.5\textwidth}
-\centering
-                \includegraphics[scale=0.14]{img/screen/nastaveniasistent.png}
-        \caption{Nastavení telefonního čísla}
-        \label{fig:nastavenicisla}
-    \end{minipage}
+    \centering
+                    \includegraphics[scale=0.14]{img/screen/detailcesty.png}
+            \caption{Zobrazení detailu cesty}
+            \label{fig:detailasistent}
+
+       \end{minipage}
 \end{figure}
 
-\usecase{Nastavení telefonního čísla asistenta}{nastavenicisla}
+\usecase{Editace cesty}{editacecesty}
 \textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Editovatelné pole pro telefonní číslo se zvýrazní a vysune se numerická klávesnice.
-Uživatel zadá své telefonní číslo, které se automaticky formátuje do přívětivějšího formátu. Po ukončení
-editace je telefonní číslo automaticky uloženo. Pokud telefonní číslo neodpovídá formátu telefonních čísel
-v České republice, uživatel je na toto upozorněn a je vyzván k úpravě vstupu. Zadávání telefonního čísla
-vidíme na obrázku~\ref{fig:nastavenicisla}.
+\textbf{Hlavní scénář:} Uživatel může editovat všechny uložené informace o cestě. Přepsání editačních
+polí může změnit názvy a popis nahrané cesty, podržením a přetažením miniatur fotek nebo ikon dalších údajů na mapě může změnit
+jejich pozici a tudíž místo, kdy se později vyvolají. Dále může podržením a přetažením měnit tvar trasy,
+při klepnutí na mapu přidat další záznamy. Jakmile je uživatel s editací spokojen, klepnutím na tlačítko
+uložit se údaje zapíší do databáze a následující asistence cestování bude tyto údaje používat.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Uživatel klepl na editační pole s telefonním číslem asistenta.
-
-\usecase{Nastavení emailu asistenta}{nastaveniemailu}
-\textbf{Aktéři:} Asistent
+\textbf{Prekondice:} Cesta je uložena.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Editovatelné pole pro emailovou adresu se zvýrazní a vysune se klávesnice.
-Uživatel zadá svou emailovou adresu. Po ukončení editace je emailová adresa automaticky uložena.
-Pokud emailová adresa neodpovídá správnému formátu emailové adresy, uživatel je na toto upozorněn
-a vyzván k úpravě vstupu.
+\textbf{Spouštěč:} Uživatel klepne na tlačítko editovat v detailu cesty.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Uživatel klepl na editovatelné pole emailové adresy.
+\textbf{Rozšíření:}
+\begin{itemize}
+  \item \nameref{pridanifotky}
+  \item \nameref{pridaninahravky}
+  \item \nameref{pridanipoznamky}
+  \item \nameref{pridanizmenyprostredku}
+    \item \nameref{odebranifotky}
+    \item \nameref{odebraninahravky}
+    \item \nameref{odebranipoznamky}
+    \item \nameref{odebranizmenyprostredku}
+\end{itemize}
 
-
-\usecase{Nastavení zamčení editace}{nastavenizamceni}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí editovatelné pole, kde může zadat heslo pro zamčení editace
-obsahu aplikace. Pokud toto heslo nezadá, aplikace bude stále v módu editace a uložená data bude možné upravit.
-Uživatel zadá heslo, to bude uloženo a bude nyní vyžadováno pro zpřístupnění úprav cest, případně nastavení.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel klepl na tlačítko nastavení zamčení.
-
-\usecase{Nastavení zálohování}{nastavenizalohovani}
-\textbf{Aktéři:} Asistent
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí výběr z listu zda chce zálohovat manuálně, jednou za den, týden
-nebo za měsíc. Uživatel vybere jednu z možností a podle výběru se naplánují příslušné akce.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel má na zařízení nastaven účet umožňující zálohování.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel klepl na tlačítko nastavení zálohování.
-
-
-
-
-
-
-
-
-
-
-
-\subsection{Use casy uživatele Klient}
-Pro klienta jsou určeny více intuitivní a nenáročné operace vyžadující co nejméně aktivních
-kroků z klientovi strany. Aplikace by měla na základě polohy a dalších údajů sama rozpoznat,
-co má v danou chvíli udělat. Use casy klienta a jejich vztahy lze vidět na obrázku~\ref{fig:UseCasesClient}.
-
-\begin{figure}[H]
-        \centering
-                \includegraphics[scale=0.2]{img/UseCasesClient.png}
-        \caption{Diagram use casů uživatele klient}
-        \label{fig:UseCasesClient}
-\end{figure}
-
-
-\usecase{Prohlížení seznamu nahraných cest}{prohlizeniklient}
+\usecase{Prohlížení seznamu nahraných cest klientem}{prohlizeniklient}
 \textbf{Aktéři:} Klient
 
 \vspace{0.1cm}
@@ -1261,7 +925,7 @@ na řádek cesty může dostat na její detail případně rychlými akcemi spus
   \item \nameref{asistence}
 \end{itemize}
 
-\usecase{Detail nahrané cesty}{detailklient}
+\usecase{Detail nahrané cesty pro klienta}{detailklient}
 \textbf{Aktéři:} Klient
 
 \vspace{0.1cm}
@@ -1285,6 +949,66 @@ a poznámky, které jsou reprezentovány svými příslušnými jednoduchými ik
   \item \nameref{asistence}
 \end{itemize}
 
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.2]{img/UseCasesClient.png}
+        \caption{Diagram use casů uživatele klient}
+        \label{fig:UseCasesClient}
+\end{figure}
+
+
+\usecase{Zapsání cesty do NFC tagu}{nfczapis}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí
+obrazovka, která jej instruuje k přiložení NFC tagu k telefonu. Jakmile telefon zaznamená blízkost tagu,
+zapíše do něj informaci o uložené cestě pro následné rychlé spouštění při přiložení tagu k telefonu.
+Obrazovku zápisu do NFC tagu lze vidět na obrázku~\ref{fig:nfczapis} a oznámení o zapsaném tagu
+na obrázku~\ref{fig:nfczapsano}. Technologie NFC je blíže popsána v sekci \ref{nfcsection}.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Cesta je uložena.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepne na ikonu NFC v detailu cesty nebo na rozšiřující menu v seznamu cest.
+
+
+\usecase{Spuštění asistence cestování po přiložení NFC tagu k telefonu}{prilozeninfc}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Klient přiloží telefon k nálepce, kartě nebo čemukoliv jinému, co bylo použito
+jako NFC tag a obsahuje informace o cestě. Tato informace se přečte a spustí se aplikace se zapnutou
+asistencí cestování na cestu zapsanou na tagu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Klient má k dispozici NFC tag, na který byla dříve zapsána informace o cestě.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Klient přiloží telefon k NFC tagu.
+
+\begin{figure}[H]
+\begin{minipage}{.5\textwidth}
+\centering
+                \includegraphics[scale=0.14]{img/screen/zapisnfcdetail.png}
+        \caption{Zápis do NFC tagu}
+        \label{fig:nfczapis}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+    \centering
+                    \includegraphics[scale=0.14]{img/screen/zapisdonfc.png}
+            \caption{Zapsáno do NFC tagu}
+            \label{fig:nfczapsano}
+
+       \end{minipage}
+\end{figure}
 
 \usecase{Asistence cestování}{asistence}
 \textbf{Aktéři:} Klient
@@ -1337,94 +1061,6 @@ Obrazovku asistence cestování lze vidět na obrázku~\ref{fig:asistence}.
     \end{minipage}
 \end{figure}
 
-
-
-\usecase{Zobrazení fotografie}{zobrazenifotky}
-\textbf{Aktéři:} Klient
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživatel se přiblíží k místu pořízení fotografie, aplikace toto rozpozná
-a upozorní uživatele na přítomnost fotky, která se zobrazí na dobu, po kterou je uživatel nablízku.
-Přes spodní část fotky je zobrazen popisek, který této fotce dříve zadal asistent.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel má k dané cestě uloženou fotku.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel se přiblíží místu pořízení fotky nebo klepne na miniaturu fotky.
-
-
-\usecase{Přehrání uložené zvukové nahrávky}{prehraninahravky}
-\textbf{Aktéři:} Klient
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživatel se zapnutou asistencí cestování přiblíží místu,
-kde byla dříve za pomoci asistenta pořízena zvuková nahrávka. Uložená nahrávka se načte
-a začne se uživateli přehrávat. Zároveň se zobrazí popis nahrávky a tlačítko umožňující
-nahrávku přehrát znovu.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel má k dané cestě uloženou zvukovou nahrávku.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel se přiblíží k místu pořízení nahrávky nebo klepne na ikonu nahrávky.
-
-\usecase{Zobrazení uložené poznámky}{zobrazenipoznamky}
-\textbf{Aktéři:} Klient
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživatel je při přiblížení se místu poznámky upozorněn a poznámka se zobrazí.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel má k dané cestě uloženou poznámku.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel se přiblíží k místu pořízení poznámky nebo klepne na ikonu poznámky.
-
-\usecase{Upozornění na změnu dopravního prostředku}{upozorneniprostredek}
-\textbf{Aktéři:} Klient
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Uživateli je při přiblížení ke změně dopravního prostředku upozorněn,
-zobrazí se mu obrázek dopravního prostředku, do kterého má nastoupit nebo naopak vystoupit spolu
-s textem, který byl při nahrávání cesty zadán.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Prekondice:} Uživatel má uloženo upozornění na změnu dopravního prostředku.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel se přiblíží k místu změny dopravního prostředku.
-
-
-
-\usecase{Analýza spotřeby baterie}{analyzabaterie}
-\textbf{Aktéři:} Klient
-
-\vspace{0.1cm}
-\noindent
-\textbf{Hlavní scénář:} Během cestování se ukládají průběžně data o spotřebě beterie a délce trvání
-cesty. Data jsou poté spolu s předchozími záznamy statisticky analyzována a je odhadována a upřesňována
-očekávaná výdrž baterie během navigace. Na základě těchto analýz může být uživatel poté upozorněn na
-nebezpečí vybití baterie v terénu.
-
-\vspace{0.1cm}
-\noindent
-\textbf{Spouštěč:} Uživatel využívá asistence při cestování.
-
-
-
 \usecase{Zobrazení doporučeného směru}{zobrazenismeru}
 \textbf{Aktéři:} Klient
 
@@ -1457,29 +1093,307 @@ neklepne na tlačítko známý směr, bude s upozorňováním pokračovat a nab�
 \textbf{Spouštěč:} Uživatel se během asistence cestování určitou dobu pohybuje jiným, než očekávaným směrem.
 
 
-\usecase{Spuštění asistence cestování po přiložení NFC tagy k telefonu}{prilozeninfc}
+\usecase{Přidání fotky}{pridanifotky}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Spustí se fotoaparát zařízení a uživatel může začít fotit. Jakmile pořídí
+fotografii, zobrazí se v aplikace okno pro zadání názvu fotky s dotazem pro uložení. Uživatel zadá název
+a klepnutím na potvrzovací tlačítko se fotka uloží mezi data aplikace a zobrazí mezi aktuálními fotografiemi
+na místě polohy uživatele v době pořízení fotografie. Uložení fotky lze vidět na obrázku~\ref{fig:pridanifotky}.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat fotku.
+
+\begin{figure}[H]
+\begin{minipage}{.5\textwidth}
+\centering
+                \includegraphics[scale=0.14]{img/screen/ulozenifotky.png}
+        \caption{Pojmenování fotky po pořízení}
+        \label{fig:pridanifotky}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+     \centering
+                     \includegraphics[scale=0.14]{img/screen/nahravaninahravky.png}
+             \caption{Přidání zvukové nahrávky}
+             \label{fig:pridaninahravky}
+
+       \end{minipage}
+\end{figure}
+
+\usecase{Odebrání fotky}{odebranifotky}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem zda chce fotku odebrat. Po klepnutí na
+potvrzovací tlačítko je fotka smazána z úložiště a odstraněna její miniatura z aktuální cesty.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou fotografii.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel podrží prst na miniatuře fotografie a vybere možnost smazat.
+
+\usecase{Zobrazení fotky}{zobrazenifotky}
 \textbf{Aktéři:} Klient
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Klient přiloží telefon k nálepce, kartě nebo čemukoliv jinému, co bylo použito
-jako NFC tag a obsahuje informace o cestě. Tato informace se přečte a spustí se aplikace se zapnutou
-asistencí cestování na cestu zapsanou na tagu.
+\textbf{Hlavní scénář:} Uživatel se přiblíží k místu pořízení fotografie, aplikace toto rozpozná
+a upozorní uživatele na přítomnost fotky, která se zobrazí na dobu, po kterou je uživatel nablízku.
+Přes spodní část fotky je zobrazen popisek, který této fotce dříve zadal asistent.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Prekondice:} Klient má k dispozici NFC tag, na který byla dříve zapsána informace o cestě.
+\textbf{Prekondice:} Uživatel má k dané cestě uloženou fotku.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Spouštěč:} Klient přiloží telefon k NFC tagu.
+\textbf{Spouštěč:} Uživatel se přiblíží místu pořízení fotky nebo klepne na miniaturu fotky.
+
+
+\usecase{Přidání zvukové nahrávky}{pridaninahravky}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí obrazovka s textem mluvte a zvuk se zaznamenává.
+Když je uživatel hotov, klepne na tlačítko stop a může nahrávce přidat název, který se bude později zobrazovat.
+Poté tlačítkem nahrávku uloží mezi data aplikace s přiřazenou aktuální polohou uživatele.
+Zobrazení nahrávání lze vidět na obrázku~\ref{fig:pridaninahravky}.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat nahrávku.
+
+
+\usecase{Odebrání zvukové nahrávky}{odebraninahravky}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí dotaz zda chce nahrávku opravdu smazat, po potvrzení
+se uložená nahrávka odstraní a zmizí její ikona.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou nahrávku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel podrží prst na ikoně nahrávky a vybere možnost smazat.
+
+\usecase{Přehrání uložené zvukové nahrávky}{prehraninahravky}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživatel se zapnutou asistencí cestování přiblíží místu,
+kde byla dříve za pomoci asistenta pořízena zvuková nahrávka. Uložená nahrávka se načte
+a začne se uživateli přehrávat. Zároveň se zobrazí popis nahrávky a tlačítko umožňující
+nahrávku přehrát znovu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel má k dané cestě uloženou zvukovou nahrávku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel se přiblíží k místu pořízení nahrávky nebo klepne na ikonu nahrávky.
+
+\usecase{Přidání poznámky}{pridanipoznamky}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí okno s textovým vstupem a vysune se klávesnice. Uživatel
+zadá textovou poznámku a po klepnutí na potvrzovací tlačítko se poznámka uloží s asociací k aktuální poloze
+uživatele. Okno přidávání poznámky lze vidět na obrázku~\ref{fig:pridanipoznamky}.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko přidat poznámku.
+
+\begin{figure}[H]
+\begin{minipage}{.5\textwidth}
+\centering
+                \includegraphics[scale=0.14]{img/screen/pridanipoznamky.png}
+        \caption{Přidání poznámky}
+        \label{fig:pridanipoznamky}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+  \centering
+                  \includegraphics[scale=0.14]{img/screen/zmenaprostredku.png}
+          \caption{Změna dopravního prostředku}
+          \label{fig:pridanizmenyprostredku}
+
+       \end{minipage}
+\end{figure}
+
+\usecase{Odebrání poznámky}{odebranipoznamky}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem na smazání poznámky. Po potvrzení se
+nahrávka smaže a zmizí ikona indikující nahrávku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou poznámku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel podrží prst na ikoně poznámky a vybere možnost smazat.
+
+\usecase{Zobrazení uložené poznámky}{zobrazenipoznamky}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživatel je při přiblížení se místu poznámky upozorněn a poznámka se zobrazí.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel má k dané cestě uloženou poznámku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel se přiblíží k místu pořízení poznámky nebo klepne na ikonu poznámky.
+
+\usecase{Přidání změny dopravního prostředku}{pridanizmenyprostredku}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Zobrazí se okno s nabídkou tlačítek s obrázkem dopravního prostředku.
+Uživatel může zároveň přidat ke změně dopravního prostředku popisný text. Po kliknutí na
+tlačítko s dopravním prostředkem se změna dopravního prostředku uloží s asociovanou aktuální polohou
+uživatele. Okno změny dopravního prostředku lze vidět na obrázku~\ref{fig:pridanizmenyprostredku}.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko s aktuálním dopravním prostředkem.
+
+\usecase{Odebrání změny dopravního prostředku}{odebranizmenyprostredku}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem na smazání změny dopravního prostředku.
+Po potvrzení se nahrávka smaže a zmizí ikona indikující nahrávku. Zobrazené nastavení údajů
+lze vidět na obrázku~\ref{fig:nastaveniudaju}.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel nahrává nebo edituje cestu a má uloženou změnu dopravního prostředku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel podrží prst na ikoně změny dopravního prostředku a vybere možnost smazat.
+
+
+\usecase{Upozornění na změnu dopravního prostředku}{upozorneniprostredek}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli je při přiblížení ke změně dopravního prostředku upozorněn,
+zobrazí se mu obrázek dopravního prostředku, do kterého má nastoupit nebo naopak vystoupit spolu
+s textem, který byl při nahrávání cesty zadán.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel má uloženo upozornění na změnu dopravního prostředku.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel se přiblíží k místu změny dopravního prostředku.
+
+
+\usecase{Nastavení údajů asistenta}{nastaveniudaju}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí obrazovka s nastavením údajů, kde může vyplnit své údaje.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko nastavení.
 
 \vspace{0.1cm}
 \noindent
 \textbf{Rozšíření:}
 \begin{itemize}
-  \item \nameref{pridanifotky}
+  \item \nameref{nastavenicisla}
+  \item \nameref{nastaveniemailu}
 \end{itemize}
+
+
+
+\usecase{Nastavení telefonního čísla asistenta}{nastavenicisla}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Editovatelné pole pro telefonní číslo se zvýrazní a vysune se numerická klávesnice.
+Uživatel zadá své telefonní číslo, které se automaticky formátuje do přívětivějšího formátu. Po ukončení
+editace je telefonní číslo automaticky uloženo. Pokud telefonní číslo neodpovídá formátu telefonních čísel
+v České republice, uživatel je na toto upozorněn a je vyzván k úpravě vstupu. Zadávání telefonního čísla
+vidíme na obrázku~\ref{fig:nastavenicisla}.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na editační pole s telefonním číslem asistenta.
+
+\begin{figure}[H]
+\begin{minipage}{.5\textwidth}
+\centering
+                \includegraphics[scale=0.14]{img/screen/nastaveni.png}
+        \caption{Spuštění nastavení údajů}
+        \label{fig:nastaveniudaju}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+\centering
+                \includegraphics[scale=0.14]{img/screen/nastaveniasistent.png}
+        \caption{Nastavení telefonního čísla}
+        \label{fig:nastavenicisla}
+    \end{minipage}
+\end{figure}
+
+\usecase{Nastavení emailu asistenta}{nastaveniemailu}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Editovatelné pole pro emailovou adresu se zvýrazní a vysune se klávesnice.
+Uživatel zadá svou emailovou adresu. Po ukončení editace je emailová adresa automaticky uložena.
+Pokud emailová adresa neodpovídá správnému formátu emailové adresy, uživatel je na toto upozorněn
+a vyzván k úpravě vstupu.
+
+
 
 \usecase{Vyvolání obrazovky pomoci}{pomoc}
 \textbf{Aktéři:} Klient
@@ -1557,6 +1471,57 @@ klienta v době odeslání emailu.
 \vspace{0.1cm}
 \noindent
 \textbf{Spouštěč:} Uživatel klepne na tlačítko odeslat email.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na editovatelné pole emailové adresy.
+
+
+\usecase{Nastavení zamčení editace}{nastavenizamceni}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí editovatelné pole, kde může zadat heslo pro zamčení editace
+obsahu aplikace. Pokud toto heslo nezadá, aplikace bude stále v módu editace a uložená data bude možné upravit.
+Uživatel zadá heslo, to bude uloženo a bude nyní vyžadováno pro zpřístupnění úprav cest, případně nastavení.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko nastavení zamčení.
+
+\usecase{Nastavení zálohování}{nastavenizalohovani}
+\textbf{Aktéři:} Asistent
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Uživateli se zobrazí výběr z listu zda chce zálohovat manuálně, jednou za den, týden
+nebo za měsíc. Uživatel vybere jednu z možností a podle výběru se naplánují příslušné akce.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Prekondice:} Uživatel má na zařízení nastaven účet umožňující zálohování.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel klepl na tlačítko nastavení zálohování.
+
+
+\usecase{Analýza spotřeby baterie}{analyzabaterie}
+\textbf{Aktéři:} Klient
+
+\vspace{0.1cm}
+\noindent
+\textbf{Hlavní scénář:} Během cestování se ukládají průběžně data o spotřebě beterie a délce trvání
+cesty. Data jsou poté spolu s předchozími záznamy statisticky analyzována a je odhadována a upřesňována
+očekávaná výdrž baterie během navigace. Na základě těchto analýz může být uživatel poté upozorněn na
+nebezpečí vybití baterie v terénu.
+
+\vspace{0.1cm}
+\noindent
+\textbf{Spouštěč:} Uživatel využívá asistence při cestování.
+
+
 
 \subsection{Grafický návrh}
 Cílem návrhu bylo používat v aplikaci konzistentní rozhraní a také jednoduchost všech uživatelských
