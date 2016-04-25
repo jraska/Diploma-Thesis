@@ -49,7 +49,7 @@ kteří aplikaci otestovali s klienty a poskytli důležité nápady pro její d
 
 \CzechAbstract{Cílem práce je analyzovat problémy, se kterými se setkávají lidé s mentálním postižením
 při jejich každodenním cestování, vymyslet a implementovat za pomoci dostupných
-nástrojů mobilní aplikaci na platformu Android, řešící tyto úkony
+nástrojů mobilnPí aplikaci na platformu Android, řešící tyto úkony
 a následně ji publikovat a otestovat.
 V rámci práce byla navržena a vyvinuta Android aplikace pro asistenci cestování, která by měla lidem
  s mentálním postižením usnadnit jejich obvyklé cesty, poskytnout jim prostředek pro jejich uchovávání
@@ -223,7 +223,7 @@ raději popsal záměr, co by chtěl udělat a systém sám vyhodnotí, která a
 hodí. Touto cestou se systém snaží vytvořit prostředí mnoha aplikací, které spolu navzájem komunikují,
 aniž by jedna o druhé přímo věděly a pomocí záměrů tak snižuje vazby mezi komponentami. Záměr může mít
 textově popsanou obecnou akci, blíže specifikovanou kategorii, typ, mnoho dalších parametrů až po konkrétní
-jméno komponenty, která má záměr obdržet, Pomocí těchto nastavení systém vyhodnotí nejlepší komponentu,
+jméno komponenty, která má záměr obdržet. Pomocí těchto nastavení systém vyhodnotí nejlepší komponentu,
 která má pro uživatele záměr vykonat. Při vyhodnocování záměrů systém využívá pro správný výběr
  tzv. filtry záměrů (\texttt{IntentFilter}).
 
@@ -258,7 +258,7 @@ Aktivita je komponenta aplikace, která obsahuje uživatelské rozhraní viditel
  spuštění, neboli filtry záměrů (\texttt{IntentFilter}) a tím deklarovat vstupní místa do aplikace.
  Nejčastěji je v aplikaci jedna aktivita figurující jako spouštěč (akce záměru \texttt{MAIN},
  kategorie \texttt{LAUNCHER}), která se při
-  instalaci vyhledá a vytvoří se pro ní spouštěcí ikona v seznamu nainstalovaných aplikací, další
+  instalaci vyhledá a vytvoří se pro ni spouštěcí ikona v seznamu nainstalovaných aplikací, další
   aktivity pak mohou mít explicitně definované vlastní filtry záměrů, případně nedefinovat žádný
   a tedy mít implicitně definovaný filtr na jméno třídy aktivity v kontextu balíčku aplikace.
 
@@ -788,7 +788,7 @@ Uživatel může v tu chvíli odejít z aplikace, případně navštívit její 
 aniž by ztratil právě nahrávaná data. Stejně tak po opuštění aplikace při nahrávání se do ní může vrátit
 klepnutím na zobrazenou notifikaci.
 
-Na mapě vidí uživatel dosud nahranou a uloženou cestu a případné přidané data.
+Na mapě vidí uživatel dosud nahranou a uloženou cestu a případně přidaná data.
 Klepnutím na tlačítko uložit se aktuálně nahraní data a média uloží, případně aktualizují.
 Pokud uživatel dokončil nahrávání cesty, klepne na tlačítko uložit a poté tlačítkem stop zastaví nahrávání,
 notifikace zmizí a cesta je v seznamu cest připravena pro spuštění asistence, případně následnou editaci.
@@ -1538,7 +1538,7 @@ Cílem návrhu bylo používat v aplikaci konzistentní rozhraní a také jednod
 prvků pro snadné pochopení pro uživatele se specifickými nároky. Většina uživatelských prvků je tak
 realizována jako velká tlačítka, která při podržení prstu na prvku zobrazí jeho textový popis.
 Jako hlavní směr návrhu uživatelského rozhraní byl zvolen Material design~\cite{materialdesign}, neboť se jedná o aktuální
-doporučení pro mobilní aplikace a je v něm kladen velký důrazná jednoduchost a konzistenci,
+doporučení pro mobilní aplikace a je v něm kladen velký důraz na jednoduchost a konzistenci,
 tedy naše požadavky. Velkou část této specifikace za nás řeší námi používaná knihovna Android Support,
 popsaná v sekci \ref{androidsupport}.
 
@@ -1969,12 +1969,12 @@ Pokud má uživatel v aplikaci uloženo číslo asistenta, po klepnutí na možn
 Pokud klient zvolí tuto možnost, vytvoří se SMS zpráva s textem, obsahující odkaz na Google mapy
 se zakódovaným ukazatelem na místo, kde se klient nacházel v odesílání zprávy. Asistent si tak po obdržení
 SMS zprávy může snadno zobrazit, kde se uživatel, který má problémy nachází. při vytváření a posílání zprávy
-dbá aplikace na ot, aby zpráva neobsahovala více než 160 znaků a klient tak zaplatil pouze za jednu SMS.
+dbá aplikace na to, aby zpráva neobsahovala více než 160 znaků a klient tak zaplatil pouze za jednu SMS.
 Aplikace využívá pro odeslání SMS systémové služby \texttt{SmsManager} \cite{androiddevelopers}.
 
 \subsubsection{Poslání emailu}
 Podobně jako při odesílání SMS je připravena zpráva s odkazem na Google mapy, která opět asistentovi
-umožní rychlý přístup k aktuální pozici uživatele. Vytvoří se object záměr pro odeslání emailu s předvyplněnou
+umožní rychlý přístup k aktuální pozici uživatele. Vytvoří se objekt záměr pro odeslání emailu s předvyplněnou
 adresou asistenta, pokud je tato adresa v nastavení a voláním metody \texttt{startActivity(emailIntent)}
 spustí systém emailovou aplikaci na zařízení pro odeslání
 emailu z klientova účtu. Spouštění emailové aplikace na zařízení nám umožňuje nepožadovat
@@ -2043,7 +2043,7 @@ Jelikož asistent může strávit poměrně dost času sběrem dat a jejich př�
 poškozením nebo pouze nechtěným smazáním či smazáním odinstalováním aplikace. Aplikace tudíž obsahuje mechanismus pro zálohu všech
 dat a to nahraných cest s poznámkami, upozorněními na změnu cesty, fotkami a nahrávkami.
 
-Pro fungující zálohování je nutné přiřadit uživateli identitu a tu rozpoznávat a ověřovat pro přiřazení případná zálohy,
+Pro fungující zálohování je nutné přiřadit uživateli identitu a tu rozpoznávat a ověřovat pro přiřazení případné zálohy,
 mít k dispozici webové úložiště, komunikovat s ním a porovnávat informace z něj získané s aktuálními daty,
 což je poměrně komplexní úkol a vlastní implementace by
 vyžadovala vlastní server, hosting a zejména registraci uživatele, což by v případě mentálně postižených klientů
@@ -2199,7 +2199,7 @@ implementaci kladen důraz a všechny potencionálně delší operace byly prov�
 uživatelského rozhraní, jelikož pro optimální uživatelský zážitek je potřeba stihnout vše ve vlákně
 uživatelského rozhraní do 16ms~\cite{perf}.
 
-Aplikace, která chce toto uživateli umožnit, musí do asynchronních operací přesunou většinu svých déle
+Aplikace, která chce toto uživateli umožnit, musí do asynchronních operací přesunout většinu svých déle
 trvajících operací, což bylo v našem případě zejména čtení a ukládání do databáze, jelikož se v tomto
  případě komunikuje se souborovým systémem, ale také například využívání API Google Play Services,
  kde může dojít k ověřování využívání API přes internet což už z principu znamená poměrně dlouhou
@@ -2226,15 +2226,15 @@ trvajících operací, což bylo v našem případě zejména čtení a ukládá
 
   Jak na obrázku \ref{fig:syncroutes} můžeme vidět, metoda \texttt{selectRoutesSync} zabírá 98.8\%
   z celého načítání a zobrazení dat a trvá více než 88ms, což sice nemusí být kritické,
-  nicméně se jedná pouze o čas na testovacíma zařízení a na některých pomalejších zařízeních
+  nicméně se jedná pouze o čas na testovacím zařízení a na některých pomalejších zařízeních
   s například starým typem SD karty může být tento čas mnohem vyšší a uživateli
   již může přivodit pocit pomalé odezvy. Na časové ose také můžeme identifikovat důvody pomalého
   zobrazení při prvním načtení. Při prvním volání se totiž v metodě \texttt{ClassLoader.loadClass}
-  načítají do paměti nahrávají do paměti všechny třídy potřebné pro načtení dat z databáze,
+  načítají do paměti všechny třídy potřebné pro načtení dat z databáze,
   což jsou v tomto případě naše mapovací třídy reprezentující data v paměti, třídy ORM knihovny
   DBFlow a také třídy samotného frameworku Android pro přístup k SQLite databázi. Významnou
   roli hraje také otevírání databáze, které proběhne v metodě \texttt{SQLiteOpenHelper.getWritableDatabase}
-  a opět probíhá při prvním přistupu k databázi a samotné načtení dat, probíhající v metodě
+  a opět probíhá při prvním přístupu k databázi a samotné načtení dat, probíhající v metodě
  \texttt{ModelLoaer.load} je v tomto případě minoritním konzumentem času vlákna.
 
  Pro optimalizaci bylo tedy využito asynchronního načtení, kde se pomocí využití knihovny RxAndroid
@@ -2352,7 +2352,7 @@ a nechali se navádět. Obecně byla zpětná vazba velmi pozitivní, aplikace b
 nápadů pro rozšíření aplikace jako využití i pro děti, kterým nahraje někdo dopředu cestu do školy, sdílení cest
 a turistické průvodce.
 Zpětná vazba dala podnět k úpravám popsaným výše a odhalila spoustu míst, kde si uživatel nebyl
-zcela jistý tím, co má povést a úpravy měly za cíl toto zlepšit.
+zcela jistý tím, co má provést a úpravy měly za cíl toto zlepšit.
 Několik uživatelů si například při nahrávání nebylo jistých, zda se cesta správně nahrává. Bylo proto implementováno
 zobrazování cesty s nahranými daty už během nahrávání, takže uživateli se ještě neuložená cesta ukazuje na
 mapě a aktualizuje se po obdržení každé nové GPS souřadnice.
@@ -2371,7 +2371,7 @@ která byla následně využita při vývoji. Aplikace byla publikována a otest
  získání zpětné vazby a vyladění nedostatků.
 
 Asistence cestování mentálně postižených se ukázala jako mimořádně zajímavý a také obtížný úkol.
-Pokusili jsme se poskytnout lidem s mentálním postižení a jejich asistentům nový nástroj, který by
+Pokusili jsme se poskytnout lidem s mentálním postižením a jejich asistentům nový nástroj, který by
 jim mohl v jejich často nelehké situaci pomoci a věříme, že některým také pomůže. Během práce byl získán
 nový rozhled o lidech kolem nás a také spoustu nových vývojářských zkušeností, které
 jistě budou brzy zúročeny v profesním životě.
