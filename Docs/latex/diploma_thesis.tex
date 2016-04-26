@@ -1721,7 +1721,7 @@ Schéma architektury MVC můžeme vidět na obrázku \ref{fig:mvc}.
 
 \begin{figure}[H]
         \centering
-                \includegraphics[scale=0.3]{img/mvc.png}
+                \includegraphics[scale=0.25]{img/mvc.png}
         \caption{Schéma architektury MVC}
         \label{fig:mvc}
 \end{figure}
@@ -1738,7 +1738,7 @@ za vrstvou modelu mohou být další vrstvy komunikace s databází, případně
 
 \begin{figure}[H]
         \centering
-                \includegraphics[scale=0.3]{img/mvp.png}
+                \includegraphics[scale=0.25]{img/mvp.png}
         \caption{Schéma architektury MVP použité v projektu}
         \label{fig:mvp}
 \end{figure}
@@ -1756,6 +1756,15 @@ pak publikuje tato data do vrstvy view, kde objekty view zobrazí příslušná 
 případě reprezentuje část view aktivity a je určen například k zobrazení nahrané cesty a všech informací,
 které k ní byly přidány.
 
+Dílčí funkce aplikace jsou následně popsány v modulech, jakými jsou implementovány a graficky můžeme tyto moduly vidět
+na obrázku \ref{fig:functions}.
+
+\begin{figure}[H]
+        \centering
+                \includegraphics[scale=0.21]{img/functions.png}
+        \caption{Schéma hlavních funkcí aplikace}
+        \label{fig:functions}
+\end{figure}
 
 \subsection{Nahrávání cesty}
 Během nahrávání cesty se ze systému získávají GPS souřadnice bodů, kterými uživatel se zařízením prochází
@@ -1835,29 +1844,24 @@ Ikony používané pro vyjádření druhů dopravních prostředků můžeme vid
   \caption{Ikona tramvaje}\label{fig:ictram}
 \endminipage
 \end{figure}
-
 Změna dopravního prostředku je také místo pro budoucí vylepšení, neboť je možné pomocí akcelerometru
 zařízení a rozpoznávání statistických vlastností hodnot zaznamenaných akcelerometrem určit tuto informaci
 automaticky bez účasti uživatele. Knihovna Google Play Services také podporuje API, které se pokouší
 poskytnout uživateli tuto informaci.
 
-
 \subsection{Zobrazení nahrané cesty}
-Nahranou cestu je možné uživateli na zařízení zobrazit a umožnit tak kontrolu a prohlížení dat.
+Nahranou cestu je možné na zařízení zobrazit a umožnit tak kontrolu a prohlížení dat.
 Pro zobrazení slouží fragment mapy ve kterém se zobrazí spojená čára propojující jednotlivé body.
-Vzhledem k nepřesnostem a šumu při nahrávání však jako cesta často vzniká velmi lomená čára a dojem z vykreslení
-na mapě není dobrý. Z tohoto důvodu byla implementováno vyhlazování čar pomocí prokládání aproximační
+Vzhledem k nepřesnostem a šumu při nahrávání však často vzniká velmi lomená čára a dojem z~vykreslení
+na mapě není dobrý. Proto bylo implementováno vyhlazování čar pomocí prokládání aproximační
 B-spline křivkou, algoritmem inspirovaným v~\cite{bspline}. B-spline křivka je počítána podle
 rovnice \ref{eq:bspline}, kde je výsledná křivka vytvořena vždy podle 4 sousedních bodů $P_0$, $P_1$,
 $P_2$ a $P_3$.
-
 \begin{equation}
 B(t)=\frac{(-P_0 + 3P_1 - 3P_2 + P_3)t^3}{6} + \frac{(P_0 - 2P_1 + P_2)t^2}{2} + \frac{(-P_0 + P_2)t}{2} + \frac{(P_0 + 4P_1 + P_2)}{6}
 \label{eq:bspline}
 \end{equation}
 \centerline{Zdroj v~\cite{bspline}}
-\vspace{0.2cm}
-
 
 Rovnice \ref{eq:bspline} se aplikuje zvlášť na GPS souřadnice zeměpisné šířky a délky s krokem $dt = 0.2$,
  což znamená, že ke každému bodu nám vznikne místo jednoho bodu pět aproximačních bodů a výsledná
@@ -2133,14 +2137,14 @@ uživatel musel aplikaci spustit, nalézt požadovanou cestu a klepnout na ikonk
 \begin{figure}[H]
 \begin{minipage}{.5\textwidth}
 \centering
-                \includegraphics[scale=0.4]{img/nfc-forum-logo.png}
+                \includegraphics[scale=0.35]{img/nfc-forum-logo.png}
         \caption{Logo organizace NFC Forum}
         \label{fig:nfcforumlogo}
         \centering Zdroj: \url{http://nfc-forum.org/}
 \end{minipage}
 \begin{minipage}{.5\textwidth}
 \centering
-                \includegraphics[scale=0.07]{img/nfc-icon.png}
+                \includegraphics[scale=0.065]{img/nfc-icon.png}
         \caption{Ikona NFC}
         \centering Zdroj: \url{https://materialdesignicons.com/}
         \label{fig:nfcicon}
@@ -2180,7 +2184,7 @@ jako naše aplikace a distribuovat tak škodlivý kód pod naším jménem.
 
 \begin{figure}[H]
         \centering
-                \includegraphics[scale=0.5]{img/playconsole.png}
+                \includegraphics[scale=0.6]{img/playconsole.png}
         \caption{Rozhraní publikování aplikace na Google Play}
         \label{fig:playconsole}
 \end{figure}
