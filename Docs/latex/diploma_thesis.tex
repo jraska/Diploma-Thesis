@@ -537,7 +537,7 @@ a díky tomu se za běhu vytvoří velmi rychle, což je jeden z hlavních důvo
 protože za běhu vůbec nepoužívá reflexi, která je u knihoven tohoto typu častá a která způsobuje v Android
 aplikacích značné výkonnostní problémy. Knihovny pro vkládání závislostí existovaly již mnohem dříve,
 jako například Spring nebo Guice, při použití na platformě Android byly však díky reflexi pomalé a mohlo snadno
-dojít k chybě za běhu. Oproti tomu Dagger 2 vytváří objektový graf během kompilace, zkontroluje zda je acyklický,
+dojít k chybě za běhu. Oproti tomu Dagger 2 vytváří objektový graf během kompilace, zkontroluje jestli je acyklický a
 všechny požadované závislosti je možné získat a v případě chyby nám neumožní aplikaci úspěšně zkompilovat,
 díky čemuž minimalizuje možné pády aplikace při nesprávném použití knihovny.
 
@@ -725,16 +725,16 @@ za jiný.
 
 \subsubsection{Uživatel Klient}
 Klient je osoba pro kterou je aplikace primárně určena a má mu pomoci vyřešit problém,
-v tomto případě pomoci z orientací při cestování. Může si prohlížet obsah a zejména ho
+v~tomto případě pomoci z orientací při cestování. Může si prohlížet obsah a zejména ho
 využívat při cestách v terénu. Uživatel by měl být upozorněn na všechny uložené a rozeznané
-data v závislosti na své pozici a měl by tak získat relevantní informace k tomu, kde se právě
+data v~závislosti na své pozici a měl by tak získat relevantní informace k~tomu, kde se právě
 nachází. Dále může aplikaci využít ke snadnému kontaktování svého asistenta.
 
 
 \subsubsection{Uživatel Administrátor}
 Administrátor může být spravující asistent, případně jiná osoba, která je oprávněna spravovat
 data nahraná ostatními asistenty a využívána klienty. Může tyto záznamy prohlížet a případně
- upravovat a ovlivnit tak co se kterému uživateli zobrazí a jakým způsobem bude asistence probíhat.
+ upravovat a ovlivnit tak, co se kterému uživateli zobrazí a jakým způsobem bude asistence probíhat.
 
 
 \subsection{Případy užití uživatelů}
@@ -967,7 +967,7 @@ a poznámky, které jsou reprezentovány svými příslušnými jednoduchými ik
 \end{figure}
 
 
-\usecase{Zapsání cesty do NFC tagu}{nfczapis}
+\usecase{Zapsání cesty do NFC tagu} {nfczapis}
 \textbf{Aktéři:} Asistent
 
 \vspace{0.1cm}
@@ -1142,7 +1142,7 @@ na místě polohy uživatele v době pořízení fotografie. Uložení fotky lze
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem zda chce fotku odebrat. Po klepnutí na
+\textbf{Hlavní scénář:} Uživateli se zobrazí okno s dotazem, zda chce fotku odebrat. Po klepnutí na
 potvrzovací tlačítko je fotka smazána z úložiště a odstraněna její miniatura z aktuální cesty.
 
 \vspace{0.1cm}
@@ -1195,7 +1195,7 @@ Zobrazení nahrávání lze vidět na obrázku~\ref{fig:pridaninahravky}.
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí dotaz zda chce nahrávku opravdu smazat, po potvrzení
+\textbf{Hlavní scénář:} Uživateli se zobrazí dotaz, zda chce nahrávku opravdu smazat, po potvrzení
 se uložená nahrávka odstraní a zmizí její ikona.
 
 \vspace{0.1cm}
@@ -1505,7 +1505,7 @@ Uživatel zadá heslo, to bude uloženo a bude nyní vyžadováno pro zpřístup
 
 \vspace{0.1cm}
 \noindent
-\textbf{Hlavní scénář:} Uživateli se zobrazí výběr z listu zda chce zálohovat manuálně, jednou za den, týden
+\textbf{Hlavní scénář:} Uživateli se zobrazí výběr z listu, zda chce zálohovat manuálně, jednou za den, týden
 nebo za měsíc. Uživatel vybere jednu z možností a podle výběru se naplánují příslušné akce.
 
 \vspace{0.1cm}
@@ -1557,7 +1557,7 @@ grafických prvků uživatelského rozhraní, které by měl vývojář použív
   stejně jako systém Android jednotku \texttt{dp}, což znamená v angličtině \uv{Device independent
   pixel} a jedná se o jednotku, která je relativní vůči skutečnému rozlišení zařízení a jejím účelem
   je zobrazení prvků uživatelského rozhraní v přibližně stejné reálné velikosti bez ohledu na skutečnou
-  hustotu pixelů obrazovky, které se zařazují do tříd hustoty a podle této třídy se rozhoduje,
+  hustotu pixelů obrazovky. Obrazovky se zařazují do tříd hustoty a podle této třídy se rozhoduje,
   kolik skutečných pixelů bude ve výsledku prvek zabírat. Tyto třídy jsou v současnosti
   \texttt{ldpi}, \texttt{hdpi}, \texttt{tvdpi}, \texttt{hdpi}, \texttt{xhdpi}, \texttt{xxhdpi} a \texttt{xxxhdpi}.
   Obdélník o šířce 100dp bude pak například v třídě rozlišení \texttt{ldpi} zabírat 75 pixelů (1dp = 0.75px),
@@ -1590,12 +1590,12 @@ grafických prvků uživatelského rozhraní, které by měl vývojář použív
 
 \subsubsection{Ikony}
 Pro akce aplikace jsou používány ikony ve stylu Material designu, které jsou vždy ploché
-a snaží se co nejvýstižněji popsat akci, kterou provádí. Ikony lze snadno nalézt na internetu
-\footnote{Například na \url{https://materialdesignicons.com/} (10.4.2016)}, případně
+a snaží se co nejvýstižněji popsat akci, kterou provádí. Ikony lze snadno nalézt
+na internetu\footnote{Například na \url{https://materialdesignicons.com/} (10.4.2016)}, případně
 importovat přímo v Android Studiu z oficiálních zdrojů Material designu.
 
-V případech těchto ikon je licence použití Creative Common Attribution 4.0 International License (CC-BY 4.0)
-\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/4.0/} (10.4.2016)}, což znamená,
+V případech těchto ikon je licence použití Creative Common Attribution 4.0 International License
+(CC-BY 4.0)\footnote{Popis licence na \url{http://creativecommons.org/licenses/by/4.0/} (10.4.2016)}, což znamená,
 že můžeme bez problému ikony zdarma použít, musíme pouze někde v aplikaci uvést, že tyto ikony
 používáme a v případě, že bychom si je upravili toto také uvést.
 Příklady používaných ikon můžeme vidět na obrázcích \ref{fig:record}, \ref{fig:camera} a \ref{fig:recordsound}.
@@ -1794,7 +1794,7 @@ Vytvoří se unikátní identifikátor fotografie a příslušný záznam asocio
 Do záznamu se zapíše aktuální pozice a v případě uložení cesty se tento záznam uloží spolu s cestou.
 
 Jelikož fotografie mohou zabírat poměrně velké množství paměti, vysílá se v případě mazání cesty po
-systémové sběrnici událost o mazání cesty na kterou čeká objekt promazávající všechny fotografie
+systémové sběrnici událost o mazání cesty, na kterou čeká objekt promazávající všechny fotografie
 a zvukové nahrávky, asociované s touto cestou.
 
 \subsubsection{Pořizování zvukových nahrávek}
@@ -1866,7 +1866,7 @@ B(t)=\frac{(-P_0 + 3P_1 - 3P_2 + P_3)t^3}{6} + \frac{(P_0 - 2P_1 + P_2)t^2}{2} +
 Rovnice \ref{eq:bspline} se aplikuje zvlášť na GPS souřadnice zeměpisné šířky a délky s krokem $dt = 0.2$,
  což znamená, že ke každému bodu nám vznikne místo jednoho bodu pět aproximačních bodů a výsledná
  vykreslená čára je poté hladší, jak můžeme vidět na obrázku \ref{fig:splinediff}, kde je žlutou barvou
- vykreslena čára hrubých dat, uložených u nahrané cesty a modrou barvou je vykreslena čára s aplikovanou
+ vykreslena čára hrubých dat, uložených u nahrané cesty. Modrou barvou je vykreslena čára s aplikovanou
  B-spline aproximací. Jak můžeme vidět, aproximace vyhladila ostré okraje zejména u změn směru.
 
 \begin{figure}[H]
@@ -1907,17 +1907,17 @@ můžeme vidět na obrázku \ref{fig:navigationactivitydependencies}, který bud
 \end{figure}
 
 Řídící třída \texttt{NavigationActivity} dostává při svém spuštění jako parametr identifikátor cesty,
-pro níž má asistenci spustit. Pomocí \texttt{TravelDataRepository} načte asynchronně data k této třídě
+pro níž má asistenci spustit. Pomocí třídy \texttt{TravelDataRepository} načte asynchronně data k této cestě
 do paměti a provede všechny úkony potřebné pro asistenci.
 
 \subsubsection{Sledování polohy a nabízení směru}
 Třída \texttt{NavigationActivity} volá metodu \texttt{startTracking} instance třídy \texttt{TrackingManager}
-ta začne na sběrnici událostí \texttt{EventBus} publikovat události o nové poloze, vždy, když jí
+a ta začne na sběrnici událostí \texttt{EventBus} publikovat události o nové poloze, vždy, když jí
 obdrží od systému.
 Instance třídy \texttt{Navigator} je na této systémové sběrnici registrována po zavolání metody \texttt{startNavigation}
 a reaguje na tyto události vyhledáváním nejbližšího uloženého bodu na nahrané cestě, ke kterému pomocí metody
-systémové třídy \texttt{Location} vypočítá směr (bearing),kterým by se uživatel měl vydat a který následně publikuje zpět do sběrnice
- jako událost o požadovaném směru, na kterou reaguje \texttt{NavigationActivity} zavoláním metody \texttt{setRotation}
+systémové třídy \texttt{Location} vypočítá směr (bearing), kterým by se uživatel měl vydat a který následně publikuje zpět do sběrnice
+ jako událost o požadovaném směru. Na tuto událost reaguje \texttt{NavigationActivity} zavoláním metody \texttt{setRotation}
  na instanci \texttt{View}, obsahující obrázek šipky ukazující daným směrem.
 
 Třída \texttt{Navigator} využívá k vyhledávání nejbližšího bodu návrhový vzor Stav (State~\cite{designpatterns}), jelikož
@@ -1927,7 +1927,7 @@ kdy se přibližuje k nahrané cestě (\texttt{ApproachingToRouteState}) a při 
 GPS pozici se prohledají body cesty a najde se nejbližší, ke kterému se spočítá vzdálenost a pokud
 je vzdálenost menší, než zadaná hranice, vyhodnotí se, že je uživatel již na cestě a stav se přepne
 na \texttt{OnRouteState}.
-V tomto stavu se při obdržení nové GPS pozice spočítá podle směru cesty bod, který je nejblíže aktuální pozici,
+V~tomto stavu se při obdržení nové GPS pozice spočítá podle směru cesty bod, který je nejblíže aktuální pozici,
 nicméně leží ve směru cestování. Opět se počítá vzdálenost k cestě a pokud překročí určitou hranici,
 přepne se \texttt{Navigator} zpět do stavu \texttt{ApproachingToRouteState} a začne uživatele vést zpět přímo k cestě.
 
@@ -1951,7 +1951,7 @@ Geofencing API\footnote{Dokumentace na http://developer.android.com/training/loc
 z knihovny Google Play Services, kde pomocí API knihovny připravíme události, které instalovaná knihovna
 na zařízení sama vyvolá, jakmile se přiblížíme k zadanému místu. V naší aplikaci se události knihovny
 při přiblížení k místům záznamů přeloží na události aplikace a přes systémovou sběrnici se publikují
-dále, kde na ně opět čeká třída \texttt{NavigationActivity}, která při obdržení události pomocí
+dále. Na tyto události čeká opět třída \texttt{NavigationActivity}, která při obdržení události pomocí
 systémové služby \texttt{Vibrator} zavibruje zařízením, v případě fotky zobrazí pomocí třídy
 \texttt{ImageDialog} dialogové okno s fotkou, u poznámky dialogové okno s textem a u zvukové nahrávky
 nahrávku přehraje třída \texttt{SoundsManager}, která podle identifikátoru vyhledá nahrávku v úložišti
@@ -1972,9 +1972,9 @@ Pokud má uživatel v aplikaci uloženo číslo asistenta, po klepnutí na možn
 \subsubsection{Odeslání SMS}
 Pokud klient zvolí tuto možnost, vytvoří se SMS zpráva s textem, obsahující odkaz na Google mapy
 se zakódovaným ukazatelem na místo, kde se klient nacházel v odesílání zprávy. Asistent si tak po obdržení
-SMS zprávy může snadno zobrazit, kde se uživatel, který má problémy nachází. při vytváření a posílání zprávy
+SMS zprávy může snadno zobrazit, kde se uživatel, který má problémy nachází. Při vytváření a posílání zprávy
 dbá aplikace na to, aby zpráva neobsahovala více než 160 znaků a klient tak zaplatil pouze za jednu SMS.
-Aplikace využívá pro odeslání SMS systémové služby \texttt{SmsManager} \cite{androiddevelopers}.
+Aplikace využívá pro odeslání SMS systémové služby \texttt{SmsManager}~\cite{androiddevelopers}.
 
 \subsubsection{Poslání emailu}
 Podobně jako při odesílání SMS je připravena zpráva s odkazem na Google mapy, která opět asistentovi
@@ -2010,7 +2010,7 @@ mít až 8 bytů~\cite{sqlitetypes}, což nám bez problému umožňuje do něj 
 Pro práci s databází byla využita knihovna DBFlow, popsaná v sekci \ref{dbflow}, díky které jsme pro vytvoření
 požadované databázové struktury pouze vytvořili třídy pro mapování, které jsme anotovali příslušnými
 anotacemi knihovny. Ukládání dat pak probíhá přes tyto objekty a k nim vygenerované adaptéry.
-Pro přístup k datům byl použit vzor Repositář~\cite{repository} (Repository), díky kterému
+Pro přístup k datům byl použit vzor Repozitář~\cite{repository} (Repository), díky kterému
 jsou všechny operace s daty prováděny přes jednu vrstvu a oddělují tak kód práce s daty od zbytku aplikace
 jedním rozhraním, za kterým se může nacházet námi implementovaná databázová vrstva, ale také lze toto
 pak snadno zaměnit za webovou službu, případně pouze čtení ze souboru.
@@ -2168,7 +2168,7 @@ Pro původní testování aplikace je využit alfa kanál pouze pro úzký okruh
 kanál pro širší testování a odhalení chyb, které stále nejsou mezi všemi uživateli, nicméně uživatelů je
 dost na to, aby se chyby projevily. Po tomto kroku následuje povýšení aplikace do produkce, kde je již
 veřejně přístupná a může si ji stáhnout i náhodný uživatel, který aplikaci v obchodě objeví. Ukázku
-vhledu publikování aplikace pro obchod Play můžeme vidět na obrázku \ref{fig:playconsole}.
+vzhledu publikování aplikace pro obchod Play můžeme vidět na obrázku \ref{fig:playconsole}.
 
 Existují také alternativní obchody, ze kterých si lze stáhnout aplikace, z nichž největší je obchod Amazonu.
 Podíl těchto obchodů je minoritní a pokud uživatel chce tyto alternativní obchody používat,
