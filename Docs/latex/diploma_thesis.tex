@@ -49,7 +49,7 @@ kteří aplikaci otestovali s klienty a poskytli důležité nápady pro její d
 
 \CzechAbstract{Cílem práce je analyzovat problémy, se kterými se setkávají lidé s mentálním postižením
 při jejich každodenním cestování, vymyslet a implementovat za pomoci dostupných
-nástrojů mobilnPí aplikaci na platformu Android, řešící tyto úkony
+nástrojů mobilní aplikaci na platformu Android, řešící tyto úkony
 a následně ji publikovat a otestovat.
 V rámci práce byla navržena a vyvinuta Android aplikace pro asistenci cestování, která by měla lidem
  s mentálním postižením usnadnit jejich obvyklé cesty, poskytnout jim prostředek pro jejich uchovávání
@@ -71,7 +71,7 @@ Android application for travel asistance was designed and developed as part of t
 with mental disabilities make their usual travels easier, provide them tool for saving them and speed up
 communication with their assistant. Application uses GPS system for assistace, lot of actual libraries
 and methodologies for effective implementation and NFC technology was used for faster and easier input actions.
-Application was published to Google Play store and then tested in city environment, where the users can benefit
+Application was published to Google Play store and then tested in urban environment, where the users can benefit
 from it. Implementation is completely open source and the code could be source for its next development and
 broader usage.
 }
@@ -103,6 +103,7 @@ oddělení rozhraní a obrácení závislostí})}
 \AddAcronym{IoC}{Inversion of control (\textit{Obrácení závislostí})}
 \AddAcronym{MVC}{Model View Controller (\textit{Typ architektury aplikací})}
 \AddAcronym{MVP}{Model View Presenter (\textit{Typ architektury aplikací})}
+\AddAcronym{JAR}{Java Archive (\textit{Archiv souborů jazyka Java})}
 
 
 \ThesisAssignmentImagePath{img/assignment}
@@ -195,7 +196,7 @@ Jako téma diplomové práce bylo proto zvoleno vytvoření mobilní aplikace pr
 
 \section{Platforma Android}
 Systém Android byl poprvé vypuštěn do světa v roce 2008 v útrobách zařízení T-Mobile~G1~\cite{androidcentral}
-a~díky své dostupnosti a otevřenému kódu rychle rozšířil a v současné době je to zcela jasně nejvíce využívaný mobilní
+a~díky své dostupnosti a otevřenému kódu se rychle rozšířil a v současné době je to zcela jasně nejvíce využívaný mobilní
 operační systém, který se stále bouřlivě vyvíjí. Jeho otevřenost je zároveň pro vývojáře i jedním z jeho problémů,
 neboť výrobci si systém rádi upravují, v důsledku čehož se může aplikace na některých zařízeních chovat
 neočekávaně a často se lze setkat se situací, že určitá funkce aplikace nefunguje správně právě na
@@ -203,11 +204,11 @@ jednom konkrétním typu zařízení.
 
 Díky své rozšířenosti a dostupnosti se platforma Android nabízí jako dobrá možnost pro implementaci
 aplikace na podporu cestování, neboť bude pro klienty snadno dostupná na zařízeních všech cenových
-kategorií, kam si je mohou stáhnout přes obchod Google Play, kde může bude aplikace publikována.
+kategorií, kam si je mohou stáhnout přes obchod Google Play, kde bude aplikace publikována.
 Systém nabízí podporu pro velké množství různých senzorů, které dnešní mobilní zařízení obsahují
 a tak je čtení dat z akcelerometru nebo zaznamenávání GPS řešeno pouze voláním příslušných metod
 rozhraní frameworku. Během doby existence systému se objevilo také mnoho rozšiřujících knihoven
-pro zjednodušení práce programátora umožnění vývoj aplikace efektivněji. Naše aplikace se
+pro zjednodušení práce programátora umožňujících vyvíjet aplikace efektivněji. Naše aplikace se
 za pomoci těchto nástrojů pokusí zjednodušit mentálně postiženým klientům cestování po svých
 obvyklých cestách. V této kapitole se seznámíme se základním programovým rozhraním systému, představíme
 si použité vývojářské nástroje a také využité knihovny.
@@ -249,7 +250,7 @@ fotoaparátu. Dále deklaruje podporované verze systému a v neposlední řadě
 aplikace, jako například aktivity a služby a tím definuje všechny vstupní body aplikace a podmínky
 jejich spuštění pomocí záměrů. Při publikování aplikace
 parsuje Google Play tento soubor pro zobrazení informací pro záznam v obchodě a podobně instalační služba
-systému Android, pro zobrazení ikony v seznamu aplikací a také vytvoření uživatele podle identifikátoru
+systému Android pro zobrazení ikony v seznamu aplikací a také vytvoření uživatele podle identifikátoru
 aplikace a přiřazení přístupových práv pro konkrétní deklarovaná povolení.
 
 \subsubsection{Aktivita}
@@ -258,7 +259,7 @@ Aktivita je komponenta aplikace, která obsahuje uživatelské rozhraní viditel
  spuštění, neboli filtry záměrů (\texttt{IntentFilter}) a tím deklarovat vstupní místa do aplikace.
  Nejčastěji je v aplikaci jedna aktivita figurující jako spouštěč (akce záměru \texttt{MAIN},
  kategorie \texttt{LAUNCHER}), která se při
-  instalaci vyhledá a vytvoří se pro ni spouštěcí ikona v seznamu nainstalovaných aplikací, další
+  instalaci vyhledá a vytvoří se pro ni spouštěcí ikona v seznamu nainstalovaných aplikací. Další
   aktivity pak mohou mít explicitně definované vlastní filtry záměrů, případně nedefinovat žádný
   a tedy mít implicitně definovaný filtr na jméno třídy aktivity v kontextu balíčku aplikace.
 
@@ -275,7 +276,7 @@ Celý životní cyklus aktivity můžeme vidět na obrázku \ref{fig:activitylyf
 často o první diagram, který vývojář pro platformu Android vidí.
 Velmi častým problémem při vývoji je držení dat a podobných věci přímo v aktivitách,
 neboť ta může být kdykoliv zničena systémem, například
-pokud uživatel pouze otočí obrazovku a vyžaduje se v tu chvíli nové uživatelské rozhraní. Pokud v takové chvíli
+pokud uživatel pouze otočí obrazovku a vyžaduje se v té chvíli nové uživatelské rozhraní. Pokud v takové chvíli
 někdo drží stále na aktivitu referenci, zničená instance aktivity není uvolněna z paměti a vzniká únik paměti.
 Tento problém se stal ve světě vývojářů Androidu tak častý, že přímo pro jeho prevenci byla vytvořena knihovna
 LeakCanary\footnote{\url{https://github.com/square/leakcanary} (10.4.2016)}.
@@ -301,7 +302,7 @@ držení mapy ve fragmentu předcházíme novému načtení mapy při rotaci a t
 
 \subsubsection{Služby}
 Služby jsou určeny pro operace, které nejsou viditelné uživateli, případně asynchronní operace, které se mají
-provést bez vazby na rozhraní. Služby mají také svůj životní cyklus, nicméně odlišný a jednodušší,
+provést bez vazby na uživatelské rozhraní. Služby mají také svůj životní cyklus, nicméně odlišný a jednodušší,
 než aktivity. Instance služeb, dědících ze systémové třídy \texttt{Service}, opět vytváří
 systém a spravuje je po dobu jejich existence,
 přičemž vývojář spouští služby záměry a pomocí nich jim předává také například data ke zpracování.
@@ -331,14 +332,14 @@ a dodnes se změny pro IntelliJ dostávají postupně do Android Studia a naopak
 
 S příchodem vlastního vývojového prostředí se vývoj značně zjednodušil a tým Android Studia neustále vylepšuje integraci s SDK,
 nástroji pro sestavení, neboli build projektu a pluginy, kterých je celá řada a ten hlavní je Android Gradle Plugin
-nad open source build systémem Gradle\footnote{http://gradle.org/ (24.4.2016)}, umožňujícímu definici buildu v Groovy skriptech s možností využití Javy,
+nad open source build systémem Gradle\footnote{http://gradle.org/ (24.4.2016)}. Ten umožňuje definici buildu v Groovy skriptech s možností využití Javy,
  pomocí něhož se celý projekt sestavuje a vytváří se aplikace se všemi dílčími kroky, které jsou pro to potřeba.
 Pomocí Gradle pluginu se do procesu sestavení tyto kroky vloží, umožní se jejich konfigurace pomocí Gradle skriptů
 a Android Studio slouží pouze jako obálka nad běžícím Gradle buildem. Vývojové prostředí řeší pouze asistenci vývojáři,
 napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však samotný build, který přenechává Gradlu a spuštění buildu
  z příkazové řádky je naprosto ekvivalentní buildu ve vývojovém prostředí, což znamená velkou výhodu při sestavování aplikace
  v cizích prostředích, například build serveru.
- Gradle také poskytuje velice užitečný mechanismus jménem Gradle Wrapper, což je spustitelný Java jar archiv,
+ Gradle také poskytuje velice užitečný mechanismus jménem Gradle Wrapper, což je spustitelný Java JAR archiv,
  který je spolu s několika skripty uložen spolu s projektem a při spouštění buildu přes tyto skripty stáhne v rámci
  buildu nakonfigurovanou distribuci Gradlu na spouštějící stanici. Při distribuci kódu tedy stačí pouze spustit
  skript a vývojář se nemusí starat o jakoukoliv komplikovanou instalaci build systému.
@@ -356,9 +357,8 @@ napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však
  ve kterém je u uživatele a snáze tak najít a vyřešit problém.
 
  \subsubsection{Průběžná integrace}
- Díky hostování projektu na GitHubu bylo možné snadné využití službu Travis CI
- \footnote{Službu a historii buildů pro aplikaci Asistence cestování si můžeme prohlédnout na \url{https://travis-ci.org/jraska/Diploma-Thesis} (10.4.2016).}
-,
+ Díky hostování projektu na GitHubu bylo možné snadné využití službu
+ Travis CI\footnote{Službu a historii buildů pro aplikaci Asistence cestování si můžeme prohlédnout na \url{https://travis-ci.org/jraska/Diploma-Thesis} (10.4.2016).},
  která se zaregistruje pro repositář
  a při každé změně spustí build celého projektu v uzavřeném prostředí, díky čemuž dokážeme okamžitě
  odhalit jakékoliv problémy, které se na naší stanici nemusí projevit, nicméně mimo naše prostředí ano.
@@ -377,7 +377,7 @@ napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však
   Gradle skriptů projektu, případně souborem \texttt{lint.xml}, pomocí něhož lze některé chyby
   vynechat, případně změnit jejich prioritu například z chyby na varování.
   Lint dokáže odhalit spoustu chyb jako třeba zapomenutí potvrzení při editaci nastavení uživatele,
-  nezavření databázového kurzoru, přítomnost nepoužitých obrázků v projektu a podobně.
+  neuzavření databázového kurzoru, přítomnost nepoužitých obrázků v projektu a podobně.
   Jeho další velkou výhodou je rozšiřitelnost, kde si každý může napsat vlastní Lint pravidla pro to, na co chce být upozorněn
   a v případě knihoven začne Android Studio jejich pravidla automaticky používat a zvýrazňovat problémy uživateli
   přímo v editoru.
@@ -389,8 +389,8 @@ Dalším použitým nástrojem je služba \textbf{Codacy}\footnote{\url{https://
 automatizována analýza kódu vyhledávající potenciální chyby a problémy, která se spustí po každé změně v kódu
 díky opět snadné integraci s GitHubem. Služba odhaluje problémy jako nepoužívaný kód, příliš složité
 třídy nebo metody, známé programátorské chyby či bezpečnostní rizika. Po analýze projekt oznámkuje podle
-množství nalezených problémů v poměru k množství analyzovaného kódu. Aktuální analýzu projektu si můžeme prohlédnout
-na \url{https://www.codacy.com/app/josef-raska/Diploma-Thesis/dashboard} (29.4.2016).
+množství nalezených problémů v poměru k množství analyzovaného kódu.\footnote{Aktuální analýzu projektu si můžeme prohlédnout
+na \url{https://www.codacy.com/app/josef-raska/Diploma-Thesis/dashboard} (29.4.2016).}
 
 \subsection{Použité knihovny}
 Jak již bylo zmíněno, Android používá velké množství vývojářů a pro jejich potřebu vzniklo velké množství
@@ -433,7 +433,7 @@ operace spouští. Jako hlavní vlákno totiž slouží vlákno uživatelského 
 nemělo provádět žádné, byť jen trochu náročné operace, neboť by se vše mělo stihnout během 16ms~\cite{perf}.
 V aplikacích i knihovnách toto vede k obrovskému množství asynchronních zpětných volání, které mají různá jména,
 každá knihovna si je řeší po svém, není nad nimi kontrola a výsledkem je nepřehledný asynchronní kód,
-ve kterém se lze jen složitě orientovat. Díky RxAndroid a jejich implementaci plánovačů, lze rozhodnutí,
+ve kterém se lze jen složitě orientovat. Díky RxAndroid a jejich implementaci plánovačů lze rozhodnutí,
 na jakých vláknech bude operace spuštěna a na kterém vlákně bude doručen výsledek nechat na klientovi třídy
 a tím pádem například řetězit synchronní volání, pokud jsme již v asynchronním vlákně a zejména zajistit,
 že výsledek obdržíme ve vlákně uživatelského rozhraní. Typická ukázka využití této vlastnosti
@@ -462,8 +462,8 @@ Knihovnu můžeme nalézt na \url{https://github.com/ReactiveX/RxAndroid} (10.4.
 \subsubsection{Retrolambda}
 Lambda výrazy jsou mocným nástrojem a příjemnou pomůckou každého jazyka, který je podporuje a redukují
 často dlouhé bloky kódu do kratších, přehlednější funkcí. Jelikož Android kvůli zpětné
-kompatibilitě podporuje pouze Javu 7
-\footnote{Vyjma \texttt{try-with-resources}, které je podporováno až od verze Androidu 5.0.}
+kompatibilitě podporuje pouze Javu 7\footnote{Vyjma \texttt{try-with-resources},
+které je podporováno až od verze Androidu 5.0.}
 a lambda výrazy byly do Javy přidány až ve verzi 8, nemůže tyto funkce vývojář využívat,
 což vede často k velkému množství anonymních tříd pro zpětné volání mnoha metod, jako typicky klepnutí,
 vrácení načtených asynchronních dat nebo při registraci posluchače u výše zmíněné knihovny RxAndroid.
@@ -538,8 +538,8 @@ protože za běhu vůbec nepoužívá reflexi, která je u knihoven tohoto typu 
 aplikacích značné výkonnostní problémy. Knihovny pro vkládání závislostí existovaly již mnohem dříve,
 jako například Spring nebo Guice, při použití na platformě Android byly však díky reflexi pomalé a mohlo snadno
 dojít k chybě za běhu. Oproti tomu Dagger 2 vytváří objektový graf během kompilace, zkontroluje zda je acyklický,
-všechny požadované závislosti je možné získat a v případě aplikace nám neumožní aplikaci úspěšně zkompilovat,
-díky čemuž minimalizuje možné pády aplikace v případě nesprávného použití knihovny.
+všechny požadované závislosti je možné získat a v případě chyby nám neumožní aplikaci úspěšně zkompilovat,
+díky čemuž minimalizuje možné pády aplikace při nesprávném použití knihovny.
 
 Dokumentaci a popis knihovny můžeme nalézt na \url{http://google.github.io/dagger/} (10.4.2016).
 
@@ -553,7 +553,7 @@ vygenerovat znovu, aby zůstaly aktuální, což může vést k chybám.
 Lombok pomocí anotací u příslušné třídy vygeneruje během kompilace obvyklých metod a díky Lombok
 pluginu do Android Studia nám vývojové prostředí tyto generované metody automaticky nabízí a díky tomu,
 že se metody generují během každé kompilace, generované metody zůstanou vždy aktuální. Jednoduchá datová
-třída se dvěma vlastnostmi z ukázky kódu \ref{lombokshowcase} se všemi korektně napsanými implementacemi
+třída se dvěma vlastnostmi z ukázky kódu~\ref{lombokshowcase} se všemi korektně napsanými implementacemi
 metod objektu \texttt{equals, hashCode, toString} a přístupových metod má délku kolem 50 řádků, nicméně
 díky tomuto nástroji lze totožnou funkcionalitu napsat jen na 5 řádků, jak vidíme na ukázce \ref{lombokshowcase},
 navíc s benefitem, že pro přidání další vlastnosti do všech metod stačí přidat pouze řádek vlastnosti
@@ -606,14 +606,14 @@ Knihovnu můžeme najít na \url{http://jakewharton.github.io/butterknife/} (10.
 Jedné se o knihovnu pro objektově relační mapování objektů pro databáze SQLite, které se v
  Androidu používají jako výchozí. Práce s touto databází pomocí API Androidu není
  složitá, nicméně kód je poměrně zdlouhavý a pro přečtení nebo uložení objektu je potřeba
- mnoho řádek kódu. Pro objektově relační mapování existuje mnoho knihoven, najít mezi nimi takovou,
+ mnoho řádek kódu. Pro objektově relační mapování existuje mnoho knihoven, najít mezi nimi však takovou,
  která by vyhověla všem požadavkům, je velice obtížné. Velká většina těchto knihoven využívá reflexi,
  která svou časovou náročností může překonat i operace zápisu a čtení z databáze.
  DBFlow se snaží tento problém řešit generací kódu pro čtení a zápis dat pomocí anotací nad objekty
  a jejich vlastnostmi, následně jejich ukládání řeší pomocí adaptérů vygenerovaných pro každou anotovanou
  třídu a SQL dotazy se píší pomocí generovaných metod a metod knihovny. DBFlow není také ideální
   a nutí vývojáře používat jejich bázovou třídu pro mapované objekty, případně implementovat vlastní
-  adaptér a některé databázové vazby se pomocí anotací nedefinují nejlépe, nicméně pro naše řešení prezentované
+  adaptér a některé databázové vazby se pomocí anotací nedefinují nejlépe. Pro naše řešení však tato
   knihovna zcela vyhovuje a vygenerovaný kód práce s databází se velice podobá tomu, který by vývojář
   sám musel psát. Ukázka sestavování SQL dotazů pomocí DBFlow můžeme vidět na ukázce \ref{dbflowquery}.
 
