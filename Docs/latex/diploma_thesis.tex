@@ -482,7 +482,7 @@ pro každé volání.
 
 Ukázku odstranění anonymní třídy můžeme vidět na ukázce kódu \ref{useretrolambda}.
 
-\begin{lstlisting}[label=useretrolambda,caption=Odstrnění kódu anonymní třídy pomocí knihovny Retrolambda]
+\begin{lstlisting}[label=useretrolambda,caption=Odstranění kódu anonymní třídy pomocí knihovny Retrolambda]
    saveButton.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
@@ -1700,7 +1700,7 @@ GIMP\footnote{\url{https://www.gimp.org/} (10.4.2016)} je široce používaný n
 \section{Implementace}
 Po vytvoření zadání a návrhu bylo třeba tyto myšlenky přeměnit ve funkční aplikaci. V této kapitole si popíšeme,
 jak byly jednotlivé funkcionality aplikace implementovány a jak byly za tímto účelem použity dříve diskutované nástroje a knihovny.
-Nejprve si projdeme obecnou architekruru aplikace a následně popíšeme způsob implementace jednotlivých funkcionalit.
+Nejprve si projdeme obecnou architekturu aplikace a následně popíšeme způsob implementace jednotlivých funkcionalit.
 
 \subsection{Architektura}
 Android samotný se snaží uživateli nabízet implementaci Architektury Model View Controller~\cite{bestpracticesfuturice}, kde
@@ -1726,7 +1726,7 @@ Schéma architektury MVC můžeme vidět na obrázku \ref{fig:mvc}.
         \label{fig:mvc}
 \end{figure}
 
-Díky specifikům platformy existuje mnoho odlišných přístupů, které se snaží platofrmě Android přizpůsobit
+Díky specifikům platformy existuje mnoho odlišných přístupů, které se snaží platformě Android přizpůsobit
 tradiční architektury jako již zmíněný Model View Controller, případně podobný Model View, View Model
 nebo Model View Presenter (MVP) a existuje mnoho projektů, která se snaží ukázat adaptaci těchto modelů
 pro Android.
@@ -2194,7 +2194,7 @@ jako naše aplikace a distribuovat tak škodlivý kód pod naším jménem.
 Po nasazení aplikace bylo potřeba identifikovat a odladit všechny možné problémy a nedostatky.
 Aplikace byla pomocí alfa a beta kanálů obchodu Google Play
 distribuována testovacím uživatelům, kteří se po otevření zaslaného odkazu stali testery.
-V této kapitole si představímeúpravy spojené s jejich zpětnou vazbou a dojmy testerů.
+V této kapitole si představíme úpravy spojené s jejich zpětnou vazbou a dojmy testerů.
 
 \subsection{Optimalizace výkonu}
 Jedno z pravidel programování je neoptimalizovat zbytečně dopředu na základě odhadu,
@@ -2367,7 +2367,7 @@ představa vývojáře o myšlení uživatele může být často velmi mylná.
 
 
 \section{Závěr}
-V práci jsme nejprve představili platormu Android spolu s dalšími použitými nástroji, které nám pomohly při vývoji.
+V práci jsme nejprve představili platformu Android spolu s dalšími použitými nástroji, které nám pomohly při vývoji.
 Poté jsme ukázali průběh návrhu mobilní aplikace od diskuze zadání po funkční a grafický návrh.
 Následně byly vybrané části implementovány za použití mnoha knihoven a technik
 pro efektivní vývoj a stabilní Android aplikace. Byla diskutována architektura a metodika vývoje Android aplikace,
@@ -2384,7 +2384,7 @@ V současné době se jedná o pokračování vývoje této aplikace, jako souč
 a aplikace tak bude dále rozvíjena a cílem by mělo být ji v budoucnu nabídnout jako komerční produkt.
 
 V problematice této mobilní aplikace pro asistenci cestování je stále spoustu věcí k vylepšování.
-Jako návrhy pro vylepšení mohou být přidání více telefonních čísel na asistenta a implemetaci automatického
+Jako návrhy pro vylepšení mohou být přidání více telefonních čísel na asistenta a implementaci automatického
 přesměrování mezi nimi. Dále implementace zablokování veškeré editace za účelem zamezení nechtěným
 úpravám uživatelem a umožnit asistentům definovat jejich vlastní texty jako obsah automatickým textových zpráv.
 Při používání aplikace se stále objevují nové nápady na použití a budou dále konzultovány.
