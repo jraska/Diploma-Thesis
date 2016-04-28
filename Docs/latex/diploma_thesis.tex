@@ -348,7 +348,7 @@ napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však
  Jako systém verzování byl použit Git, který je jeden z nejrozšířenějších verzovacích systémů a služba
  GitHub\footnote{Stránku projektu na GitHubu lze nalézt na
         \url{https://github.com/jraska/Diploma-Thesis} (29.4.2016).},
- která podporuje zdarma hostování open source repositářů s nabídkou mnoha služeb okolo, mimo jiné snadnou integraci se službou
+ která podporuje zdarma hostování open source repozitářů s nabídkou mnoha služeb okolo, mimo jiné snadnou integraci se službou
  Travis CI, která byla použita pro průběžnou integraci projektu. Díky službě GitHub je zajištěno zálohování kódu
  během vývoje a díky Gitu je vyřešeno verzování se všemi výhodami, které to s sebou přináší, jako možnost vrátit se
  ke konkrétní verzi projektu, porovnávat a sledovat změny, případně vyvíjet několik funkcionalit nezávisle na sobě.
@@ -359,14 +359,14 @@ napovídání, analýzu kódu a celkově vývojářovo pohodlí, neřeší však
  \subsubsection{Průběžná integrace}
  Díky hostování projektu na GitHubu bylo možné snadné využití službu
  Travis CI\footnote{Službu a historii sestavení pro aplikaci Asistence cestování si můžeme prohlédnout na \url{https://travis-ci.org/jraska/Diploma-Thesis} (10.4.2016).},
- která se zaregistruje pro repositář
+ která se zaregistruje pro repozitář
  a při každé změně spustí sestavení celého projektu v uzavřeném prostředí, díky čemuž dokážeme okamžitě
  odhalit jakékoliv problémy, které se na naší stanici nemusí projevit, nicméně mimo naše prostředí ano.
- Služba stáhne veškerý kód z repositáře, nakonfiguruje uzavřený virtuální kontejner, nainstaluje Javu, Android SDK,
+ Služba stáhne veškerý kód z repozitáře, nakonfiguruje uzavřený virtuální kontejner, nainstaluje Javu, Android SDK,
  případně další komponenty a spustí sestavení projektu, v rámci něhož se spouští i unit testy. Služba se konfiguruje pomocí
- soubor \texttt{travis.yml} v kořenovém adresáři repositáře, v němž je specifikováno, že se projekt má sestavit jako Android projekt,
+ soubor \texttt{travis.yml} v kořenovém adresáři repozitáře, v němž je specifikováno, že se projekt má sestavit jako Android projekt,
  jaký software se do prostředí má před každým během nainstalovat a co se má stát v případě chyby. Travis CI po stažení
- repositáře tento soubor vyhledá a na základě jeho obsahu provede požadované akce.
+ repozitáře tento soubor vyhledá a na základě jeho obsahu provede požadované akce.
 
  \subsubsection{Statická analýza kódu}
 
