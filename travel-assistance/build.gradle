@@ -64,22 +64,25 @@ def dbflow_version = "3.0.0-beta5"
 dependencies {
   compile project(':core')
 
-  compile 'com.android.support:appcompat-v7:23.3.0'
-  compile 'com.android.support:design:23.3.0'
+  compile 'com.android.support:appcompat-v7:24.0.0'
+  compile 'com.android.support:design:24.0.0'
   compile 'com.google.android.gms:play-services-maps:8.4.0'
   compile 'com.google.android.gms:play-services-location:8.4.0'
   compile 'com.google.android.gms:play-services-drive:8.4.0'
-  compile 'com.jakewharton:butterknife:7.0.1'
-  compile 'com.jakewharton.timber:timber:4.1.1'
+
+  compile 'com.jakewharton.timber:timber:4.1.2'
   compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
   compile 'com.jraska:console:0.4.1'
   compile 'com.jraska:console-timber-tree:0.4.1'
-  compile 'io.reactivex:rxandroid:1.1.0'
-  compile 'com.squareup.okio:okio:1.6.0'
+  compile 'io.reactivex:rxandroid:1.2.1'
+  compile 'com.squareup.okio:okio:1.9.0'
 
-  apt 'com.google.dagger:dagger-compiler:2.0.2'
+  compile 'com.jakewharton:butterknife:8.2.0'
+  apt 'com.jakewharton:butterknife-compiler:8.2.0'
 
-  provided "org.projectlombok:lombok:1.16.6"
+  apt 'com.google.dagger:dagger-compiler:2.5'
+
+  provided "org.projectlombok:lombok:1.16.8"
 
   apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
   compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
@@ -93,5 +96,5 @@ dependencies {
   testCompile 'org.mockito:mockito-core:1.10.19'
 
   testCompile 'com.squareup.assertj:assertj-android:1.1.1'
-  testCompile 'com.android.support:support-annotations:23.3.0' //to fix dependency conflicts
+  testCompile 'com.android.support:support-annotations:24.0.0' //to fix dependency conflicts
 }
