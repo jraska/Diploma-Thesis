@@ -22,7 +22,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
@@ -70,15 +70,15 @@ public class RouteRecordActivity extends BaseActivity {
 
   //region Fields
 
-  @Bind(R.id.record_btnStartRecording) View _startTrackingButton;
-  @Bind(R.id.record_btnStopRecording) View _stopTrackingButton;
-  @Bind(R.id.record_btnSaveRoute) View _saveRouteButton;
-  @Bind(R.id.record_btnChangeTransportType) ImageView _changeTransportButton;
-  @Bind(R.id.record_btnAddPhoto) View _takePhotoButton;
-  @Bind(R.id.record_btnAddTextNote) View _addNoteButton;
-  @Bind(R.id.record_btnAddVoice) View _addSoundButton;
-  @Bind(R.id.record_route_title_input) EditText _titleInput;
-  @Bind(R.id.record_set_icon_view) ImageView _pickIconView;
+  @BindView(R.id.record_btnStartRecording) View _startTrackingButton;
+  @BindView(R.id.record_btnStopRecording) View _stopTrackingButton;
+  @BindView(R.id.record_btnSaveRoute) View _saveRouteButton;
+  @BindView(R.id.record_btnChangeTransportType) ImageView _changeTransportButton;
+  @BindView(R.id.record_btnAddPhoto) View _takePhotoButton;
+  @BindView(R.id.record_btnAddTextNote) View _addNoteButton;
+  @BindView(R.id.record_btnAddVoice) View _addSoundButton;
+  @BindView(R.id.record_route_title_input) EditText _titleInput;
+  @BindView(R.id.record_set_icon_view) ImageView _pickIconView;
 
   @Inject SimpleTransportManager _transportManager;
   @Inject TrackingManager _trackingManager;
@@ -461,7 +461,7 @@ public class RouteRecordActivity extends BaseActivity {
   protected void handlePhotoTakeUnchecked(@Nullable Intent data) {
     final UUID imageId = _lastPhotoRequestId;
     if (!_picturesManager.imageExists(imageId)) {
-      Timber.e("Image does not exists on successful picture taken. Id= " + imageId);
+      Timber.e("Image does not exists on successful picture taken. Id= %s", imageId);
       return;
     }
 
@@ -485,9 +485,7 @@ public class RouteRecordActivity extends BaseActivity {
     }
 
     builder.setOnCancelListener(dialog -> _picturesManager.deleteImage(imageId));
-    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
-      _picturesManager.deleteImage(imageId);
-    });
+    builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> _picturesManager.deleteImage(imageId));
     builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
       String caption = photoDialogHolder._captionInput.getText().toString();
       addNote(imageId, caption, null);
@@ -554,8 +552,8 @@ public class RouteRecordActivity extends BaseActivity {
   //region Nested classes
 
   static class PhotoDialogHolder {
-    @Bind(R.id.record_photo_preview) ImageView _imagePreview;
-    @Bind(R.id.record_photo_caption) EditText _captionInput;
+    @BindView(R.id.record_photo_preview) ImageView _imagePreview;
+    @BindView(R.id.record_photo_caption) EditText _captionInput;
 
     public PhotoDialogHolder(View rootView) {
       ButterKnife.bind(this, rootView);
@@ -570,7 +568,7 @@ public class RouteRecordActivity extends BaseActivity {
     private final Dialog _dialog;
     private final View _rootView;
 
-    @Bind(R.id.transport_change_title_input) EditText _titleInput;
+    @BindView(R.id.transport_change_title_input) EditText _titleInput;
 
     public TransportDialogHolder(Dialog dialog, View rootView) {
       _dialog = dialog;

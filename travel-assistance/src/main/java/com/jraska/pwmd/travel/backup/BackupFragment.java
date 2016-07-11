@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.BindString;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -36,8 +36,8 @@ public class BackupFragment extends Fragment {
 
   //region Fields
 
-  @Bind(R.id.settings_make_backup) View _backupView;
-  @Bind(R.id.settings_make_restore_time) TextView _restoreTime;
+  @BindView(R.id.settings_make_backup) View _backupView;
+  @BindView(R.id.settings_make_restore_time) TextView _restoreTime;
   @BindString(R.string.settings_last_backup_time) String _backupTimeTextTemplete;
 
   @Inject BackupChecker _backupChecker;

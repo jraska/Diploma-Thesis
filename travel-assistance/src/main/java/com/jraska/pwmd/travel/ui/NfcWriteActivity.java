@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import org.greenrobot.eventbus.Subscribe;
 import com.jraska.pwmd.travel.R;
@@ -29,9 +29,9 @@ public class NfcWriteActivity extends BaseActivity {
 
   //region Fields
 
-  @Bind(R.id.nfc_write_info_text) TextView _messageView;
-  @Bind(R.id.nfc_write_success_text) TextView _successView;
-  @Bind(R.id.nfc_write_nfc_off) TextView _nfcOffView;
+  @BindView(R.id.nfc_write_info_text) TextView _messageView;
+  @BindView(R.id.nfc_write_success_text) TextView _successView;
+  @BindView(R.id.nfc_write_nfc_off) TextView _nfcOffView;
 
   @Inject EventBus _eventBus;
   @Inject NfcStatusChecker _nfcStatusChecker;
@@ -123,7 +123,7 @@ public class NfcWriteActivity extends BaseActivity {
     if (event.isSuccess()) {
       onNfcTagWritten();
     } else {
-      onNfcTagWriteError(event._result);
+      onNfcTagWriteError();
     }
   }
 
@@ -174,22 +174,16 @@ public class NfcWriteActivity extends BaseActivity {
 
     setResult(RESULT_OK);
 
-    _messageView.postDelayed(new Runnable() {
-      @Override public void run() {
-        if (!isFinishing()) {
-          finish();
-        }
+    _messageView.postDelayed(() -> {
+      if (!isFinishing()) {
+        finish();
       }
     }, FINISH_DELAY_AFTER_WRITE);
   }
 
-  protected void onNfcTagWriteError(int result) {
+  protected void onNfcTagWriteError() {
     Snackbar snackbar = Snackbar.make(_messageView, R.string.nfc_error_write, Snackbar.LENGTH_INDEFINITE);
-    snackbar.setAction(R.string.nfc_try_again, new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        onNfcTagWriteRequested();
-      }
-    });
+    snackbar.setAction(R.string.nfc_try_again, v -> onNfcTagWriteRequested());
 
     snackbar.show();
   }
@@ -198,11 +192,7 @@ public class NfcWriteActivity extends BaseActivity {
     Snackbar snackbar = Snackbar.make(_messageView, R.string.nfc_not_supported,
         Snackbar.LENGTH_INDEFINITE);
 
-    snackbar.setAction(android.R.string.ok, new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        finish();
-      }
-    });
+    snackbar.setAction(android.R.string.ok, v -> finish());
 
     // to ensure activity finishes when user swipes snackbar away
     snackbar.setCallback(new Snackbar.Callback() {

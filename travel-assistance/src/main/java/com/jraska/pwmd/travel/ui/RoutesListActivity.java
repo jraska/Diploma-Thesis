@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import com.jraska.pwmd.travel.R;
@@ -40,8 +40,8 @@ public class RoutesListActivity extends BaseActivity
 
   //region Fields
 
-  @Bind(R.id.routes_recycler_view) RecyclerView _routesRecycler;
-  @Bind(R.id.routes_empty_view) View _emptyView;
+  @BindView(R.id.routes_recycler_view) RecyclerView _routesRecycler;
+  @BindView(R.id.routes_empty_view) View _emptyView;
 
   @Inject TravelDataRepository _travelDataRepository;
   @Inject RoutesAdapter _routesAdapter;

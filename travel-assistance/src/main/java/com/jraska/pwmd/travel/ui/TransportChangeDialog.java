@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.jraska.pwmd.travel.R;
 
@@ -26,8 +26,8 @@ public final class TransportChangeDialog extends DialogFragment {
 
   LayoutInflater _inflater;
 
-  @Bind(R.id.dialog_transport_change_caption) TextView _captionView;
-  @Bind(R.id.dialog_transport_change_img) ImageView _iconView;
+  @BindView(R.id.dialog_transport_change_caption) TextView _captionView;
+  @BindView(R.id.dialog_transport_change_img) ImageView _iconView;
 
   //endregion
 

@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.jraska.common.ArgumentCheck;
@@ -48,8 +48,8 @@ public class ImageDialog extends DialogFragment {
   @Inject PicturesManager _picturesManager;
   @Inject LayoutInflater _inflater;
 
-  @Bind(R.id.dialog_image_img) ImageView _imageView;
-  @Bind(R.id.dialog_image_caption) TextView _caption;
+  @BindView(R.id.dialog_image_img) ImageView _imageView;
+  @BindView(R.id.dialog_image_caption) TextView _caption;
 
   private final ImageLoadingListener _imageLoadedListener = new ImageLoadingListener() {
     @Override public void onLoadingStarted(String imageUri, View view) {

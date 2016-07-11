@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.feedback.Feedback;
@@ -19,9 +19,9 @@ public class FeedbackActivity extends BaseActivity {
 
   //region Fields
 
-  @Bind(R.id.feedback_fab_send) FloatingActionButton _sendView;
-  @Bind(R.id.feedback_title) TextView _titleTextView;
-  @Bind(R.id.feedback_body) TextView _bodyText;
+  @BindView(R.id.feedback_fab_send) FloatingActionButton _sendView;
+  @BindView(R.id.feedback_title) TextView _titleTextView;
+  @BindView(R.id.feedback_body) TextView _bodyText;
 
   //endregion
 

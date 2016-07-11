@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import com.jraska.pwmd.core.gps.LocationService;
 import com.jraska.pwmd.core.gps.LocationSettings;
@@ -23,7 +23,7 @@ import javax.inject.Inject;
 public class HelpRequestSendActivity extends BaseActivity {
   //region Fields
 
-  @Bind(R.id.helpMessageText) TextView _messageView;
+  @BindView(R.id.helpMessageText) TextView _messageView;
 
   @Inject LocationService _locationService;
   @Inject SmsSender _smsSender;

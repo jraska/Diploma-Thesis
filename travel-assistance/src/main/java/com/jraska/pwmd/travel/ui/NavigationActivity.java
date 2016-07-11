@@ -9,7 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnLongClick;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
@@ -41,8 +41,8 @@ public class NavigationActivity extends BaseActivity {
 
   //region Fields
 
-  @Bind(R.id.navigate_desired_direction_view) View _desiredDirectionView;
-  @Bind(R.id.navigate_user_direction_arrow_view) View _userDirectionView;
+  @BindView(R.id.navigate_desired_direction_view) View _desiredDirectionView;
+  @BindView(R.id.navigate_user_direction_arrow_view) View _userDirectionView;
 
   @Inject Navigator _navigator;
   @Inject EventBus _eventBus;

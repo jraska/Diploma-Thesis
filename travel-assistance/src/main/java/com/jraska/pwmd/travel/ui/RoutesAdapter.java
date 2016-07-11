@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
@@ -161,10 +161,10 @@ public class RoutesAdapter extends RecyclerView.Adapter<RoutesAdapter.RouteViewH
 
 
   static class RouteViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
-    @Bind(R.id.route_item_title) TextView _routeTitle;
-    @Bind(R.id.route_date) TextView _routeDate;
-    @Bind(R.id.route_item_duration) TextView _routeDuration;
-    @Bind(R.id.route_item_icon) ImageView _routeIcon;
+    @BindView(R.id.route_item_title) TextView _routeTitle;
+    @BindView(R.id.route_date) TextView _routeDate;
+    @BindView(R.id.route_item_duration) TextView _routeDuration;
+    @BindView(R.id.route_item_icon) ImageView _routeIcon;
 
     private final RoutesAdapter _routesAdapter;
 

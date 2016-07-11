@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import com.jraska.pwmd.travel.R;
@@ -26,9 +26,9 @@ public class VoiceRecordActivity extends BaseActivity {
 
   //region Fields
 
-  @Bind(R.id.voice_record_stop_recording) View _stopRecordingButton;
-  @Bind(R.id.voice_record_save_recording) View _saveRecordingButton;
-  @Bind(R.id.voice_record_title_input) EditText _recordTitleInput;
+  @BindView(R.id.voice_record_stop_recording) View _stopRecordingButton;
+  @BindView(R.id.voice_record_save_recording) View _saveRecordingButton;
+  @BindView(R.id.voice_record_title_input) EditText _recordTitleInput;
 
   @Inject SoundsManager _soundsManager;
 

@@ -3,7 +3,7 @@ package com.jraska.pwmd.travel.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
-import butterknife.Bind;
+import butterknife.BindView;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.settings.SettingsManager;
@@ -13,8 +13,8 @@ import javax.inject.Inject;
 public class SettingsActivity extends BaseActivity {
   //region Fields
 
-  @Bind(R.id.settings_assistant_email) EditText _assistantEmailText;
-  @Bind(R.id.settings_assistant_phone) EditText _assistantPhoneText;
+  @BindView(R.id.settings_assistant_email) EditText _assistantEmailText;
+  @BindView(R.id.settings_assistant_phone) EditText _assistantPhoneText;
 
   @Inject SettingsManager _settingsManager;
 

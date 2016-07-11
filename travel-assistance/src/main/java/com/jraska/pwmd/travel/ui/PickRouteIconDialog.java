@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.jraska.pwmd.travel.R;
@@ -21,7 +21,7 @@ public class PickRouteIconDialog extends DialogFragment {
   private static final String TAG = PickRouteIconDialog.class.getName();
   private static final String ARG_SELECTED_ID = "selectedId";
 
-  @Bind(R.id.route_icon_pick_recycler) RecyclerView _recyclerView;
+  @BindView(R.id.route_icon_pick_recycler) RecyclerView _recyclerView;
 
   private int getSelectedId() {
     return getArguments().getInt(ARG_SELECTED_ID);
@@ -62,7 +62,7 @@ public class PickRouteIconDialog extends DialogFragment {
   static class IconHolder extends RecyclerView.ViewHolder {
     private final IconsAdapter _adapter;
 
-    @Bind(R.id.route_icon_pick_view) ImageView _iconView;
+    @BindView(R.id.route_icon_pick_view) ImageView _iconView;
 
     IconHolder(IconsAdapter adapter, View itemView) {
       super(itemView);

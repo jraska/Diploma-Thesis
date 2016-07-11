@@ -6,7 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.jraska.pwmd.travel.R;
 
@@ -14,7 +14,7 @@ public abstract class BaseActivity extends AppCompatActivity {
   //region Fields
 
   @Nullable
-  @Bind(R.id.toolbar) protected Toolbar _toolbar;
+  @BindView(R.id.toolbar) protected Toolbar _toolbar;
 
   //endregion
 
