@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +15,12 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import com.jraska.pwmd.travel.BuildConfig;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
+import com.jraska.pwmd.travel.dialog.ActivityAction1;
+import com.jraska.pwmd.travel.dialog.LambdaDialogFragment;
 import com.jraska.pwmd.travel.feedback.Feedback;
 import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
@@ -31,10 +35,12 @@ import javax.inject.Inject;
 import java.util.List;
 
 public class RoutesListActivity extends BaseActivity
-    implements RoutesAdapter.OnItemMenuListener, AboutDialog.FeedbackRequestCallback {
+    implements RoutesAdapter.OnItemMenuListener {
   //region Constants
 
   public static final String KEY_NFC_PROCESSED = "ForwardIntent";
+
+  long[] items = new long[1024 * 1024];
 
   //endregion
 
@@ -133,9 +139,17 @@ public class RoutesListActivity extends BaseActivity
   }
 
   @Override
+  @DebugLog
   protected boolean onNavigationIconClicked() {
-    AboutDialog aboutDialog = new AboutDialog();
-    aboutDialog.show(getSupportFragmentManager(), AboutDialog.DIALOG_TAG);
+    LambdaDialogFragment.builder().title(getAppInfoTitle())
+        .validateEagerly(BuildConfig.DEBUG)
+        .message(getString(R.string.about))
+        .iconRes(R.drawable.ic_logo_no_padding)
+        .okText(getString(android.R.string.ok))
+        .neutralText(getString(R.string.about_feedback))
+        .neutralMethod(RoutesListActivity::onFeedbackRequested)
+        .show(getSupportFragmentManager());
+
     return true;
   }
 
@@ -156,15 +170,13 @@ public class RoutesListActivity extends BaseActivity
 
   //endregion
 
-  //region FeedbackRequestCallback impl
+  //region Methods
 
-  @Override public void onFeedbackRequested() {
+  public void onFeedbackRequested() {
     Feedback.startFeedback(this, "");
   }
 
   //endregion
-
-  //region Methods
 
   @Subscribe
   public void onRouteDeleted(TravelDataRepository.RouteDeleteEvent routeDeleted) {
@@ -300,6 +312,10 @@ public class RoutesListActivity extends BaseActivity
 
   @OnLongClick({R.id.routes_empty_view_btn_recording}) boolean showContentDescription(View v) {
     return ShowContentDescriptionLongClickListener.showContentDescription(v);
+  }
+
+  public String getAppInfoTitle() {
+    return Feedback.getAppInfoTitle(this);
   }
 
   //endregion

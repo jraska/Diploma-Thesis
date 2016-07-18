@@ -1,0 +1,184 @@
+package com.jraska.pwmd.travel.dialog;
+
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
+import lombok.SneakyThrows;
+import rx.functions.Action1;
+
+import java.io.*;
+
+public class LambdaDialogFragment extends DialogFragment {
+  public static final String TAG = LambdaDialogFragment.class.getSimpleName();
+
+  private static final String TITLE = "title";
+  private static final String MESSAGE = "message";
+  private static final String ICON_RES = "iconRes";
+  private static final String OK_PROVIDER = "okProvider";
+  private static final String OK_TEXT = "okText";
+  private static final String NEUTRAL_PROVIDER = "neutralMethod";
+  private static final String NEUTRAL_TEXT = "neutralText";
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  CharSequence title() {
+    return argument(TITLE);
+  }
+
+  CharSequence message() {
+    return argument(MESSAGE);
+  }
+
+  int iconRes() {
+    return argument(ICON_RES);
+  }
+
+  DialogDelegateProvider okProvider() {
+    return argument(OK_PROVIDER);
+  }
+
+  CharSequence okText() {
+    return argument(OK_TEXT);
+  }
+
+  DialogDelegateProvider neutralProvider() {
+    return argument(NEUTRAL_PROVIDER);
+  }
+
+  CharSequence neutralText() {
+    return argument(NEUTRAL_TEXT);
+  }
+
+  @SuppressWarnings("unchecked") <T> T argument(String key) {
+    return (T) getArguments().get(key);
+  }
+
+  @SuppressWarnings("unchecked")
+  DialogInterface.OnClickListener delegate(DialogDelegateProvider provider) {
+    if (provider == null) {
+      return null;
+    } else {
+      return provider.delegate(getActivity());
+    }
+  }
+
+  @NonNull @SuppressWarnings("unchecked")
+  @Override
+  public Dialog onCreateDialog(Bundle savedInstanceState) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+    return builder.setTitle(title())
+        .setMessage(message())
+        .setIcon(iconRes())
+        .setPositiveButton(okText(), delegate(okProvider()))
+        .setNeutralButton(neutralText(), delegate(neutralProvider()))
+        .create();
+  }
+
+  public LambdaDialogFragment show(FragmentManager fragmentManager) {
+    show(fragmentManager, TAG);
+    return this;
+  }
+
+  public static class Builder {
+    private Bundle _bundle = new Bundle();
+    private boolean validateEagerly;
+
+    public Builder validateEagerly(boolean validate) {
+      validateEagerly = validate;
+      return this;
+    }
+
+    public Builder iconRes(@DrawableRes int res) {
+      _bundle.putInt(ICON_RES, res);
+      return this;
+    }
+
+    public Builder title(CharSequence message) {
+      _bundle.putCharSequence(TITLE, message);
+      return this;
+    }
+
+    public Builder message(CharSequence message) {
+      _bundle.putCharSequence(MESSAGE, message);
+      return this;
+    }
+
+    public Builder okProvider(DialogDelegateProvider provider) {
+      _bundle.putSerializable(OK_PROVIDER, provider);
+      return this;
+    }
+
+    public Builder okText(CharSequence text) {
+      _bundle.putCharSequence(OK_TEXT, text);
+      return this;
+    }
+
+    public Builder neutralProvider(DialogDelegateProvider provider) {
+      _bundle.putSerializable(NEUTRAL_PROVIDER, provider);
+      return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <A extends FragmentActivity> Builder neutralMethod(ActivityAction1<A> method) {
+      return neutralProvider((activity) -> (d, w) -> method.call((A) activity));
+    }
+
+    public Builder neutralText(CharSequence text) {
+      _bundle.putCharSequence(NEUTRAL_TEXT, text);
+      return this;
+    }
+
+    public LambdaDialogFragment build() {
+      if (validateEagerly) {
+        eagerValidate();
+      }
+
+      LambdaDialogFragment fragment = new LambdaDialogFragment();
+      fragment.setArguments(_bundle); // TODO: 14/07/16 Have fields, because the Bundle remains mutable
+      return fragment;
+    }
+
+    private void eagerValidate() {
+      validateSerializable(_bundle.getSerializable(NEUTRAL_PROVIDER));
+      validateSerializable(_bundle.getSerializable(OK_PROVIDER));
+    }
+
+    public LambdaDialogFragment show(FragmentManager fragmentManager) {
+      return build().show(fragmentManager);
+    }
+
+    public LambdaDialogFragment show(FragmentManager fragmentManager, String tag) {
+      LambdaDialogFragment dialog = build();
+      dialog.show(fragmentManager, tag);
+      return dialog;
+    }
+
+    @SneakyThrows
+    private static void validateSerializable(Serializable serializable) {
+      if (serializable == null) {
+        return;
+      }
+
+      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+      ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
+
+      outputStream.writeObject(serializable);
+
+      ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+      Object deserialized = inputStream.readObject();
+
+      if (deserialized == null) {
+        throw new IllegalArgumentException(serializable.getClass() + " does not implement Serializable properly");
+      }
+    }
+  }
+}

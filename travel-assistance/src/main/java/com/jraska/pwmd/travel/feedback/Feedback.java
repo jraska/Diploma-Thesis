@@ -1,11 +1,13 @@
 package com.jraska.pwmd.travel.feedback;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Base64;
 import com.jraska.common.ArgumentCheck;
+import com.jraska.pwmd.travel.BuildConfig;
+import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.help.EmailSender;
-import com.jraska.pwmd.travel.ui.AboutDialog;
 import lombok.ToString;
 
 @ToString
@@ -49,12 +51,16 @@ public class Feedback {
 
   public static void startFeedback(Activity activity, String message) {
     EmailSender emailSender = new EmailSender(activity);
-    emailSender.sendEmail(getEmail(), AboutDialog.getAppInfoTitle(activity), message);
+    emailSender.sendEmail(getEmail(), getAppInfoTitle(activity), message);
   }
 
   private static String getEmail() {
     byte[] decode = Base64.decode(Base64.decode("Y21Gek1EQXlPVUIyYzJJdVkzbz0=", 0), 0);
     return new String(decode);
+  }
+
+  public static String getAppInfoTitle(Context context) {
+    return context.getString(R.string.app_name) + " v" + BuildConfig.VERSION_NAME;
   }
 
   //endregion
