@@ -45,8 +45,6 @@ android {
 
   lintOptions {
     abortOnError true
-    warning 'InvalidPackage' // because of Okio
-    warning 'ResourceType' // ButterKnife absolute values
   }
 
   compileOptions {

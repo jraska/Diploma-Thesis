@@ -1,0 +1,9 @@
+<lint>
+  <issue id="InvalidPackage">
+    <ignore regexp=".*butterknife.*" />
+    <ignore regexp="okio.Okio" />
+  </issue>
+  <issue id="ResourceType">
+    <ignore path="*$$ViewBinder*" />
+  </issue>
+</lint>
