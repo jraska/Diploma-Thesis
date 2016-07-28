@@ -6,6 +6,7 @@ import com.jraska.pwmd.travel.io.CacheDir;
 import com.jraska.pwmd.travel.io.PicturesDir;
 import com.jraska.pwmd.travel.io.SoundsDir;
 import com.jraska.pwmd.travel.persistence.DatabaseFile;
+import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import okio.BufferedSink;
 import okio.BufferedSource;
@@ -146,7 +147,7 @@ class BackupPackager {
     Context context = FlowManager.getContext();
     FlowManager.destroy();
     zipReader.readToFile(DATABASE_KEY, _databaseFile);
-    FlowManager.init(context);
+    FlowManager.init(new FlowConfig.Builder(context).build());
 
     readSounds(zipReader);
     readPictures(zipReader);

@@ -11,6 +11,7 @@ import com.jraska.pwmd.travel.util.TravelDebugTree;
 import com.jraska.pwmd.travel.util.TravelReleaseTree;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import timber.log.Timber;
 
@@ -65,7 +66,7 @@ public class TravelAssistanceApp extends Application {
       Timber.plant(new TravelReleaseTree());
     }
 
-    FlowManager.init(this);
+    FlowManager.init(new FlowConfig.Builder(this).build());
 
     _monitorCallbacks = new ActivityMonitorCallbacks();
     registerActivityLifecycleCallbacks(_monitorCallbacks);

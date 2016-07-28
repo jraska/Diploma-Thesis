@@ -54,15 +54,15 @@ apply plugin: 'com.neenbedankt.android-apt'
 dependencies {
   compile project(':core')
 
-  compile 'com.android.support:appcompat-v7:24.0.0'
+  compile 'com.android.support:appcompat-v7:24.1.1'
   compile 'com.jraska:console:0.4.1'
 
-  compile 'com.jakewharton:butterknife:8.2.0'
-  apt 'com.jakewharton:butterknife-compiler:8.2.0'
+  compile 'com.jakewharton:butterknife:8.2.1'
+  apt 'com.jakewharton:butterknife-compiler:8.2.1'
 
-  apt 'com.google.dagger:dagger-compiler:2.5'
+  apt 'com.google.dagger:dagger-compiler:2.6'
 
-  provided "org.projectlombok:lombok:1.16.8"
+  provided "org.projectlombok:lombok:1.16.10"
 
   testCompile 'junit:junit:4.12'
 }
