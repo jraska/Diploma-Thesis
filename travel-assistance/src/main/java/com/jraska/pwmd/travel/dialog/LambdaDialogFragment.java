@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import lombok.SneakyThrows;
-import rx.functions.Action1;
 
 import java.io.*;
 
@@ -20,10 +19,13 @@ public class LambdaDialogFragment extends DialogFragment {
   private static final String TITLE = "title";
   private static final String MESSAGE = "message";
   private static final String ICON_RES = "iconRes";
-  private static final String OK_PROVIDER = "okProvider";
-  private static final String OK_TEXT = "okText";
+  private static final String POSITIVE_PROVIDER = "positiveProvider";
+  private static final String POSITIVE_TEXT = "okText";
   private static final String NEUTRAL_PROVIDER = "neutralMethod";
   private static final String NEUTRAL_TEXT = "neutralText";
+  private static final String NEGATIVE_PROVIDER = "negativeMethod";
+  private static final String NEGATIVE_TEXT = "negativeText";
+  private static final String CANCELABLE = "cancelable";
 
   public static Builder builder() {
     return new Builder();
@@ -41,12 +43,12 @@ public class LambdaDialogFragment extends DialogFragment {
     return argument(ICON_RES);
   }
 
-  DialogDelegateProvider okProvider() {
-    return argument(OK_PROVIDER);
+  DialogDelegateProvider positiveProvider() {
+    return argument(POSITIVE_PROVIDER);
   }
 
   CharSequence okText() {
-    return argument(OK_TEXT);
+    return argument(POSITIVE_TEXT);
   }
 
   DialogDelegateProvider neutralProvider() {
@@ -55,6 +57,27 @@ public class LambdaDialogFragment extends DialogFragment {
 
   CharSequence neutralText() {
     return argument(NEUTRAL_TEXT);
+  }
+
+  DialogDelegateProvider negativeProvider() {
+    return argument(NEGATIVE_PROVIDER);
+  }
+
+  CharSequence negativeText() {
+    return argument(NEGATIVE_TEXT);
+  }
+
+  boolean cancelable() {
+    return argument(CANCELABLE, false);
+  }
+
+  <T> T argument(String key, T defaultValue) {
+    T value = argument(key);
+    if (value == null) {
+      return defaultValue;
+    }
+
+    return value;
   }
 
   @SuppressWarnings("unchecked") <T> T argument(String key) {
@@ -78,8 +101,10 @@ public class LambdaDialogFragment extends DialogFragment {
     return builder.setTitle(title())
         .setMessage(message())
         .setIcon(iconRes())
-        .setPositiveButton(okText(), delegate(okProvider()))
+        .setPositiveButton(okText(), delegate(positiveProvider()))
         .setNeutralButton(neutralText(), delegate(neutralProvider()))
+        .setNegativeButton(negativeText(), delegate(negativeProvider()))
+        .setCancelable(cancelable())
         .create();
   }
 
@@ -107,18 +132,23 @@ public class LambdaDialogFragment extends DialogFragment {
       return this;
     }
 
+    public Builder cancelable(boolean cancelable) {
+      _bundle.putBoolean(CANCELABLE, cancelable);
+      return this;
+    }
+
     public Builder message(CharSequence message) {
       _bundle.putCharSequence(MESSAGE, message);
       return this;
     }
 
-    public Builder okProvider(DialogDelegateProvider provider) {
-      _bundle.putSerializable(OK_PROVIDER, provider);
+    public Builder positiveProvider(DialogDelegateProvider provider) {
+      _bundle.putSerializable(POSITIVE_PROVIDER, provider);
       return this;
     }
 
-    public Builder okText(CharSequence text) {
-      _bundle.putCharSequence(OK_TEXT, text);
+    public Builder positiveText(CharSequence text) {
+      _bundle.putCharSequence(POSITIVE_TEXT, text);
       return this;
     }
 
@@ -137,6 +167,21 @@ public class LambdaDialogFragment extends DialogFragment {
       return this;
     }
 
+    public Builder negativeProvider(DialogDelegateProvider provider) {
+      _bundle.putSerializable(NEGATIVE_PROVIDER, provider);
+      return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <A extends FragmentActivity> Builder negativeMethod(ActivityAction1<A> method) {
+      return negativeProvider((activity) -> (d, w) -> method.call((A) activity));
+    }
+
+    public Builder negativeText(CharSequence text) {
+      _bundle.putCharSequence(NEGATIVE_TEXT, text);
+      return this;
+    }
+
     public LambdaDialogFragment build() {
       if (validateEagerly) {
         eagerValidate();
@@ -149,7 +194,7 @@ public class LambdaDialogFragment extends DialogFragment {
 
     private void eagerValidate() {
       validateSerializable(_bundle.getSerializable(NEUTRAL_PROVIDER));
-      validateSerializable(_bundle.getSerializable(OK_PROVIDER));
+      validateSerializable(_bundle.getSerializable(POSITIVE_PROVIDER));
     }
 
     public LambdaDialogFragment show(FragmentManager fragmentManager) {

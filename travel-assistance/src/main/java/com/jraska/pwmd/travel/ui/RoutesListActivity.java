@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +18,6 @@ import com.jraska.pwmd.travel.BuildConfig;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.dialog.ActivityAction1;
 import com.jraska.pwmd.travel.dialog.LambdaDialogFragment;
 import com.jraska.pwmd.travel.feedback.Feedback;
 import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
@@ -145,7 +143,7 @@ public class RoutesListActivity extends BaseActivity
         .validateEagerly(BuildConfig.DEBUG)
         .message(getString(R.string.about))
         .iconRes(R.drawable.ic_logo_no_padding)
-        .okText(getString(android.R.string.ok))
+        .positiveText(getString(android.R.string.ok))
         .neutralText(getString(R.string.about_feedback))
         .neutralMethod(RoutesListActivity::onFeedbackRequested)
         .show(getSupportFragmentManager());
