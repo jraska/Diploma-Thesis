@@ -40,7 +40,7 @@ public class LambdaDialogFragment extends DialogFragment {
   }
 
   int iconRes() {
-    return argument(ICON_RES);
+    return argument(ICON_RES, 0);
   }
 
   DialogDelegateProvider positiveProvider() {
