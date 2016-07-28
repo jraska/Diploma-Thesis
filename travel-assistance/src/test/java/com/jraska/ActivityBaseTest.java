@@ -5,7 +5,8 @@ import org.junit.Test;
 import org.robolectric.Robolectric;
 import org.robolectric.util.ActivityController;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * Base class for tests testing activity
@@ -46,15 +47,13 @@ public abstract class ActivityBaseTest<T extends Activity> extends BaseTest {
 
   @SuppressWarnings("unchecked")
   private static <T extends Activity> Class<T> resolveActivityClass(Class clazz) {
-    for (Class<?> c = clazz; c != Object.class; c = c.getSuperclass()) {
-      for (Method method : c.getDeclaredMethods()) {
-        if (method.getName().equals("getType")) {
-          return (Class<T>) method.getReturnType();
-        }
-      }
+    Type type = clazz.getGenericSuperclass();
+
+    while (!(type instanceof ParameterizedType)) {
+      type = ((Class<?>) type).getGenericSuperclass();
     }
 
-    throw new ClassFormatError("Cannot determine correct class for getType() method.");
+    return (Class<T>) ((ParameterizedType) type).getActualTypeArguments()[0];
   }
 
   /**
