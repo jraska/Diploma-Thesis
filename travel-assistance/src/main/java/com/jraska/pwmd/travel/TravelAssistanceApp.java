@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import com.jraska.console.timber.ConsoleTree;
 import com.jraska.pwmd.travel.media.MediaCleaner;
+import com.jraska.pwmd.travel.ui.BaseActivity;
 import com.jraska.pwmd.travel.util.ActivityMonitorCallbacks;
 import com.jraska.pwmd.travel.util.TravelDebugTree;
 import com.jraska.pwmd.travel.util.TravelReleaseTree;
@@ -48,7 +49,7 @@ public class TravelAssistanceApp extends Application {
   }
 
   @Nullable
-  public Activity getTopActivity() {
+  public BaseActivity getTopActivity() {
     return _monitorCallbacks.getTopActivity();
   }
 

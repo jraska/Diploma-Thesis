@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import com.jraska.pwmd.travel.ui.BaseActivity;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ public class ActivityMonitorCallbacks implements Application.ActivityLifecycleCa
   //region Fields
 
   private final Set<Activity> _activities = new HashSet<>();
-  private Activity _topActivity;
+  private BaseActivity _topActivity;
 
   //endregion
 
@@ -24,7 +25,7 @@ public class ActivityMonitorCallbacks implements Application.ActivityLifecycleCa
   }
 
   @Nullable
-  public Activity getTopActivity() {
+  public BaseActivity getTopActivity() {
     return _topActivity;
   }
 
@@ -34,15 +35,15 @@ public class ActivityMonitorCallbacks implements Application.ActivityLifecycleCa
 
   @Override public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
     _activities.add(activity);
-    _topActivity = activity;
+    _topActivity = (BaseActivity) activity;
   }
 
   @Override public void onActivityStarted(Activity activity) {
-    _topActivity = activity;
+    _topActivity = (BaseActivity) activity;
   }
 
   @Override public void onActivityResumed(Activity activity) {
-    _topActivity = activity;
+    _topActivity = (BaseActivity) activity;
   }
 
   @Override public void onActivityPaused(Activity activity) {

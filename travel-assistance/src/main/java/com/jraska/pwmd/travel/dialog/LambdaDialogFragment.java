@@ -147,6 +147,11 @@ public class LambdaDialogFragment extends DialogFragment {
       return this;
     }
 
+    @SuppressWarnings("unchecked")
+    public <A extends FragmentActivity> Builder positiveMethod(ActivityAction1<A> method) {
+      return positiveProvider((activity) -> (d, w) -> method.call((A) activity));
+    }
+
     public Builder positiveText(CharSequence text) {
       _bundle.putCharSequence(POSITIVE_TEXT, text);
       return this;

@@ -2,11 +2,13 @@ package com.jraska.pwmd.travel.gms;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jraska.common.ArgumentCheck;
+import com.jraska.pwmd.travel.BuildConfig;
 import com.jraska.pwmd.travel.TopActivityProvider;
+import com.jraska.pwmd.travel.dialog.LambdaDialogFragment;
+import com.jraska.pwmd.travel.ui.BaseActivity;
 import timber.log.Timber;
 
 import javax.inject.Inject;
@@ -46,7 +48,7 @@ public class DefaultConnectionFailedListener implements GoogleApiClient.OnConnec
 
   protected void onConnectionFailedInRandomThread(@NonNull ConnectionResult connectionResult) {
     Timber.e("Connection to services failed result= %s", connectionResult);
-    Activity topActivity = _topActivityProvider.get();
+    BaseActivity topActivity = _topActivityProvider.get();
     if (topActivity != null) {
       ShowFailedConnectionDialogRunnable showDialogRunnable =
           new ShowFailedConnectionDialogRunnable(topActivity, connectionResult, this);
@@ -56,7 +58,7 @@ public class DefaultConnectionFailedListener implements GoogleApiClient.OnConnec
     }
   }
 
-  protected void showFailedResultOnUIThread(Activity activity, ConnectionResult connectionResult) {
+  protected void showFailedResultOnUIThread(BaseActivity activity, ConnectionResult connectionResult) {
     if (activity.isFinishing()) {
       Timber.w("Could not show error to user, %s is finishing.", activity.getClass().getSimpleName());
       return;
@@ -68,16 +70,15 @@ public class DefaultConnectionFailedListener implements GoogleApiClient.OnConnec
       return;
     }
 
-    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-    builder.setTitle(_messageResolver.resolveTitle(connectionResult))
-        .setMessage(_messageResolver.resolveMessage(connectionResult))
-        .setCancelable(false)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
-          activity.finish();
-        });
-
-    builder.show();
+    LambdaDialogFragment.builder()
+        .validateEagerly(BuildConfig.DEBUG)
+        .title(_messageResolver.resolveTitle(connectionResult))
+        .message(_messageResolver.resolveMessage(connectionResult))
+        .cancelable(false)
+        .iconRes(android.R.drawable.ic_dialog_alert)
+        .positiveText(activity.getString(android.R.string.ok))
+        .positiveMethod(Activity::finish)
+        .show(activity.getSupportFragmentManager());
   }
 
   //endregion
@@ -85,11 +86,11 @@ public class DefaultConnectionFailedListener implements GoogleApiClient.OnConnec
   //region Nested classes
 
   static class ShowFailedConnectionDialogRunnable implements Runnable {
-    private final Activity _activity;
+    private final BaseActivity _activity;
     private final ConnectionResult _connectionResult;
     private final DefaultConnectionFailedListener _listener;
 
-    public ShowFailedConnectionDialogRunnable(Activity activity, ConnectionResult connectionResult,
+    public ShowFailedConnectionDialogRunnable(BaseActivity activity, ConnectionResult connectionResult,
                                               DefaultConnectionFailedListener listener) {
       _activity = activity;
       _connectionResult = connectionResult;

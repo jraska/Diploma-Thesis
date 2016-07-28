@@ -2,6 +2,7 @@ package com.jraska.pwmd.travel;
 
 import android.app.Activity;
 import com.jraska.common.ArgumentCheck;
+import com.jraska.pwmd.travel.ui.BaseActivity;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -26,7 +27,7 @@ public class TopActivityProvider implements Provider<Activity> {
 
   //region Provider impl
 
-  @Override public Activity get() {
+  @Override public BaseActivity get() {
     return _app.getTopActivity();
   }
 
