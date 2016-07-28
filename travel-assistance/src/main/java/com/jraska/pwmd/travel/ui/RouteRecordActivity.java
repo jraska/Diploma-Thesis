@@ -28,11 +28,13 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.jraska.pwmd.travel.BuildConfig;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteIcon;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
+import com.jraska.pwmd.travel.dialog.LambdaDialogFragment;
 import com.jraska.pwmd.travel.feedback.Feedback;
 import com.jraska.pwmd.travel.media.PicturesManager;
 import com.jraska.pwmd.travel.media.SoundsManager;
@@ -213,8 +215,17 @@ public class RouteRecordActivity extends BaseActivity {
       return;
     }
 
-    RecordingPromptDialog promptDialog = new RecordingPromptDialog();
-    promptDialog.show(getSupportFragmentManager(), RecordingPromptDialog.DIALOG_TAG);
+    LambdaDialogFragment.builder()
+        .validateEagerly(BuildConfig.DEBUG)
+        .iconRes(android.R.drawable.ic_dialog_alert)
+        .title(getString(R.string.record_prompt_title))
+        .message(getString(R.string.record_prompt_message))
+        .cancelable(true)
+        .negativeText(getString(R.string.record_prompt_button_finish))
+        .negativeMethod(RouteRecordActivity::finish)
+        .positiveText(getString(R.string.record_prompt_button_continue))
+        .show(getSupportFragmentManager());
+
     Timber.i("Prompt dialog is showing to the user");
   }
 
