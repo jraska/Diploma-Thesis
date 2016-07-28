@@ -288,7 +288,15 @@ public class RouteRecordActivity extends BaseActivity {
 
   @OnClick(R.id.record_btnStopRecording) void stopTrackingClicked() {
     if (isUserRecordingLongWithoutSaving()) {
-      UnsavedRoutePromptDialog.show(this);
+      LambdaDialogFragment.builder()
+          .validateEagerly(BuildConfig.DEBUG)
+          .title(getString(R.string.record_prompt_title))
+          .message(getString(R.string.record_unsaved_prompt_message))
+          .cancelable(true)
+          .negativeText(getString(R.string.record_prompt_button_finish))
+          .negativeMethod(RouteRecordActivity::stopTracking)
+          .positiveText(getString(R.string.record_prompt_button_continue))
+          .show(getSupportFragmentManager());
     } else {
       stopTracking();
     }
@@ -454,8 +462,7 @@ public class RouteRecordActivity extends BaseActivity {
   protected void handlePhotoTakenIntent(@Nullable Intent data) {
     try {
       handlePhotoTakeUnchecked(data);
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
       handlePhotoException(ex);
     }
   }
