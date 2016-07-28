@@ -108,7 +108,7 @@ public class Navigator {
       return;
     }
 
-    Timber.i("Navigation route id=%d, title='%s' started.", routeData.getId(), routeData.getTitle());
+    Timber.i("Navigation route id=%d, setTitle='%s' started.", routeData.getId(), routeData.getTitle());
     _currentRoute = routeData;
 
     if (!_eventBus.isRegistered(this)) {
@@ -132,7 +132,7 @@ public class Navigator {
       _eventBus.unregister(this);
     }
 
-    Timber.i("Navigation for route id=%d title='%s' ended",
+    Timber.i("Navigation for route id=%d setTitle='%s' ended",
         _currentRoute.getId(), _currentRoute.getTitle());
     _currentRoute = null;
     _state = State.EMPTY;

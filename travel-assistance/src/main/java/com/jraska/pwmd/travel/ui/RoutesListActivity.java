@@ -139,13 +139,13 @@ public class RoutesListActivity extends BaseActivity
   @Override
   @DebugLog
   protected boolean onNavigationIconClicked() {
-    LambdaDialogFragment.builder().title(getAppInfoTitle())
+    LambdaDialogFragment.builder().setTitle(getAppInfoTitle())
         .validateEagerly(BuildConfig.DEBUG)
-        .message(getString(R.string.about))
-        .iconRes(R.drawable.ic_logo_no_padding)
-        .positiveText(getString(android.R.string.ok))
-        .neutralText(getString(R.string.about_feedback))
-        .neutralMethod(RoutesListActivity::onFeedbackRequested)
+        .setMessage(getString(R.string.about))
+        .setIcon(R.drawable.ic_logo_no_padding)
+        .setPositiveText(getString(android.R.string.ok))
+        .setNeutralText(getString(R.string.about_feedback))
+        .setNeutralMethod(RoutesListActivity::onFeedbackRequested)
         .show(getSupportFragmentManager());
 
     return true;

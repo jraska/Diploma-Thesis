@@ -18,14 +18,14 @@ public class LambdaDialogFragment extends DialogFragment {
 
   private static final String TITLE = "title";
   private static final String MESSAGE = "message";
-  private static final String ICON_RES = "iconRes";
+  private static final String ICON_RES = "setIcon";
   private static final String POSITIVE_PROVIDER = "positiveProvider";
   private static final String POSITIVE_TEXT = "okText";
   private static final String NEUTRAL_PROVIDER = "neutralMethod";
   private static final String NEUTRAL_TEXT = "neutralText";
-  private static final String NEGATIVE_PROVIDER = "negativeMethod";
+  private static final String NEGATIVE_PROVIDER = "setNegativeMethod";
   private static final String NEGATIVE_TEXT = "negativeText";
-  private static final String CANCELABLE = "cancelable";
+  private static final String CANCELABLE = "setCancelable";
 
   public static Builder builder() {
     return new Builder();
@@ -122,22 +122,22 @@ public class LambdaDialogFragment extends DialogFragment {
       return this;
     }
 
-    public Builder iconRes(@DrawableRes int res) {
+    public Builder setIcon(@DrawableRes int res) {
       _bundle.putInt(ICON_RES, res);
       return this;
     }
 
-    public Builder title(CharSequence message) {
+    public Builder setTitle(CharSequence message) {
       _bundle.putCharSequence(TITLE, message);
       return this;
     }
 
-    public Builder cancelable(boolean cancelable) {
+    public Builder setCancelable(boolean cancelable) {
       _bundle.putBoolean(CANCELABLE, cancelable);
       return this;
     }
 
-    public Builder message(CharSequence message) {
+    public Builder setMessage(CharSequence message) {
       _bundle.putCharSequence(MESSAGE, message);
       return this;
     }
@@ -148,41 +148,41 @@ public class LambdaDialogFragment extends DialogFragment {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends FragmentActivity> Builder positiveMethod(ActivityAction1<A> method) {
+    public <A extends FragmentActivity> Builder setPositiveMethod(ActivityAction1<A> method) {
       return positiveProvider((activity) -> (d, w) -> method.call((A) activity));
     }
 
-    public Builder positiveText(CharSequence text) {
+    public Builder setPositiveText(CharSequence text) {
       _bundle.putCharSequence(POSITIVE_TEXT, text);
       return this;
     }
 
-    public Builder neutralProvider(DialogDelegateProvider provider) {
+    private Builder neutralProvider(DialogDelegateProvider provider) {
       _bundle.putSerializable(NEUTRAL_PROVIDER, provider);
       return this;
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends FragmentActivity> Builder neutralMethod(ActivityAction1<A> method) {
+    public <A extends FragmentActivity> Builder setNeutralMethod(ActivityAction1<A> method) {
       return neutralProvider((activity) -> (d, w) -> method.call((A) activity));
     }
 
-    public Builder neutralText(CharSequence text) {
+    public Builder setNeutralText(CharSequence text) {
       _bundle.putCharSequence(NEUTRAL_TEXT, text);
       return this;
     }
 
-    public Builder negativeProvider(DialogDelegateProvider provider) {
+    private Builder negativeProvider(DialogDelegateProvider provider) {
       _bundle.putSerializable(NEGATIVE_PROVIDER, provider);
       return this;
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends FragmentActivity> Builder negativeMethod(ActivityAction1<A> method) {
+    public <A extends FragmentActivity> Builder setNegativeMethod(ActivityAction1<A> method) {
       return negativeProvider((activity) -> (d, w) -> method.call((A) activity));
     }
 
-    public Builder negativeText(CharSequence text) {
+    public Builder setNegativeTest(CharSequence text) {
       _bundle.putCharSequence(NEGATIVE_TEXT, text);
       return this;
     }

@@ -61,7 +61,7 @@ public class RouteRecordActivity extends BaseActivity {
   public static final int REQUEST_VOICE_RECORD = 2;
 
   // We need to explicitly save the input to handle the case
-  // when user currently changed the title, did not saved so far and activity rotated.
+  // when user currently changed the setTitle, did not saved so far and activity rotated.
   private static final String STATE_KEY_TITLE = "titleInput";
 
   private static final String STATE_KEY_LAST_SAVED_TIME = "lastSavedTime";
@@ -217,13 +217,13 @@ public class RouteRecordActivity extends BaseActivity {
 
     LambdaDialogFragment.builder()
         .validateEagerly(BuildConfig.DEBUG)
-        .iconRes(android.R.drawable.ic_dialog_alert)
-        .title(getString(R.string.record_prompt_title))
-        .message(getString(R.string.record_prompt_message))
-        .cancelable(true)
-        .negativeText(getString(R.string.record_prompt_button_finish))
-        .negativeMethod(RouteRecordActivity::finish)
-        .positiveText(getString(R.string.record_prompt_button_continue))
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle(getString(R.string.record_prompt_title))
+        .setMessage(getString(R.string.record_prompt_message))
+        .setCancelable(true)
+        .setNegativeTest(getString(R.string.record_prompt_button_finish))
+        .setNegativeMethod(RouteRecordActivity::finish)
+        .setPositiveText(getString(R.string.record_prompt_button_continue))
         .show(getSupportFragmentManager());
 
     Timber.i("Prompt dialog is showing to the user");
@@ -290,12 +290,12 @@ public class RouteRecordActivity extends BaseActivity {
     if (isUserRecordingLongWithoutSaving()) {
       LambdaDialogFragment.builder()
           .validateEagerly(BuildConfig.DEBUG)
-          .title(getString(R.string.record_prompt_title))
-          .message(getString(R.string.record_unsaved_prompt_message))
-          .cancelable(true)
-          .negativeText(getString(R.string.record_prompt_button_finish))
-          .negativeMethod(RouteRecordActivity::stopTracking)
-          .positiveText(getString(R.string.record_prompt_button_continue))
+          .setTitle(getString(R.string.record_prompt_title))
+          .setMessage(getString(R.string.record_unsaved_prompt_message))
+          .setCancelable(true)
+          .setNegativeTest(getString(R.string.record_prompt_button_finish))
+          .setNegativeMethod(RouteRecordActivity::stopTracking)
+          .setPositiveText(getString(R.string.record_prompt_button_continue))
           .show(getSupportFragmentManager());
     } else {
       stopTracking();
@@ -364,7 +364,7 @@ public class RouteRecordActivity extends BaseActivity {
       return;
     }
 
-    Timber.i("Saving route title=%s", routeData.getTitle());
+    Timber.i("Saving route setTitle=%s", routeData.getTitle());
 
     _travelDataRepository.insertOrUpdate(routeData)
         .compose(IOThreadTransformer.get())

@@ -18,7 +18,7 @@ public final class TransportChangeDialog extends DialogFragment {
 
   public static final String DIALOG_TAG = TransportChangeDialog.class.getSimpleName();
   public static final String ARG_CAPTION = "caption";
-  public static final String ARG_ICON_RES = "iconRes";
+  public static final String ARG_ICON_RES = "setIcon";
 
   //endregion
 
