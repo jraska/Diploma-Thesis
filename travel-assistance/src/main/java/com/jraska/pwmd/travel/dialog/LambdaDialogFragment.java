@@ -1,10 +1,13 @@
 package com.jraska.pwmd.travel.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -27,8 +30,8 @@ public class LambdaDialogFragment extends DialogFragment {
   private static final String NEGATIVE_TEXT = "negativeText";
   private static final String CANCELABLE = "setCancelable";
 
-  public static Builder builder() {
-    return new Builder();
+  public static Builder builder(FragmentActivity context) {
+    return new Builder(context.getResources());
   }
 
   CharSequence title() {
@@ -114,8 +117,17 @@ public class LambdaDialogFragment extends DialogFragment {
   }
 
   public static class Builder {
+    private final Resources _resources;
     private Bundle _bundle = new Bundle();
     private boolean validateEagerly;
+
+    private Builder(Resources resources) {
+      _resources = resources;
+    }
+
+    private CharSequence string(@StringRes int res) {
+      return _resources.getString(res);
+    }
 
     public Builder validateEagerly(boolean validate) {
       validateEagerly = validate;
@@ -132,6 +144,10 @@ public class LambdaDialogFragment extends DialogFragment {
       return this;
     }
 
+    public Builder setTitle(@StringRes int res) {
+      return setTitle(string(res));
+    }
+
     public Builder setCancelable(boolean cancelable) {
       _bundle.putBoolean(CANCELABLE, cancelable);
       return this;
@@ -140,6 +156,10 @@ public class LambdaDialogFragment extends DialogFragment {
     public Builder setMessage(CharSequence message) {
       _bundle.putCharSequence(MESSAGE, message);
       return this;
+    }
+
+    public Builder setMessage(@StringRes int res) {
+      return setMessage(string(res));
     }
 
     public Builder positiveProvider(DialogDelegateProvider provider) {
@@ -157,6 +177,10 @@ public class LambdaDialogFragment extends DialogFragment {
       return this;
     }
 
+    public Builder setPositiveText(@StringRes int res) {
+      return setPositiveText(string(res));
+    }
+
     private Builder neutralProvider(DialogDelegateProvider provider) {
       _bundle.putSerializable(NEUTRAL_PROVIDER, provider);
       return this;
@@ -172,6 +196,10 @@ public class LambdaDialogFragment extends DialogFragment {
       return this;
     }
 
+    public Builder setNeutralText(@StringRes int res) {
+      return setNeutralText(string(res));
+    }
+
     private Builder negativeProvider(DialogDelegateProvider provider) {
       _bundle.putSerializable(NEGATIVE_PROVIDER, provider);
       return this;
@@ -182,7 +210,11 @@ public class LambdaDialogFragment extends DialogFragment {
       return negativeProvider((activity) -> (d, w) -> method.call((A) activity));
     }
 
-    public Builder setNegativeTest(CharSequence text) {
+    public Builder setNegativeText(@StringRes int res) {
+      return setNegativeText(string(res));
+    }
+
+    public Builder setNegativeText(CharSequence text) {
       _bundle.putCharSequence(NEGATIVE_TEXT, text);
       return this;
     }
@@ -200,6 +232,7 @@ public class LambdaDialogFragment extends DialogFragment {
     private void eagerValidate() {
       validateSerializable(_bundle.getSerializable(NEUTRAL_PROVIDER));
       validateSerializable(_bundle.getSerializable(POSITIVE_PROVIDER));
+      validateSerializable(_bundle.getSerializable(NEGATIVE_PROVIDER));
     }
 
     public LambdaDialogFragment show(FragmentManager fragmentManager) {

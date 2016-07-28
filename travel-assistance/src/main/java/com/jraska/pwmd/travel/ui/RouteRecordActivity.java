@@ -215,15 +215,15 @@ public class RouteRecordActivity extends BaseActivity {
       return;
     }
 
-    LambdaDialogFragment.builder()
+    LambdaDialogFragment.builder(this)
         .validateEagerly(BuildConfig.DEBUG)
         .setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(getString(R.string.record_prompt_title))
-        .setMessage(getString(R.string.record_prompt_message))
+        .setTitle(R.string.record_prompt_title)
+        .setMessage(R.string.record_prompt_message)
         .setCancelable(true)
-        .setNegativeTest(getString(R.string.record_prompt_button_finish))
+        .setNegativeText(R.string.record_prompt_button_finish)
         .setNegativeMethod(RouteRecordActivity::finish)
-        .setPositiveText(getString(R.string.record_prompt_button_continue))
+        .setPositiveText(R.string.record_prompt_button_continue)
         .show(getSupportFragmentManager());
 
     Timber.i("Prompt dialog is showing to the user");
@@ -288,14 +288,14 @@ public class RouteRecordActivity extends BaseActivity {
 
   @OnClick(R.id.record_btnStopRecording) void stopTrackingClicked() {
     if (isUserRecordingLongWithoutSaving()) {
-      LambdaDialogFragment.builder()
+      LambdaDialogFragment.builder(this)
           .validateEagerly(BuildConfig.DEBUG)
-          .setTitle(getString(R.string.record_prompt_title))
-          .setMessage(getString(R.string.record_unsaved_prompt_message))
+          .setTitle(R.string.record_prompt_title)
+          .setMessage(R.string.record_unsaved_prompt_message)
           .setCancelable(true)
-          .setNegativeTest(getString(R.string.record_prompt_button_finish))
+          .setNegativeText(R.string.record_prompt_button_finish)
           .setNegativeMethod(RouteRecordActivity::stopTracking)
-          .setPositiveText(getString(R.string.record_prompt_button_continue))
+          .setPositiveText(R.string.record_prompt_button_continue)
           .show(getSupportFragmentManager());
     } else {
       stopTracking();

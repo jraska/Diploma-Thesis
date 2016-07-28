@@ -70,13 +70,13 @@ public class DefaultConnectionFailedListener implements GoogleApiClient.OnConnec
       return;
     }
 
-    LambdaDialogFragment.builder()
+    LambdaDialogFragment.builder(activity)
         .validateEagerly(BuildConfig.DEBUG)
         .setTitle(_messageResolver.resolveTitle(connectionResult))
         .setMessage(_messageResolver.resolveMessage(connectionResult))
         .setCancelable(false)
         .setIcon(android.R.drawable.ic_dialog_alert)
-        .setPositiveText(activity.getString(android.R.string.ok))
+        .setPositiveText(android.R.string.ok)
         .setPositiveMethod(Activity::finish)
         .show(activity.getSupportFragmentManager());
   }
