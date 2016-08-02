@@ -1,7 +1,6 @@
-package com.jraska.pwmd.travel.dialog;
+package com.jraska.dialog.lambda;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -245,23 +244,31 @@ public class LambdaDialogFragment extends DialogFragment {
       return dialog;
     }
 
-    @SneakyThrows
     private static void validateSerializable(Serializable serializable) {
-      if (serializable == null) {
-        return;
+      try {
+        validateSerializableUnchecked(serializable);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
       }
+    }
+  }
 
-      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-      ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
+  @SneakyThrows
+  private static void validateSerializableUnchecked(Serializable serializable) throws IOException {
+    if (serializable == null) {
+      return;
+    }
 
-      outputStream.writeObject(serializable);
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
 
-      ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
-      Object deserialized = inputStream.readObject();
+    outputStream.writeObject(serializable);
 
-      if (deserialized == null) {
-        throw new IllegalArgumentException(serializable.getClass() + " does not implement Serializable properly");
-      }
+    ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+    Object deserialized = inputStream.readObject();
+
+    if (deserialized == null) {
+      throw new IllegalArgumentException(serializable.getClass() + " does not implement Serializable properly");
     }
   }
 }

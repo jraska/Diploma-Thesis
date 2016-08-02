@@ -1,4 +1,4 @@
-package com.jraska.pwmd.travel.dialog;
+package com.jraska.dialog.lambda;
 
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;

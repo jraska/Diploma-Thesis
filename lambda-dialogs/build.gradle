@@ -10,9 +10,22 @@ android {
     versionCode 1
     versionName "0.1.0"
   }
+
+  lintOptions {
+    abortOnError true
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
+
+apply plugin: 'me.tatarka.retrolambda'
 
 dependencies {
   provided 'com.android.support:appcompat-v7:24.1.1'
+  provided 'org.projectlombok:lombok:1.16.10'
+
   testCompile 'junit:junit:4.12'
 }

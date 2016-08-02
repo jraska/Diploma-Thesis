@@ -18,7 +18,7 @@ import com.jraska.pwmd.travel.BuildConfig;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.pwmd.travel.dialog.LambdaDialogFragment;
+import com.jraska.dialog.lambda.LambdaDialogFragment;
 import com.jraska.pwmd.travel.feedback.Feedback;
 import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;

@@ -34,7 +34,7 @@ import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
 import com.jraska.pwmd.travel.data.RouteIcon;
 import com.jraska.pwmd.travel.data.TransportChangeSpec;
-import com.jraska.pwmd.travel.dialog.LambdaDialogFragment;
+import com.jraska.dialog.lambda.LambdaDialogFragment;
 import com.jraska.pwmd.travel.feedback.Feedback;
 import com.jraska.pwmd.travel.media.PicturesManager;
 import com.jraska.pwmd.travel.media.SoundsManager;

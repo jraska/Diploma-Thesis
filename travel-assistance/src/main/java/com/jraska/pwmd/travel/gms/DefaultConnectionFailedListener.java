@@ -7,7 +7,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.jraska.common.ArgumentCheck;
 import com.jraska.pwmd.travel.BuildConfig;
 import com.jraska.pwmd.travel.TopActivityProvider;
-import com.jraska.pwmd.travel.dialog.LambdaDialogFragment;
+import com.jraska.dialog.lambda.LambdaDialogFragment;
 import com.jraska.pwmd.travel.ui.BaseActivity;
 import timber.log.Timber;
 
