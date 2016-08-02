@@ -1,7 +1,6 @@
 package com.jraska.dialog.lambda;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
@@ -10,104 +9,30 @@ import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
-import lombok.SneakyThrows;
 
-import java.io.*;
-
-public class LambdaDialogFragment extends DialogFragment {
+public final class LambdaDialogFragment extends DialogFragment {
   public static final String TAG = LambdaDialogFragment.class.getSimpleName();
 
-  private static final String TITLE = "title";
-  private static final String MESSAGE = "message";
-  private static final String ICON_RES = "setIcon";
-  private static final String POSITIVE_PROVIDER = "positiveProvider";
-  private static final String POSITIVE_TEXT = "okText";
-  private static final String NEUTRAL_PROVIDER = "neutralMethod";
-  private static final String NEUTRAL_TEXT = "neutralText";
-  private static final String NEGATIVE_PROVIDER = "setNegativeMethod";
-  private static final String NEGATIVE_TEXT = "negativeText";
-  private static final String CANCELABLE = "setCancelable";
+  static final String DIALOG_FACTORY = "factory";
 
   public static Builder builder(FragmentActivity context) {
     return new Builder(context.getResources());
   }
 
-  CharSequence title() {
-    return argument(TITLE);
+  private final DialogFieldsBundleAdapter _fieldsAdapter = DialogFieldsBundleAdapter.INSTANCE;
+
+  DialogFields fields() {
+    return _fieldsAdapter.fromBundle(getArguments());
   }
 
-  CharSequence message() {
-    return argument(MESSAGE);
+  DialogFactory factory() {
+    return (DialogFactory) getArguments().getSerializable(DIALOG_FACTORY);
   }
 
-  int iconRes() {
-    return argument(ICON_RES, 0);
-  }
-
-  DialogDelegateProvider positiveProvider() {
-    return argument(POSITIVE_PROVIDER);
-  }
-
-  CharSequence okText() {
-    return argument(POSITIVE_TEXT);
-  }
-
-  DialogDelegateProvider neutralProvider() {
-    return argument(NEUTRAL_PROVIDER);
-  }
-
-  CharSequence neutralText() {
-    return argument(NEUTRAL_TEXT);
-  }
-
-  DialogDelegateProvider negativeProvider() {
-    return argument(NEGATIVE_PROVIDER);
-  }
-
-  CharSequence negativeText() {
-    return argument(NEGATIVE_TEXT);
-  }
-
-  boolean cancelable() {
-    return argument(CANCELABLE, false);
-  }
-
-  <T> T argument(String key, T defaultValue) {
-    T value = argument(key);
-    if (value == null) {
-      return defaultValue;
-    }
-
-    return value;
-  }
-
-  @SuppressWarnings("unchecked") <T> T argument(String key) {
-    return (T) getArguments().get(key);
-  }
-
-  @SuppressWarnings("unchecked")
-  DialogInterface.OnClickListener delegate(DialogDelegateProvider provider) {
-    if (provider == null) {
-      return null;
-    } else {
-      return provider.delegate(getActivity());
-    }
-  }
-
-  @NonNull @SuppressWarnings("unchecked")
+  @NonNull
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-    return builder.setTitle(title())
-        .setMessage(message())
-        .setIcon(iconRes())
-        .setPositiveButton(okText(), delegate(positiveProvider()))
-        .setNeutralButton(neutralText(), delegate(neutralProvider()))
-        .setNegativeButton(negativeText(), delegate(negativeProvider()))
-        .setCancelable(cancelable())
-        .create();
+    return factory().onCreateDialog(new DialogFactory.FactoryData(getActivity(), fields()));
   }
 
   public LambdaDialogFragment show(FragmentManager fragmentManager) {
@@ -117,11 +42,16 @@ public class LambdaDialogFragment extends DialogFragment {
 
   public static class Builder {
     private final Resources _resources;
-    private Bundle _bundle = new Bundle();
+    private final DialogFieldsBundleAdapter _fieldsBundleAdapter;
+    private final DialogFields.Builder _fieldsBuilder;
+
     private boolean validateEagerly;
+    private DialogFactory _dialogFactory = new AlertDialogFactory();
 
     private Builder(Resources resources) {
       _resources = resources;
+      _fieldsBundleAdapter = DialogFieldsBundleAdapter.INSTANCE;
+      _fieldsBuilder = DialogFields.builder();
     }
 
     private CharSequence string(@StringRes int res) {
@@ -133,13 +63,17 @@ public class LambdaDialogFragment extends DialogFragment {
       return this;
     }
 
+    public void setDialogFactory(@NonNull DialogFactory dialogFactory) {
+      _dialogFactory = dialogFactory;
+    }
+
     public Builder setIcon(@DrawableRes int res) {
-      _bundle.putInt(ICON_RES, res);
+      _fieldsBuilder.iconRes(res);
       return this;
     }
 
     public Builder setTitle(CharSequence message) {
-      _bundle.putCharSequence(TITLE, message);
+      _fieldsBuilder.title(message);
       return this;
     }
 
@@ -148,12 +82,12 @@ public class LambdaDialogFragment extends DialogFragment {
     }
 
     public Builder setCancelable(boolean cancelable) {
-      _bundle.putBoolean(CANCELABLE, cancelable);
+      _fieldsBuilder.cancelable(cancelable);
       return this;
     }
 
     public Builder setMessage(CharSequence message) {
-      _bundle.putCharSequence(MESSAGE, message);
+      _fieldsBuilder.message(message);
       return this;
     }
 
@@ -161,8 +95,8 @@ public class LambdaDialogFragment extends DialogFragment {
       return setMessage(string(res));
     }
 
-    public Builder positiveProvider(DialogDelegateProvider provider) {
-      _bundle.putSerializable(POSITIVE_PROVIDER, provider);
+    private Builder positiveProvider(DialogDelegateProvider provider) {
+      _fieldsBuilder.positiveProvider(provider);
       return this;
     }
 
@@ -172,7 +106,7 @@ public class LambdaDialogFragment extends DialogFragment {
     }
 
     public Builder setPositiveText(CharSequence text) {
-      _bundle.putCharSequence(POSITIVE_TEXT, text);
+      _fieldsBuilder.positiveText(text);
       return this;
     }
 
@@ -181,7 +115,7 @@ public class LambdaDialogFragment extends DialogFragment {
     }
 
     private Builder neutralProvider(DialogDelegateProvider provider) {
-      _bundle.putSerializable(NEUTRAL_PROVIDER, provider);
+      _fieldsBuilder.neutralProvider(provider);
       return this;
     }
 
@@ -191,7 +125,7 @@ public class LambdaDialogFragment extends DialogFragment {
     }
 
     public Builder setNeutralText(CharSequence text) {
-      _bundle.putCharSequence(NEUTRAL_TEXT, text);
+      _fieldsBuilder.negativeText(text);
       return this;
     }
 
@@ -200,7 +134,7 @@ public class LambdaDialogFragment extends DialogFragment {
     }
 
     private Builder negativeProvider(DialogDelegateProvider provider) {
-      _bundle.putSerializable(NEGATIVE_PROVIDER, provider);
+      _fieldsBuilder.negativeProvider(provider);
       return this;
     }
 
@@ -214,24 +148,25 @@ public class LambdaDialogFragment extends DialogFragment {
     }
 
     public Builder setNegativeText(CharSequence text) {
-      _bundle.putCharSequence(NEGATIVE_TEXT, text);
+      _fieldsBuilder.negativeText(text);
       return this;
     }
 
     public LambdaDialogFragment build() {
+      DialogFields dialogFields = _fieldsBuilder.build();
+
       if (validateEagerly) {
-        eagerValidate();
+        DialogFields.validateSerializable(_dialogFactory);
+        dialogFields.validate();
       }
 
-      LambdaDialogFragment fragment = new LambdaDialogFragment();
-      fragment.setArguments(_bundle); // TODO: 14/07/16 Have fields, because the Bundle remains mutable
-      return fragment;
-    }
+      Bundle arguments = new Bundle();
+      arguments.putSerializable(DIALOG_FACTORY, _dialogFactory);
+      _fieldsBundleAdapter.intoBundle(dialogFields, arguments);
 
-    private void eagerValidate() {
-      validateSerializable(_bundle.getSerializable(NEUTRAL_PROVIDER));
-      validateSerializable(_bundle.getSerializable(POSITIVE_PROVIDER));
-      validateSerializable(_bundle.getSerializable(NEGATIVE_PROVIDER));
+      LambdaDialogFragment fragment = new LambdaDialogFragment();
+      fragment.setArguments(arguments);
+      return fragment;
     }
 
     public LambdaDialogFragment show(FragmentManager fragmentManager) {
@@ -243,32 +178,6 @@ public class LambdaDialogFragment extends DialogFragment {
       dialog.show(fragmentManager, tag);
       return dialog;
     }
-
-    private static void validateSerializable(Serializable serializable) {
-      try {
-        validateSerializableUnchecked(serializable);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    }
   }
 
-  @SneakyThrows
-  private static void validateSerializableUnchecked(Serializable serializable) throws IOException {
-    if (serializable == null) {
-      return;
-    }
-
-    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-    ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
-
-    outputStream.writeObject(serializable);
-
-    ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
-    Object deserialized = inputStream.readObject();
-
-    if (deserialized == null) {
-      throw new IllegalArgumentException(serializable.getClass() + " does not implement Serializable properly");
-    }
-  }
 }
