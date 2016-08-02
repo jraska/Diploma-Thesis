@@ -68,3 +68,6 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+libs/
+src/main/java/
+src/main/res/
