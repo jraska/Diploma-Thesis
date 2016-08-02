@@ -217,12 +217,12 @@ public class RoutesListActivity extends BaseActivity
   }
 
   private void showNfcRouteNotExistsMessage() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle(R.string.route_nfc_not_found_title)
+    LambdaDialogFragment.builder(this)
+        .setTitle(R.string.route_nfc_not_found_title)
         .setMessage(R.string.route_nfc_not_found_message)
         .setIcon(android.R.drawable.ic_dialog_alert)
-        .setPositiveButton(android.R.string.cancel, null)
-        .show();
+        .setPositiveText(android.R.string.cancel)
+        .show(getSupportFragmentManager());
   }
 
   private boolean routeExists(long routeId) {
