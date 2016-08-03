@@ -224,7 +224,7 @@ public class RouteRecordActivity extends BaseActivity {
         .setNegativeText(R.string.record_prompt_button_finish)
         .setNegativeMethod(RouteRecordActivity::finish)
         .setPositiveText(R.string.record_prompt_button_continue)
-        .show(getSupportFragmentManager());
+        .show();
 
     Timber.i("Prompt dialog is showing to the user");
   }
@@ -296,7 +296,7 @@ public class RouteRecordActivity extends BaseActivity {
           .setNegativeText(R.string.record_prompt_button_finish)
           .setNegativeMethod(RouteRecordActivity::stopTracking)
           .setPositiveText(R.string.record_prompt_button_continue)
-          .show(getSupportFragmentManager());
+          .show();
     } else {
       stopTracking();
     }

@@ -147,7 +147,7 @@ public class RoutesListActivity extends BaseActivity
         .setPositiveText(android.R.string.ok)
         .setNeutralText(R.string.about_feedback)
         .setNeutralMethod(RoutesListActivity::onFeedbackRequested)
-        .show(getSupportFragmentManager());
+        .show();
 
     return true;
   }
@@ -222,7 +222,7 @@ public class RoutesListActivity extends BaseActivity
         .setMessage(R.string.route_nfc_not_found_message)
         .setIcon(android.R.drawable.ic_dialog_alert)
         .setPositiveText(android.R.string.cancel)
-        .show(getSupportFragmentManager());
+        .show();
   }
 
   private boolean routeExists(long routeId) {

@@ -1,7 +1,6 @@
 package com.jraska.dialog.lambda;
 
 import android.app.Dialog;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -15,8 +14,12 @@ public final class LambdaDialogFragment extends DialogFragment {
 
   private static final String DIALOG_FACTORY = "factory";
 
-  public static Builder builder(FragmentActivity context) {
-    return new Builder(context.getResources());
+  public static Builder builder(FragmentActivity fragmentActivity) {
+    if (fragmentActivity == null) {
+      throw new IllegalArgumentException("fragmentActivity cannot be null");
+    }
+
+    return new Builder(fragmentActivity);
   }
 
   private final DialogFieldsBundleAdapter _fieldsAdapter = DialogFieldsBundleAdapter.INSTANCE;
@@ -35,27 +38,35 @@ public final class LambdaDialogFragment extends DialogFragment {
     return factory().onCreateDialog(new DialogFactory.FactoryData(getActivity(), fields()));
   }
 
-  public LambdaDialogFragment show(FragmentManager fragmentManager) {
-    show(fragmentManager, TAG);
+  private LambdaDialogFragment show(String tag, FragmentManager fragmentManager) {
+    show(fragmentManager, tag);
     return this;
   }
 
+  public LambdaDialogFragment show(FragmentManager fragmentManager) {
+    return show(TAG, fragmentManager);
+  }
+
   public static class Builder {
-    private final Resources _resources;
+    private final FragmentActivity _fragmentActivity;
     private final DialogFieldsBundleAdapter _fieldsBundleAdapter;
     private final DialogFields.Builder _fieldsBuilder;
 
     private boolean validateEagerly;
     private DialogFactory _dialogFactory = new AlertDialogFactory();
 
-    private Builder(Resources resources) {
-      _resources = resources;
+    private Builder(FragmentActivity fragmentActivity) {
+      _fragmentActivity = fragmentActivity;
       _fieldsBundleAdapter = DialogFieldsBundleAdapter.INSTANCE;
       _fieldsBuilder = DialogFields.builder();
     }
 
     private CharSequence string(@StringRes int res) {
-      return _resources.getString(res);
+      return _fragmentActivity.getString(res);
+    }
+
+    private FragmentManager fragmentManager() {
+      return _fragmentActivity.getSupportFragmentManager();
     }
 
     public Builder validateEagerly(boolean validate) {
@@ -109,8 +120,6 @@ public final class LambdaDialogFragment extends DialogFragment {
       return setPositiveText(string(res));
     }
 
-
-    @SuppressWarnings("unchecked")
     public <A extends FragmentActivity> Builder setNeutralMethod(ActivityAction<A> method) {
       _fieldsBuilder.neutralAction(method);
       return this;
@@ -125,7 +134,6 @@ public final class LambdaDialogFragment extends DialogFragment {
       return setNeutralText(string(res));
     }
 
-    @SuppressWarnings("unchecked")
     public <A extends FragmentActivity> Builder setNegativeMethod(ActivityAction<A> method) {
       _fieldsBuilder.negativeAction(method);
       return this;
@@ -157,14 +165,12 @@ public final class LambdaDialogFragment extends DialogFragment {
       return fragment;
     }
 
-    public LambdaDialogFragment show(FragmentManager fragmentManager) {
-      return build().show(fragmentManager);
+    public LambdaDialogFragment show() {
+      return build().show(fragmentManager());
     }
 
-    public LambdaDialogFragment show(FragmentManager fragmentManager, String tag) {
-      LambdaDialogFragment dialog = build();
-      dialog.show(fragmentManager, tag);
-      return dialog;
+    public LambdaDialogFragment show(String tag) {
+      return build().show(tag, fragmentManager());
     }
   }
 

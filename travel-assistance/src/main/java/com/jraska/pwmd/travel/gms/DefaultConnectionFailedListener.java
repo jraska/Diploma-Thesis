@@ -78,7 +78,7 @@ public class DefaultConnectionFailedListener implements GoogleApiClient.OnConnec
         .setIcon(android.R.drawable.ic_dialog_alert)
         .setPositiveText(android.R.string.ok)
         .setPositiveMethod(Activity::finish)
-        .show(activity.getSupportFragmentManager());
+        .show();
   }
 
   //endregion
