@@ -12,18 +12,18 @@ public final class DialogFields {
   public final CharSequence title;
   public final CharSequence message;
   public final int iconRes;
-  public final DialogDelegateProvider positiveProvider;
+  public final ActivityAction positiveAction;
   public final CharSequence positiveText;
-  public final DialogDelegateProvider neutralProvider;
+  public final ActivityAction neutralAction;
   public final CharSequence neutralText;
-  public final DialogDelegateProvider negativeProvider;
+  public final ActivityAction negativeAction;
   public final CharSequence negativeText;
   public final boolean cancelable;
 
   void validate() {
-    validateSerializable(positiveProvider);
-    validateSerializable(neutralProvider);
-    validateSerializable(negativeProvider);
+    validateSerializable(positiveAction);
+    validateSerializable(neutralAction);
+    validateSerializable(negativeAction);
   }
 
   @SneakyThrows

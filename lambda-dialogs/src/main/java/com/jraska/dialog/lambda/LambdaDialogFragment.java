@@ -13,7 +13,7 @@ import android.support.v4.app.FragmentManager;
 public final class LambdaDialogFragment extends DialogFragment {
   public static final String TAG = LambdaDialogFragment.class.getSimpleName();
 
-  static final String DIALOG_FACTORY = "factory";
+  private static final String DIALOG_FACTORY = "factory";
 
   public static Builder builder(FragmentActivity context) {
     return new Builder(context.getResources());
@@ -95,14 +95,9 @@ public final class LambdaDialogFragment extends DialogFragment {
       return setMessage(string(res));
     }
 
-    private Builder positiveProvider(DialogDelegateProvider provider) {
-      _fieldsBuilder.positiveProvider(provider);
+    public <A extends FragmentActivity> Builder setPositiveMethod(ActivityAction<A> method) {
+      _fieldsBuilder.positiveAction(method);
       return this;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <A extends FragmentActivity> Builder setPositiveMethod(ActivityAction1<A> method) {
-      return positiveProvider((activity) -> (d, w) -> method.call((A) activity));
     }
 
     public Builder setPositiveText(CharSequence text) {
@@ -114,14 +109,11 @@ public final class LambdaDialogFragment extends DialogFragment {
       return setPositiveText(string(res));
     }
 
-    private Builder neutralProvider(DialogDelegateProvider provider) {
-      _fieldsBuilder.neutralProvider(provider);
-      return this;
-    }
 
     @SuppressWarnings("unchecked")
-    public <A extends FragmentActivity> Builder setNeutralMethod(ActivityAction1<A> method) {
-      return neutralProvider((activity) -> (d, w) -> method.call((A) activity));
+    public <A extends FragmentActivity> Builder setNeutralMethod(ActivityAction<A> method) {
+      _fieldsBuilder.neutralAction(method);
+      return this;
     }
 
     public Builder setNeutralText(CharSequence text) {
@@ -133,14 +125,10 @@ public final class LambdaDialogFragment extends DialogFragment {
       return setNeutralText(string(res));
     }
 
-    private Builder negativeProvider(DialogDelegateProvider provider) {
-      _fieldsBuilder.negativeProvider(provider);
-      return this;
-    }
-
     @SuppressWarnings("unchecked")
-    public <A extends FragmentActivity> Builder setNegativeMethod(ActivityAction1<A> method) {
-      return negativeProvider((activity) -> (d, w) -> method.call((A) activity));
+    public <A extends FragmentActivity> Builder setNegativeMethod(ActivityAction<A> method) {
+      _fieldsBuilder.negativeAction(method);
+      return this;
     }
 
     public Builder setNegativeText(@StringRes int res) {

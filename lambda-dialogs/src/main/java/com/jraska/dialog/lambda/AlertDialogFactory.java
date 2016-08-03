@@ -15,19 +15,19 @@ public final class AlertDialogFactory implements DialogFactory {
     return builder.setTitle(fields.title)
         .setMessage(fields.message)
         .setIcon(fields.iconRes)
-        .setPositiveButton(fields.positiveText, delegate(fields.positiveProvider, activity))
-        .setNeutralButton(fields.neutralText, delegate(fields.neutralProvider, activity))
-        .setNegativeButton(fields.negativeText, delegate(fields.negativeProvider, activity))
+        .setPositiveButton(fields.positiveText, call(fields.positiveAction, activity))
+        .setNeutralButton(fields.neutralText, call(fields.neutralAction, activity))
+        .setNegativeButton(fields.negativeText, call(fields.negativeAction, activity))
         .setCancelable(fields.cancelable)
         .create();
   }
 
   @SuppressWarnings("unchecked")
-  DialogInterface.OnClickListener delegate(DialogDelegateProvider provider, FragmentActivity activity) {
-    if (provider == null) {
+  DialogInterface.OnClickListener call(ActivityAction action, FragmentActivity activity) {
+    if (action == null) {
       return null;
     } else {
-      return provider.delegate(activity);
+      return (dialogInterface, i) -> action.call(activity);
     }
   }
 }

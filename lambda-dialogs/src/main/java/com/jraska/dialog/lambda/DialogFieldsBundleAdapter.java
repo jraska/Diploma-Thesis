@@ -6,7 +6,7 @@ final class DialogFieldsBundleAdapter {
   private static final String TITLE = "title";
   private static final String MESSAGE = "message";
   private static final String ICON_RES = "setIcon";
-  private static final String POSITIVE_PROVIDER = "positiveProvider";
+  private static final String POSITIVE_PROVIDER = "positiveAction";
   private static final String POSITIVE_TEXT = "positiveText";
   private static final String NEUTRAL_PROVIDER = "neutralMethod";
   private static final String NEUTRAL_TEXT = "neutralText";
@@ -20,11 +20,11 @@ final class DialogFieldsBundleAdapter {
     bundle.putCharSequence(TITLE, fields.title);
     bundle.putCharSequence(MESSAGE, fields.message);
     bundle.putInt(ICON_RES, fields.iconRes);
-    bundle.putSerializable(POSITIVE_PROVIDER, fields.positiveProvider);
+    bundle.putSerializable(POSITIVE_PROVIDER, fields.positiveAction);
     bundle.putCharSequence(POSITIVE_TEXT, fields.positiveText);
-    bundle.putSerializable(NEUTRAL_PROVIDER, fields.neutralProvider);
+    bundle.putSerializable(NEUTRAL_PROVIDER, fields.neutralAction);
     bundle.putCharSequence(NEUTRAL_TEXT, fields.neutralText);
-    bundle.putSerializable(NEGATIVE_PROVIDER, fields.negativeProvider);
+    bundle.putSerializable(NEGATIVE_PROVIDER, fields.negativeAction);
     bundle.putCharSequence(NEGATIVE_TEXT, fields.negativeText);
     bundle.putBoolean(CANCELABLE, fields.cancelable);
   }
@@ -34,11 +34,11 @@ final class DialogFieldsBundleAdapter {
         .title(bundle.getCharSequence(TITLE))
         .message(bundle.getCharSequence(MESSAGE))
         .iconRes(bundle.getInt(ICON_RES))
-        .positiveProvider((DialogDelegateProvider) bundle.getSerializable(POSITIVE_PROVIDER))
+        .positiveAction((ActivityAction) bundle.getSerializable(POSITIVE_PROVIDER))
         .positiveText(bundle.getCharSequence(POSITIVE_TEXT))
-        .negativeProvider((DialogDelegateProvider) bundle.getSerializable(NEUTRAL_PROVIDER))
-        .negativeText(bundle.getCharSequence(NEUTRAL_TEXT))
-        .negativeProvider((DialogDelegateProvider) bundle.getSerializable(NEGATIVE_PROVIDER))
+        .neutralAction((ActivityAction) bundle.getSerializable(NEUTRAL_PROVIDER))
+        .neutralText(bundle.getCharSequence(NEUTRAL_TEXT))
+        .negativeAction((ActivityAction) bundle.getSerializable(NEGATIVE_PROVIDER))
         .negativeText(bundle.getCharSequence(NEGATIVE_TEXT))
         .build();
   }
