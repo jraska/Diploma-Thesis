@@ -14,7 +14,7 @@ final class DialogFieldsBundleAdapter {
   private static final String NEGATIVE_TEXT = "negativeText";
   private static final String CANCELABLE = "setCancelable";
 
-  public static final DialogFieldsBundleAdapter INSTANCE = new DialogFieldsBundleAdapter();
+  static final DialogFieldsBundleAdapter INSTANCE = new DialogFieldsBundleAdapter();
 
   void intoBundle(DialogFields fields, Bundle bundle) {
     bundle.putCharSequence(TITLE, fields.title);
