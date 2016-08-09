@@ -33,9 +33,9 @@ public final class LambdaDialogFragment extends DialogFragment {
   }
 
   @NonNull
-  @Override
+  @Override @SuppressWarnings("unchecked")
   public Dialog onCreateDialog(Bundle savedInstanceState) {
-    return factory().onCreateDialog(new DialogFactory.FactoryData(getActivity(), fields()));
+    return factory().onCreateDialog(getActivity(), new DialogFactory.FactoryData(fields()));
   }
 
   private LambdaDialogFragment show(String tag, FragmentManager fragmentManager) {
@@ -74,8 +74,9 @@ public final class LambdaDialogFragment extends DialogFragment {
       return this;
     }
 
-    public void setDialogFactory(@NonNull DialogFactory dialogFactory) {
+    public <T extends FragmentActivity> Builder setDialogFactory(@NonNull DialogFactory<T> dialogFactory) {
       _dialogFactory = dialogFactory;
+      return this;
     }
 
     public Builder setIcon(@DrawableRes int res) {
