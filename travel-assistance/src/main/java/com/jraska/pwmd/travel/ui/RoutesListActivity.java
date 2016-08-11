@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -14,11 +13,11 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import com.jraska.dialog.LambdaDialogFragment;
 import com.jraska.pwmd.travel.BuildConfig;
 import com.jraska.pwmd.travel.R;
 import com.jraska.pwmd.travel.TravelAssistanceApp;
 import com.jraska.pwmd.travel.data.RouteData;
-import com.jraska.dialog.lambda.LambdaDialogFragment;
 import com.jraska.pwmd.travel.feedback.Feedback;
 import com.jraska.pwmd.travel.nfc.NfcRouteEncoder;
 import com.jraska.pwmd.travel.persistence.TravelDataRepository;
@@ -140,13 +139,13 @@ public class RoutesListActivity extends BaseActivity
   @DebugLog
   protected boolean onNavigationIconClicked() {
     LambdaDialogFragment.builder(this)
-        .setTitle(getAppInfoTitle())
+        .title(getAppInfoTitle())
         .validateEagerly(BuildConfig.DEBUG)
-        .setMessage(R.string.about)
-        .setIcon(R.drawable.ic_logo_no_padding)
-        .setPositiveText(android.R.string.ok)
-        .setNeutralText(R.string.about_feedback)
-        .setNeutralMethod(RoutesListActivity::onFeedbackRequested)
+        .message(R.string.about)
+        .icon(R.drawable.ic_logo_no_padding)
+        .positiveText(android.R.string.ok)
+        .neutralText(R.string.about_feedback)
+        .neutralMethod(RoutesListActivity::onFeedbackRequested)
         .show();
 
     return true;
@@ -218,10 +217,10 @@ public class RoutesListActivity extends BaseActivity
 
   private void showNfcRouteNotExistsMessage() {
     LambdaDialogFragment.builder(this)
-        .setTitle(R.string.route_nfc_not_found_title)
-        .setMessage(R.string.route_nfc_not_found_message)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setPositiveText(android.R.string.cancel)
+        .title(R.string.route_nfc_not_found_title)
+        .message(R.string.route_nfc_not_found_message)
+        .icon(android.R.drawable.ic_dialog_alert)
+        .positiveText(android.R.string.cancel)
         .show();
   }
 

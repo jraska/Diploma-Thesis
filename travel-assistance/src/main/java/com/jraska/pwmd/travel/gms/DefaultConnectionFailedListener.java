@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jraska.common.ArgumentCheck;
+import com.jraska.dialog.LambdaDialogFragment;
 import com.jraska.pwmd.travel.BuildConfig;
 import com.jraska.pwmd.travel.TopActivityProvider;
-import com.jraska.dialog.lambda.LambdaDialogFragment;
 import com.jraska.pwmd.travel.ui.BaseActivity;
 import timber.log.Timber;
 
@@ -72,12 +72,12 @@ public class DefaultConnectionFailedListener implements GoogleApiClient.OnConnec
 
     LambdaDialogFragment.builder(activity)
         .validateEagerly(BuildConfig.DEBUG)
-        .setTitle(_messageResolver.resolveTitle(connectionResult))
-        .setMessage(_messageResolver.resolveMessage(connectionResult))
-        .setCancelable(false)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setPositiveText(android.R.string.ok)
-        .setPositiveMethod(Activity::finish)
+        .title(_messageResolver.resolveTitle(connectionResult))
+        .message(_messageResolver.resolveMessage(connectionResult))
+        .cancelable(false)
+        .icon(android.R.drawable.ic_dialog_alert)
+        .positiveText(android.R.string.ok)
+        .positiveMethod(Activity::finish)
         .show();
   }
 

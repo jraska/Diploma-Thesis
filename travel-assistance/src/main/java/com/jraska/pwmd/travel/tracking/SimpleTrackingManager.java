@@ -218,7 +218,7 @@ public class SimpleTrackingManager implements TrackingManager {
 
     Location lastLocation = _lastLocationProvider.get();
     if (lastLocation == null) {
-      Timber.w("Cannot add transportation change setTitle=%s", title);
+      Timber.w("Cannot add transportation change title=%s", title);
 
       return false;
     }
